@@ -4,19 +4,42 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 
-body {
-    padding-top: 50px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+.modal {
+    height: 100%;
+    width: 100%;
 }
 
-/* Header Image Background - Change the URL below to your image path (example: ../images/background.jpg) */
+.modal-content {
+    padding-left: -100px;
+    height: 550px;
+    width: 100%; /* Could be more or less, depending on screen size */
+}
 
-.banner {
-    height: 400px;
-    background: url('../images/banner.png') center center no-repeat scroll;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    -o-background-size: cover;
+.modal-body {
+    height: 80%;
+    width: 100%;
+}
+
+
+.login {
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mdl-layout__content {
+  padding: 25px;
+  flex: none;
+}
+
+.carousel-inner > .item > img {
+    margin: 0 auto;
+}
+
+body {
+    padding-top: 50px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
 }
 
 /* Customize the text color and shadow color and to optimize text legibility. */

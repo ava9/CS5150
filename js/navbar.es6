@@ -1,18 +1,32 @@
 function writenav() {
-  var navbarhtml = `<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-                      <header class="mdl-layout__header">
-                        <div class="mdl-layout__header-row">
-                          <!-- Title -->
-                          <span class="mdl-layout-title .mdl-color--white" style="font-size:50px;padding-top:20px">PorchFest</span>
-                        </div>
-                        <!-- Tabs -->
-                        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-                          <a href="#" class="mdl-layout__tab is-active">About</a>
-                          <a href="#" class="mdl-layout__tab">Contact</a>
-                          <div class="mdl-layout-spacer"></div>
-                          <a href="./login.html" class="mdl-layout__tab">Login / Register</a>
-                        </div>
-                      </header>
-                    </div>`;
+  var navbarhtml = `<!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Porchfest</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="index.html#info">About</a>
+                    </li>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                      Launch demo modal
+                    </button>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>`;
 	document.write(navbarhtml);
 }
