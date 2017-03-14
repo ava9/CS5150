@@ -54,18 +54,28 @@
   text-align: center;
 }
 
+#bandModal img{
+  width: 90%;
+  height: auto;
+}
+
+#bandModal .close {
+  position: relative;
+  margin-right: 10px;
+  z-index: 1000;
+}
+
+.tab-content #name h2 {
+  font-size: 1.5em;
+}
+
 .tab-content #name{
   text-align: center;
 }
 
-#bandModal img{
-  height: 70%;
-  width: 70%;
-}
-
 #map img{
-  height: 60%;
-  width: 50%;
+  width: 80%;
+  height: auto;
   display: block;
   margin: 0 auto;
   padding-top: 10px;
