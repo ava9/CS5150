@@ -16,7 +16,10 @@ function writenav() {
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="index.html#info">About</a>
+                        <a href="browse.html"> Browse Porchfests </a>
+                    </li>
+                    <li>
+                        <a href="myaccount.html"> My Account </a>
                     </li>
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-link navbar-btn loginButton" data-toggle="modal" data-target="#myModal">

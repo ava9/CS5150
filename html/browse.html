@@ -8,62 +8,81 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>PorchFest - My Account</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-purple.min.css" />
-  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-  <!-- Bootstrap Core CSS -->
+
+    <!-- Bootstrap Core CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom CSS -->
   <link href="css/style.css" rel="stylesheet">
 
   <script src="../js/navbar.es6"></script>
-  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <script src="../js/loginmodal.es6"></script>
+
   <script src="../js/jquery.js"></script>
-  <!-- Bootstrap Core JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
 <body>
+  <!-- Write the navigation bar. -->
+  <script type="text/javascript">writenav();</script>
 
-<script type="text/javascript">writenav();</script>
-<script type="text/javascript">
-$(document).ready(function () {
+  <script type="text/javascript">writeloginmodal();</script>
 
-  $('.star').on('click', function () {
-      $(this).toggleClass('star-checked');
-    });
+  <!-- Start of the carousel div. -->
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+  
+  <!-- Little circle indicators at the bottom -->
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
 
-    $('.ckbox label').on('click', function () {
-      $(this).parents('tr').toggleClass('selected');
-    });
+    <!-- Slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+       <img src="../img/upcoming.png" alt="Band">
+      </div>
 
-    $('.btn-filter').on('click', function () {
-      var $target = $(this).data('target');
-      if ($target != 'all') {
-        $('.table tr').css('display', 'none');
-        $('.table tr[data-status="' + $target + '"]').fadeIn('slow');
-      } else {
-        $('.table tr').css('display', 'none').fadeIn('slow');
-      }
-    });
+      <div class="item">
+        <img src="../img/upcoming.png" alt="Kids">
+      </div>
 
- }); </script>
+      <div class="item">
+        <img src="../img/upcoming.png" alt="Violin">
+      </div>
+    </div>
 
-<div class="container">
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div> <!-- End of carousel div. -->
+
+<div class="container"> <!-- Container div. -->
   <div class="row">
+
+
+
 
     <section class="content">
       <h2>Browse Porchfests</h2>
       <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
           <div class="panel-body">
-            <div class="pull-right">
+            <div class="table-container table-responsive">
+              <div class="pull-right">
               <div class="btn-group">
                 <button type="button" class="btn btn-success btn-filter" data-target="upcoming">Upcoming</button>
                 <button type="button" class="btn btn-warning btn-filter" data-target="past">Past</button>
                 <button type="button" class="btn btn-info btn-filter" data-target="all">All</button>
               </div>
             </div>
-            <div class="table-container">
               <table class="table table-filter">
                 <tbody>
                   <tr data-status="upcoming">
@@ -72,7 +91,7 @@ $(document).ready(function () {
                         <div class="media-body">
                           <span class="media-meta pull-right">April 1, 2017</span>
                           <h4 class="title">
-                            Ithaca Porchfest
+                            <a href="singleporchfest.html"> Ithaca Porchfest </a>
                           </h4>
                           <p class="summary">Description of Porchfest</p>
                         </div>
@@ -102,6 +121,33 @@ $(document).ready(function () {
     
   </div>
 </div>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+      $('.star').on('click', function () {
+          $(this).toggleClass('star-checked');
+        });
+
+        $('.ckbox label').on('click', function () {
+          $(this).parents('tr').toggleClass('selected');
+        });
+
+        $('.btn-filter').on('click', function () {
+          var $target = $(this).data('target');
+          if ($target != 'all') {
+            $('.table tr').css('display', 'none');
+            $('.table tr[data-status="' + $target + '"]').fadeIn('slow');
+          } else {
+            $('.table tr').css('display', 'none').fadeIn('slow');
+          }
+        });
+
+     });
+  </script>
+
+  <!-- Bootstrap Core JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </body>
 </html>

@@ -4,6 +4,26 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 
+ #map img{
+  height: 60%;
+  width: 50%;
+  display: block;
+  margin: 0 auto;
+  padding-top: 10px;
+ }
+
+ .nav-tabs > li, .nav-pills > li {
+  float: none;
+  display: inline-block;
+  *display: inline; /* ie7 fix */
+  zoom: 1; /* hasLayout ie7 trigger */
+}
+
+.nav-tabs, .nav-pills {
+  padding-top: 20px;
+  text-align: center;
+}
+
 .contact {
   padding-left: 50px;
 }
