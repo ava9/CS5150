@@ -4,13 +4,26 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 
- #map img{
+#bandModal {
+  text-align: center;
+}
+
+.tab-content #name{
+  text-align: center;
+}
+
+#bandModal img{
+  height: 70%;
+  width: 70%;
+}
+
+#map img{
   height: 60%;
   width: 50%;
   display: block;
   margin: 0 auto;
   padding-top: 10px;
- }
+}
 
  .nav-tabs > li, .nav-pills > li {
   float: none;
