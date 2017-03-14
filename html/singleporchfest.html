@@ -27,7 +27,7 @@
 <body>
   <script type="text/javascript">writenav();</script>
   <script type="text/javascript">writeloginmodal();</script>
-
+  <h1 style="text-align:center;"> Ithaca Porchfest </h1>
   <div class="container"> <!-- Container div -->
     <ul class="nav nav-pills">
       <li class="active"><a href="#name" data-toggle="tab"> Performers </a></li>
@@ -37,15 +37,133 @@
 
     <div class="tab-content">
       <div class="tab-pane fade in active" id="name">
-        Hi
+        <!-- Button trigger modal -->
+        <span class="glyphicon glyphicon-star"></span>
+        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h2>The 18 Strings Of Luv<h2>
+        </button>
+        <span class="glyphicon glyphicon-star"></span>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h2>About a Harp<h2>
+        </button>
+        <span class="glyphicon glyphicon-star"></span>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h2>The Accords<h2>
+        </button>
+        <span class="glyphicon glyphicon-star"></span>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h2>Acoustic Rust<h2>
+        </button>
+        <span class="glyphicon glyphicon-star"></span>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h2>Ageless Jazz Band<h2>
+        </button>
+        <span class="glyphicon glyphicon-star"></span>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h2>Alan Rose<h2>
+        </button>
+        <span class="glyphicon glyphicon-star"></span>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h2>Alex Specker and Friends<h2>
+        </button>
+        <span class="glyphicon glyphicon-star"></span>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h2>Alt-Ac Quartet<h2>
+        </button>
+        <span class="glyphicon glyphicon-star"></span>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h2>Andrew Alling<h2>
+        </button>
+        <span class="glyphicon glyphicon-star"></span>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h2>Ann Warde<h2>
+        </button>
+        <span class="glyphicon glyphicon-star"></span>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h2>Anna O'Connell<h2>
+        </button>
+        <span class="glyphicon glyphicon-star"></span>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h2>Arthur B and The Planetary Mix<h2>
+        </button>
+        <span class="glyphicon glyphicon-star"></span>
       </div>
       <div class="tab-pane fade in" id="date">
-        hello
+        <h3> 12:00pm <h3>
+        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h4>The 18 Strings Of Luv<h4>
+        </button>
+        <br>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h4>About a Harp<h4>
+        </button>
+        <br>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h4>The Accords<h4>
+        </button>
+        <br>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h4>Acoustic Rust<h4>
+        </button>
+        <br>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h4>Ageless Jazz Band<h4>
+        </button>
+        <br>
+        <h3> 1:00pm <h3>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h4>Alan Rose<h4>
+        </button>
+        <br>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h4>Alex Specker and Friends<h4>
+        </button>
+        <br>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h4>Alt-Ac Quartet<h4>
+        </button>
+        <br>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h4>Andrew Alling<h4>
+        </button>
+        <br>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h4>Ann Warde<h4>
+        </button>
+        <br>
+        <h3> 2:00pm <h3>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h4>Anna O'Connell<h4>
+        </button>
+        <br>
+         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
+          <h4>Arthur B and The Planetary Mix<h4>
+        </button>
+        <br>
       </div>
       <div class="tab-pane fade in" id="map">
         <img src="../img/map.png" alt="map" id = "map">
       </div>
     </div>
   </div> <!-- End of container div -->
+  <!-- Modal -->
+  <div class="modal fade" id="bandModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        <div class="modal-body">
+          <img src="../img/band.jpg">
+          <h2>The 18 Strings Of Luv</h2>
+          <p>4pm • 105 King St</p>
+          <p>The 18 Strings of Luv is Jan Nigro, John Simon and Ken Zeserson playing Beatles, Byrds, Motown and other critters from the 60’s with shimmering harmonies over a bed of interweaving acoustic guitars.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
