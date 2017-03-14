@@ -6,8 +6,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
     <title>Porchfest Home</title>
 
@@ -19,8 +17,7 @@
 
     <script src="../js/navbar.es6"></script>
 
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-purple.min.css" />
-  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
     <!-- Adapted from https://github.com/BlackrockDigital/startbootstrap-business-frontpage -->
 
@@ -66,96 +63,145 @@
   </a>
 </div>
 
-	<!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
+	<!-- Large modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-			<div class="mdl-layout mdl-js-layout mdl-color--grey-100 login">
-  <main class="mdl-layout__content">
-    <div class="mdl-card mdl-shadow--6dp">
-
-      <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
-
-        <div class="mdl-tabs__tab-bar">
-            <a href="#login-panel" class="mdl-tabs__tab is-active mdl-color--blue-grey-50 mdl-color-text--primary" style="width:50%">Login</a>
-            <a href="#register-panel" class="mdl-tabs__tab mdl-color--blue-grey-50 mdl-color-text--primary" style="width:50%">Register</a>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×</button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Login/Register</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#Login" data-toggle="tab">Login</a></li>
+                            <li><a href="#Registration" data-toggle="tab">Registration</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="Login">
+                                <form role="form" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="email" class="col-sm-2 control-label">
+                                        Email</label>
+                                    <div class="col-sm-10">
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <input type="email" id="email" class="form-control" placeholder="Email" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1" class="col-sm-2 control-label">
+                                        Password</label>
+                                    <div class="col-sm-10">
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <input type="password" class="form-control" placeholder="Password" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            Submit</button>
+                                        <a href="javascript:;">Forgot your password?</a>
+                                    </div>
+                                </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="Registration">
+                                <form role="form" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-2 control-label">
+                                        Name</label>
+                                    <div class="col-sm-10">
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" placeholder="Name" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email" class="col-sm-2 control-label">
+                                        Email</label>
+                                    <div class="col-sm-10">
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <input type="email" id="email" class="form-control" placeholder="Email" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="mobile" class="col-sm-2 control-label">
+                                        Mobile</label>
+                                    <div class="col-sm-10">
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <input type="tel" id="mobile" class="form-control" placeholder="Mobile" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="col-sm-2 control-label">
+                                        Password</label>
+                                    <div class="col-sm-10">
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <input type="password" class="form-control" placeholder="Password" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="col-sm-2 control-label">
+                                        Confirm Password</label>
+                                    <div class="col-sm-10">
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <input type="password" class="form-control" placeholder="Password" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <button type="button" class="btn btn-primary btn-sm">
+                                            Register</button>
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            Cancel</button>
+                                    </div>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="mdl-tabs__panel is-active" id="login-panel">
-          <div class="mdl-card__supporting-text">
-            <form action="#">
-              <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" type="text" id="username" />
-                <label class="mdl-textfield__label" for="username">Username</label>
-              </div>
-              <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" type="password" id="userpass" />
-                <label class="mdl-textfield__label" for="userpass">Password</label>
-              </div>
-            </form>
-          </div>
-
-          <div class="mdl-card__actions mdl-card--border">
-            <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Log in</button>
-            <button class="mdl-button mdl-button--colored mdl-color-text--grey-500 mdl-js-button mdl-js-ripple-effect">Forgot Password?</button>
-          </div>
-
-        </div>
-
-        <div class="mdl-tabs__panel" id="register-panel">
-          <div class="mdl-card__supporting-text">
-            <form action="#">
-              <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" type="text" id="name" />
-                <label class="mdl-textfield__label" for="name">Name</label>
-              </div>
-              <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" type="text" id="email" />
-                <label class="mdl-textfield__label" for="email">Email</label>
-              </div>
-              <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" type="password" id="userpass" />
-                <label class="mdl-textfield__label" for="userpass">Password</label>
-              </div>
-              <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" type="password" id="userpassrepeat" />
-                <label class="mdl-textfield__label" for="userpassrepeat">Confirm Password</label>
-              </div>
-            </form>
-          </div>
-          <div class="mdl-card__actions mdl-card--border">
-            <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Register</button>
-          </div>
-        </div>
-
-      </div>
-
-
     </div>
-  </main>
-</div>
-          </div>
-          <div class="modal-footer">
-          	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
+
 
     <!-- Page Content -->
     <div class="container" id="info" name="info">
 
     <hr>
 
-		<div class="row">
-			<div class="col-sm-8">
+		<div class="row pageContent">
+			<div class="col-md-9">
 				<h2>Celebrating community through music on the porches of Fall Creek & Northside!</h2>
 				<p> Porchfest began in 2007, inspired by some outdoor ukulele playing and a conversation between neighbors Gretchen Hildreth and Lesley Greene. They came up with the idea for it that day and gathered 20 bands to make it happen in September of that year. The number of bands has increased every year since then, with 185 in 2016. </p>
 
@@ -163,8 +209,8 @@
 
 				<p> We have received sponsorship support from Ithaca Neighborhood Housing Services since 2011, which has been extremely helpful, as Lesley and Gretchen were paying out of pocket for most of the expenses before that. We receive generous donations from the community as well that we collect at Thompson Park during Porchfest and online through our website. And let’s not forget to mention the many bands who play each year for their neighbors and visitors. That’s what it’s really all about! </p>
 			</div>
-			<div class="col-sm-4">
-				<h2>Contact Us</h2>
+			<div class="col-sm-3 contact">
+				<h3>Contact Us</h3>
 				<address>
 					<strong> Porchfest </strong>
 					<br>3481 State Street
@@ -207,7 +253,7 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website 2014</p>
+                    <p>Copyright &copy; Porchfest 2017</p>
                 </div>
             </div>
             <!-- /.row -->

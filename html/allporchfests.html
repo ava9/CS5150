@@ -52,46 +52,10 @@ $(document).ready(function () {
   <div class="row">
 
     <section class="content">
-      <h2>My Porchfests</h2>
+      <h2>Browse Porchfests</h2>
       <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
           <div class="panel-body">
-            <!-- Trigger the modal with a button -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Create Porchfest</button>
-
-            <!-- Modal -->
-            <div id="myModal" class="modal fade" role="dialog">
-              <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Create Porchfest</h4>
-                  </div>
-                  <div class="modal-body">
-                    <form role="form" class="form-horizontal">
-                      <div class="form-group">
-                          <label for="name" class="col-sm-2 control-label">
-                              Porchfest Name</label>
-                          <div class="col-sm-10">
-                              <div class="row">
-                                  <div class="col-md-9">
-                                      <input type="text" id="email" class="form-control" placeholder="Name" />
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Create</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <button type="button" class="btn btn-danger">Delete Porchfest</button>
             <div class="pull-right">
               <div class="btn-group">
                 <button type="button" class="btn btn-success btn-filter" data-target="upcoming">Upcoming</button>
@@ -104,18 +68,11 @@ $(document).ready(function () {
                 <tbody>
                   <tr data-status="upcoming">
                     <td>
-                      <div class="ckbox">
-                        <input type="checkbox" id="checkbox1">
-                        <label for="checkbox1"></label>
-                      </div>
-                    </td>
-                    <td>
                       <div class="media">
                         <div class="media-body">
                           <span class="media-meta pull-right">April 1, 2017</span>
                           <h4 class="title">
                             Ithaca Porchfest
-                            <span class="pull-right">Organizer</span>
                           </h4>
                           <p class="summary">Description of Porchfest</p>
                         </div>
@@ -124,18 +81,11 @@ $(document).ready(function () {
                   </tr>
                   <tr data-status="past">
                     <td>
-                      <div class="ckbox">
-                        <input type="checkbox" id="checkbox1">
-                        <label for="checkbox1"></label>
-                      </div>
-                    </td>
-                    <td>
                       <div class="media">
                         <div class="media-body">
                           <span class="media-meta pull-right">March 1, 2017</span>
                           <h4 class="title">
                             Binghamton Porchfest
-                            <span class="pull-right">Musician</span>
                           </h4>
                           <p class="summary">Description of Porchfest</p>
                         </div>

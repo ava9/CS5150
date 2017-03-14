@@ -19,8 +19,8 @@ function writenav() {
                         <a href="index.html#info">About</a>
                     </li>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                      Launch demo modal
+                    <button type="button" class="btn btn-link navbar-btn loginButton" data-toggle="modal" data-target="#myModal">
+                      Login/Register
                     </button>
                 </ul>
             </div>
