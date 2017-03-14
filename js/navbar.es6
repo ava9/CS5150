@@ -19,7 +19,13 @@ function writenav() {
                         <a href="browse.html"> Browse Porchfests </a>
                     </li>
                     <li>
-                        <a href="myaccount.html"> My Account </a>
+                        <div class="dropdown">
+                            <button type="button" class="btn dropbtn navbar-btn btn-link loginButton"> My Account </button>
+                            <div class="dropdown-content">
+                                <a href="myporchfests.html"> My Porchfests </a>
+                                <a href="myprofile.html"> My Profile </a>
+                            </div>
+                        </div>
                     </li>
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-link navbar-btn loginButton" data-toggle="modal" data-target="#myModal">

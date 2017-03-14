@@ -4,13 +4,72 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 
- #map img{
+.col-centered {
+  float: none;
+  margin: 0 auto;
+}
+
+/* Dropdown Button */
+.dropbtn {
+    border: none;
+    text-decoration: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  text-decoration: none;
+  background-color: #f1f1f1;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+#bandModal {
+  text-align: center;
+}
+
+.tab-content #name{
+  text-align: center;
+}
+
+#bandModal img{
+  height: 70%;
+  width: 70%;
+}
+
+#map img{
   height: 60%;
   width: 50%;
   display: block;
   margin: 0 auto;
   padding-top: 10px;
- }
+}
 
  .nav-tabs > li, .nav-pills > li {
   float: none;
