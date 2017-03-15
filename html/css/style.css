@@ -83,6 +83,7 @@ span.band::after {
 .btn-group {
   position: relative;
   z-index: 10;
+  padding-top: 0;
 }
 
 table {
@@ -198,7 +199,7 @@ footer {
   background-color: #fcfcfc;
 }
 .panel .btn-group {
-  margin: 15px 0 30px;
+  margin: 15px 0 15px;
 }
 .panel .btn-group .btn {
   transition: background-color .3s ease;

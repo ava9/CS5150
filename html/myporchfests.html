@@ -3,10 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PorchFest - My Porchfests</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-purple.min.css" />
-  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
   <!-- Bootstrap Core CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
@@ -15,10 +14,16 @@
 
   <script src="../js/navbar.es6"></script>
   <script src="../js/createporchfestmodal.es6"></script>
-  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
   <script src="../js/jquery.js"></script>
   <!-- Bootstrap Core JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Responsive table js -->
+  <script src="responsive-tables.js"></script>
+
+  <!-- Responsive tables CSS -->
+  <link rel="stylesheet" href="responsive-tables.css">
+
 </head>
 <body>
 
@@ -36,13 +41,13 @@
         <div class="table-container table-responsive"> <!-- begin table-container div -->
 
           <!-- Trigger the modal with a button -->
-          <div class="col-xs-4 col-sm-4 col-md-3">
+          <div class="col-xs-12 col-sm-4 col-md-3">
             <div class="btn-group">
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Create Porchfest</button>
             </div>
           </div>
 
-          <div class="col-xs-7 col-xs-offset-1 col-sm-4 col-sm-offset-4 col-md-3 col-md-offset-6"> <!-- begin col 1 div -->
+          <div class="col-xs-12 col-sm-4 col-sm-offset-4 col-md-3 col-md-offset-6"> <!-- begin col 1 div -->
             <div class="btn-group">
               <button type="button" class="btn btn-success btn-filter" data-target="upcoming"> Upcoming </button>
               <button type="button" class="btn btn-warning btn-filter" data-target="past"> Past </button>
@@ -56,6 +61,9 @@
                 <th> Date </th>
                 <th> Location </th>
                 <th> Description </th>
+                <th> Role </th>
+                <th> Published </th>
+                <th> Manage </th>
               </tr>
               <tr data-status = "upcoming">
                 <td> 
@@ -64,30 +72,42 @@
                 <td> April 1st, 2017 </td>
                 <td> Ithaca, NY </td>
                 <td> The original porchfest. </td>
+                <td> Organizer </td>
+                <td> Yes </td>
+                <td> <a href="candymakethispage.html"> Edit </a> </td>
               </tr>
               <tr data-status = "upcoming">
                 <td> 
-                  <a href="singleporchfest.html"> Ithaca Porchfest </a>
+                  <a href="singleporchfest.html"> Binghamton Porchfest </a>
                 </td>
-                <td> April 1st, 2017 </td>
-                <td> Ithaca, NY </td>
+                <td> October 20th, 2017 </td>
+                <td> Binghamton, NY </td>
                 <td> The original porchfest. </td>
+                <td> Musician </td>
+                <td> No </td>
+                <td> <a href="candymakethispage.html"> Edit </a> </td>
               </tr>
               <tr data-status = "past">
                 <td>
-                  <a href="singleporchfest.html"> Another Porchfest </a>
+                  <a href="singleporchfest.html"> Syracuse Porchfest </a>
                 </td>
-                <td> April 1st, 2016 </td>
-                <td> Ithaca, NY </td>
+                <td> February 1st, 2016 </td>
+                <td> Syracuse, NY </td>
                 <td> Not the original porchfest. </td>
+                <td> Organizer </td>
+                <td> No </td>
+                <td> <a href="candymakethispage.html"> Edit </a> </td>
               </tr>
               <tr data-status = "past">
                 <td>
-                  <a href="singleporchfest.html"> Another Porchfest </a>
+                  <a href="singleporchfest.html"> Elmira Porchfest </a>
                 </td>
-                <td> April 1st, 2016 </td>
-                <td> Ithaca, NY </td>
+                <td> January 13th, 2016 </td>
+                <td> Elmira, NY </td>
                 <td> Not the original porchfest. </td>
+                <td> Organizer </td>
+                <td> No </td>
+                <td> <a href="candymakethispage.html"> Edit </a> </td>
               </tr>
             </table>
           </div> <!-- end col 2 div -->
