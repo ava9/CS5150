@@ -4,6 +4,28 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 
+span.band::before {
+  content: "\25a0";
+  font-size: 1.8rem;
+  transform: rotate(45deg);
+  position: absolute;
+  display: inline-block;
+  line-height: 9rem;
+}
+
+span.band::after {
+  content: "\25a0";
+  font-size: 1.8rem;
+  transform: rotate(45deg);
+  position: absolute;
+  display: inline-block;
+  line-height: 9rem;
+}
+
+#bandname {
+  padding-left: 5px;
+}
+
 .btn-group {
   position: relative;
   z-index: 10;
