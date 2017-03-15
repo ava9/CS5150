@@ -1,8 +1,6 @@
-/*
- * Start Bootstrap - Business Frontpage (http://startbootstrap.com/)
- * Copyright 2013-2016 Start Bootstrap
- * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
- */
+/*    --------------------------------------------------
+  :: singleporchfest.html
+  -------------------------------------------------- */
 
 span.band::before {
   content: "\25a0";
@@ -24,23 +22,6 @@ span.band::after {
 
 #bandname {
   padding-left: 5px;
-}
-
-.btn-group {
-  position: relative;
-  z-index: 10;
-}
-
-table {
-  
-}
-
-tr:hover {
-  background-color: #f5f5f5;
-}
-
-th {
-  background-color: #eaecef;
 }
 
 .col-centered {
@@ -93,6 +74,35 @@ th {
   padding: 5px;
 }
 
+
+/*    --------------------------------------------------
+  :: myporchfests.html & browse.html
+  -------------------------------------------------- */
+
+/* For the upcoming/past/all buttons in the Browse/My Porchfest tables. */
+.btn-group {
+  position: relative;
+  z-index: 10;
+}
+
+table {
+  
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+th {
+  background-color: #eaecef;
+}
+
+
+
+/*    --------------------------------------------------
+  :: Login
+  -------------------------------------------------- */
+
 .loginButton:hover {
   text-decoration: none;
 }
@@ -109,17 +119,60 @@ th {
   transform: translateY(-50%);
 }
 
-.mdl-layout__content {
-  padding: 25px;
-  flex: none;
+
+/*    --------------------------------------------------
+  :: Navbar
+  -------------------------------------------------- */
+/*.navbar {
+  color: red;
+  background-color: red;
+  border: blue;
 }
+
+#navbrand {
+  color: white;
+}
+
+.navbar-toggle {
+  color: blue;
+  background-color: blue;
+}
+
+.navbar-toggle .icon-bar {
+  color: red;
+  background-color: red;
+}*/
+
+
+/*    --------------------------------------------------
+  :: Carousel
+  -------------------------------------------------- */
 
 .carousel-inner > .item > img {
     margin: 0 auto;
 }
 
+
+
+/*    --------------------------------------------------
+  :: General
+  -------------------------------------------------- */
 body {
-    padding-top: 50px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+  font-family: 'Open Sans', sans-serif;
+  color: #353535;
+  padding-top: 50px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+.content h2 {
+  text-align: center;
+}
+.content .content-footer p {
+  color: #6d6d6d;
+    font-size: 12px;
+    text-align: center;
+}
+.content .content-footer p a {
+  color: inherit;
+  font-weight: bold;
 }
 
 /* Customize the text color and shadow color and to optimize text legibility. */
@@ -137,26 +190,6 @@ footer {
     margin: 50px 0;
 }
 
-/*    --------------------------------------------------
-  :: General
-  -------------------------------------------------- */
-body {
-  font-family: 'Open Sans', sans-serif;
-  color: #353535;
-}
-.content h2 {
-  text-align: center;
-}
-.content .content-footer p {
-  color: #6d6d6d;
-    font-size: 12px;
-    text-align: center;
-}
-.content .content-footer p a {
-  color: inherit;
-  font-weight: bold;
-}
-
 /*  --------------------------------------------------
   :: Table Filter
   -------------------------------------------------- */
@@ -170,7 +203,11 @@ body {
 .panel .btn-group .btn {
   transition: background-color .3s ease;
 }
-.table-filter {
+
+
+/* Probably don't need this, but leaving for now just in case. */
+
+/*.table-filter {
   background-color: #fff;
   border-bottom: 1px solid #eee;
 }

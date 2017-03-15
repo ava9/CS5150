@@ -114,6 +114,7 @@ $(document).ready(function () {
       if ($target != 'all') {
         $('.table tr').css('display', 'none');
         $('.table tr[data-status="' + $target + '"]').fadeIn('slow');
+        $('.table tr[data-status="fixed"]').fadeIn('slow');
       } else {
         $('.table tr').css('display', 'none').fadeIn('slow');
       }
