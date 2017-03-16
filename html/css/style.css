@@ -1,23 +1,39 @@
+/*http://bootsnipp.com/snippets/featured/sexy-sidebar-navigation*/
+
+
+
+
+
+
+
+
 /*    --------------------------------------------------
   :: singleporchfest.html
   -------------------------------------------------- */
 
+:before, :after {
+  box-sizing: border-box;
+}
+
+span.band {
+  color: #555246;
+  opacity: .7;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  margin: 0 -8px 5px;
+  padding: 10px 0;
+  display: inline-block;
+  transition: all ease .3s;
+}
+
 span.band::before {
   content: "\25a0";
-  font-size: 1.8rem;
-  transform: rotate(45deg);
-  position: absolute;
-  display: inline-block;
-  line-height: 9rem;
+  padding-right: 10px;-
 }
 
 span.band::after {
   content: "\25a0";
-  font-size: 1.8rem;
-  transform: rotate(45deg);
-  position: absolute;
-  display: inline-block;
-  line-height: 9rem;
+  padding-left: 10px;
 }
 
 #bandname {
