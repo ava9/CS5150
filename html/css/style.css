@@ -1,8 +1,89 @@
-/*http://bootsnipp.com/snippets/featured/sexy-sidebar-navigation*/
+/*    --------------------------------------------------
+  :: singleporchfest.html
+  -------------------------------------------------- */
 
+/* Manage bands tab */
+.bands-table {
+  padding-top: 30px;
+  position: absolute;
+  z-index: 10;
+}
 
+/* Timeslot tab */
+.timeslot-pane {
+  margin-top: 30px;
+  padding-right: 10px;
+  position: absolute;
+  border: 1px solid #d4d7db;
+  border-radius: 5px;
+}
 
+.timeslot-pane .date-row {
+  background-color: #eff1f4;
+  margin: 10px 0px 20px 0;
+  text-align: center;
+}
 
+.timeslot-pane .date-row p {
+  padding-top: 15px;
+}
+
+.timeslot-pane .date-row span {
+  padding-top: 15px;
+  color: #b4b6ba;
+}
+
+.timeslot-pane .time {
+  color: gray;
+}
+
+.timeslot-table th{
+  background-color: white;
+  font-weight: bold;
+  border: 1px solid #eff1f4;
+}
+
+.timeslot-table td{
+  border: 1px solid #eff1f4;
+}
+
+.timeslot-table .glyphicon {
+  color: #5cf442;
+}
+
+/* Sidebar based on: http://bootsnipp.com/snippets/featured/sexy-sidebar-navigation*/
+
+.nav-sidebar {
+    width: 100%;
+    padding: 20px 0; 
+    border-right: 1px solid #ddd;
+}
+.nav-sidebar a {
+    color: #333;
+    -webkit-transition: all 0.08s linear;
+    -moz-transition: all 0.08s linear;
+    -o-transition: all 0.08s linear;
+    transition: all 0.08s linear;
+    -webkit-border-radius: 4px 0 0 4px; 
+    -moz-border-radius: 4px 0 0 4px; 
+    border-radius: 4px 0 0 4px; 
+}
+.nav-sidebar .active a {
+    cursor: default;
+    background-color: #428bca; 
+    color: #fff; 
+    text-shadow: 1px 1px 1px #666; 
+}
+.nav-sidebar .active a:hover {
+    background-color: #428bca;
+}
+.nav-sidebar .text-overflow a,
+.nav-sidebar .text-overflow .media-body {
+    white-space: nowrap;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis; 
+}
 
 
 
@@ -24,6 +105,11 @@ span.band {
   padding: 10px 0;
   display: inline-block;
   transition: all ease .3s;
+}
+
+span.band:hover {
+  font-weight: bold;
+  cursor: pointer;
 }
 
 span.band::before {
