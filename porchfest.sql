@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 05, 2017 at 11:50 PM
+-- Generation Time: Mar 19, 2017 at 11:52 PM
 -- Server version: 5.5.25a
 -- PHP Version: 5.6.3
 
@@ -23,15 +23,36 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `bandavailabletimes`
+--
+
+CREATE TABLE IF NOT EXISTS `bandavailabletimes` (
+  `BandID` int(11) NOT NULL,
+  `TimeslotID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bandmembers`
+--
+
+CREATE TABLE IF NOT EXISTS `bandmembers` (
+  `BandID` int(11) NOT NULL,
+  `Email` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `bands`
 --
 
 CREATE TABLE IF NOT EXISTS `bands` (
 `BandID` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
-  `Location` varchar(255) NOT NULL,
-  `Description` text NOT NULL,
-  `Comment` text NOT NULL
+  `Description` varchar(255) NOT NULL,
+  `Comment` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -43,19 +64,8 @@ CREATE TABLE IF NOT EXISTS `bands` (
 CREATE TABLE IF NOT EXISTS `bandstoporchfests` (
   `BandID` int(11) NOT NULL,
   `PorchfestID` int(11) NOT NULL,
-  `AssignedTime` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `bandstotimeslots`
---
-
-CREATE TABLE IF NOT EXISTS `bandstotimeslots` (
-  `BandID` int(11) NOT NULL,
-  `StartTime` datetime NOT NULL,
-  `EndTime` datetime NOT NULL
+  `PorchLocation` varchar(255) NOT NULL,
+  `TimeslotID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -66,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `bandstotimeslots` (
 
 CREATE TABLE IF NOT EXISTS `porchfests` (
 `PorchfestID` int(11) NOT NULL,
+  `URL` varchar(255) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Location` varchar(255) NOT NULL,
   `Date` date NOT NULL,
@@ -77,13 +88,14 @@ CREATE TABLE IF NOT EXISTS `porchfests` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `timeslotstoporchfests`
+-- Table structure for table `porchfesttimeslots`
 --
 
-CREATE TABLE IF NOT EXISTS `timeslotstoporchfests` (
+CREATE TABLE IF NOT EXISTS `porchfesttimeslots` (
+`TimeslotID` int(11) NOT NULL,
   `PorchfestID` int(11) NOT NULL,
   `StartTime` datetime NOT NULL,
-  `Endtime` datetime NOT NULL
+  `EndTime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -97,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `Email` varchar(255) NOT NULL,
   `Password` varchar(255) NOT NULL,
   `Name` varchar(255) NOT NULL,
-  `ContactInfo` varchar(255) DEFAULT NULL
+  `ContactInfo` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -127,6 +139,18 @@ CREATE TABLE IF NOT EXISTS `userstoporchfests` (
 --
 
 --
+-- Indexes for table `bandavailabletimes`
+--
+ALTER TABLE `bandavailabletimes`
+ ADD KEY `BandID` (`BandID`,`TimeslotID`), ADD KEY `TimeslotID` (`TimeslotID`);
+
+--
+-- Indexes for table `bandmembers`
+--
+ALTER TABLE `bandmembers`
+ ADD KEY `BandID` (`BandID`);
+
+--
 -- Indexes for table `bands`
 --
 ALTER TABLE `bands`
@@ -136,13 +160,7 @@ ALTER TABLE `bands`
 -- Indexes for table `bandstoporchfests`
 --
 ALTER TABLE `bandstoporchfests`
- ADD PRIMARY KEY (`BandID`,`PorchfestID`), ADD KEY `PorchfestID` (`PorchfestID`);
-
---
--- Indexes for table `bandstotimeslots`
---
-ALTER TABLE `bandstotimeslots`
- ADD PRIMARY KEY (`BandID`);
+ ADD KEY `BandID` (`BandID`,`PorchfestID`,`TimeslotID`), ADD KEY `PorchfestID` (`PorchfestID`), ADD KEY `TimeslotID` (`TimeslotID`);
 
 --
 -- Indexes for table `porchfests`
@@ -151,10 +169,10 @@ ALTER TABLE `porchfests`
  ADD PRIMARY KEY (`PorchfestID`);
 
 --
--- Indexes for table `timeslotstoporchfests`
+-- Indexes for table `porchfesttimeslots`
 --
-ALTER TABLE `timeslotstoporchfests`
- ADD PRIMARY KEY (`PorchfestID`);
+ALTER TABLE `porchfesttimeslots`
+ ADD PRIMARY KEY (`TimeslotID`), ADD KEY `PorchfestID` (`PorchfestID`);
 
 --
 -- Indexes for table `users`
@@ -166,13 +184,13 @@ ALTER TABLE `users`
 -- Indexes for table `userstobands`
 --
 ALTER TABLE `userstobands`
- ADD PRIMARY KEY (`UserID`,`BandID`), ADD KEY `BandID` (`BandID`);
+ ADD KEY `UserID` (`UserID`,`BandID`), ADD KEY `BandID` (`BandID`);
 
 --
 -- Indexes for table `userstoporchfests`
 --
 ALTER TABLE `userstoporchfests`
- ADD PRIMARY KEY (`UserID`,`PorchfestID`), ADD KEY `PorchfestID` (`PorchfestID`);
+ ADD KEY `UserID` (`UserID`), ADD KEY `PorchfestID` (`PorchfestID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -189,6 +207,11 @@ MODIFY `BandID` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `porchfests`
 MODIFY `PorchfestID` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `porchfesttimeslots`
+--
+ALTER TABLE `porchfesttimeslots`
+MODIFY `TimeslotID` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -198,23 +221,25 @@ MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT;
 --
 
 --
+-- Constraints for table `bandavailabletimes`
+--
+ALTER TABLE `bandavailabletimes`
+ADD CONSTRAINT `bandavailabletimes_ibfk_2` FOREIGN KEY (`TimeslotID`) REFERENCES `porchfesttimeslots` (`TimeslotID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `bandavailabletimes_ibfk_1` FOREIGN KEY (`BandID`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `bandmembers`
+--
+ALTER TABLE `bandmembers`
+ADD CONSTRAINT `bandmembers_ibfk_1` FOREIGN KEY (`BandID`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `bandstoporchfests`
 --
 ALTER TABLE `bandstoporchfests`
-ADD CONSTRAINT `bandstoporchfests_ibfk_2` FOREIGN KEY (`PorchfestID`) REFERENCES `porchfests` (`PorchfestID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `bandstoporchfests_ibfk_1` FOREIGN KEY (`BandID`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `bandstotimeslots`
---
-ALTER TABLE `bandstotimeslots`
-ADD CONSTRAINT `bandstotimeslots_ibfk_1` FOREIGN KEY (`BandID`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `timeslotstoporchfests`
---
-ALTER TABLE `timeslotstoporchfests`
-ADD CONSTRAINT `timeslotstoporchfests_ibfk_1` FOREIGN KEY (`PorchfestID`) REFERENCES `porchfests` (`PorchfestID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `bandstoporchfests_ibfk_3` FOREIGN KEY (`TimeslotID`) REFERENCES `porchfesttimeslots` (`TimeslotID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `bandstoporchfests_ibfk_1` FOREIGN KEY (`BandID`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `bandstoporchfests_ibfk_2` FOREIGN KEY (`PorchfestID`) REFERENCES `porchfests` (`PorchfestID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `userstobands`
