@@ -6,6 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PorchFest - My Account</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
@@ -15,18 +16,32 @@
   <!-- Custom CSS -->
   <link href="css/style.css" rel="stylesheet">
 
+  <!-- Navigation bar -->
   <script src="../js/navbar.es6"></script>
 
+  <!-- Login modal -->
   <script src="../js/loginmodal.es6"></script>
 
+  <!-- Join porchfest modal -->
+  <script src="../js/joinporchfestmodal.es6"></script>
+
+  <!-- jQuery -->
   <script src="../js/jquery.js"></script>
 
+  <!-- Responsive table js -->
+  <script src="responsive-tables.js"></script>
+
+  <!-- Responsive tables CSS -->
+  <link rel="stylesheet" href="responsive-tables.css">
 </head>
+
 <body>
   <!-- Write the navigation bar. -->
   <script type="text/javascript">writenav();</script>
 
   <script type="text/javascript">writeloginmodal();</script>
+
+  <script type="text/javascript">joinporchfestmodal();</script>
 
   <!-- Start of the carousel div. -->
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -64,63 +79,74 @@
     </a>
   </div> <!-- End of carousel div. -->
 
-<div class="container"> <!-- Container div. -->
-  <div class="row">
 
-
-
-
-    <section class="content">
-      <h2>Browse Porchfests</h2>
-      <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <div class="table-container table-responsive">
-              <div class="pull-right">
-              <div class="btn-group">
-                <button type="button" class="btn btn-success btn-filter" data-target="upcoming">Upcoming</button>
-                <button type="button" class="btn btn-warning btn-filter" data-target="past">Past</button>
-                <button type="button" class="btn btn-info btn-filter" data-target="all">All</button>
-              </div>
+<div class="container"> <!-- begin container div -->
+  <div class="row"> <!-- begin row 1 -->
+    <h2 class="text-center" > Browse Porchfests </h2>
+  </div> <!-- end row 1 -->
+  <div class="row"> <!-- begin row 2 -->
+    <div class="panel panel-default"> <!-- begin panel div -->
+      <div class="panel-body"> <!-- begin panel-body div -->
+        <div class="table-container table-responsive"> <!-- begin table-container div -->
+          <div class="col-xs-9 col-xs-offset-3 col-sm-4 col-sm-offset-8 col-md-3 col-md-offset-9"> <!-- begin col 1 div -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-success btn-filter" data-target="upcoming"> Upcoming </button>
+              <button type="button" class="btn btn-warning btn-filter" data-target="past"> Past </button>
+              <button type="button" class="btn btn-info btn-filter" data-target="all"> All </button>
             </div>
-              <table class="table table-filter">
-                <tbody>
-                  <tr data-status="upcoming">
-                    <td>
-                      <div class="media">
-                        <div class="media-body">
-                          <span class="media-meta pull-right">April 1, 2017</span>
-                          <h4 class="title">
-                            <a href="singleporchfest.html"> Ithaca Porchfest </a>
-                          </h4>
-                          <p class="summary">Description of Porchfest</p>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr data-status="past">
-                    <td>
-                      <div class="media">
-                        <div class="media-body">
-                          <span class="media-meta pull-right">March 1, 2017</span>
-                          <h4 class="title">
-                            Binghamton Porchfest
-                          </h4>
-                          <p class="summary">Description of Porchfest</p>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-  </div>
-</div>
+          </div> <!-- end col 1 div -->
+          <div class="col-md-12"> <!-- begin col 2 div -->
+            <table class="responsive table">
+              <tr data-status= "fixed">
+                <th> Name </th>
+                <th> Date </th>
+                <th> Location </th>
+                <th> Description </th>
+                <th> Want to Perform </th>
+              </tr>
+              <tr data-status = "upcoming">
+                <td> 
+                  <a href="singleporchfest.html"> Ithaca Porchfest </a>
+                </td>
+                <td> April 1st, 2017 </td>
+                <td> Ithaca, NY </td>
+                <td> The original porchfest. </td>
+                <td> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#joinPorchfestModal">Join</button> </td>
+              </tr>
+              <tr data-status = "upcoming">
+                <td> 
+                  <a href="singleporchfest.html"> Binghamton Porchfest </a>
+                </td>
+                <td> October 20th, 2017 </td>
+                <td> Binghamton, NY </td>
+                <td> The original porchfest. </td>
+                <td> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#joinPorchfestModal">Join</button> </td>
+              </tr>
+              <tr data-status = "past">
+                <td>
+                  <a href="singleporchfest.html"> Syracuse Porchfest </a>
+                </td>
+                <td> February 1st, 2016 </td>
+                <td> Syracuse, NY </td>
+                <td> Not the original porchfest. </td>
+                <td> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#joinPorchfestModal">Join</button> </td>
+              </tr>
+              <tr data-status = "past">
+                <td>
+                  <a href="singleporchfest.html"> Elmira Porchfest </a>
+                </td>
+                <td> January 13th, 2016 </td>
+                <td> Ithaca, NY </td>
+                <td> Not the original porchfest. </td>
+                <td> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#joinPorchfestModal">Join</button> </td>
+              </tr>
+            </table>
+          </div> <!-- end col 2 div -->
+        </div> <!-- end table-container div -->
+      </div> <!-- end panel-body div -->
+    </div> <!-- begin panel div -->
+  </div> <!-- begin row 2 -->
+</div> <!-- end container div -->
 
   <script type="text/javascript">
     $(document).ready(function () {
@@ -138,6 +164,7 @@
           if ($target != 'all') {
             $('.table tr').css('display', 'none');
             $('.table tr[data-status="' + $target + '"]').fadeIn('slow');
+            $('.table tr[data-status="fixed"]').fadeIn('slow');
           } else {
             $('.table tr').css('display', 'none').fadeIn('slow');
           }
