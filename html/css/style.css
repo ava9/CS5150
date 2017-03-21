@@ -2,6 +2,10 @@
   :: singleporchfest.html
   -------------------------------------------------- */
 
+#singleporchfestcontainer {
+  padding-right: 50px;
+}
+
 /* Manage bands tab */
 .bands-table {
   padding-top: 30px;
@@ -50,6 +54,35 @@
 .timeslot-table .glyphicon {
   color: #5cf442;
 }
+
+
+/* Scroll to bar */
+
+#scrollto {
+  list-style-type: none;
+  position: fixed;  
+  right: 0;
+  padding-right: 10px;
+  top: 5;
+  height:100%;
+}
+
+
+#scrollto li {
+  min-height: 20px;
+  display: block;
+  padding-top: 0;
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  width: 30px;
+  height: 3.6%;
+}
+
+#scrollto a {
+  color: gray;
+}
+
 
 /* Sidebar based on: http://bootsnipp.com/snippets/featured/sexy-sidebar-navigation*/
 
@@ -101,7 +134,7 @@ span.band {
   opacity: .7;
   text-transform: uppercase;
   font-size: 1.5em;
-  margin: 0 -8px 5px;
+  margin: 0 -5.5px 5px;
   padding: 10px 0;
   display: inline-block;
   transition: all ease .3s;
@@ -114,7 +147,7 @@ span.band:hover {
 
 span.band::before {
   content: "\25a0";
-  padding-right: 10px;-
+  padding-right: 10px;
 }
 
 span.band::after {

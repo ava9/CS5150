@@ -26,7 +26,31 @@
 
 <!-- BEGIN body -->
 <body>
-  <div class="container"> <!-- Container div -->
+  <?php // Database credentials
+    require_once "../php/config.php";
+
+    // Create connection
+    // add DB_USER and DB_PASSWORD later
+    $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+    // Check connection
+    if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+    }
+
+    $alph = range('a', 'z');
+
+    echo '<ul id="scrollto">';
+
+    foreach ($alph as $letter) {
+      echo '<li><a href="#' . $letter . '">' . strtoupper($letter) . '</a></li>';
+    }
+
+    echo '</ul>';
+
+  ?>
+
+  <div class="container" id = "singleporchfestcontainer"> <!-- Container div -->
     <script type="text/javascript">writeloginmodal();</script>
 
     <div class="row">
@@ -50,35 +74,28 @@
       <div class="tab-content"> <!-- begin tab-content div -->
 
         <div class="tab-pane fade in active" id="name"> <!-- begin name div -->
-          <span class="band" data-toggle="modal" data-target="#bandModal">
-            The 18 Strings Of Luv
-          </span>
-          <span class="band" data-toggle="modal" data-target="#bandModal">
-            About a Harp
-          </span>
-          <span class="band" data-toggle="modal" data-target="#bandModal">
-            The Accords
-          </span>
-          <span class="band" data-toggle="modal" data-target="#bandModal">
-            Acoustic Rust
-          </span>
-          <span class="band" data-toggle="modal" data-target="#bandModal">
-            Ageless Jazz Band
-          </span>
-          <span class="band" data-toggle="modal" data-target="#bandModal">
-            Alan Rose
-          </span>
-          <span class="band" data-toggle="modal" data-target="#bandModal">
-            Alex Specker and Friends
-          </span>
-          <span class="band" data-toggle="modal" data-target="#bandModal">
-            Alt-Ac Quartet
-          </span>
-          <span class="band" data-toggle="modal" data-target="#bandModal">
-            Andrew Alling
-          </span>
-          
-           
+          <?php 
+            $sql = "SELECT BandID, Name, Description FROM bands ORDER BY Name;";
+
+            $result = $conn->query($sql);
+
+            $lastletter = '';
+
+            while($band = $result->fetch_assoc()) {
+              if ($lastletter != substr($band['Name'], 0, 1)) {
+                if ($lastletter != '') {
+                  echo '</div>';
+                }
+                echo '<div id = "' . substr($band['Name'], 0, 1) . '">';
+                $lastletter = substr($band['Name'], 0, 1);
+              }
+              echo '<span class="band" data-toggle="modal" data-target="#bandModal">' . $band['Name'] . '</span>';
+            }
+
+            echo '</div>';
+
+          ?>
+         
         </div> <!-- end name div -->
 
         <div class="tab-pane fade in" id="date"> <!-- begin date div -->
