@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://www.opengis.net/kml/2.2'>
+	<Document>
+	<name>Porchfest 2016</name>
+	<description><![CDATA[]]></description>
+		<Placemark>
+			<name>Crown City Brass - 104 Adams St</name>
+			<description><![CDATA[Crown City Brass is a non traditional group that plays music from Baroque to Jazz.]]></description>
+			<Point>
+				<coordinates>-76.5012084,42.4494894,0.0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Grassanova - 614 N Cayuga St</name>
+			<description><![CDATA[Bluegrass, Newgrass, and Whoknowswhatgrass!]]></description>
+			<Point>
+				<coordinates>-76.499786,42.446939,0.0</coordinates>
+			</Point>
+		</Placemark>
+	</Document>
+</kml>
