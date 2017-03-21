@@ -27,7 +27,7 @@ function writenav() {
                     </li>
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-link navbar-btn loginButton" data-toggle="modal" data-target="#myModal">
-                      Login/Register
+                      Login
                     </button>
                 </ul>
             </div>
