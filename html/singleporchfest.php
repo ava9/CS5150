@@ -86,7 +86,7 @@
                 if ($lastletter != '') {
                   echo '</div>';
                 }
-                echo '<div id = "' . substr($band['Name'], 0, 1) . '">';
+                echo '<div id = "' . strtolower(substr($band['Name'], 0, 1)) . '">';
                 $lastletter = substr($band['Name'], 0, 1);
               }
               echo '<span class="band" data-toggle="modal" data-target="#bandModal">' . $band['Name'] . '</span>';
