@@ -22,6 +22,9 @@
   <script src="../js/jquery.js"></script>
   <!-- Bootstrap Core JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- Replace the value of the key parameter with your own API key. -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&libraries=places&callback=initAutocomplete"
+        async defer></script>
 </head>
 
 <!-- BEGIN body -->
@@ -62,7 +65,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="John Doe" />
+                      <input type="text" class="form-control" name="name" placeholder="John Doe" />
                   </div>
               </div>
           </div>
@@ -73,7 +76,18 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="johndoe@gmail.com" />
+                      <input type="email" class="form-control" name="email" placeholder="johndoe@gmail.com" />
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label">
+              Mobile</label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input type="tel" class="form-control" name="mobile" placeholder="(123) 456-7891" />
                   </div>
               </div>
           </div>
@@ -84,7 +98,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="password" class="form-control" />
+                      <input type="password" name="password" class="form-control" placeholder="Password" />
                   </div>
               </div>
           </div>
@@ -95,7 +109,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="password" class="form-control" />
+                      <input type="password" class="form-control" placeholder="Password" />
                   </div>
               </div>
           </div>
@@ -109,7 +123,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="Ithaca Porchfest" />
+                      <input type="text" class="form-control" name="porchfestname" placeholder="Ithaca Porchfest" />
                   </div>
               </div>
           </div>
@@ -120,7 +134,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="John and Friends plays cool music." />
+                      <input type="text" class="form-control" name="description" placeholder="John and Friends plays cool music." />
                   </div>
               </div>
           </div>
@@ -131,7 +145,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="Location" />
+                      <input type="text" class="form-control" name="location" placeholder="Location" />
                   </div>
               </div>
           </div>
@@ -142,7 +156,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="Times" />
+                      <input type="date" class="form-control" name="date" placeholder="Date" />
                   </div>
               </div>
           </div>
@@ -153,15 +167,13 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="Times" />
+                      <input type="datetime-local" class="form-control" placeholder="Deadline" />
                   </div>
               </div>
           </div>
       </div>
-      <button type="button" class="btn btn-primary btn-sm">
-                                        Submit</button>
+      <button type="submit" class="btn btn-primary btn-sm">Submit</button>
     </form>
-
   </div> <!-- end container div -->
 
 

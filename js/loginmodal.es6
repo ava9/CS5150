@@ -17,7 +17,7 @@ function writeloginmodal() {
                             <div class="col-sm-10">
                                 <div class="row">
                                     <div class="col-md-9">
-                                        <input type="email" id="email" class="form-control" placeholder="Email" />
+                                        <input type="email" name="email" class="form-control" placeholder="Email" />
                                     </div>
                                 </div>
                             </div>
@@ -27,7 +27,7 @@ function writeloginmodal() {
                             <div class="col-sm-10">
                                 <div class="row">
                                     <div class="col-md-9">
-                                        <input type="password" class="form-control" placeholder="Password" />
+                                        <input type="password" name="password" class="form-control" placeholder="Password" />
                                     </div>
                                 </div>
                             </div>
@@ -35,7 +35,7 @@ function writeloginmodal() {
                         <div class="row">
                             <div class="col-sm-2"> </div>
                                 <div class="col-sm-10">
-                                    <button type="button" class="btn btn-primary btn-sm">
+                                    <button type="submit" class="btn btn-primary btn-sm">
                                         Login</button>
                                     <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                                         Cancel</button>

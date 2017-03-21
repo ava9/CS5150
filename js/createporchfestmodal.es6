@@ -63,12 +63,12 @@ function createporchfestmodal() {
                               </div>
                           </div>
                       </div>
-                    </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Create</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal">Create</button>
+                    <button type="reset" class="btn btn-default" data-dismiss="modal">Cancel</button>
                   </div>
+                  </form>
                 </div>
               </div>
             </div>`;

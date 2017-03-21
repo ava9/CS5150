@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PorchFest</title>
+  <title>PorchFest - Home</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-purple.min.css" />
   <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
@@ -46,7 +46,7 @@
       <h1 style="text-align:center;"> Create a Porchfest Website </h1>
     </div>
 
-    <p> If you would like to create a Porchfest website, please fill out the form below. 
+    <p> If you would like to link your existing Porchfest website, please fill out the form below. 
       <br>Filling out this form will create an account that you can log back into to manage your Porchfest.
     </p>
 
@@ -62,7 +62,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="John Doe" />
+                      <input type="text" class="form-control" name="name" placeholder="John Doe" />
                   </div>
               </div>
           </div>
@@ -73,7 +73,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="johndoe@gmail.com" />
+                      <input type="email" class="form-control" name="email" placeholder="johndoe@gmail.com" />
                   </div>
               </div>
           </div>
@@ -84,7 +84,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="password" class="form-control" />
+                      <input type="password" name="password" class="form-control" placeholder="Password" />
                   </div>
               </div>
           </div>
@@ -95,13 +95,13 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="password" class="form-control" />
+                      <input type="password" class="form-control" placeholder="Password" />
                   </div>
               </div>
           </div>
       </div>
       <br>
-      <a href="index.php"> Want to create a brand new Porchfest website? </a>
+      <a href="index.php"> Want to create a new Porchfest website? </a>
       <h4> Porchfest Information </h4>
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label">
@@ -109,18 +109,18 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="Ithaca Porchfest" />
+                      <input type="text" class="form-control" name="porchfestname" placeholder="Ithaca Porchfest" />
                   </div>
               </div>
           </div>
       </div>
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label">
-              Existing Porchfest website URL</label>
+              Existing Porchfest Website URL</label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="ithacaporchfest.com" />
+                      <input type="url" class="form-control" name="url" placeholder="ithacaporchfest.com" />
                   </div>
               </div>
           </div>
@@ -131,7 +131,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="John and Friends plays cool music." />
+                      <input type="text" class="form-control" name="description" placeholder="John and Friends plays cool music." />
                   </div>
               </div>
           </div>
@@ -142,7 +142,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="Location" />
+                      <input type="text" class="form-control" name="location" placeholder="Location" />
                   </div>
               </div>
           </div>
@@ -153,7 +153,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="Times" />
+                      <input type="date" class="form-control" name="date" placeholder="Date" />
                   </div>
               </div>
           </div>
@@ -164,15 +164,13 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="Times" />
+                      <input type="datetime-local" class="form-control" placeholder="Deadline" />
                   </div>
               </div>
           </div>
       </div>
-      <button type="button" class="btn btn-primary btn-sm">
-                                        Submit</button>
+      <button type="submit" class="btn btn-primary btn-sm">Submit</button>
     </form>
-
   </div> <!-- end container div -->
 
 
