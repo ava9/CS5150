@@ -141,7 +141,15 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="Times" />
+          <?php 
+            $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '1' ORDER BY StartTime;";
+
+            $result = $conn->query($sql);
+            while($timeslot = $result->fetch_assoc()) {
+              echo "<input type='checkbox' value='timeslot'" . $timeslot['TimeslotID'] . "/>" . " " . explode(' ', $timeslot['StartTime'])[1] . 
+                    " to " . explode(' ', $timeslot['EndTime'])[1] . " on " . explode(' ', $timeslot['StartTime'])[0] . "<br>";
+            }
+          ?>
                   </div>
               </div>
           </div>
