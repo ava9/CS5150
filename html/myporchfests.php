@@ -90,15 +90,17 @@
                     if (strtotime($porchfest['Date']) < date("Y-m-d")) {
                       $status = 'past';
                     }
+                    $day = date_format(date_create($porchfest['Date']), 'F j, Y');
+                    $deadline = date_format(date_create($porchfest['Deadline']), 'g:iA \o\n F j, Y');
                     echo '<tr data-status = "' . $status . '">
                           <td> 
                             <a href="singleporchfest.php">' . $porchfest['Name'] . '</a>
                           </td>
-                          <td>' . $porchfest['Date'] . '</td>
+                          <td>' . $day . '</td>
                           <td>' . $porchfest['Location'] . '</td>
                           <td>' . $porchfest['Description'] . '</td>
                           <td> Organizer </td>
-                          <td>' . $porchfest['Deadline'] . '</td>
+                          <td>' . $deadline . '</td>
                           <td>' . $isPublished . '</td>
                           <td> <a href="editporchfest.php"> Edit </a> </td>
                         </tr>';
@@ -121,15 +123,17 @@
                     if (strtotime($porchfest['Date']) < date("Y-m-d")) {
                       $status = 'past';
                     }
+                    $day = date_format(date_create($porchfest['Date']), 'F j, Y');
+                    $deadline = date_format(date_create($porchfest['Deadline']), 'g:iA \o\n F j, Y');
                     echo '<tr data-status = "' . $status . '">
                           <td> 
                             <a href="singleporchfest.php">' . $porchfest['Name'] . '</a>
                           </td>
-                          <td>' . $porchfest['Date'] . '</td>
+                          <td>' . $day . '</td>
                           <td>' . $porchfest['Location'] . '</td>
                           <td>' . $porchfest['Description'] . '</td>
                           <td> Performer </td>
-                          <td>' . $porchfest['Deadline'] . '</td>
+                          <td>' . $deadline . '</td>
                           <td>' . $isPublished . '</td>
                           <td> <a href="editporchfest.php"> Edit </a> </td>
                         </tr>';

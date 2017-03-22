@@ -140,8 +140,11 @@
 
             $result = $conn->query($sql);
             while($timeslot = $result->fetch_assoc()) {
-              echo "<input type='checkbox' value='timeslot'" . $timeslot['TimeslotID'] . "/>" . " " . explode(' ', $timeslot['StartTime'])[1] . 
-                    " to " . explode(' ', $timeslot['EndTime'])[1] . " on " . explode(' ', $timeslot['StartTime'])[0] . "<br>";
+              $starttime = date_format(date_create($timeslot['StartTime']), 'g:iA');
+              $endtime = date_format(date_create($timeslot['EndTime']), 'g:iA');
+              $day = date_format(date_create($timeslot['StartTime']), 'F j, Y');
+              echo "<input type='checkbox' value='timeslot'" . $timeslot['TimeslotID'] . "/>" . " " . $starttime . 
+                    "-" . $endtime . " on " . $day . "<br>";
             }
           ?>
                   </div>

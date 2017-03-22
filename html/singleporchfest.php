@@ -112,7 +112,8 @@
 
             while($band = $result->fetch_assoc()) {
               if ($lasttime != $band['StartTime']) {
-                echo '<h3>' . $band['StartTime'] . '</h3>';
+                $starttime = date_format(date_create($band['StartTime']), 'g:iA');
+                echo '<h3>' . $starttime . '</h3>';
                 echo '<button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal' . $band['BandID'] . '">
                         <h4>' . $band['Name'] .'<h4>
                         </button>
@@ -143,6 +144,8 @@
 
 
     while($band = $result->fetch_assoc()) {
+      $starttime = date_format(date_create($band['StartTime']), 'g:iA');
+      $endtime = date_format(date_create($band['EndTime']), 'g:iA');
       echo 
         '<div class="modal fade" id="bandModal' . $band['BandID'] . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -154,7 +157,7 @@
               . $band['Name'] .
               '</h3></div>
               <div class="modal-body">
-                <p>' . $band['StartTime'] . ' • ' . $band['PorchLocation'] . '</p>
+                <p>' . $starttime . "-" . $endtime . ' • ' . $band['PorchLocation'] . '</p>
                 <p>' . $band['Description'] . '</p>
               </div>
               <div class="modal-footer">
