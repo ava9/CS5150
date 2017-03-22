@@ -22,7 +22,7 @@ function writenav() {
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"> My Account </a>
                             <ul class="dropdown-menu">
                                 <li><a href="myporchfests.html"> My Porchfests </a></li>
-                                <li><a href="myprofile.html"> My Profile </a></li>
+                                <li><a href="myprofile.php"> My Profile </a></li>
                             </ul>
                     </li>
                     <!-- Button trigger modal -->

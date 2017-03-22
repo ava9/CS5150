@@ -21,7 +21,18 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+  <?php // Database credentials
+    require_once "../php/config.php";
 
+    // Create connection
+    $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+    $sql = "SELECT * FROM users WHERE UserID = '1'";
+
+    $result = $conn->query($sql);
+    $user = $result->fetch_assoc();
+
+  ?>
 <script type="text/javascript">writenav();</script>
 <div class="container" style="padding-top: 60px; text-align: center;">
   <h1 class="page-header">Edit Profile</h1>
@@ -33,31 +44,31 @@
         <div class="form-group">
           <label class="col-lg-3 control-label">Name:</label>
           <div class="col-lg-8">
-            <input class="form-control" value="Jane Doe" type="text">
+            <input class="form-control" value=<?php echo '"' . $user['Name'] . '"' ?> type="text">
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-3 control-label">Email:</label>
           <div class="col-lg-8">
-            <input class="form-control" value="janesemail@gmail.com" type="email">
+            <input class="form-control" value=<?php echo '"' . $user['Email'] . '"' ?> type="email">
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-3 control-label">Mobile:</label>
           <div class="col-lg-8">
-            <input class="form-control" value="123-456-7890" type="tel">
+            <input class="form-control" value=<?php echo '"' . $user['ContactInfo'] . '"' ?> type="tel">
           </div>
         </div>
         <div class="form-group">
           <label class="col-md-3 control-label">New Password:</label>
           <div class="col-md-8">
-            <input class="form-control" value="11111122333" type="password">
+            <input class="form-control" type="password">
           </div>
         </div>
         <div class="form-group">
           <label class="col-md-3 control-label">Confirm New Password:</label>
           <div class="col-md-8">
-            <input class="form-control" value="11111122333" type="password">
+            <input class="form-control" type="password">
           </div>
         </div>
         <div class="form-group">
