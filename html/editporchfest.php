@@ -143,46 +143,23 @@
                   <th> Scheduled </th>
                   <th> Manage </th>
                 </tr>
-                <tr>
-                  <td> 
-                    <a href="#"> The 18 Strings of Luv </a>
-                  </td>
-                  <td> This is the first band. </td>
-                  <td> List of members </td>
-                  <td> <a data-target="#timeslotModal" data-toggle="modal"> Time Slots </a> </td>
-                  <td> Yes </td>
-                  <td> <a href="editporchfest.html"> Edit </a> </td>
-                </tr>
-                <tr>
-                  <td> 
-                    <a href="#"> About a Harp </a>
-                  </td>
-                  <td> This is another band. </td>
-                  <td> List of members </td>
-                  <td> <a data-target="#timeslotModal" data-toggle="modal"> Time Slots </a> </td>
-                  <td> No </td>
-                  <td> <a href="editporchfest.html"> Edit </a> </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a href="#"> The Accords </a>
-                  </td>
-                  <td> This is the third band. </td>
-                  <td> List of members </td>
-                  <td> <a data-target="#timeslotModal" data-toggle="modal"> Time Slots </a> </td>
-                  <td> No </td>
-                  <td> <a href="editporchfest.html"> Edit </a> </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a href="#"> Acoustic Rust </a>
-                  </td>
-                  <td> This is the last one. </td>
-                  <td> List of members </td>
-                  <td> <a data-target="#timeslotModal" data-toggle="modal"> Time Slots </a> </td>
-                  <td> No </td>
-                  <td> <a href="editporchfest.html"> Edit </a> </td>
-                </tr>
+                <?php 
+                  $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = 1";
+
+                  $result = $conn->query($sql);
+
+                  while($band = $result->fetch_assoc()) {
+                    echo '<tr>';
+                    echo '<td><a href="#"">' . $band['Name'] . '</a></td>';
+                    echo '<td>' . $band['Description'] . '</td>';
+                    echo '<td> List of members </td>';
+                    echo '<td> <a data-target="#timeslotModal" data-toggle="modal"> Time Slots </a> </td>';
+                    echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
+                    echo '<td> <a href="#"> Edit </a> </td>';
+                  }
+
+                ?>
+
               </table> <!-- end table -->
             </div> <!-- end table-container div -->
           </div> <!-- end bands div -->
