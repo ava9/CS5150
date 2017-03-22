@@ -89,7 +89,7 @@
                 echo '<div id = "' . strtolower(substr($band['Name'], 0, 1)) . '">';
                 $lastletter = substr($band['Name'], 0, 1);
               }
-              echo '<span class="band" data-toggle="modal" data-target="#bandModal">' . $band['Name'] . '</span>';
+              echo '<span class="band" data-toggle="modal" data-target="#bandModal' . $band['BandID'] . '">' . $band['Name'] . '</span>';
             }
 
             echo '</div>';
@@ -99,57 +99,28 @@
         </div> <!-- end name div -->
 
         <div class="tab-pane fade in" id="date"> <!-- begin date div -->
-          <h3> 12:00pm <h3>
-          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
-            <h4>The 18 Strings Of Luv<h4>
-          </button>
-          <br>
-           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
-            <h4>About a Harp<h4>
-          </button>
-          <br>
-           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
-            <h4>The Accords<h4>
-          </button>
-          <br>
-           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
-            <h4>Acoustic Rust<h4>
-          </button>
-          <br>
-           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
-            <h4>Ageless Jazz Band<h4>
-          </button>
-          <br>
-          <h3> 1:00pm <h3>
-           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
-            <h4>Alan Rose<h4>
-          </button>
-          <br>
-           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
-            <h4>Alex Specker and Friends<h4>
-          </button>
-          <br>
-           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
-            <h4>Alt-Ac Quartet<h4>
-          </button>
-          <br>
-           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
-            <h4>Andrew Alling<h4>
-          </button>
-          <br>
-           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
-            <h4>Ann Warde<h4>
-          </button>
-          <br>
-          <h3> 2:00pm <h3>
-           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
-            <h4>Anna O'Connell<h4>
-          </button>
-          <br>
-           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal">
-            <h4>Arthur B and The Planetary Mix<h4>
-          </button>
-          <br>
+          <?php 
+            $sql = "SELECT bands.BandID, Name, bandstoporchfests.PorchfestID, bandstoporchfests.TimeslotID, StartTime, EndTime 
+                    FROM bands 
+                    INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
+                    INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID 
+                    WHERE bandstoporchfests.PorchfestID = '1' ORDER BY StartTime";
+
+            $result = $conn->query($sql);
+
+            $lasttime = '';
+
+            while($band = $result->fetch_assoc()) {
+              if ($lasttime != $band['StartTime']) {
+                echo '<h3>' . $band['StartTime'] . '</h3>';
+                echo '<button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal' . $band['BandID'] . '">
+                        <h4>' . $band['Name'] .'<h4>
+                        </button>
+                      <br>';
+                $lasttime = $band['StartTime'];
+              }
+            }
+          ?>
         </div> <!-- end date div -->
 
         <div class="tab-pane fade in" id="map"> <!-- begin map div -->
@@ -161,24 +132,39 @@
   </div> <!-- end container div -->
 
 
-  <!-- Modal -->
-  <div class="modal fade" id="bandModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        <div class="modal-body">
-          <img src="../img/band.jpg">
-          <h2>The 18 Strings Of Luv</h2>
-          <p>4pm • 105 King St</p>
-          <p>The 18 Strings of Luv is Jan Nigro, John Simon and Ken Zeserson playing Beatles, Byrds, Motown and other critters from the 60’s with shimmering harmonies over a bed of interweaving acoustic guitars.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <?php 
+    $sql = "SELECT bands.BandID, Name, Description, PorchLocation, bandstoporchfests.PorchfestID, bandstoporchfests.TimeslotID, StartTime, EndTime 
+            FROM bands 
+            INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
+            INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID 
+            WHERE bandstoporchfests.PorchfestID = '1'";
+
+    $result = $conn->query($sql);
+
+
+    while($band = $result->fetch_assoc()) {
+      echo 
+        '<div class="modal fade" id="bandModal' . $band['BandID'] . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              <div class="modal-header"><h3>'
+              . $band['Name'] .
+              '</h3></div>
+              <div class="modal-body">
+                <p>' . $band['StartTime'] . ' • ' . $band['PorchLocation'] . '</p>
+                <p>' . $band['Description'] . '</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>';
+    }
+  ?>
+
 </body>
 </html>
