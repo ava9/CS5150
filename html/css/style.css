@@ -99,17 +99,23 @@
     transition: all 0.08s linear;
     -webkit-border-radius: 4px 0 0 4px; 
     -moz-border-radius: 4px 0 0 4px; 
-    border-radius: 4px 0 0 4px; 
+    border-radius: 4px 0 0 4px;
+    background-color: white;
 }
 .nav-sidebar .active a {
     cursor: default;
-    background-color: #428bca; 
     color: #fff; 
     text-shadow: 1px 1px 1px #666; 
 }
+
 .nav-sidebar .active a:hover {
-    background-color: #428bca;
+  background-color: #428bca;
 }
+
+.nav-sidebar .active a {
+  background-color: #428bca;
+}
+
 .nav-sidebar .text-overflow a,
 .nav-sidebar .text-overflow .media-body {
     white-space: nowrap;
@@ -286,6 +292,24 @@ th {
 
 #addtimeslot {
   display: inline-block;
+}
+
+#timeslot-labels {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#timeslot-labels .timeslot-label {
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+#timeslot-labels .timeslot-label .label {
+  display: inline-block;
+  font-size: .8em;
+  height: 2.5em;
+  width: 12em;
+  line-height: 2;
 }
 
 

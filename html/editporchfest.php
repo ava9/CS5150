@@ -132,7 +132,7 @@
         </div> <!-- end col 1 div -->
 
         <div class="col-sm-10"> <!-- begin col 2 div -->
-          <div class="tab-pane fade in active" id="bands"> <!-- begin bands div -->
+          <div class="tab-pane fade" id="bands"> <!-- begin bands div -->
             <div class="table-container table-responsive bands-table"> <!-- begin table-container div -->
               <table class="responsive table"> <!-- begin table -->
                 <tr data-status= "fixed">
@@ -187,21 +187,25 @@
             </div> <!-- end table-container div -->
           </div> <!-- end bands div -->
 
-          <div class="tab-pane fade" id="timeslots"> <!-- begin timeslots div -->
+          <div class="tab-pane fade in active" id="timeslots"> <!-- begin timeslots div -->
             Add/Edit Timeslots for your Porchfest
 
             <?php
               $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '1' ORDER BY StartTime;";
 
-                $result = $conn->query($sql);
-                while($timeslot = $result->fetch_assoc()) {
-                  $start_time = date_create($timeslot['EndTime']);
-                  $end_time = date_create($timeslot['EndTime']);
-                  echo date_format($end_time, 'g:i A');
-                  // echo $timeslot['EndTime'];
-                  // echo '<span class="label label-primary">' . $timeslot['EndTime'] ' </span>';
-                  
-                }
+              echo '<div id="timeslot-labels">';
+
+              $result = $conn->query($sql);
+
+              while($timeslot = $result->fetch_assoc()) {
+                $start_time = date_create($timeslot['StartTime']);
+                $end_time = date_create($timeslot['EndTime']);
+
+                echo '<div class="col-xs-6 col-sm-3 timeslot-label"><span class="label label-primary">' . date_format($start_time, 'g:i A') . " - " . date_format($end_time, 'g:i A')  . ' </span></div>';
+                
+              }
+
+              echo '</div>';
 
             ?>
 
