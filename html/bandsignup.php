@@ -25,7 +25,7 @@
 </head>
 
 <!-- BEGIN body -->
-<body>
+<body onload="addFields()">
   <?php // Database credentials
     require_once "../php/config.php";
 
@@ -146,6 +146,20 @@
               </div>
           </div>
       </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label">
+              Band Member Emails </label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                    <div id="dynamicInput">Band Member 1<br>
+                      <input type="email" class="form-control" name="myInputs[]" placeholder="friend@gmail.com">
+                    </div>
+                  <input type="button" value="Add another band member" onClick="addInput('dynamicInput');">
+                  </div>
+              </div>
+          </div>
+      </div>
       <button type="button" class="btn btn-primary btn-sm">
                                         Submit</button>
     </form>
@@ -154,4 +168,5 @@
 
 
 </body>
+  <script src="../js/addMembers.js"></script>
 </html>

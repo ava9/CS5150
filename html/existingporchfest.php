@@ -164,7 +164,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="datetime-local" class="form-control" placeholder="Deadline" />
+                      <input type="datetime-local" class="form-control" />
                   </div>
               </div>
           </div>
