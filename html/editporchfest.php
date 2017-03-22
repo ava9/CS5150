@@ -35,6 +35,15 @@
   </head>
 
   <body>
+    <?php 
+      require_once "../php/config.php";
+
+      // Create connection
+      // add DB_USER and DB_PASSWORD later
+      $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    ?>
+
+
     <script type="text/javascript">writenav();</script>
 
     <!-- Modal -->
@@ -180,26 +189,34 @@
 
           <div class="tab-pane fade" id="timeslots"> <!-- begin timeslots div -->
             Add/Edit Timeslots for your Porchfest
-              <form role="form" class="form-horizontal">
-                  <div id="addtimeslot" class="form-group">
-                    <div class = "row">
-                    <label for="timeslot" class="control-label">
-                          Start Time </label>
-                      <input type="datetime-local" />
-                    <label for="timeslot" class="control-label">
-                          End Time </label>
-                      <input type="datetime-local" />
-                  </div>
-                </div>
-                  <div class="row">
-                    <div class="col-sm-2">
-                        <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary btn-sm">
-                                Add Timeslot</button>
-                        </div>
-                    </div>
-                  </div>
-              </form>
+
+            <?php
+              $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '1' ORDER BY StartTime;";
+
+                $result = $conn->query($sql);
+                while($timeslot = $result->fetch_assoc()) {
+                  $start_time = date_create($timeslot['EndTime']);
+                  $end_time = date_create($timeslot['EndTime']);
+                  echo date_format($end_time, 'g:i A');
+                  // echo $timeslot['EndTime'];
+                  // echo '<span class="label label-primary">' . $timeslot['EndTime'] ' </span>';
+                  
+                }
+
+            ?>
+
+            <form role="form" class="form-horizontal" action="">
+              <div id="addtimeslot" class="form-group">
+                <label for="timeslot" class="control-label"> Start Time </label>
+                  <input type="datetime-local">
+                <label for="timeslot" class="control-label"> End Time </label>
+                  <input type="datetime-local">
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-sm"> Add Timeslot</button>
+
+            </form>
+             
           </div> <!-- end timeslots div -->
           <div class="tab-pane fade" id="schedule"> <!-- begin schedule div -->
             schedule

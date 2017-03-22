@@ -20,11 +20,10 @@
   <script src="../js/loginmodal.es6"></script>
   <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
   <script src="../js/jquery.js"></script>
+  <script src="../js/addressautocomplete.js"></script>
   <!-- Bootstrap Core JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <!-- Replace the value of the key parameter with your own API key. -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&libraries=places&callback=initAutocomplete"
-        async defer></script>
+
 </head>
 
 <!-- BEGIN body -->
@@ -60,8 +59,7 @@
     <form role="form" class="form-horizontal">
       <h4> Account Information </h4>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Your Name</label>
+          <label for="name" class="col-sm-2 control-label"> Your Name</label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -71,8 +69,7 @@
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Your Email</label>
+          <label for="name" class="col-sm-2 control-label"> Your Email</label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -82,8 +79,7 @@
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Mobile</label>
+          <label for="name" class="col-sm-2 control-label"> Mobile</label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -93,8 +89,7 @@
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Password </label>
+          <label for="name" class="col-sm-2 control-label"> Password </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -104,8 +99,7 @@
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Confirm Password </label>
+          <label for="name" class="col-sm-2 control-label"> Confirm Password </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -118,8 +112,7 @@
       <a href="existingporchfest.php"> Already have an existing Porchfest website? </a>
       <h4> Porchfest Information </h4>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Porchfest Name</label>
+          <label for="name" class="col-sm-2 control-label"> Porchfest Name</label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -140,19 +133,17 @@
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Location </label>
+          <label for="name" class="col-sm-2 control-label"> Location </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" name="location" placeholder="Location" />
+                      <input id="autocomplete" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
                   </div>
               </div>
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Date </label>
+          <label for="name" class="col-sm-2 control-label"> Date </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -162,8 +153,7 @@
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Sign-up Deadline </label>
+          <label for="name" class="col-sm-2 control-label"> Sign-up Deadline </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -172,10 +162,12 @@
               </div>
           </div>
       </div>
-      <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+      <button type="submit" class="btn btn-primary btn-sm"> Submit </button>
     </form>
   </div> <!-- end container div -->
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0LuERw-moYeLnWy_55RoShmUbQ51Yh-o&libraries=places&callback=initAutocomplete"
+        async defer></script>
 
 </body>
 </html>

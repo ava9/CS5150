@@ -59,8 +59,7 @@
     <form role="form" class="form-horizontal">
       <h4> Account Information </h4>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Your Name</label>
+          <label for="name" class="col-sm-2 control-label"> Your Name </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -70,8 +69,7 @@
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Your Email</label>
+          <label for="name" class="col-sm-2 control-label"> Your Email </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -81,8 +79,7 @@
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Password </label>
+          <label for="name" class="col-sm-2 control-label"> Password </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -92,8 +89,7 @@
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Confirm Password </label>
+          <label for="name" class="col-sm-2 control-label"> Confirm Password </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -105,8 +101,7 @@
       <br>
       <h4> Band Information </h4>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Band Name</label>
+          <label for="name" class="col-sm-2 control-label"> Band Name </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -116,8 +111,7 @@
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Description </label>
+          <label for="name" class="col-sm-2 control-label"> Description </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -127,19 +121,17 @@
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Porch Location </label>
+          <label for="name" class="col-sm-2 control-label"> Porch Location </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input id="autocomplete" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
+                      <input id="autocomplete" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
                   </div>
               </div>
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Available Times </label>
+          <label for="name" class="col-sm-2 control-label"> Available Times </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -157,12 +149,11 @@
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Band Member Emails </label>
+          <label for="name" class="col-sm-2 control-label"> Band Member Emails </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                    <div id="dynamicInput">Band Member 1<br>
+                    <div id="dynamicInput"> Band Member 1 <br>
                       <input type="email" class="form-control" name="myInputs[]" placeholder="friend@gmail.com">
                     </div>
                   <input type="button" value="Add another band member" onClick="addInput('dynamicInput');">
@@ -170,8 +161,7 @@
               </div>
           </div>
       </div>
-      <button type="button" class="btn btn-primary btn-sm">
-                                        Submit</button>
+      <button type="button" class="btn btn-primary btn-sm"> Submit </button>
     </form>
 
   </div> <!-- end container div -->
