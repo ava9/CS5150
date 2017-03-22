@@ -20,12 +20,14 @@
   <script src="../js/loginmodal.es6"></script>
   <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
   <script src="../js/jquery.js"></script>
+  <script src="../js/addressautocomplete.js"></script>
   <!-- Bootstrap Core JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
 
 <!-- BEGIN body -->
-<body onload="addFields()">
+<body>
   <?php // Database credentials
     require_once "../php/config.php";
 
@@ -130,7 +132,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="Location" />
+                      <input id="autocomplete" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
                   </div>
               </div>
           </div>
@@ -174,6 +176,8 @@
 
   </div> <!-- end container div -->
 
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0LuERw-moYeLnWy_55RoShmUbQ51Yh-o&libraries=places&callback=initAutocomplete"
+        async defer></script>
 
 </body>
   <script src="../js/addMembers.js"></script>
