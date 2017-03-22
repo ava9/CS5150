@@ -36,48 +36,19 @@
 </head>
 
 <body>
+  <?php // Database credentials
+    require_once "../php/config.php";
+
+    // Create connection
+    $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+  ?>
   <!-- Write the navigation bar. -->
   <script type="text/javascript">writenav();</script>
 
   <script type="text/javascript">writeloginmodal();</script>
 
   <script type="text/javascript">joinporchfestmodal();</script>
-
-  <!-- Start of the carousel div. -->
-  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-  
-  <!-- Little circle indicators at the bottom -->
-    <ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
-      <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
-
-    <!-- Slides -->
-    <div class="carousel-inner" role="listbox">
-      <div class="item active">
-       <img src="../img/upcoming.png" alt="Band">
-      </div>
-
-      <div class="item">
-        <img src="../img/upcoming.png" alt="Kids">
-      </div>
-
-      <div class="item">
-        <img src="../img/upcoming.png" alt="Violin">
-      </div>
-    </div>
-
-    <!-- Left and right controls -->
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div> <!-- End of carousel div. -->
 
 
 <div class="container"> <!-- begin container div -->
@@ -102,44 +73,38 @@
                 <th> Date </th>
                 <th> Location </th>
                 <th> Description </th>
+                <th> Sign-up Deadline </th>
                 <th> Want to Perform </th>
               </tr>
-              <tr data-status = "upcoming">
-                <td> 
-                  <a href="singleporchfest.php"> Ithaca Porchfest </a>
-                </td>
-                <td> April 1st, 2017 </td>
-                <td> Ithaca, NY </td>
-                <td> The original porchfest. </td>
-                <td> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#joinPorchfestModal">Join</button> </td>
-              </tr>
-              <tr data-status = "upcoming">
-                <td> 
-                  <a href="singleporchfest.php"> Binghamton Porchfest </a>
-                </td>
-                <td> October 20th, 2017 </td>
-                <td> Binghamton, NY </td>
-                <td> The original porchfest. </td>
-                <td> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#joinPorchfestModal">Join</button> </td>
-              </tr>
-              <tr data-status = "past">
-                <td>
-                  <a href="singleporchfest.php"> Syracuse Porchfest </a>
-                </td>
-                <td> February 1st, 2016 </td>
-                <td> Syracuse, NY </td>
-                <td> Not the original porchfest. </td>
-                <td> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#joinPorchfestModal">Join</button> </td>
-              </tr>
-              <tr data-status = "past">
-                <td>
-                  <a href="singleporchfest.php"> Elmira Porchfest </a>
-                </td>
-                <td> January 13th, 2016 </td>
-                <td> Ithaca, NY </td>
-                <td> Not the original porchfest. </td>
-                <td> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#joinPorchfestModal">Join</button> </td>
-              </tr>
+              <?php
+                  $sql = "SELECT * FROM porchfests ORDER BY Name";
+
+                  $result = $conn->query($sql);
+
+                  while($porchfest = $result->fetch_assoc()) {
+                    $isPublished = 'No';
+                    if ($porchfest['Published'] != 0) {
+                      $isPublished = 'Yes';
+                    }
+                    $status = 'upcoming';
+                    if (strtotime($porchfest['Date']) < date("Y-m-d")) {
+                      $status = 'past';
+                    }
+
+                    echo '<tr data-status = "' . $status . '">
+                          <td> 
+                            <a href="singleporchfest.php">' . $porchfest['Name'] . '</a>
+                          </td>
+                          <td>' . $porchfest['Date'] . '</td>
+                          <td>' . $porchfest['Location'] . '</td>
+                          <td>' . $porchfest['Description'] . '</td>
+                          <td>' . $porchfest['Deadline'] . '</td>
+                          <td>  
+                            <a href="bandsignup.php"> Join </a>
+                          </td>
+                        </tr>';
+                  }
+              ?>
             </table>
           </div> <!-- end col 2 div -->
         </div> <!-- end table-container div -->

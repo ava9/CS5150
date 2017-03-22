@@ -16,12 +16,12 @@ function writenav() {
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="browse.html"> Browse Porchfests </a>
+                        <a href="browse.php"> Browse Porchfests </a>
                     </li>
                     <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"> My Account </a>
                             <ul class="dropdown-menu">
-                                <li><a href="myporchfests.html"> My Porchfests </a></li>
+                                <li><a href="myporchfests.php"> My Porchfests </a></li>
                                 <li><a href="myprofile.php"> My Profile </a></li>
                             </ul>
                     </li>

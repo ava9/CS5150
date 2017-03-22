@@ -26,6 +26,13 @@
 
 </head>
 <body>
+  <?php // Database credentials
+    require_once "../php/config.php";
+
+    // Create connection
+    $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+  ?>
 
 <script type="text/javascript">writenav();</script>
 <script type="text/javascript">createporchfestmodal();</script>
@@ -62,53 +69,72 @@
                 <th> Location </th>
                 <th> Description </th>
                 <th> Role </th>
+                <th> Sign-up Deadline </th>
                 <th> Published </th>
                 <th> Manage </th>
               </tr>
-              <tr data-status = "upcoming">
-                <td> 
-                  <a href="singleporchfest.html"> Ithaca Porchfest </a>
-                </td>
-                <td> April 1st, 2017 </td>
-                <td> Ithaca, NY </td>
-                <td> The original porchfest. </td>
-                <td> Organizer </td>
-                <td> Yes </td>
-                <td> <a href="editporchfest.php"> Edit </a> </td>
-              </tr>
-              <tr data-status = "upcoming">
-                <td> 
-                  <a href="singleporchfest.html"> Binghamton Porchfest </a>
-                </td>
-                <td> October 20th, 2017 </td>
-                <td> Binghamton, NY </td>
-                <td> The original porchfest. </td>
-                <td> Musician </td>
-                <td> No </td>
-                <td> <a href="editporchfest.php"> Edit </a> </td>
-              </tr>
-              <tr data-status = "past">
-                <td>
-                  <a href="singleporchfest.html"> Syracuse Porchfest </a>
-                </td>
-                <td> February 1st, 2016 </td>
-                <td> Syracuse, NY </td>
-                <td> Not the original porchfest. </td>
-                <td> Organizer </td>
-                <td> No </td>
-                <td> <a href="editporchfest.php"> Edit </a> </td>
-              </tr>
-              <tr data-status = "past">
-                <td>
-                  <a href="singleporchfest.html"> Elmira Porchfest </a>
-                </td>
-                <td> January 13th, 2016 </td>
-                <td> Elmira, NY </td>
-                <td> Not the original porchfest. </td>
-                <td> Organizer </td>
-                <td> No </td>
-                <td> <a href="editporchfest.php"> Edit </a> </td>
-              </tr>
+              <?php
+                  $sql = "SELECT * 
+                          FROM porchfests
+                          INNER JOIN userstoporchfests ON userstoporchfests.PorchfestID = porchfests.PorchfestID
+                          WHERE UserID = '1'";
+
+                  $result = $conn->query($sql);
+
+                  while($porchfest = $result->fetch_assoc()) {
+                    $isPublished = 'No';
+                    if ($porchfest['Published'] != 0) {
+                      $isPublished = 'Yes';
+                    }
+                    $status = 'upcoming';
+                    if (strtotime($porchfest['Date']) < date("Y-m-d")) {
+                      $status = 'past';
+                    }
+                    echo '<tr data-status = "' . $status . '">
+                          <td> 
+                            <a href="singleporchfest.php">' . $porchfest['Name'] . '</a>
+                          </td>
+                          <td>' . $porchfest['Date'] . '</td>
+                          <td>' . $porchfest['Location'] . '</td>
+                          <td>' . $porchfest['Description'] . '</td>
+                          <td> Organizer </td>
+                          <td>' . $porchfest['Deadline'] . '</td>
+                          <td>' . $isPublished . '</td>
+                          <td> <a href="editporchfest.php"> Edit </a> </td>
+                        </tr>';
+                  }
+
+                  $sql = "SELECT * 
+                          FROM porchfests
+                          INNER JOIN bandstoporchfests ON bandstoporchfests.PorchfestID = porchfests.PorchfestID
+                          INNER JOIN userstobands ON userstobands.BandID = bandstoporchfests.BandID
+                          WHERE UserID = '1'";
+
+                  $result = $conn->query($sql);
+
+                  while($porchfest = $result->fetch_assoc()) {
+                    $isPublished = 'No';
+                    if ($porchfest['Published'] != 0) {
+                      $isPublished = 'Yes';
+                    }
+                    $status = 'upcoming';
+                    if (strtotime($porchfest['Date']) < date("Y-m-d")) {
+                      $status = 'past';
+                    }
+                    echo '<tr data-status = "' . $status . '">
+                          <td> 
+                            <a href="singleporchfest.php">' . $porchfest['Name'] . '</a>
+                          </td>
+                          <td>' . $porchfest['Date'] . '</td>
+                          <td>' . $porchfest['Location'] . '</td>
+                          <td>' . $porchfest['Description'] . '</td>
+                          <td> Performer </td>
+                          <td>' . $porchfest['Deadline'] . '</td>
+                          <td>' . $isPublished . '</td>
+                          <td> <a href="editporchfest.php"> Edit </a> </td>
+                        </tr>';
+                  }
+              ?>
             </table>
           </div> <!-- end col 2 div -->
         </div> <!-- end table-container div -->
