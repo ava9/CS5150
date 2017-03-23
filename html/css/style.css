@@ -290,6 +290,11 @@ th {
   :: editporchfest.php
   -------------------------------------------------- */
 
+#search {
+  position: relative;
+  z-index: 100;
+}
+
 #addtimeslot {
   display: inline-block;
 }

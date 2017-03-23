@@ -24,9 +24,6 @@
     <!-- Login modal -->
     <script src="../js/loginmodal.es6"></script>
 
-    <!-- Join porchfest modal -->
-    <script src="../js/joinporchfestmodal.es6"></script>
-
     <!-- Responsive table js -->
     <script src="responsive-tables.js"></script>
 
@@ -133,7 +130,11 @@
 
         <div class="col-sm-10"> <!-- begin col 2 div -->
           <div class="tab-pane fade" id="bands"> <!-- begin bands div -->
-            <div class="table-container table-responsive bands-table"> <!-- begin table-container div -->
+            <div class="col-xs-12">
+              <input id="search" name="search" type="text" placeholder="Search..."/>
+            </div>
+
+            <div class="table-container table-responsive bands-table" id="bandstable"> <!-- begin table-container div -->
               <table class="responsive table"> <!-- begin table -->
                 <tr data-status= "fixed">
                   <th> Name </th>
@@ -144,7 +145,7 @@
                   <th> Manage </th>
                 </tr>
                 <?php 
-                  $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = 1";
+                  $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = 1 ORDER BY bands.Name";
 
                   $result = $conn->query($sql);
 
@@ -210,6 +211,18 @@
       </div> <!-- end row 1 div -->
     </div> <!-- end container div -->
 
+
+  <script>
+    $("#search").keyup(function(){
+      $.ajax({
+        url: "../php/ajax.php",
+        type: "GET",
+        data: {bandname: $("#search").val()},
+        success: function(result){
+          $("#bandstable").html(result);
+        }});
+    });
+  </script>
 
   </body>
 </html>
