@@ -17,6 +17,7 @@
       // Create connection
       // add DB_USER and DB_PASSWORD later
       $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
     ?>
     <!-- navBar and login -->
     <?php require_once "../php/modules/login.php"; ?>
@@ -97,19 +98,63 @@
         <div class="col-sm-2"> <!-- begin col 1 div -->
             <nav class="nav-sidebar">
                 <ul class="nav">
-                    <li class="active"><a href="#bands" data-toggle="tab"> Manage Bands </a></li>
+                    <li class="active"><a href="#manageporchfest" data-toggle="tab"> Manage Porchfest </a></li>
+                    <li><a href="#bands" data-toggle="tab"> Manage Bands </a></li>
                     <li><a href="#timeslots" data-toggle="tab"> Manage Time Slots </a></li>
                     <li><a href="#schedule" data-toggle="tab"> Schedule </a></li>
                     <li><a href="#publish" data-toggle="tab"> Publish </a></li>
                     <li class="nav-divider"></li>
-                    <li><a href="#date" data-toggle="tab"> Search </a></li>
                 </ul>
             </nav>
         </div> <!-- end col 1 div -->
 
         <div class="col-sm-10"> <!-- begin col 2 div -->
+          <div class="tab-pane fade in active" id="manageporchfest"> <!-- begin manageporchfest div -->
+            <div id="porchfestinfo"> <!-- begin porchfestinfo div -->
+              <div class="input-group"> <!-- begin input-group div -->
+                <form action="editporchfest.php" method="POST" id="porchfestmanagesubmit">
+                  <?php 
+                    $sql = "SELECT * FROM `porchfests` WHERE PorchfestID = 1";
+
+                    $result = $conn->query($sql);
+
+                    $porchfest = $result->fetch_assoc();
+
+                    echo '<label> Porchfest Name </label>';
+                    echo '<input type="text" name="porchfestname" class="form-control" value="' . $porchfest['Name'] . '" placeholder="Porchfest Name">';
+                    echo '<br />';
+
+                    echo '<label> Porchfest Location </label>';
+                    echo '<input type="text" name="porchfestlocation" class="form-control" value="' . $porchfest['Location'] . '" placeholder="Porchfest Location">';
+                    echo '<br />';
+
+                    echo '<label> Porchfest Date </label>';
+                    echo '<input type="date" name="porchfestdate" class="form-control" value="' . $porchfest['Date'] . '" placeholder="Porchfest Date">';
+                    echo '<br />';
+
+                    echo '<label> Porchfest Description </label>';
+                    echo '<textarea rows="5" id="porchfestdescription" class="form-control" placeholder="Porchfest Description">' . $porchfest['Description'] .  '</textarea>';
+                    echo '<br />';
+
+                    echo '<label> Porchfest Deadline Time (format as XX:XXpm or XX:XXam) </label>';
+                    $deadline = date_create($porchfest['Deadline']);
+                    $date = date_format($deadline, 'G:ia');
+                    echo '<input type="text" name="porchfesttime" class="form-control" value="' . $date . '" placeholder="Porchfest Deadline Time">';
+                    echo '<br />';
+
+                    echo '<label> Porchfest Deadline Date </label>';
+                    $day = new DateTime(date_format($deadline, 'Y-m-d')); // to drop the time
+                    echo '<input type="date" name="porchfestdeadlineday" class="form-control" value="' . $day->format('Y-m-d') . '" placeholder="Porchfest Deadline Date">';
+                    echo '<br />';
+                    echo '<button type="submit" class="btn btn-primary"> Submit </button>';
+                  ?>
+                </form>
+              </div> <!-- end input-group div -->
+            </div>  <!-- end porchfestinfo div -->
+          </div> <!-- end manageporchfest div -->
+
           <div class="tab-pane fade" id="bands"> <!-- begin bands div -->
-            <div class="col-xs-12">
+            <div class="col-xs-offset-6 col-xs-6 col-sm-offset-9 col-sm-3">
               <input id="search" name="search" type="text" placeholder="Search..."/>
             </div>
 
@@ -144,8 +189,10 @@
             </div> <!-- end table-container div -->
           </div> <!-- end bands div -->
 
-          <div class="tab-pane fade in active" id="timeslots"> <!-- begin timeslots div -->
-            Add/Edit Timeslots for your Porchfest
+          <div class="tab-pane fade" id="timeslots"> <!-- begin timeslots div -->
+            <div id="col-xs-12 timeslotheaders">
+              Existing Timeslots
+            </div>
 
             <?php
               $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '1' ORDER BY StartTime;";
@@ -166,6 +213,10 @@
 
             ?>
 
+            <div id="col-xs-12 timeslotheaders">
+              Add Timeslot
+            </div>
+
             <form role="form" class="form-horizontal" action="">
               <div id="addtimeslot" class="form-group">
                 <label for="timeslot" class="control-label"> Start Time </label>
@@ -174,7 +225,7 @@
                   <input type="datetime-local">
               </div>
 
-              <button type="submit" class="btn btn-primary btn-sm"> Add Timeslot</button>
+              <button type="submit" class="btn btn-primary btn-sm"> Add Timeslot </button>
 
             </form>
              
@@ -192,7 +243,32 @@
 
 
   <script>
+    $("#porchfestmanagesubmit").submit(function(event){
+      var formData = {
+          porchfestname          : $('input[name=porchfestname]').val(),
+          porchfestlocation      : $('input[name=porchfestlocation]').val(),
+          porchfestdate          : $('input[name=porchfestdate]').val(),
+          porchfestdescription   : $('#porchfestdescription').val(),
+          porchfesttime          : $('input[name=porchfesttime]').val(),
+          porchfestdeadlineday   : $('input[name=porchfestdeadlineday]').val()
+      };
+
+      $.ajax({
+        url: "../php/ajax.php",
+        type: "POST",
+        data: formData,
+        success: function(result){
+          console.log(result);
+        },
+        error: function(result) {
+          console.log(result);
+        }
+      });
+      event.preventDefault();
+    });
+
     $("#search").keyup(function(){
+      console.log('here');
       $.ajax({
         url: "../php/ajax.php",
         type: "GET",
