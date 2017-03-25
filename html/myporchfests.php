@@ -132,10 +132,10 @@
                           <td>' . $day . '</td>
                           <td>' . $porchfest['Location'] . '</td>
                           <td>' . $porchfest['Description'] . '</td>
-                          <td> Performer </td>
+                          <td> Performer () </td>
                           <td>' . $deadline . '</td>
                           <td>' . $isPublished . '</td>
-                          <td> <a href="editporchfest.php"> Edit </a> </td>
+                          <td> <a href="editband.php"> Edit </a> </td>
                         </tr>';
                   }
               ?>
