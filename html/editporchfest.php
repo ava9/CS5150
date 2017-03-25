@@ -1,34 +1,13 @@
+<?php session_start(); ?>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PorchFest - Edit</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-      <!-- Bootstrap Core CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- jQuery -->
-    <script src="../js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    <!-- Custom CSS -->
-    <link href="css/style.css" rel="stylesheet">
-
-    <!-- Navigation bar -->
-    <script src="../js/navbar.es6"></script>
-
-    <!-- Login modal -->
-    <script src="../js/loginmodal.es6"></script>
-
+    <?php require_once "../php/modules/stdHead.php" ?>
     <!-- Responsive table js -->
-    <script src="responsive-tables.js"></script>
+    <script src="../js/responsive-tables.js"></script>
 
     <!-- Responsive tables CSS -->
-    <link rel="stylesheet" href="responsive-tables.css">
+    <link rel="stylesheet" href="./css/responsive-tables.css">
+    <title>PorchFest - Edit</title>
   </head>
 
   <body>
@@ -39,9 +18,9 @@
       // add DB_USER and DB_PASSWORD later
       $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
     ?>
-
-
-    <script type="text/javascript">writenav();</script>
+    <!-- navBar and login -->
+    <?php require_once "../php/modules/login.php"; ?>
+    <?php require_once "../php/modules/navigation.php"; ?>
 
     <!-- Modal -->
             <div id="timeslotModal" class="modal fade" role="dialog">

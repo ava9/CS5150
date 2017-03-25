@@ -1,54 +1,24 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
 <!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PorchFest - My Account</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-    <!-- Bootstrap Core CSS -->
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom CSS -->
-  <link href="css/style.css" rel="stylesheet">
-
-  <!-- Navigation bar -->
-  <script src="../js/navbar.es6"></script>
-
-  <!-- Login modal -->
-  <script src="../js/loginmodal.es6"></script>
-
-  <!-- Join porchfest modal -->
-  <script src="../js/joinporchfestmodal.es6"></script>
-
-  <!-- jQuery -->
-  <script src="../js/jquery.js"></script>
+  <?php require_once "../php/modules/stdHead.php" ?>
 
   <!-- Responsive table js -->
-  <script src="responsive-tables.js"></script>
+  <script src="../js/responsive-tables.js"></script>
 
   <!-- Responsive tables CSS -->
-  <link rel="stylesheet" href="responsive-tables.css">
+  <link rel="stylesheet" href="./css/responsive-tables.css">
+  <title>PorchFest - My Account</title>
 </head>
 
 <body>
-  <?php // Database credentials
-    require_once "../php/config.php";
-
-    // Create connection
-    $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-
-  ?>
-  <!-- Write the navigation bar. -->
-  <script type="text/javascript">writenav();</script>
-
-  <script type="text/javascript">writeloginmodal();</script>
-
-  <script type="text/javascript">joinporchfestmodal();</script>
+<!-- navBar and login -->
+<?php require_once "../php/modules/login.php"; ?>
+<?php require_once "../php/modules/navigation.php"; ?>
 
 
 <div class="container"> <!-- begin container div -->
@@ -77,35 +47,38 @@
                 <th> Want to Perform </th>
               </tr>
               <?php
-                  $sql = "SELECT * FROM porchfests ORDER BY Name";
+                require_once "../php/config.php";
+                // Create connection
+                $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+                $sql = "SELECT * FROM porchfests ORDER BY Name";
 
-                  $result = $conn->query($sql);
+                $result = $conn->query($sql);
 
-                  while($porchfest = $result->fetch_assoc()) {
-                    $isPublished = 'No';
-                    if ($porchfest['Published'] != 0) {
-                      $isPublished = 'Yes';
-                    }
-                    $status = 'upcoming';
-                    if (strtotime($porchfest['Date']) < date("Y-m-d")) {
-                      $status = 'past';
-                    }
-                    $day = date_format(date_create($porchfest['Date']), 'F j, Y');
-                    $deadline = date_format(date_create($porchfest['Deadline']), 'g:iA \o\n F j, Y');
-
-                    echo '<tr data-status = "' . $status . '">
-                          <td> 
-                            <a href="singleporchfest.php">' . $porchfest['Name'] . '</a>
-                          </td>
-                          <td>' . $day . '</td>
-                          <td>' . $porchfest['Location'] . '</td>
-                          <td>' . $porchfest['Description'] . '</td>
-                          <td>' . $deadline . '</td>
-                          <td>  
-                            <a href="bandsignup.php"> Join </a>
-                          </td>
-                        </tr>';
+                while($porchfest = $result->fetch_assoc()) {
+                  $isPublished = 'No';
+                  if ($porchfest['Published'] != 0) {
+                    $isPublished = 'Yes';
                   }
+                  $status = 'upcoming';
+                  if (strtotime($porchfest['Date']) < date("Y-m-d")) {
+                    $status = 'past';
+                  }
+                  $day = date_format(date_create($porchfest['Date']), 'F j, Y');
+                  $deadline = date_format(date_create($porchfest['Deadline']), 'g:iA \o\n F j, Y');
+
+                  echo '<tr data-status = "' . $status . '">
+                        <td> 
+                          <a href="singleporchfest.php">' . $porchfest['Name'] . '</a>
+                        </td>
+                        <td>' . $day . '</td>
+                        <td>' . $porchfest['Location'] . '</td>
+                        <td>' . $porchfest['Description'] . '</td>
+                        <td>' . $deadline . '</td>
+                        <td>  
+                          <a href="bandsignup.php"> Join </a>
+                        </td>
+                      </tr>';
+                }
               ?>
             </table>
           </div> <!-- end col 2 div -->

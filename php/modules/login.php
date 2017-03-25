@@ -1,5 +1,3 @@
-function writeloginmodal() {
-  var loginmodalhtml = `<!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -11,7 +9,7 @@ function writeloginmodal() {
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <form role="form" class="form-horizontal">
+                    <form role="form" class="form-horizontal" id='login-form' method='POST'>
                         <div class="form-group">
                             <label for="email" class="col-sm-2 control-label"> Email </label>
                             <div class="col-sm-10">
@@ -33,13 +31,15 @@ function writeloginmodal() {
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-sm-4">
+                            </div>
                             <div class="col-sm-2">
-                                <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-primary btn-sm">
+                                    <button type="submit" name = "login" class="btn btn-primary btn-sm">
                                         Login</button>
+                            </div>
+                            <div class="col-sm-2">
                                     <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                                         Cancel</button>
-                                </div>
                             </div>
                         </div>
                     </form>
@@ -48,7 +48,3 @@ function writeloginmodal() {
         </div>
     </div>
 </div>
-
-`;
-	document.write(loginmodalhtml);
-}
