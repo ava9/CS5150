@@ -1,12 +1,31 @@
 <?php
 	require_once "config.php";
 
+	function __isset($name) {
+	    return $this->args[$name];
+	}
+
+
 	// Create connection
 	// add DB_USER and DB_PASSWORD later
 	$conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-	if (isset($_GET['bandname'])) {
-		$name = $_GET['bandname'];
+	// ** editporchfest.php: form to manage porchfest 
+	if (isset($_POST['porchfestname']) && isset($_POST['porchfestlocation']) && isset($_POST['porchfestdate']) && isset($_POST['porchfestdescription']) && isset($_POST['porchfesttime']) && isset($_POST['porchfestdeadlineday'])) {
+		$porchfestname = htmlentities($_POST['porchfestname']);
+		$porchfestlocation = htmlentities($_POST['porchfestlocation']);
+		$porchfestdate = htmlentities($_POST['porchfestdate']);
+		$porchfestdescription = htmlentities($_POST['porchfestdescription']);
+		$porchfesttime = htmlentities($_POST['porchfesttime']);
+		$porchfestdeadlineday = htmlentities($_POST['porchfestdeadlineday']);
+
+		$sql = "UPDATE porchfests SET Name='" . $porchfestname . "', Location='" . $porchfestlocation . "', Date = '" . $porchfestdate . "' WHERE PorchfestID=1";
+
+		$result = $conn->query($sql);
+		echo $conn->error;
+	} elseif (isset($_GET['bandname'])) {
+		// ** editporchfest.php: form to manage porchfest 
+		$name = htmlentities($_GET['bandname']);
 		echo "<table class='responsive table'> <!-- begin table -->";
 		echo "<tr data-status= 'fixed'>";
 		echo "<th> Name </th>";
@@ -39,7 +58,8 @@
 
 		echo '</table>';
 	} else {
-		echo "fail";
+		print_r($_POST);
+		// throw new Exception("variable not found");
 	}
 
 
