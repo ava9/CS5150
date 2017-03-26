@@ -22,9 +22,40 @@
 		$sql = "UPDATE porchfests SET Name='" . $porchfestname . "', Location='" . $porchfestlocation . "', Date = '" . $porchfestdate . "' WHERE PorchfestID=1";
 
 		$result = $conn->query($sql);
-		echo $conn->error;
+		
+		if ($result) {
+			echo "success";
+		} else {
+			echo "fail";
+		}
+
+	} elseif (isset($_POST['timeslotstart']) && isset($_POST['timeslotend']) && isset($_POST['start']) && isset($_POST['end'])) {
+		// ** editporchfest.php: update timeslot.
+		$timeslotstart = htmlentities($_POST['timeslotstart']);
+		$timeslotend = htmlentities($_POST['timeslotend']);
+		$start = htmlentities($_POST['start']);
+		$end = htmlentities($_POST['end']);
+
+		$datestart = date_create_from_format('g:i A', $timeslotstart);
+		$dateend = date_create_from_format('g:i A', $timeslotend);
+
+		$sql = "SELECT TimeslotID FROM porchfesttimeslots WHERE StartTime='" . $start . "' AND EndTime='". $end . "'";
+
+		// $sql = "UPDATE porchfesttimeslots SET StartTime='" . $timeslotstart . "', EndTime='" . $timeslotend . "' WHERE PorchfestID=1 AND ";
+
+		$result = $conn->query($sql);
+
+		echo $mysqli->error;
+
+		if ($result) {
+			print_r($result->fetch_assoc());
+			echo 'success';
+		} else {
+			echo 'fail';
+		}
+
 	} elseif (isset($_GET['bandname'])) {
-		// ** editporchfest.php: form to manage porchfest 
+		// ** editporchfest.php: search functionality to display bands that match name.
 		$name = htmlentities($_GET['bandname']);
 		echo "<table class='responsive table'> <!-- begin table -->";
 		echo "<tr data-status= 'fixed'>";

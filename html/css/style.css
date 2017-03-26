@@ -2,6 +2,12 @@
   :: editporchfest.php
   -------------------------------------------------- */
 
+#editalert {
+  /*position: fixed;
+  padding-top: 10px;
+  margin-top: 10px;*/
+}
+
 #manageporchfest #porchfestinfo {
   padding-top: 30px;
   position: absolute;

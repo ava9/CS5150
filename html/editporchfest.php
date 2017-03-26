@@ -11,87 +11,108 @@
   </head>
 
   <body>
+    <div id="editalert"></div>
+
     <?php 
       require_once "../php/config.php";
+      require_once "../php/modules/navigation.php";
+      require_once "../php/modules/login.php";
+      
 
       // Create connection
       // add DB_USER and DB_PASSWORD later
       $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
     ?>
-    <!-- navBar and login -->
-    <?php require_once "../php/modules/login.php"; ?>
-    <?php require_once "../php/modules/navigation.php"; ?>
+    <!-- Modal -->
+    <div id="edit-timeslot-modal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"> </h4>s
+          </div>
+          <div class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="save-timeslot-change" class="btn btn-success" data-dismiss="modal"> Save Changes </button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal"> Delete </button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"> Cancel </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Modal -->
-            <div id="timeslotModal" class="modal fade" role="dialog">
-              <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"> Time Slots </h4>
-                  </div>
-                  <div class="modal-body">
-                    <table class="responsive table timeslot-table"> <!-- begin table -->
-                      <tr>
-                        <th> </th>
-                        <th> Thu </th>
-                        <th> Fri </th>
-                        <th> Sat </th>
-                        <th> Sun </th>
-                        <th> Mon </th>
-                        <th> Tue </th>
-                        <th> Wed </th>
-                      </tr>
-                      <tr>
-                        <td class = "time"> 08:00 </td>
-                        <td> -- </td>
-                        <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                        <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                        <td> -- </td>
-                        <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                        <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                        <td> -- </td>
-                      </tr>
-                      <tr>
-                        <td class = "time"> 09:00 </td>
-                        <td> -- </td>
-                        <td> -- </td>
-                        <td> <span class="glyphicon glyphicon-ok"> </span> </td>
-                        <td> -- </td>
-                        <td> -- </td>
-                        <td> -- </td>
-                        <td> -- </td>
-                      </tr>
-                      <tr>
-                        <td class = "time"> 10:00 </td>
-                        <td> -- </td>
-                        <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                        <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                        <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                        <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                        <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                        <td> -- </td>
-                      </tr>
-                      <tr>
-                        <td class = "time"> 11:00 </td>
-                        <td> -- </td>
-                        <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                        <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                        <td> -- </td>
-                        <td> -- </td>
-                        <td> -- </td>
-                        <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                      </tr>
-                    </table> <!-- end table -->
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div id="timeslotModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"> Time Slots </h4>
+          </div>
+          <div class="modal-body">
+            <table class="responsive table timeslot-table"> <!-- begin table -->
+              <tr>
+                <th> </th>
+                <th> Thu </th>
+                <th> Fri </th>
+                <th> Sat </th>
+                <th> Sun </th>
+                <th> Mon </th>
+                <th> Tue </th>
+                <th> Wed </th>
+              </tr>
+              <tr>
+                <td class = "time"> 08:00 </td>
+                <td> -- </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> -- </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> -- </td>
+              </tr>
+              <tr>
+                <td class = "time"> 09:00 </td>
+                <td> -- </td>
+                <td> -- </td>
+                <td> <span class="glyphicon glyphicon-ok"> </span> </td>
+                <td> -- </td>
+                <td> -- </td>
+                <td> -- </td>
+                <td> -- </td>
+              </tr>
+              <tr>
+                <td class = "time"> 10:00 </td>
+                <td> -- </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> -- </td>
+              </tr>
+              <tr>
+                <td class = "time"> 11:00 </td>
+                <td> -- </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> -- </td>
+                <td> -- </td>
+                <td> -- </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+              </tr>
+            </table> <!-- end table -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="container"> <!-- begin container div -->
       <div class="row"> <!-- begin row 1 div -->
@@ -109,7 +130,7 @@
         </div> <!-- end col 1 div -->
 
         <div class="col-sm-10"> <!-- begin col 2 div -->
-          <div class="tab-pane fade in active" id="manageporchfest"> <!-- begin manageporchfest div -->
+          <div class="tab-pane fade" id="manageporchfest"> <!-- begin manageporchfest div -->
             <div id="porchfestinfo"> <!-- begin porchfestinfo div -->
               <div class="input-group"> <!-- begin input-group div -->
                 <form action="editporchfest.php" method="POST" id="porchfestmanagesubmit">
@@ -189,7 +210,7 @@
             </div> <!-- end table-container div -->
           </div> <!-- end bands div -->
 
-          <div class="tab-pane fade" id="timeslots"> <!-- begin timeslots div -->
+          <div class="tab-pane fade in active" id="timeslots"> <!-- begin timeslots div -->
             <div id="col-xs-12 timeslotheaders">
               Existing Timeslots
             </div>
@@ -205,8 +226,8 @@
                 $start_time = date_create($timeslot['StartTime']);
                 $end_time = date_create($timeslot['EndTime']);
 
-                echo '<div class="col-xs-6 col-sm-3 timeslot-label"><span class="label label-primary">' . date_format($start_time, 'g:i A') . " - " . date_format($end_time, 'g:i A')  . ' </span></div>';
-                
+                echo '<div class="col-xs-6 col-sm-3 timeslot-label"><span id="' . date_format($start_time, 'g:i A') . " - " . date_format($end_time, 'g:i A') . ' " class="label label-primary">' . date_format($start_time, 'g:i A') . " - " . date_format($end_time, 'g:i A')  . ' </span></div>';
+
               }
 
               echo '</div>';
@@ -243,6 +264,50 @@
 
 
   <script>
+    $('body').click(function() {
+      $("#editalert").html('');
+    });
+
+    $('#save-timeslot-change').click(function() {
+      var start = $('#edit-timeslot-modal').find('.modal-header').html().split('-')[0].trim();
+      var end = $('#edit-timeslot-modal').find('.modal-header').html().split('-')[1].trim();
+      var formData = {
+          timeslotstart          : $('input[name=timeslot-start]').val(),
+          timeslotend            : $('input[name=timeslot-end]').val(),
+          start                  : start,
+          end                    : end
+      };
+
+
+
+      $.ajax({
+        url: "../php/ajax.php",
+        type: "POST",
+        data: formData,
+        success: function(result){
+          console.log(result);
+          if (result == "success") {
+            $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your Porchfest information was updated successfully. </div>');
+          } else {
+            $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
+          }
+        },
+        error: function(result) {
+          console.log(result);
+        }
+      });
+    });
+
+    $('.label').click(function() {
+      var start = $(this).attr('id').split('-')[0].trim();
+      var end = $(this).attr('id').split('-')[1].trim();
+
+      $('#edit-timeslot-modal').find('.modal-header').html($(this).attr('id'));
+
+      $('#edit-timeslot-modal').find('.modal-body').html('<form id="timeslot-form"><input type="text" name="timeslot-start" class="form-control" value="' + start + '" placeholder="Start Time"><input type="text" name="timeslot-end" class="form-control" value="' + end + '" placeholder="End Time"></form>');
+      $('#edit-timeslot-modal').modal('show');
+    });
+
     $("#porchfestmanagesubmit").submit(function(event){
       var formData = {
           porchfestname          : $('input[name=porchfestname]').val(),
@@ -259,6 +324,11 @@
         data: formData,
         success: function(result){
           console.log(result);
+          if (result == "success") {
+            $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The timeslot was updated successfully. </div>');
+          } else {
+            $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
+          }
         },
         error: function(result) {
           console.log(result);
