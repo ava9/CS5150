@@ -33,22 +33,25 @@
 		// ** editporchfest.php: update timeslot.
 		$timeslotstart = htmlentities($_POST['timeslotstart']);
 		$timeslotend = htmlentities($_POST['timeslotend']);
-		$start = htmlentities($_POST['start']);
-		$end = htmlentities($_POST['end']);
+		$start = date_create_from_format('Y.m.d g:i A', htmlentities($_POST['start']));
+		$end = date_create_from_format('Y.m.d g:i A', htmlentities($_POST['end']));
 
 		$datestart = date_create_from_format('g:i A', $timeslotstart);
 		$dateend = date_create_from_format('g:i A', $timeslotend);
 
-		$sql = "SELECT TimeslotID FROM porchfesttimeslots WHERE StartTime='" . $start . "' AND EndTime='". $end . "'";
-
-		// $sql = "UPDATE porchfesttimeslots SET StartTime='" . $timeslotstart . "', EndTime='" . $timeslotend . "' WHERE PorchfestID=1 AND ";
-
+		
+		$sql = "SELECT TimeslotID FROM porchfesttimeslots WHERE StartTime='" . $start->format('Y-m-d H:i:s') . "' AND EndTime='". $end->format('Y-m-d H:i:s') . "'";
 		$result = $conn->query($sql);
+		$timeslotid = $result->fetch_assoc()['TimeslotID'];
 
-		echo $mysqli->error;
+		$start->setTime($datestart->format('H'), $datestart->format('i'));
+		$end->setTime($dateend->format('H'), $dateend->format('i'));
+
+		$sql = "UPDATE porchfesttimeslots SET StartTime='" . $start->format('Y-m-d H:i:s') . "', EndTime='" . $end->format('Y-m-d H:i:s') . "' WHERE PorchfestID=1 AND TimeslotID=" . $timeslotid;
+
+		$result = $conn->query($sql);		
 
 		if ($result) {
-			print_r($result->fetch_assoc());
 			echo 'success';
 		} else {
 			echo 'fail';

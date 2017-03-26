@@ -226,7 +226,7 @@
                 $start_time = date_create($timeslot['StartTime']);
                 $end_time = date_create($timeslot['EndTime']);
 
-                echo '<div class="col-xs-6 col-sm-3 timeslot-label"><span id="' . date_format($start_time, 'g:i A') . " - " . date_format($end_time, 'g:i A') . ' " class="label label-primary">' . date_format($start_time, 'g:i A') . " - " . date_format($end_time, 'g:i A')  . ' </span></div>';
+                echo '<div class="col-xs-6 col-sm-3 timeslot-label"><span id="' . date_format($start_time, 'Y.m.d g:i A') . " - " . date_format($end_time, 'Y.m.d g:i A') . '" class="label label-primary">' . date_format($start_time, 'g:i A') . " - " . date_format($end_time, 'g:i A')  . ' </span></div>';
 
               }
 
@@ -269,16 +269,14 @@
     });
 
     $('#save-timeslot-change').click(function() {
-      var start = $('#edit-timeslot-modal').find('.modal-header').html().split('-')[0].trim();
-      var end = $('#edit-timeslot-modal').find('.modal-header').html().split('-')[1].trim();
+      var start = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[0].trim();
+      var end = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[1].trim();
       var formData = {
           timeslotstart          : $('input[name=timeslot-start]').val(),
           timeslotend            : $('input[name=timeslot-end]').val(),
           start                  : start,
           end                    : end
       };
-
-
 
       $.ajax({
         url: "../php/ajax.php",
@@ -287,6 +285,8 @@
         success: function(result){
           console.log(result);
           if (result == "success") {
+            var id = $('#edit-timeslot-modal').find('.modal-header').attr('id');
+            console.log($('#' + id).length);
             $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your Porchfest information was updated successfully. </div>');
           } else {
             $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
@@ -299,10 +299,13 @@
     });
 
     $('.label').click(function() {
-      var start = $(this).attr('id').split('-')[0].trim();
-      var end = $(this).attr('id').split('-')[1].trim();
+      var start_string = $(this).attr('id').split('-')[0].trim();
+      var start = start_string.substring(start_string.indexOf(' '), start_string.length).trim();
+      var end_string = $(this).attr('id').split('-')[1].trim();
+      var end = end_string.substring(end_string.indexOf(' '), end_string.length).trim();
 
-      $('#edit-timeslot-modal').find('.modal-header').html($(this).attr('id'));
+      $('#edit-timeslot-modal').find('.modal-header').html(start + ' - ' + end);
+      $('#edit-timeslot-modal').find('.modal-header').attr('id', $(this).attr('id'));
 
       $('#edit-timeslot-modal').find('.modal-body').html('<form id="timeslot-form"><input type="text" name="timeslot-start" class="form-control" value="' + start + '" placeholder="Start Time"><input type="text" name="timeslot-end" class="form-control" value="' + end + '" placeholder="End Time"></form>');
       $('#edit-timeslot-modal').modal('show');
@@ -323,7 +326,6 @@
         type: "POST",
         data: formData,
         success: function(result){
-          console.log(result);
           if (result == "success") {
             $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The timeslot was updated successfully. </div>');
           } else {
@@ -331,7 +333,7 @@
           }
         },
         error: function(result) {
-          console.log(result);
+          console.log('error');
         }
       });
       event.preventDefault();
