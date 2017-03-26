@@ -111,7 +111,11 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-          <?php 
+          <?php
+            require_once "../php/config.php";
+            // Create connection
+            $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+            
             $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '1' ORDER BY StartTime;";
 
             $result = $conn->query($sql);
