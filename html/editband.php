@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,19 +23,51 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+
   <?php // Database credentials
     require_once "../php/config.php";
 
     // Create connection
     $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-    $sql = "SELECT * FROM bands 
-            INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID
-            INNER JOIN userstobands ON bands.BandID = userstobands.BandID
-            WHERE userstobands.UserID = '1' AND bandstoporchfests.PorchfestID = '1' AND bands.BandID = '1'";
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $bandname = htmlentities($_POST['bandname']);
+    $banddescription = htmlentities($_POST['banddescription']);
+    $bandcomment = htmlentities($_POST['bandcomment']);
+    $porchlocation = htmlentities($_POST['porchlocation']);
 
+    $sql = "UPDATE bands SET Name='" . $bandname . "', Description='" . $banddescription . "', Comment = '" . $bandcomment . "' WHERE BandID='1'";
     $result = $conn->query($sql);
-    $band = $result->fetch_assoc();
+    
+    $sql = "UPDATE bandstoporchfests SET PorchLocation='" . $porchlocation . "'  WHERE PorchfestID = '1' AND BandID='1'";
+    $result = $conn->query($sql);
+
+    $sql = "DELETE FROM bandavailabletimes WHERE BandID = '1'";
+    $result = $conn->query($sql);
+
+    if (isset($_POST['available'])) {
+      $available = $_POST['available'];
+      foreach($available as $timeslot) {
+        $sql = "INSERT INTO bandavailabletimes (BandID, TimeslotID) VALUES ('1', '" . $timeslot . "')";
+        $result = $conn->query($sql);
+      }
+    }
+    if (isset($_POST['notavailable'])) {
+      $notavailable = $_POST['notavailable'];
+      foreach($notavailable as $timeslot) {
+        $sql = "INSERT INTO bandavailabletimes (BandID, TimeslotID) VALUES ('1', '" . $timeslot . "')";
+        $result = $conn->query($sql);
+      }
+    }
+  }
+
+  $sql = "SELECT * FROM bands 
+        INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID
+        INNER JOIN userstobands ON bands.BandID = userstobands.BandID
+        WHERE userstobands.UserID = '1' AND bandstoporchfests.PorchfestID = '1' AND bands.BandID = '1'";
+
+  $result = $conn->query($sql);
+  $band = $result->fetch_assoc();
   ?>
 <script type="text/javascript">writenav();</script>
 <div class="container" style="padding-top: 60px;">
@@ -42,29 +75,29 @@
     <!-- edit form column -->
     <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
       <h3>Band Information</h3>
-      <form class="form-horizontal" role="form">
+      <form class="form-horizontal" role="form" action="editband.php" method="POST">
         <div class="form-group">
           <label class="col-lg-3 control-label">Name:</label>
           <div class="col-lg-8">
-            <input class="form-control" value=<?php echo '"' . $band['Name'] . '"' ?> type="text">
+            <input name="bandname" class="form-control" value=<?php echo '"' . $band['Name'] . '"' ?> type="text">
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-3 control-label">Description:</label>
           <div class="col-lg-8">
-            <input class="form-control" value=<?php echo '"' . $band['Description'] . '"' ?> type="text">
+            <input name="banddescription" class="form-control" value=<?php echo '"' . $band['Description'] . '"' ?> type="text">
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-3 control-label">Comment:</label>
           <div class="col-lg-8">
-            <input class="form-control" value=<?php echo '"' . $band['Comment'] . '"' ?> type="text">
+            <input name="bandcomment" class="form-control" value=<?php echo '"' . $band['Comment'] . '"' ?> type="text">
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-3 control-label">Porch Location:</label>
           <div class="col-lg-8">
-            <input class="form-control" value=<?php echo '"' . $band['PorchLocation'] . '"' ?> type="text">
+            <input name="porchlocation" class="form-control" value=<?php echo '"' . $band['PorchLocation'] . '"' ?> type="text">
           </div>
         </div>
         <?php
@@ -75,7 +108,7 @@
                   <label class="col-lg-3 control-label">Band Member Emails:</label>';
             while($bandmember = $result->fetch_assoc()) {
               echo '<div class="col-lg-8">
-                      <input class="form-control" value=' . $bandmember['Email'] . 'type="text">
+                      <input name="members[]" class="form-control" value=' . $bandmember['Email'] . 'type="text">
                     </div>';
             }
             echo '</div>';
@@ -95,20 +128,20 @@
               $starttime = date_format(date_create($timeslot['StartTime']), 'g:iA');
               $endtime = date_format(date_create($timeslot['EndTime']), 'g:iA');
               $day = date_format(date_create($timeslot['StartTime']), 'F j, Y');
-              echo "<input checked type='checkbox' value='timeslot'" . $timeslot['TimeslotID'] . "/>" . " " . $starttime . 
+              echo "<input checked name='available[]' type='checkbox' value='" . $timeslot['TimeslotID'] . "' />" . " " . $starttime . 
                     "-" . $endtime . " on " . $day . "<br>";
             }
 
-            $sql = "SELECT * FROM porchfesttimeslots 
+            $sql2 = "SELECT porchfesttimeslots.TimeslotID, PorchfestID, StartTime, EndTime, BandID FROM porchfesttimeslots 
                     LEFT JOIN bandavailabletimes ON porchfesttimeslots.TimeslotID = bandavailabletimes.TimeslotID
                     WHERE PorchfestID = '1' AND bandavailabletimes.TimeslotID IS NULL";
 
-            $result = $conn->query($sql);
-            while($timeslot = $result->fetch_assoc()) {
-              $starttime = date_format(date_create($timeslot['StartTime']), 'g:iA');
-              $endtime = date_format(date_create($timeslot['EndTime']), 'g:iA');
-              $day = date_format(date_create($timeslot['StartTime']), 'F j, Y');
-              echo "<input type='checkbox' value='timeslot'" . $timeslot['TimeslotID'] . "/>" . " " . $starttime . 
+            $result = $conn->query($sql2);
+            while($timeslot2 = $result->fetch_assoc()) {
+              $starttime = date_format(date_create($timeslot2['StartTime']), 'g:iA');
+              $endtime = date_format(date_create($timeslot2['EndTime']), 'g:iA');
+              $day = date_format(date_create($timeslot2['StartTime']), 'F j, Y');
+              echo "<input name='notavailable[]' type='checkbox' value='" . $timeslot2['TimeslotID'] . "' />" . " " . $starttime . 
                     "-" . $endtime . " on " . $day . "<br>";
             }
           ?>
@@ -117,7 +150,7 @@
         <div class="form-group">
           <label class="col-md-3 control-label"></label>
           <div class="col-md-8">
-            <input class="btn btn-primary" value="Save Changes" type="submit">
+            <input name="submit" class="btn btn-primary" value="Save Changes" type="submit">
             <span></span>
             <input class="btn btn-default" value="Cancel" type="reset">
           </div>

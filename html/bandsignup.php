@@ -4,12 +4,8 @@
 
 <!-- BEGIN head -->
 <head>
-  <?php require_once "../php/modules/stdHead.php" ?>
-  <!-- we aren't using mdl anymore? feel free to delete this unless we are using its js?? -->
-  <!-- <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script> -->
-  
+  <?php require_once "../php/modules/stdHead.php" ?>  
   <title>Band Sign-Up</title>
-
 </head>
 
 <!-- BEGIN body -->
@@ -32,14 +28,14 @@
       Already have an account?
     </button>
 
-    <form role="form" class="form-horizontal">
+    <form role="form" class="form-horizontal" action="bandsignup.php" method="POST">
       <h4> Account Information </h4>
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label"> Your Name </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="John Doe" />
+                      <input name="username" type="text" class="form-control" placeholder="John Doe" />
                   </div>
               </div>
           </div>
@@ -49,7 +45,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="johndoe@gmail.com" />
+                      <input name="email" type="text" class="form-control" placeholder="johndoe@gmail.com" />
                   </div>
               </div>
           </div>
@@ -59,7 +55,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="password" class="form-control" />
+                      <input name="password" type="password" class="form-control" />
                   </div>
               </div>
           </div>
@@ -81,7 +77,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="John and Friends" />
+                      <input name="bandname" type="text" class="form-control" placeholder="John and Friends" />
                   </div>
               </div>
           </div>
@@ -91,7 +87,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" placeholder="John and Friends plays cool music." />
+                      <input name="banddescription" type="text" class="form-control" placeholder="John and Friends plays cool music." />
                   </div>
               </div>
           </div>
@@ -101,7 +97,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input id="autocomplete" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
+                      <input name="porchlocation" id="autocomplete" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
                   </div>
               </div>
           </div>
@@ -123,7 +119,7 @@
               $starttime = date_format(date_create($timeslot['StartTime']), 'g:iA');
               $endtime = date_format(date_create($timeslot['EndTime']), 'g:iA');
               $day = date_format(date_create($timeslot['StartTime']), 'F j, Y');
-              echo "<input type='checkbox' value='timeslot'" . $timeslot['TimeslotID'] . "/>" . " " . $starttime . 
+              echo "<input type='checkbox' value='" . $timeslot['TimeslotID'] . "' />" . " " . $starttime . 
                     "-" . $endtime . " on " . $day . "<br>";
             }
           ?>
@@ -137,7 +133,7 @@
               <div class="row">
                   <div class="col-md-9">
                     <div id="dynamicInput"> Band Member 1 <br>
-                      <input type="email" class="form-control" name="myInputs[]" placeholder="friend@gmail.com">
+                      <input type="email" class="form-control" name="members[]" placeholder="friend@gmail.com">
                     </div>
                   <input type="button" value="Add another band member" onClick="addInput('dynamicInput');">
                   </div>
@@ -151,6 +147,34 @@
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0LuERw-moYeLnWy_55RoShmUbQ51Yh-o&libraries=places&callback=initAutocomplete"
         async defer></script>
+
+<?php
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $bandname = htmlentities($_POST['bandname']);
+    $banddescription = htmlentities($_POST['banddescription']);
+    $bandcomment = htmlentities($_POST['bandname']);
+    $porchlocation = htmlentities($_POST['porchlocation']);
+
+    $sql = "UPDATE bands SET Name='" . $bandname . "', Description='" . $banddescription . "', Comment = '" . $bandcomment . "' WHERE BandID='1'";
+    $result = $conn->query($sql);
+    
+    if ($result) {
+      echo "success";
+    } else {
+      echo "fail";
+    }
+
+    $sql = "UPDATE bandstoporchfests SET PorchLocation='" . $porchlocation . "'  WHERE PorchfestID = '1' AND BandID='1'";
+    $result = $conn->query($sql);
+    
+    if ($result) {
+      echo "success";
+    } else {
+      echo "fail";
+    }
+
+  }
+?>
 
 </body>
   <script src="../js/addMembers.js"></script>
