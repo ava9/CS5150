@@ -48,7 +48,11 @@ $sql = "SELECT BandID, Name, Description FROM bands;";
 $result = $conn->query($sql);
 $bandLocation;
 $bandTimeSlotID;
-
+// SELECT bands.Name, bands.Description, PorchLocation, porchfesttimeslots.StartTime
+//FROM bands 
+//INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
+//INNER JOIN porchfesttimeslots ON porchfesttimeslots.TimeslotID = bandstoporchfests.TimeslotID
+//ORDER BY porchfesttimeslots.StartTime 
 if ($result->num_rows > 0) {
 	// output data of each row
 	while($row = $result->fetch_assoc()) {
