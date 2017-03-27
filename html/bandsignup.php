@@ -119,7 +119,7 @@
               $starttime = date_format(date_create($timeslot['StartTime']), 'g:iA');
               $endtime = date_format(date_create($timeslot['EndTime']), 'g:iA');
               $day = date_format(date_create($timeslot['StartTime']), 'F j, Y');
-              echo "<input type='checkbox' value='" . $timeslot['TimeslotID'] . "' />" . " " . $starttime . 
+              echo "<input name='available[]' type='checkbox' value='" . $timeslot['TimeslotID'] . "' />" . " " . $starttime . 
                     "-" . $endtime . " on " . $day . "<br>";
             }
           ?>
@@ -132,15 +132,32 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                    <div id="dynamicInput"> Band Member 1 <br>
-                      <input type="email" class="form-control" name="members[]" placeholder="friend@gmail.com">
-                    </div>
-                  <input type="button" value="Add another band member" onClick="addInput('dynamicInput');">
+                      <input name="bandmembers" type="text" class="form-control" placeholder="member1@gmail.com,member2@gmail.com,member3@gmail.com" />
                   </div>
               </div>
           </div>
       </div>
-      <button type="button" class="btn btn-primary btn-sm"> Submit </button>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Conflicting Bands </label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input name="bandconflicts" type="text" class="form-control" placeholder="Band1,Band2,Band3" />
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Comments </label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input name="bandcomment" type="text" class="form-control" placeholder="Any additional comments" />
+                  </div>
+              </div>
+          </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm"> Submit </button>
     </form>
 
   </div> <!-- end container div -->
@@ -152,27 +169,28 @@
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $bandname = htmlentities($_POST['bandname']);
     $banddescription = htmlentities($_POST['banddescription']);
-    $bandcomment = htmlentities($_POST['bandname']);
+    $bandmembers = htmlentities($_POST['bandmembers']);
+    $bandcomment = htmlentities($_POST['bandcomment']);
+    $bandconflicts = htmlentities($_POST['bandconflicts']);
     $porchlocation = htmlentities($_POST['porchlocation']);
 
-    $sql = "UPDATE bands SET Name='" . $bandname . "', Description='" . $banddescription . "', Comment = '" . $bandcomment . "' WHERE BandID='1'";
+    $sql = "INSERT INTO bands (Name, Description, Members, Comment, Conflicts) VALUES ('" . $bandname . "', '" . $banddescription . "', '" . $bandmembers . "', '" . $bandcomment . "', '" . $bandconflicts . "')";
     $result = $conn->query($sql);
-    
-    if ($result) {
-      echo "success";
-    } else {
-      echo "fail";
-    }
 
-    $sql = "UPDATE bandstoporchfests SET PorchLocation='" . $porchlocation . "'  WHERE PorchfestID = '1' AND BandID='1'";
+    $sql = "SELECT BandID FROM bands ORDER BY BandID DESC LIMIT 1";
     $result = $conn->query($sql);
+    $bandID = $result->fetch_assoc();
     
-    if ($result) {
-      echo "success";
-    } else {
-      echo "fail";
-    }
+    $sql = "INSERT INTO bandstoporchfests (PorchfestID, BandID, PorchLocation) VALUES ('1', '" . $bandID['BandID'] . "', '" . $porchlocation . "')";
+    $result = $conn->query($sql);
 
+    if (isset($_POST['available'])) {
+      $available = $_POST['available'];
+      foreach($available as $timeslot) {
+        $sql = "INSERT INTO bandavailabletimes (BandID, TimeslotID) VALUES ('" . $bandID['BandID'] . "', '" . $timeslot . "')";
+        $result = $conn->query($sql);
+      }
+    }
   }
 ?>
 
