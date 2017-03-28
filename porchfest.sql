@@ -2,9 +2,9 @@
 -- version 4.2.11
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Mar 25, 2017 at 02:24 AM
--- Server version: 5.6.21
+-- Host: 127.0.0.1
+-- Generation Time: Mar 27, 2017 at 05:59 AM
+-- Server version: 5.5.25a
 -- PHP Version: 5.6.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -31,16 +31,23 @@ CREATE TABLE IF NOT EXISTS `bandavailabletimes` (
   `TimeslotID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `bandmembers`
+-- Dumping data for table `bandavailabletimes`
 --
 
-CREATE TABLE IF NOT EXISTS `bandmembers` (
-  `BandID` int(11) NOT NULL,
-  `Email` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `bandavailabletimes` (`BandID`, `TimeslotID`) VALUES
+(18, 1),
+(1, 2),
+(18, 2),
+(18, 3),
+(15, 4),
+(17, 4),
+(18, 4),
+(1, 5),
+(15, 5),
+(17, 5),
+(18, 5),
+(18, 6);
 
 -- --------------------------------------------------------
 
@@ -52,25 +59,35 @@ CREATE TABLE IF NOT EXISTS `bands` (
 `BandID` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Description` varchar(255) NOT NULL,
-  `Comment` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+  `Members` varchar(255) NOT NULL,
+  `Comment` varchar(255) NOT NULL,
+  `Conflicts` varchar(255) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `bands`
 --
 
-INSERT INTO `bands` (`BandID`, `Name`, `Description`, `Comment`) VALUES
-(1, 'The 18 Strings Of Luv', 'The 18 Strings of Luv is Jan Nigro, John Simon and Ken Zeserson playing Beatles, Byrds, Motown and other critters from the 60''s with shimmering harmonies over a bed of interweaving acoustic guitars.', ''),
-(2, 'The Accords', 'The Accords is five voices and no instruments. Two men and three women singing popular songs from the 50s and 60s in street corner style.', ''),
-(3, 'Arthur B and The Planetary Mix', 'Original Old School New School Future School R n B! Arthur Bakert, Karen Wyatte, Angie Beeler, Snowy LaJoie, and Corey Kunzman are dedicated to bringing on the good vibes!', ''),
-(4, 'Auntie Ukulele Showcase', 'We showcase the ukulele in combos from solo to ensemble, and welcome players from Ithaca Ukes, Hickey''s Uke Circle and the Kendal Uke Players. With guest appearance by the Hula Hut Polynesian Dancers.', ''),
-(5, 'Acoustic Rust', 'Acoustic Rust is made up of guitar from Bugs and Kat, Henry on the stand up bass and Steve rocking the kit with a blend of new and old folk, rock and indie music, as well as enough Neil Young tunes to stay true to the rust. Tightly blended harmonies and s', ''),
-(6, 'Ageless Jazz Band', 'We''re the Ageless Jazz Band, a CSMA jazz ensemble under the expert direction of saxophonist Nick Pauldine. The band includes a full complement of saxophones, trumpets, and trombones, a swinging rhythm section and sizzling vocals. Performing the legendary ', ''),
-(7, 'Alan Rose', 'Alan Rose is the songwriter over the 12-String Edge! Sometimes the leader of the 9-piece band Alan Rose and the Restless Elements, he will be appearing solo at this year''s Porchfest. His songs will stick with you while you wander the neighborhood.', ''),
-(9, 'Alex Specker and Friends', 'Alex Specker on guitar, Harry Aceto on bass, and a guest or two, playing an instrumental mix of swing, latin jazz, blues/R&B. Danceable and ''sit-down listenable.''', ''),
-(10, 'Alt-Ac Quartet', 'Alt-Ac is a string quartet made up of graduate students Elisabeth Strayer, Hao Shi, Walter Fu, and Stephen Kim. Since late 2015, they have been playing both pop covers and classical music together, ranging from Beethoven to Beyonce.', ''),
-(11, 'Ann Warde', 'Beautiful Sounds: Sonatas and Interludes for Prepared Piano (1946-48), by John Cage, performed by Ann Warde. The piano preparations (nuts and bolts between the strings) create unexpectedly inviting, gentle buzzes, bells, resonant gongs, and extended piano', ''),
-(12, 'Anna OConnell', 'Anna O''Connell presents inventive folk-pop on her harp, accompanied by luscious strings that bring to life an exciting tonal world.', '');
+INSERT INTO `bands` (`BandID`, `Name`, `Description`, `Members`, `Comment`, `Conflicts`) VALUES
+(1, '18 Strings of Luv New', 'new description2', '', 'comment me', ''),
+(2, 'The Accords', 'The Accords is five voices and no instruments. Two men and three women singing popular songs from the 50s and 60s in street corner style.', '', '', ''),
+(3, 'Arthur B and The Planetary Mix', 'Original Old School New School Future School R n B! Arthur Bakert, Karen Wyatte, Angie Beeler, Snowy LaJoie, and Corey Kunzman are dedicated to bringing on the good vibes!', '', '', ''),
+(4, 'Auntie Ukulele Showcase', 'We showcase the ukulele in combos from solo to ensemble, and welcome players from Ithaca Ukes, Hickey''s Uke Circle and the Kendal Uke Players. With guest appearance by the Hula Hut Polynesian Dancers.', '', '', ''),
+(5, 'Acoustic Rust', 'Acoustic Rust is made up of guitar from Bugs and Kat, Henry on the stand up bass and Steve rocking the kit with a blend of new and old folk, rock and indie music, as well as enough Neil Young tunes to stay true to the rust. Tightly blended harmonies and s', '', '', ''),
+(6, 'Ageless Jazz Band', 'We''re the Ageless Jazz Band, a CSMA jazz ensemble under the expert direction of saxophonist Nick Pauldine. The band includes a full complement of saxophones, trumpets, and trombones, a swinging rhythm section and sizzling vocals. Performing the legendary ', '', '', ''),
+(7, 'Alan Rose', 'Alan Rose is the songwriter over the 12-String Edge! Sometimes the leader of the 9-piece band Alan Rose and the Restless Elements, he will be appearing solo at this year''s Porchfest. His songs will stick with you while you wander the neighborhood.', '', '', ''),
+(9, 'Alex Specker and Friends', 'Alex Specker on guitar, Harry Aceto on bass, and a guest or two, playing an instrumental mix of swing, latin jazz, blues/R&B. Danceable and ''sit-down listenable.''', '', '', ''),
+(10, 'Alt-Ac Quartet', 'Alt-Ac is a string quartet made up of graduate students Elisabeth Strayer, Hao Shi, Walter Fu, and Stephen Kim. Since late 2015, they have been playing both pop covers and classical music together, ranging from Beethoven to Beyonce.', '', '', ''),
+(11, 'Ann Warde', 'Beautiful Sounds: Sonatas and Interludes for Prepared Piano (1946-48), by John Cage, performed by Ann Warde. The piano preparations (nuts and bolts between the strings) create unexpectedly inviting, gentle buzzes, bells, resonant gongs, and extended piano', '', '', ''),
+(12, 'Anna OConnell', 'Anna O''Connell presents inventive folk-pop on her harp, accompanied by luscious strings that bring to life an exciting tonal world.', '', '', ''),
+(13, 'Testband', 'testband', '', '', ''),
+(14, 'Testband2', 'testband2', '', '', ''),
+(15, 'testband3', 'testband4', '', '', ''),
+(16, 'finaltest', 'finaltest', '', 'doiwork', 'Band5,band6'),
+(17, 'testingme', 'testingme', '', 'commentsallday', 'conflict1,conflict2'),
+(18, 'multiple', '', '', '', ''),
+(19, 'hello2', '', '', '', ''),
+(20, 'hello555555555', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -90,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `bandstoporchfests` (
 --
 
 INSERT INTO `bandstoporchfests` (`BandID`, `PorchfestID`, `PorchLocation`, `TimeslotID`) VALUES
-(1, 1, '', NULL),
+(1, 1, '516 West State Street, Ithaca, NY, United States', NULL),
 (2, 1, '', NULL),
 (3, 1, '', NULL),
 (4, 1, '', NULL),
@@ -100,7 +117,11 @@ INSERT INTO `bandstoporchfests` (`BandID`, `PorchfestID`, `PorchLocation`, `Time
 (9, 1, '', NULL),
 (10, 1, '', NULL),
 (11, 1, '', NULL),
-(12, 1, '', NULL);
+(12, 1, '', NULL),
+(17, 1, 'testingme', NULL),
+(18, 1, '', NULL),
+(19, 1, '', NULL),
+(20, 1, '', NULL);
 
 -- --------------------------------------------------------
 
@@ -183,6 +204,13 @@ CREATE TABLE IF NOT EXISTS `userstobands` (
   `BandID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `userstobands`
+--
+
+INSERT INTO `userstobands` (`UserID`, `BandID`) VALUES
+(1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -209,13 +237,7 @@ INSERT INTO `userstoporchfests` (`UserID`, `PorchfestID`) VALUES
 -- Indexes for table `bandavailabletimes`
 --
 ALTER TABLE `bandavailabletimes`
- ADD KEY `BandID` (`BandID`,`TimeslotID`), ADD KEY `TimeslotID` (`TimeslotID`);
-
---
--- Indexes for table `bandmembers`
---
-ALTER TABLE `bandmembers`
- ADD KEY `BandID` (`BandID`);
+ ADD PRIMARY KEY (`BandID`,`TimeslotID`), ADD KEY `BandID` (`BandID`,`TimeslotID`), ADD KEY `TimeslotID` (`TimeslotID`);
 
 --
 -- Indexes for table `bands`
@@ -227,7 +249,7 @@ ALTER TABLE `bands`
 -- Indexes for table `bandstoporchfests`
 --
 ALTER TABLE `bandstoporchfests`
- ADD KEY `BandID` (`BandID`,`PorchfestID`,`TimeslotID`), ADD KEY `PorchfestID` (`PorchfestID`), ADD KEY `TimeslotID` (`TimeslotID`);
+ ADD PRIMARY KEY (`BandID`,`PorchfestID`), ADD KEY `BandID` (`BandID`,`PorchfestID`,`TimeslotID`), ADD KEY `PorchfestID` (`PorchfestID`), ADD KEY `TimeslotID` (`TimeslotID`);
 
 --
 -- Indexes for table `porchfests`
@@ -251,13 +273,13 @@ ALTER TABLE `users`
 -- Indexes for table `userstobands`
 --
 ALTER TABLE `userstobands`
- ADD KEY `UserID` (`UserID`,`BandID`), ADD KEY `BandID` (`BandID`);
+ ADD PRIMARY KEY (`UserID`,`BandID`), ADD KEY `UserID` (`UserID`,`BandID`), ADD KEY `BandID` (`BandID`);
 
 --
 -- Indexes for table `userstoporchfests`
 --
 ALTER TABLE `userstoporchfests`
- ADD KEY `UserID` (`UserID`), ADD KEY `PorchfestID` (`PorchfestID`);
+ ADD PRIMARY KEY (`UserID`,`PorchfestID`), ADD KEY `UserID` (`UserID`), ADD KEY `PorchfestID` (`PorchfestID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -267,7 +289,7 @@ ALTER TABLE `userstoporchfests`
 -- AUTO_INCREMENT for table `bands`
 --
 ALTER TABLE `bands`
-MODIFY `BandID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+MODIFY `BandID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `porchfests`
 --
@@ -293,12 +315,6 @@ MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 ALTER TABLE `bandavailabletimes`
 ADD CONSTRAINT `bandavailabletimes_ibfk_1` FOREIGN KEY (`BandID`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `bandavailabletimes_ibfk_2` FOREIGN KEY (`TimeslotID`) REFERENCES `porchfesttimeslots` (`TimeslotID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `bandmembers`
---
-ALTER TABLE `bandmembers`
-ADD CONSTRAINT `bandmembers_ibfk_1` FOREIGN KEY (`BandID`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `bandstoporchfests`

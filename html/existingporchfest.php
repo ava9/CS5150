@@ -147,6 +147,8 @@
     </form>
   </div> <!-- end container div -->
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0LuERw-moYeLnWy_55RoShmUbQ51Yh-o&libraries=places&callback=initAutocomplete"
+        async defer></script>
 
 </body>
 </html>

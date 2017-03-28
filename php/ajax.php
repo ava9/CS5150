@@ -22,9 +22,43 @@
 		$sql = "UPDATE porchfests SET Name='" . $porchfestname . "', Location='" . $porchfestlocation . "', Date = '" . $porchfestdate . "' WHERE PorchfestID=1";
 
 		$result = $conn->query($sql);
-		echo $conn->error;
+		
+		if ($result) {
+			echo "success";
+		} else {
+			echo "fail";
+		}
+
+	} elseif (isset($_POST['timeslotstart']) && isset($_POST['timeslotend']) && isset($_POST['start']) && isset($_POST['end'])) {
+		// ** editporchfest.php: update timeslot.
+		$timeslotstart = htmlentities($_POST['timeslotstart']);
+		$timeslotend = htmlentities($_POST['timeslotend']);
+		$start = date_create_from_format('Y.m.d g:i A', htmlentities($_POST['start']));
+		$end = date_create_from_format('Y.m.d g:i A', htmlentities($_POST['end']));
+
+		$datestart = date_create_from_format('g:i A', $timeslotstart);
+		$dateend = date_create_from_format('g:i A', $timeslotend);
+
+		
+		$sql = "SELECT TimeslotID FROM porchfesttimeslots WHERE StartTime='" . $start->format('Y-m-d H:i:s') . "' AND EndTime='". $end->format('Y-m-d H:i:s') . "'";
+		$result = $conn->query($sql);
+		$timeslotid = $result->fetch_assoc()['TimeslotID'];
+
+		$start->setTime($datestart->format('H'), $datestart->format('i'));
+		$end->setTime($dateend->format('H'), $dateend->format('i'));
+
+		$sql = "UPDATE porchfesttimeslots SET StartTime='" . $start->format('Y-m-d H:i:s') . "', EndTime='" . $end->format('Y-m-d H:i:s') . "' WHERE PorchfestID=1 AND TimeslotID=" . $timeslotid;
+
+		$result = $conn->query($sql);		
+
+		if ($result) {
+			echo 'success';
+		} else {
+			echo 'fail';
+		}
+
 	} elseif (isset($_GET['bandname'])) {
-		// ** editporchfest.php: form to manage porchfest 
+		// ** editporchfest.php: search functionality to display bands that match name.
 		$name = htmlentities($_GET['bandname']);
 		echo "<table class='responsive table'> <!-- begin table -->";
 		echo "<tr data-status= 'fixed'>";

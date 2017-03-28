@@ -1,6 +1,6 @@
 <?php // ** MySQL connection settings ** //
 // database host
-define('DB_HOST', 'localhost');
+define('DB_HOST', '127.0.0.1');
 
 // database name
 define('DB_NAME', 'porchfest');

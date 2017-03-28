@@ -17,8 +17,9 @@
 
 <body>
 <!-- navBar and login -->
-<?php require_once "../php/modules/login.php"; ?>
+
 <?php require_once "../php/modules/navigation.php"; ?>
+<?php require_once "../php/modules/login.php"; ?>
 
 
 <div class="container"> <!-- begin container div -->
@@ -113,9 +114,6 @@
 
      });
   </script>
-
-  <!-- Bootstrap Core JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </body>
 </html>

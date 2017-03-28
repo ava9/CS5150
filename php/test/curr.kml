@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://www.opengis.net/kml/2.2' xmlns:atom='http://www.w3.org/2005/Atom' xmlns:gx='http://www.google.com/kml/ext/2.2' xmlns:kml='http://www.opengis.net/kml/2.2' xmlns:xal='urn:oasis:names:tc:ciq:xsdschema:xAL:2.0'>
+	<Document>
+		<Folder id="9:23 AM">
+			<Style id="1">
+				<LabelStyle>
+					<color>50FF7800</color>
+					<colorMode>normal</colorMode>
+					<scale>1</scale>
+				</LabelStyle>
+			</Style>
+			<name>9:23 AM</name>
+			<Placemark>
+				<name>Band 1</name>
+				<description>Band 1 Description</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.483469,42.442064,0.0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Folder id="4:12 AM">
+			<Style id="2">
+				<LabelStyle>
+					<color>5014F0FF</color>
+					<colorMode>normal</colorMode>
+					<scale>1</scale>
+				</LabelStyle>
+			</Style>
+			<name>4:12 AM</name>
+			<Placemark>
+				<name>Band 2</name>
+				<description>Band 2 Description</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4850031,42.4421236,0.0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+	</Document>
+</kml>
