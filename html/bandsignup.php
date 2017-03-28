@@ -19,6 +19,7 @@
     <!-- navBar and login -->
     <?php require_once "../php/modules/login.php"; ?>
     <?php require_once "../php/modules/navigation.php"; ?>
+    <?php require_once "../php/routing.php"; ?>
     
     <div class="row">
       <h1 style="text-align:center;"> Sign-up to perform for Ithaca Porchfest </h1>

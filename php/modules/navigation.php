@@ -8,13 +8,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.php" id="navbrand"> Porchfest </a>
+            <a class="navbar-brand" href="/cs5150/html/" id="navbrand"> Porchfest </a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="browse.php"> Browse Porchfests </a>
+                    <a href="/cs5150/html/browse"> Browse Porchfests </a>
                 </li>
                 <?php 
                     if (isset($_POST['logout'])) {
@@ -53,8 +53,8 @@
                         <li class='dropdown'>
                                 <a href='#'' class='dropdown-toggle' data-toggle='dropdown'> My Account </a>
                                 <ul class='dropdown-menu'>
-                                    <li><a href='myporchfests.php'> My Porchfests </a></li>
-                                    <li><a href='myprofile.php'> My Profile </a></li>
+                                    <li><a href='/cs5150/html/myporchfests/'> My Porchfests </a></li>
+                                    <li><a href='/cs5150/html/profile/'> My Profile </a></li>
                                 </ul>
                         </li>
                         

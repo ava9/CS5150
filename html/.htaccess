@@ -1,0 +1,17 @@
+Options -MultiViews
+RewriteEngine On
+
+RewriteRule ^browse(\/)? browse.php [NC,L]
+RewriteRule ^existing(\/)? existingporchfest.php [NC,L]
+RewriteRule ^myporchfests(\/)? myporchfests.php [NC,L]
+RewriteRule ^profile(\/)? myprofile.php [NC,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^singleporchfest/([A-Za-z0-9\-_]+)/?$ singleporchfest.php?location=$1 [NC,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^bandsignup/([A-Za-z0-9\-_]+)/? bandsignup.php?location=$1 [NC,L]
+
+#RewriteRule ^(.*)? index.php [NC,L]

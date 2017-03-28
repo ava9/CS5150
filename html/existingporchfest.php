@@ -75,7 +75,7 @@
           </div>
       </div>
       <br>
-      <a href="index.php"> Want to create a new Porchfest website? </a>
+      <a href="/cs5150/html/"> Want to create a new Porchfest website? </a>
       <h4> Porchfest Information </h4>
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label">
