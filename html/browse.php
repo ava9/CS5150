@@ -69,7 +69,7 @@
 
                   echo '<tr data-status = "' . $status . '">
                         <td> 
-                          <a href="singleporchfest/' . strtolower($porchfest['Location']) . '">' 
+                          <a href="singleporchfest/' . strtolower($porchfest['Name']) . '">' 
                             . $porchfest['Name'] . '</a>
                         </td>
                         <td>' . $day . '</td>
@@ -77,7 +77,7 @@
                         <td>' . $porchfest['Description'] . '</td>
                         <td>' . $deadline . '</td>
                         <td>  
-                          <a href="bandsignup/' . strtolower($porchfest['Location']) . '"> Join </a>
+                          <a href="bandsignup/' . strtolower($porchfest['Name']) . '"> Join </a>
                         </td>
                       </tr>';
                 }
