@@ -570,6 +570,7 @@ function improve($sched) {
   
 # create schedule then repeat
 function run(){
+  global $conn;
   $result;
   $NUM_SCHEDS_TO_GENERATE = 1;
   
@@ -597,9 +598,9 @@ function run(){
   foreach ($finalSched as $ts => $bands) {
     foreach ($bands as $b) {
       $id = $b->id;
-      $sql = "UPDATE bandstoporchfests SET TimeslotID = " + strval($ts) + " WHERE BandID = " + strval($id) + " AND PorchfestID = 1";
+      $sql = "UPDATE bandstoporchfests SET TimeslotID = " . $ts . " WHERE BandID = " . $id . " AND PorchfestID = 1";
       if ($conn->query($sql) === false) {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $sql . "<br>" . $conn->error . "\n";
       }
     }
   }

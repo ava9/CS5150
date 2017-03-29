@@ -240,7 +240,7 @@ def run():
       result = tmp
   
   #******* POST PROCESS *******
-  result.exportToCSV()
+  updateDB(result)
 
 
 
