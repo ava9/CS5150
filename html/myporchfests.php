@@ -78,7 +78,8 @@
                     $deadline = date_format(date_create($porchfest['Deadline']), 'g:iA \o\n F j, Y');
                     echo '<tr data-status = "' . $status . '">
                           <td> 
-                            <a href="singleporchfest.php">' . $porchfest['Name'] . '</a>
+                            <a href="singleporchfest/' . strtolower($porchfest['Name']) . '">' 
+                            . $porchfest['Name'] . '</a>
                           </td>
                           <td>' . $day . '</td>
                           <td>' . $porchfest['Location'] . '</td>
@@ -86,7 +87,7 @@
                           <td> Organizer </td>
                           <td>' . $deadline . '</td>
                           <td>' . $isPublished . '</td>
-                          <td> <a href="editporchfest.php"> Edit </a> </td>
+                          <td> <a href="editporchfest/' . strtolower($porchfest['Name']) . '"> Edit </a> </td>
                         </tr>';
                   }
 
@@ -111,7 +112,8 @@
                     $deadline = date_format(date_create($porchfest['Deadline']), 'g:iA \o\n F j, Y');
                     echo '<tr data-status = "' . $status . '">
                           <td> 
-                            <a href="singleporchfest.php">' . $porchfest['Name'] . '</a>
+                            <a href="singleporchfest/' . strtolower($porchfest['Name']) . '">' 
+                            . $porchfest['Name'] . '</a>
                           </td>
                           <td>' . $day . '</td>
                           <td>' . $porchfest['Location'] . '</td>
@@ -119,7 +121,7 @@
                           <td> Performer () </td>
                           <td>' . $deadline . '</td>
                           <td>' . $isPublished . '</td>
-                          <td> <a href="editband.php"> Edit </a> </td>
+                          <td> <a href="editband/' . strtolower($porchfest['Name']) . '"> Edit </a> </td>
                         </tr>';
                   }
               ?>

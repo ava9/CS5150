@@ -12,6 +12,7 @@
 <body>
   <?php // Database credentials
     require_once "../php/config.php";
+    require_once "../php/routing.php";
 
     // Create connection
     // add DB_USER and DB_PASSWORD later
@@ -107,7 +108,7 @@
         </div> <!-- end date div -->
 
         <div class="tab-pane fade in" id="map"> <!-- begin map div -->
-          <img src="../img/map.png" alt="map" id = "map">
+          <img src="/cs5150/img/map.png" alt="map" id = "map">
         </div> <!-- end map div -->
       
       </div> <!-- end tab-content div -->
