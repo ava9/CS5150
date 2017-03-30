@@ -34,11 +34,13 @@
         $result = $mysqli->query("SELECT * FROM users WHERE email = '$email'");
         $row = $result->fetch_row();
         if (empty($row)) {
-          $result = $mysqli->query("INSERT INTO users (Email, Password, Name, ContactInfo) VALUES ('$email', '$password', '$name', '$mobile')");
-          if (!$result) {
-            echo "<script type='text/javascript'>alert('DB failed to add you!.');</script>";
-          } else {
+          $prep = $mysqli->prepare("INSERT INTO users (Email, Password, Name, ContactInfo) VALUES (?,?,?,?)");
+          $prep->bind_param("ssss", $email, $password, $name, $mobile);
+          $prep->execute();
+          if ($prep->affected_rows) {
             echo "<script type='text/javascript'>alert('$name, you have been added successfully!.');</script>";
+          } else {
+            echo "<script type='text/javascript'>alert('DB failed to add you!.');</script>";
           }
         } else { 
           echo "<script type='text/javascript'>alert('User already exists!.');</script>";
