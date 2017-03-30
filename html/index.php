@@ -10,6 +10,60 @@
 
 <!-- BEGIN body -->
 <body>
+<?php 
+  if (isset($_POST['submitInfo'])) {
+    $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
+    $mobile = filter_var($_POST['mobile'], FILTER_SANITIZE_STRING);
+    $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
+    $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
+    $porchfestName = filter_var($_POST['porchfestName'], FILTER_SANITIZE_STRING);
+    $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+    $location = filter_var($_POST['location'], FILTER_SANITIZE_STRING);
+    $date = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
+    $deadline = filter_var($_POST['deadline'], FILTER_SANITIZE_STRING);
+
+    // handle new user logic
+    if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['mobile']) && isset($_POST['password']) && isset($_POST['confirmPassword']) && $name != '' && $email != '' && $mobile != '' && $password != '' && $confirmPassword != '') {
+      
+      require_once('../php/config.php');
+      $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+      if ($password != $confirmPassword) {
+        echo "<script type='text/javascript'>alert('Passwords do not match!');</script>";
+      } else {
+        $result = $mysqli->query("SELECT * FROM users WHERE email = '$email'");
+        $row = $result->fetch_row();
+        if (empty($row)) {
+          $result = $mysqli->query("INSERT INTO users (Email, Password, Name, ContactInfo) VALUES ('$email', '$password', '$name', '$mobile')");
+          if (!$result) {
+            echo "<script type='text/javascript'>alert('DB failed to add you!.');</script>";
+          } else {
+            echo "<script type='text/javascript'>alert('$name, you have been added successfully!.');</script>";
+          }
+        } else { 
+          echo "<script type='text/javascript'>alert('User already exists!.');</script>";
+        }
+      }
+    }
+
+    // handle new porchfest Logic
+    if (isset($_POST['porchfestName']) && isset($_POST['description']) && isset($_POST['location']) && isset($_POST['date']) && isset($_POST['deadline']) && $porchfestName != '' && $description != '' && $location != '' && $date != '' && $deadline != '') {
+      require_once('../php/config.php');
+      $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+      $prep = $mysqli->prepare("INSERT INTO porchfests (Name, Location, Date, Description, Deadline) VALUES (?,?,?,?,?)");
+      $prep->bind_param("sssss", $porchfestName, $location, $date, $description, $deadline);
+      $prep->execute();
+      if ($prep->affected_rows) {
+        echo "<script type='text/javascript'>alert('The porchfest, $porchfestName, has been added successfully!.');</script>";
+      } else {
+        echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
+      }
+    }
+
+
+  } 
+?>
   <div class="container"> 
     <!-- navBar and login -->
     <?php require_once "../php/modules/login.php"; ?>
@@ -27,7 +81,7 @@
       Already have an account?
     </button>
 
-    <form role="form" class="form-horizontal">
+    <form role="form" class="form-horizontal" id='submit-info-form' method='POST'>
       <h4> Account Information </h4>
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label"> Your Name</label>
@@ -74,20 +128,20 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="password" class="form-control" placeholder="Password" />
+                      <input type="password" name="confirmPassword" class="form-control" placeholder="Password" />
                   </div>
               </div>
           </div>
       </div>
       <br>
-      <a href="/cs5150/html/existing/"> Already have an existing Porchfest website? </a>
+      <a href="existingporchfest.php"> Already have an existing Porchfest website? </a>
       <h4> Porchfest Information </h4>
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label"> Porchfest Name</label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" name="porchfestname" placeholder="Ithaca Porchfest" />
+                      <input type="text" name="porchfestName" class="form-control" placeholder="Ithaca Porchfest" />
                   </div>
               </div>
           </div>
@@ -108,7 +162,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input id="autocomplete" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
+                      <input id="autocomplete" name="location" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
                   </div>
               </div>
           </div>
@@ -118,7 +172,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="date" class="form-control" name="date" placeholder="Date" />
+                      <input type="date" name="date" class="form-control" placeholder="Date" />
                   </div>
               </div>
           </div>
@@ -128,12 +182,12 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="datetime-local" class="form-control" placeholder="Deadline" />
+                      <input type="datetime-local" name="deadline" lass="form-control" placeholder="Deadline" />
                   </div>
               </div>
           </div>
       </div>
-      <button type="submit" class="btn btn-primary btn-sm"> Submit </button>
+      <button type="submit" name="submitInfo" class="btn btn-primary btn-sm"> Submit </button>
     </form>
   </div> <!-- end container div -->
 
