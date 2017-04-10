@@ -69,14 +69,15 @@
 
                   echo '<tr data-status = "' . $status . '">
                         <td> 
-                          <a href="singleporchfest.php">' . $porchfest['Name'] . '</a>
+                          <a href="singleporchfest/' . strtolower($porchfest['Name']) . '">' 
+                            . $porchfest['Name'] . '</a>
                         </td>
                         <td>' . $day . '</td>
                         <td>' . $porchfest['Location'] . '</td>
                         <td>' . $porchfest['Description'] . '</td>
                         <td>' . $deadline . '</td>
                         <td>  
-                          <a href="bandsignup.php"> Join </a>
+                          <a href="bandsignup/' . strtolower($porchfest['Name']) . '"> Join </a>
                         </td>
                       </tr>';
                 }
