@@ -22,6 +22,8 @@ function getCoordinates($address){
 function printStyle($colorArr, $i){
 	// TODO print style
 	$s = '"' .$i . '"';
+	$i = $i - 1;
+	$i = $i % 20;
 	echo ("\t\t\t<Style id=".$s.">\n");
 	echo ("\t\t\t\t<LabelStyle>\n");
 	echo ("\t\t\t\t\t<color>".$colorArr[$i]."</color>\n");
