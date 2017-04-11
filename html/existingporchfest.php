@@ -75,7 +75,7 @@
           </div>
       </div>
       <br>
-      <a href="index.php"> Want to create a new Porchfest website? </a>
+      <a href="/cs5150/html/"> Want to create a new Porchfest website? </a>
       <h4> Porchfest Information </h4>
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label">
@@ -147,6 +147,8 @@
     </form>
   </div> <!-- end container div -->
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0LuERw-moYeLnWy_55RoShmUbQ51Yh-o&libraries=places&callback=initAutocomplete"
+        async defer></script>
 
 </body>
 </html>
