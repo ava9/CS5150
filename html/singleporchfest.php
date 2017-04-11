@@ -4,15 +4,17 @@
 
 <!-- BEGIN head -->
 <head>
-  <?php require_once "../php/modules/stdHead.php" ?>
-  <title>PorchFest - My Account (singlePorchfest??)</title>
+  <?php 
+    require_once "../php/modules/stdHead.php";
+    require_once "../php/routing.php";
+  ?>
+  <title>PorchFest - <?php echo URI_ARRAY[1] ?> </title>
 </head>
 
 <!-- BEGIN body -->
 <body>
   <?php // Database credentials
     require_once "../php/config.php";
-    require_once "../php/routing.php";
 
     // Create connection
     // add DB_USER and DB_PASSWORD later
@@ -41,7 +43,9 @@
   <div class="container" id = "singleporchfestcontainer"> <!-- Container div -->
     
     <div class="row">
-      <h1 style="text-align:center;"> Ithaca Porchfest </h1>
+      <h1 style="text-align:center;"> 
+        <?php echo URI_ARRAY[1]; ?> 
+      </h1>
     </div>
 
     

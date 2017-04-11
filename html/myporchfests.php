@@ -4,10 +4,10 @@
 <head>
   <?php require_once "../php/modules/stdHead.php" ?>
   <!-- Responsive table js -->
-  <script src="responsive-tables.js"></script>
+  <script src="../js/responsive-tables.js"></script>
 
   <!-- Responsive tables CSS -->
-  <link rel="stylesheet" href="responsive-tables.css">
+  <link rel="stylesheet" href="css/responsive-tables.css">
 </head>
 <body>
   <?php // Database credentials
@@ -65,21 +65,33 @@
 
                   $result = $conn->query($sql);
 
+                  // Add each porchfest where you are the organizer to the table
                   while($porchfest = $result->fetch_assoc()) {
+                    // Set published 
                     $isPublished = 'No';
                     if ($porchfest['Published'] != 0) {
                       $isPublished = 'Yes';
                     }
+
+                    // Set status for past/upcoming filtering
                     $status = 'upcoming';
                     if (strtotime($porchfest['Date']) < date("Y-m-d")) {
                       $status = 'past';
                     }
                     $day = date_format(date_create($porchfest['Date']), 'F j, Y');
                     $deadline = date_format(date_create($porchfest['Deadline']), 'g:iA \o\n F j, Y');
+
+                    // Set the URL to link to. Should one not exist (not provided), then link to
+                    // website's single porchfest view
+                    $href = '"singleporchfest/' . strtolower($porchfest['Name']);
+                    if ($porchfest['URL'] != '') {
+                      $href = $porchfest['URL'];
+                    }
+
+                    // HTML code for table row
                     echo '<tr data-status = "' . $status . '">
                           <td> 
-                            <a href="singleporchfest/' . strtolower($porchfest['Name']) . '">' 
-                            . $porchfest['Name'] . '</a>
+                            <a href=' . $href . '">' . $porchfest['Name'] . '</a>
                           </td>
                           <td>' . $day . '</td>
                           <td>' . $porchfest['Location'] . '</td>
@@ -87,7 +99,7 @@
                           <td> Organizer </td>
                           <td>' . $deadline . '</td>
                           <td>' . $isPublished . '</td>
-                          <td> <a href="editporchfest/' . strtolower($porchfest['Name']) . '"> Edit </a> </td>
+                          <td> <a href="editporchfest/' . strtolower($porchfest['Name']) . '"> Edit Porchfest </a> </td>
                         </tr>';
                   }
 
@@ -99,21 +111,31 @@
 
                   $result = $conn->query($sql);
 
+                  // Add each porchfest where you are a performer to the table
                   while($porchfest = $result->fetch_assoc()) {
+                    // Set published 
                     $isPublished = 'No';
                     if ($porchfest['Published'] != 0) {
                       $isPublished = 'Yes';
                     }
+
+                    // Set status for past/upcoming filtering
                     $status = 'upcoming';
                     if (strtotime($porchfest['Date']) < date("Y-m-d")) {
                       $status = 'past';
                     }
                     $day = date_format(date_create($porchfest['Date']), 'F j, Y');
                     $deadline = date_format(date_create($porchfest['Deadline']), 'g:iA \o\n F j, Y');
+
+                    // Set the URL to link to. Should one not exist (not provided), then link to
+                    // website's single porchfest view
+                    $href = '"singleporchfest/' . strtolower($porchfest['Name']);
+                    if ($porchfest['URL'] != '') {
+                      $href = $porchfest['URL'];
+                    }
                     echo '<tr data-status = "' . $status . '">
                           <td> 
-                            <a href="singleporchfest/' . strtolower($porchfest['Name']) . '">' 
-                            . $porchfest['Name'] . '</a>
+                            <a href=' . $href . '">' . $porchfest['Name'] . '</a>
                           </td>
                           <td>' . $day . '</td>
                           <td>' . $porchfest['Location'] . '</td>
@@ -121,7 +143,7 @@
                           <td> Performer () </td>
                           <td>' . $deadline . '</td>
                           <td>' . $isPublished . '</td>
-                          <td> <a href="editband/' . strtolower($porchfest['Name']) . '"> Edit </a> </td>
+                          <td> <a href="editband/' . strtolower($porchfest['Name']) . '"> Edit Band </a> </td>
                         </tr>';
                   }
               ?>

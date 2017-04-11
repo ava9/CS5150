@@ -119,12 +119,12 @@
         <div class="col-sm-2"> <!-- begin col 1 div -->
             <nav class="nav-sidebar">
                 <ul class="nav">
-                    <li class="active"><a href="#manageporchfest" data-toggle="tab"> Manage Porchfest </a></li>
-                    <li><a href="#bands" data-toggle="tab"> Manage Bands </a></li>
-                    <li><a href="#timeslots" data-toggle="tab"> Manage Time Slots </a></li>
-                    <li><a href="#schedule" data-toggle="tab"> Schedule </a></li>
-                    <li><a href="#publish" data-toggle="tab"> Publish </a></li>
-                    <li class="nav-divider"></li>
+                  <li class="active"><a href="#manageporchfest" data-toggle="tab"> Manage Porchfest </a></li>
+                  <li><a href="#bands" data-toggle="tab"> Manage Bands </a></li>
+                  <li><a href="#timeslots" data-toggle="tab"> Manage Time Slots </a></li>
+                  <li><a href="#schedule" data-toggle="tab"> Schedule </a></li>
+                  <li><a href="#publish" data-toggle="tab"> Publish </a></li>
+                  <li class="nav-divider"></li>
                 </ul>
             </nav>
         </div> <!-- end col 1 div -->
