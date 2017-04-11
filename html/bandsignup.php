@@ -18,10 +18,13 @@
     <?php require_once "../php/routing.php"; ?>
     
     <div class="row">
-      <h1 style="text-align:center;"> Sign-up to perform for Ithaca Porchfest </h1>
+      <h1 style="text-align:center;"> 
+        Sign-up to perform for <?php echo ucwords(urldecode(URI_ARRAY[1])); ?>
+      </h1>
     </div>
 
-    <p> If you would like to perform for Ithaca Porchfest, please fill out the form below. 
+    <p> If you would like to perform for <?php echo ucwords(urldecode(URI_ARRAY[1])); ?>,
+      please fill out the form below. 
       <br>Filling out this form will create an account that you can log back into to edit your information.
     </p>
 

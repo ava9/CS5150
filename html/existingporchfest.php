@@ -10,6 +10,61 @@
 
 <!-- BEGIN body -->
 <body>
+  <?php
+    if (isset($_POST['submitInfo'])) {
+      $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+      $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
+      $mobile = filter_var($_POST['mobile'], FILTER_SANITIZE_STRING);
+      $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
+      $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
+      $porchfestName = filter_var($_POST['porchfestName'], FILTER_SANITIZE_STRING);
+      $porchfestURL = filter_var($_POST['porchfestURL'], FILTER_SANITIZE_STRING);
+      $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+      $location = filter_var($_POST['location'], FILTER_SANITIZE_STRING);
+      $date = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
+      $deadline = filter_var($_POST['deadline'], FILTER_SANITIZE_STRING);
+    
+      // handle new user logic
+      if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['mobile']) && isset($_POST['password']) && isset($_POST['confirmPassword']) && $name != '' && $email != '' && $mobile != '' && $password != '' && $confirmPassword != '') {
+        
+        require_once('../php/config.php');
+        $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        if ($password != $confirmPassword) {
+          echo "<script type='text/javascript'>alert('Passwords do not match!');</script>";
+        } else {
+          $result = $mysqli->query("SELECT * FROM users WHERE email = '$email'");
+          $row = $result->fetch_row();
+          if (empty($row)) {
+            $prep = $mysqli->prepare("INSERT INTO users (Email, Password, Name, ContactInfo) VALUES (?,?,?,?)");
+            $prep->bind_param("ssss", $email, $password, $name, $mobile);
+            $prep->execute();
+            if ($prep->affected_rows) {
+              echo "<script type='text/javascript'>alert('$name, you have been added successfully!.');</script>";
+            } else {
+              echo "<script type='text/javascript'>alert('DB failed to add you!.');</script>";
+            }
+          } else { 
+            echo "<script type='text/javascript'>alert('User already exists!.');</script>";
+          }
+        }
+      }
+
+      // handle new porchfest Logic
+      if (isset($_POST['porchfestName']) && isset($_POST['description']) && isset($_POST['location']) && isset($_POST['date']) && isset($_POST['deadline']) && $porchfestName != '' && $description != '' && $location != '' && $date != '' && $deadline != '') {
+        require_once('../php/config.php');
+        $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+        $prep = $mysqli->prepare("INSERT INTO porchfests (URL, Name, Location, Date, Description, Deadline) VALUES (?,?,?,?,?,?)");
+        $prep->bind_param("ssssss", $porchfestURL, $porchfestName, $location, $date, $description, $deadline);
+        $prep->execute();
+        if ($prep->affected_rows) {
+          echo "<script type='text/javascript'>alert('The porchfest, $porchfestName, has been added successfully!.');</script>";
+        } else {
+          echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
+        }
+      }
+    } 
+  ?>
   
   <div class="container"> <!-- Container div -->
     <!-- navBar and login -->
@@ -48,6 +103,16 @@
               <div class="row">
                   <div class="col-md-9">
                       <input type="email" class="form-control" name="email" placeholder="johndoe@gmail.com" />
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Mobile</label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input type="tel" class="form-control" name="mobile" placeholder="(123) 456-7891" />
                   </div>
               </div>
           </div>
@@ -94,7 +159,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="url" class="form-control" name="url" placeholder="ithacaporchfest.com" />
+                      <input type="url" class="form-control" name="porchfestURL" placeholder="ithacaporchfest.com" />
                   </div>
               </div>
           </div>
@@ -143,7 +208,7 @@
               </div>
           </div>
       </div>
-      <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+      <button type="submit" name="submitPorchfest" class="btn btn-primary btn-sm">Submit</button>
     </form>
   </div> <!-- end container div -->
 

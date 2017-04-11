@@ -8,22 +8,12 @@
     }
 
     $base_url = getCurrentUri();
-    echo sprintf("Current URI: %s \n", $base_url);
-    // $routes = array();
-    // $routes = explode('/', $base_url);
-    // foreach($routes as $route)
-    // {
-    //     if(trim($route) != '')
-    //         array_push($routes, $route);
-    // }
+    // echo sprintf("Current URI: %s \n", $base_url);
+    $uri_array = array_values(array_filter(explode('/', $base_url)));
+    foreach ($uri_array as $key => $value) {
+        $uri_array[$key] = ucwords(urldecode($value));
+    }
+    define('URI_ARRAY', $uri_array);
 
-    // EXAMPLES
-
-    // if($routes[0] == “search”)
-    // {
-    //     if($routes[1] == “book”)
-    //     {
-    //         searchBooksBy($routes[2]);
-    //     }
-    // }
 ?>
+
