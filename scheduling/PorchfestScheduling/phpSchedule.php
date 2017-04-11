@@ -225,7 +225,7 @@ function getCoordinates($address){
 /************************************************************/
 
 class Band {
-  
+	
   function __construct($ID, $name, $lat, $lng, $availableTimeSlots, $conflicts, $slot, $distances) {
     //Band(int ID, float lat, float lng, String name, int[] conflicts, bool[] availableTimeSlots)
     $this->id = $ID; //int
@@ -251,7 +251,7 @@ class Band {
   }
 
   /* Takes a schedule object and calculates the k (specified in the global variables section
-      nearest bands to this band object. Returns an array of size k of bandIDs */
+  		nearest bands to this band object. Returns an array of size k of bandIDs */
   function calculateKNearest($sched) {
     global $kNeighbors; //how many nearest neighbors used to calculate distance variance
     
@@ -468,7 +468,7 @@ function score($sched) {
 }
     
 /* pairwise swaps to improve the schedule. recomputes the
-    variance of the two time slots that are affected by the swap */
+		variance of the two time slots that are affected by the swap */
 function improve($sched) {
   global $timeslotsPorchfests; //array of all timeslots available for a particular porchfest
   arsort($sched->timeSlotVariances);
