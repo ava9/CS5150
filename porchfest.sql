@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2017 at 05:59 AM
+-- Generation Time: Apr 12, 2017 at 03:52 PM
 -- Server version: 5.5.25a
 -- PHP Version: 5.6.3
 
@@ -48,6 +48,17 @@ INSERT INTO `bandavailabletimes` (`BandID`, `TimeslotID`) VALUES
 (17, 5),
 (18, 5),
 (18, 6);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bandconflicts`
+--
+
+CREATE TABLE IF NOT EXISTS `bandconflicts` (
+  `BandID1` int(11) NOT NULL,
+  `BandID2` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -99,6 +110,8 @@ CREATE TABLE IF NOT EXISTS `bandstoporchfests` (
   `BandID` int(11) NOT NULL,
   `PorchfestID` int(11) NOT NULL,
   `PorchLocation` varchar(255) NOT NULL,
+  `Latitude` float NOT NULL,
+  `Longitude` float NOT NULL,
   `TimeslotID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -106,22 +119,22 @@ CREATE TABLE IF NOT EXISTS `bandstoporchfests` (
 -- Dumping data for table `bandstoporchfests`
 --
 
-INSERT INTO `bandstoporchfests` (`BandID`, `PorchfestID`, `PorchLocation`, `TimeslotID`) VALUES
-(1, 1, '516 West State Street, Ithaca, NY, United States', NULL),
-(2, 1, '', NULL),
-(3, 1, '', NULL),
-(4, 1, '', NULL),
-(5, 1, '', NULL),
-(6, 1, '', NULL),
-(7, 1, '', NULL),
-(9, 1, '', NULL),
-(10, 1, '', NULL),
-(11, 1, '', NULL),
-(12, 1, '', NULL),
-(17, 1, 'testingme', NULL),
-(18, 1, '', NULL),
-(19, 1, '', NULL),
-(20, 1, '', NULL);
+INSERT INTO `bandstoporchfests` (`BandID`, `PorchfestID`, `PorchLocation`, `Latitude`, `Longitude`, `TimeslotID`) VALUES
+(1, 1, '516 West State Street, Ithaca, NY, United States', 0, 0, NULL),
+(2, 1, '', 0, 0, NULL),
+(3, 1, '', 0, 0, NULL),
+(4, 1, '', 0, 0, NULL),
+(5, 1, '', 0, 0, NULL),
+(6, 1, '', 0, 0, NULL),
+(7, 1, '', 0, 0, NULL),
+(9, 1, '', 0, 0, NULL),
+(10, 1, '', 0, 0, NULL),
+(11, 1, '', 0, 0, NULL),
+(12, 1, '', 0, 0, NULL),
+(17, 1, 'testingme', 0, 0, NULL),
+(18, 1, '', 0, 0, NULL),
+(19, 1, '', 0, 0, NULL),
+(20, 1, '', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -240,6 +253,12 @@ ALTER TABLE `bandavailabletimes`
  ADD PRIMARY KEY (`BandID`,`TimeslotID`), ADD KEY `BandID` (`BandID`,`TimeslotID`), ADD KEY `TimeslotID` (`TimeslotID`);
 
 --
+-- Indexes for table `bandconflicts`
+--
+ALTER TABLE `bandconflicts`
+ ADD PRIMARY KEY (`BandID1`,`BandID2`), ADD KEY `BandID2` (`BandID2`);
+
+--
 -- Indexes for table `bands`
 --
 ALTER TABLE `bands`
@@ -315,6 +334,13 @@ MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 ALTER TABLE `bandavailabletimes`
 ADD CONSTRAINT `bandavailabletimes_ibfk_1` FOREIGN KEY (`BandID`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `bandavailabletimes_ibfk_2` FOREIGN KEY (`TimeslotID`) REFERENCES `porchfesttimeslots` (`TimeslotID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `bandconflicts`
+--
+ALTER TABLE `bandconflicts`
+ADD CONSTRAINT `bandconflicts_ibfk_2` FOREIGN KEY (`BandID2`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `bandconflicts_ibfk_1` FOREIGN KEY (`BandID1`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `bandstoporchfests`
