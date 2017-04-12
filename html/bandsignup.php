@@ -19,11 +19,11 @@
     
     <div class="row">
       <h1 style="text-align:center;"> 
-        Sign-up to perform for <?php echo ucwords(urldecode(URI_ARRAY[1])); ?>
+        Sign-up to perform for <?php echo PORCHFEST_NAME_CLEAN; ?>
       </h1>
     </div>
 
-    <p> If you would like to perform for <?php echo ucwords(urldecode(URI_ARRAY[1])); ?>,
+    <p> If you would like to perform for <?php echo PORCHFEST_NAME_CLEAN; ?>,
       please fill out the form below. 
       <br>Filling out this form will create an account that you can log back into to edit your information.
     </p>
