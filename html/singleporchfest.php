@@ -8,7 +8,7 @@
     require_once "../php/modules/stdHead.php";
     require_once "../php/routing.php";
   ?>
-  <title>PorchFest - <?php echo URI_ARRAY[1] ?> </title>
+  <title>PorchFest - <?php echo PORCHFEST_NAME_CLEAN ?> </title>
 </head>
 
 <!-- BEGIN body -->
@@ -44,7 +44,7 @@
     
     <div class="row">
       <h1 style="text-align:center;"> 
-        <?php echo URI_ARRAY[1]; ?> 
+        <?php echo PORCHFEST_NAME_CLEAN; ?> 
       </h1>
     </div>
 

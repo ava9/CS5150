@@ -611,7 +611,7 @@ function tdistance(
 /* create schedule then repeat */
 function run(){
   global $conn;
-  $result;
+  $result = null;
   $NUM_SCHEDS_TO_GENERATE = 1;
   
   for ($i = 0; $i < $NUM_SCHEDS_TO_GENERATE; $i++){
