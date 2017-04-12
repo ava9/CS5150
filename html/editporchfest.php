@@ -3,10 +3,10 @@
   <head>
     <?php require_once "../php/modules/stdHead.php" ?>
     <!-- Responsive table js -->
-    <script src="../js/responsive-tables.js"></script>
+    <script src="http://localhost/cs5150/js/responsive-tables.js"></script>
 
     <!-- Responsive tables CSS -->
-    <link rel="stylesheet" href="./css/responsive-tables.css">
+    <link rel="stylesheet" href="../css/responsive-tables.css">
     <title>PorchFest - Edit</title>
   </head>
 
@@ -36,7 +36,7 @@
           <div class="modal-body">
           </div>
           <div class="modal-footer">
-            <button type="button" id="save-timeslot-change" class="btn btn-success" data-dismiss="modal"> Save Changes </button>
+            <button type="button" id="save-timeslot-change" class="btn btn-success" data-dismiss="modal"> Save </button>
             <button type="button" class="btn btn-danger" data-dismiss="modal"> Delete </button>
             <button type="button" class="btn btn-default" data-dismiss="modal"> Cancel </button>
           </div>
@@ -211,14 +211,12 @@
           </div> <!-- end bands div -->
 
           <div class="tab-pane fade in active" id="timeslots"> <!-- begin timeslots div -->
-            <div id="col-xs-12 timeslotheaders">
+            <div class="col-xs-12" id="timeslotheaders">
               Existing Timeslots
             </div>
 
             <?php
               $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '1' ORDER BY StartTime;";
-
-              echo '<div id="timeslot-labels">';
 
               $result = $conn->query($sql);
 
@@ -230,25 +228,30 @@
 
               }
 
-              echo '</div>';
-
             ?>
 
-            <div id="col-xs-12 timeslotheaders">
-              Add Timeslot
+            <div class="col-xs-12">
+                Add a Timeslot
             </div>
 
-            <form role="form" class="form-horizontal" action="">
-              <div id="addtimeslot" class="form-group">
-                <label for="timeslot" class="control-label"> Start Time </label>
-                  <input type="datetime-local">
-                <label for="timeslot" class="control-label"> End Time </label>
-                  <input type="datetime-local">
-              </div>
+            <div class="col-xs-12">
+              <form role="form" class="form-horizontal" action="">
+                <div class="col-xs-6">
+                  <label for="timeslot"> Start Time </label>
+                    <input type="datetime-local">
+                </div>
+                <div class="col-xs-6">
+                  <label for="timeslot"> End Time </label>
+                    <input type="datetime-local">
+                </div>
+                <div class="col-xs-offset-9 col-xs-3 timeslot-button">
+                  <button type="submit" class="btn btn-primary btn-sm"> Add Timeslot </button>
+                </div>
 
-              <button type="submit" class="btn btn-primary btn-sm"> Add Timeslot </button>
+              </form>
+            </div>
 
-            </form>
+            
              
           </div> <!-- end timeslots div -->
           <div class="tab-pane fade" id="schedule"> <!-- begin schedule div -->
@@ -264,6 +267,7 @@
 
 
   <script>
+    var ajaxurl = "http://localhost/cs5150/php/ajax.php";
     $('body').click(function() {
       $("#editalert").html('');
     });
@@ -279,7 +283,7 @@
       };
 
       $.ajax({
-        url: "../php/ajax.php",
+        url: ajaxurl,
         type: "POST",
         data: formData,
         success: function(result){
@@ -322,7 +326,7 @@
       };
 
       $.ajax({
-        url: "../php/ajax.php",
+        url: ajaxurl,
         type: "POST",
         data: formData,
         success: function(result){
@@ -342,7 +346,7 @@
     $("#search").keyup(function(){
       console.log('here');
       $.ajax({
-        url: "../php/ajax.php",
+        url: ajaxurl,
         type: "GET",
         data: {bandname: $("#search").val()},
         success: function(result){
