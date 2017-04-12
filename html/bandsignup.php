@@ -28,28 +28,41 @@
       <br>Filling out this form will create an account that you can log back into to edit your information.
     </p>
 
+    <?php if (!isset($_SESSION['logged_user'])) { ?>
     <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">
       Already have an account?
     </button>
+    <?php } ?>
 
-    <form role="form" class="form-horizontal" action="bandsignup.php" method="POST">
+    <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='index.php'>
+      <?php if (!isset($_SESSION['logged_user'])) { ?>
       <h4> Account Information </h4>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Your Name </label>
+          <label for="name" class="col-sm-2 control-label"> Your Name</label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input name="username" type="text" class="form-control" placeholder="John Doe" />
+                      <input type="text" class="form-control" name="name" placeholder="John Doe" />
                   </div>
               </div>
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Your Email </label>
+          <label for="name" class="col-sm-2 control-label"> Your Email</label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input name="email" type="text" class="form-control" placeholder="johndoe@gmail.com" />
+                      <input type="email" class="form-control" name="email" placeholder="johndoe@gmail.com" />
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Mobile</label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input type="tel" class="form-control" name="mobile" placeholder="(123) 456-7891" />
                   </div>
               </div>
           </div>
@@ -59,7 +72,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input name="password" type="password" class="form-control" />
+                      <input type="password" name="password" class="form-control" placeholder="Password" />
                   </div>
               </div>
           </div>
@@ -69,11 +82,13 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="password" class="form-control" />
+                      <input type="password" name="confirmPassword" class="form-control" placeholder="Password" />
                   </div>
               </div>
           </div>
       </div>
+      <br>
+      <?php } ?>
       <br>
       <h4> Band Information </h4>
       <div class="form-group">
@@ -189,12 +204,46 @@
 
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (!isset($_SESSION['logged_user'])) {
+      $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+      $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
+      $mobile = filter_var($_POST['mobile'], FILTER_SANITIZE_STRING);
+      $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
+      $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
+    }
     $bandname = htmlentities($_POST['bandname']);
     $banddescription = htmlentities($_POST['banddescription']);
     $bandmembers = htmlentities($_POST['bandmembers']);
     $bandcomment = htmlentities($_POST['bandcomment']);
     $bandconflicts = htmlentities($_POST['bandconflicts']);
     $porchlocation = htmlentities($_POST['porchlocation']);
+
+    // handle new user logic
+    if (!isset($_SESSION['logged_user'])) {
+      if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['mobile']) && isset($_POST['password']) && isset($_POST['confirmPassword']) && $name != '' && $email != '' && $mobile != '' && $password != '' && $confirmPassword != '') {
+        
+        require_once('../php/config.php');
+        $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        if ($password != $confirmPassword) {
+          echo "<script type='text/javascript'>alert('Passwords do not match!');</script>";
+        } else {
+          $result = $mysqli->query("SELECT * FROM users WHERE email = '$email'");
+          $row = $result->fetch_row();
+          if (empty($row)) {
+            $prep = $mysqli->prepare("INSERT INTO users (Email, Password, Name, ContactInfo) VALUES (?,?,?,?)");
+            $prep->bind_param("ssss", $email, $password, $name, $mobile);
+            $prep->execute();
+            if ($prep->affected_rows) {
+              echo "<script type='text/javascript'>alert('$name, you have been added successfully!.');</script>";
+            } else {
+              echo "<script type='text/javascript'>alert('DB failed to add you!.');</script>";
+            }
+          } else { 
+            echo "<script type='text/javascript'>alert('User already exists!.');</script>";
+          }
+        }
+      }
+    }
 
     $latlong = explode(',', getCoordinates($porchlocation));
     $lat = $latlong[0];
@@ -205,6 +254,11 @@
                               VALUES (?,?,?,?,?)");
     $prep->bind_param("sssss", $bandname, $banddescription, $bandmembers, $bandcomment, $bandconflicts);
     $prep->execute();
+    if ($prep->affected_rows) {
+        echo "<script type='text/javascript'>alert('The band, $bandname, has been added successfully!.');</script>";
+    } else {
+      echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
+    }
 
     // Insert into IDs
     $sql = "SELECT BandID FROM bands ORDER BY BandID DESC LIMIT 1";
@@ -217,6 +271,7 @@
     $prep->bind_param("issss", $porchfestID, $bandID['BandID'], $porchlocation, $lat, $long);
     $prep->execute();
 
+    // Insert into bandavailabletimes
     if (isset($_POST['available'])) {
       $available = $_POST['available'];
       foreach($available as $timeslot) {
@@ -226,7 +281,6 @@
         $prep->execute();
       }
     }
-    echo 'ok';
   }
 ?>
 

@@ -12,11 +12,13 @@
 <body>
   <?php
     if (isset($_POST['submitInfo'])) {
-      $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
-      $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
-      $mobile = filter_var($_POST['mobile'], FILTER_SANITIZE_STRING);
-      $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
-      $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
+      if (!isset($_SESSION['logged_user'])) {
+        $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+        $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
+        $mobile = filter_var($_POST['mobile'], FILTER_SANITIZE_STRING);
+        $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
+        $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
+      }
       $porchfestName = filter_var($_POST['porchfestName'], FILTER_SANITIZE_STRING);
       $porchfestURL = filter_var($_POST['porchfestURL'], FILTER_SANITIZE_STRING);
       $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
@@ -25,26 +27,28 @@
       $deadline = filter_var($_POST['deadline'], FILTER_SANITIZE_STRING);
     
       // handle new user logic
-      if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['mobile']) && isset($_POST['password']) && isset($_POST['confirmPassword']) && $name != '' && $email != '' && $mobile != '' && $password != '' && $confirmPassword != '') {
-        
-        require_once('../php/config.php');
-        $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-        if ($password != $confirmPassword) {
-          echo "<script type='text/javascript'>alert('Passwords do not match!');</script>";
-        } else {
-          $result = $mysqli->query("SELECT * FROM users WHERE email = '$email'");
-          $row = $result->fetch_row();
-          if (empty($row)) {
-            $prep = $mysqli->prepare("INSERT INTO users (Email, Password, Name, ContactInfo) VALUES (?,?,?,?)");
-            $prep->bind_param("ssss", $email, $password, $name, $mobile);
-            $prep->execute();
-            if ($prep->affected_rows) {
-              echo "<script type='text/javascript'>alert('$name, you have been added successfully!.');</script>";
-            } else {
-              echo "<script type='text/javascript'>alert('DB failed to add you!.');</script>";
+      if (!isset($_SESSION['logged_user'])) {
+        if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['mobile']) && isset($_POST['password']) && isset($_POST['confirmPassword']) && $name != '' && $email != '' && $mobile != '' && $password != '' && $confirmPassword != '') {
+          
+          require_once('../php/config.php');
+          $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+          if ($password != $confirmPassword) {
+            echo "<script type='text/javascript'>alert('Passwords do not match!');</script>";
+          } else {
+            $result = $mysqli->query("SELECT * FROM users WHERE email = '$email'");
+            $row = $result->fetch_row();
+            if (empty($row)) {
+              $prep = $mysqli->prepare("INSERT INTO users (Email, Password, Name, ContactInfo) VALUES (?,?,?,?)");
+              $prep->bind_param("ssss", $email, $password, $name, $mobile);
+              $prep->execute();
+              if ($prep->affected_rows) {
+                echo "<script type='text/javascript'>alert('$name, you have been added successfully!.');</script>";
+              } else {
+                echo "<script type='text/javascript'>alert('DB failed to add you!.');</script>";
+              }
+            } else { 
+              echo "<script type='text/javascript'>alert('User already exists!.');</script>";
             }
-          } else { 
-            echo "<script type='text/javascript'>alert('User already exists!.');</script>";
           }
         }
       }
@@ -79,11 +83,14 @@
       <br>Filling out this form will create an account that you can log back into to manage your Porchfest.
     </p>
 
+    <?php if (!isset($_SESSION['logged_user'])) { ?>
     <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">
       Already have an account?
     </button>
+    <?php } ?>
 
     <form role="form" class="form-horizontal">
+      <?php if (!isset($_SESSION['logged_user'])) { ?>
       <h4> Account Information </h4>
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label">
@@ -139,6 +146,7 @@
               </div>
           </div>
       </div>
+      <?php } ?>
       <br>
       <a href="/cs5150/html/"> Want to create a new Porchfest website? </a>
       <h4> Porchfest Information </h4>
