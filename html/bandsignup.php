@@ -170,6 +170,24 @@
         async defer></script>
 
 <?php
+  // input a string: address (i.e. "114 Summit Ave. Ithaca, NY 14850"
+  // output is a latitude, longitude coordinate pair (i.e. 42.442064,-76.483469)
+  function getCoordinates($address){
+    
+    // replace white space with "+" sign (match google search pattern)
+    $address = str_replace(" ", "+", $address); 
+    
+    $url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=$address";
+     
+    $response = file_get_contents($url);
+     
+    $json = json_decode($response,TRUE); //array object from the web response
+     
+    return ($json['results'][0]['geometry']['location']['lat'].",".$json['results'][0]['geometry']['location']['lng'].",0.0");
+
+  }
+
+
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $bandname = htmlentities($_POST['bandname']);
     $banddescription = htmlentities($_POST['banddescription']);
@@ -178,26 +196,40 @@
     $bandconflicts = htmlentities($_POST['bandconflicts']);
     $porchlocation = htmlentities($_POST['porchlocation']);
 
-    $sql = "INSERT INTO bands (Name, Description, Members, Comment, Conflicts) VALUES ('" . $bandname . "', '" . $banddescription . "', '" . $bandmembers . "', '" . $bandcomment . "', '" . $bandconflicts . "')";
-    $result = $conn->query($sql);
+    $latlong = explode(',', getCoordinates($porchlocation));
+    $lat = $latlong[0];
+    $long = $latlong[1];
 
+    // Insert into bands
+    $prep = $mysqli->prepare("INSERT INTO bands (Name, Description, Members, Comment, Conflicts) 
+                              VALUES (?,?,?,?,?)");
+    $prep->bind_param("sssss", $bandname, $banddescription, $bandmembers, $bandcomment, $bandconflicts);
+    $prep->execute();
+
+    // Insert into IDs
     $sql = "SELECT BandID FROM bands ORDER BY BandID DESC LIMIT 1";
     $result = $conn->query($sql);
     $bandID = $result->fetch_assoc();
-    
-    $sql = "INSERT INTO bandstoporchfests (PorchfestID, BandID, PorchLocation) VALUES ('1', '" . $bandID['BandID'] . "', '" . $porchlocation . "')";
-    $result = $conn->query($sql);
+    $porchfestID = 1; // TODO CHANGE THIS TO REFLECT ACTUAL PORCHFEST NAME
+
+    $prep = $mysqli->prepare("INSERT INTO bandstoporchfests (PorchfestID, BandID, PorchLocation, Latitude, Longitude) 
+                              VALUES (?,?,?,?,?)");
+    $prep->bind_param("issss", $porchfestID, $bandID['BandID'], $porchlocation, $lat, $long);
+    $prep->execute();
 
     if (isset($_POST['available'])) {
       $available = $_POST['available'];
       foreach($available as $timeslot) {
-        $sql = "INSERT INTO bandavailabletimes (BandID, TimeslotID) VALUES ('" . $bandID['BandID'] . "', '" . $timeslot . "')";
-        $result = $conn->query($sql);
+        $prep = $mysqli->prepare("INSERT INTO bandavailabletimes (BandID, TimeslotID)
+                                  VALUES (?,?)");
+        $prep->bind_param("ss", $bandID['BandID'], $timeslot);
+        $prep->execute();
       }
     }
+    echo 'ok';
   }
 ?>
 
 </body>
-  <script src="../js/addMembers.js"></script>
+
 </html>
