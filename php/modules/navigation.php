@@ -35,7 +35,7 @@
                         $password = $_POST['password'];
                         $result = $mysqli->query("SELECT password FROM users WHERE email = '$email'");
                         $row = $result->fetch_row();
-                        if ($row[0] == $password) {
+                        if ($row[0] === $password) {
                              $_SESSION['logged_user'] = $sanitized_username;
                             unset($_POST['login']);
                         } else {
@@ -58,7 +58,7 @@
                                 </ul>
                         </li>
                         
-                        <li><form role="form" id='logout-button' method='POST' action = "#">
+                        <li><form role="form" id='logout-button' method='POST' action = "./">
                             <button type='submit' class='btn btn-link navbar-btn' name="logout" >
                             Logout
                             </button>
