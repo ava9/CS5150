@@ -74,22 +74,30 @@
   display: inline-block;
 }
 
-#timeslot-labels {
+.timeslot-label {
+  cursor: pointer;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-#timeslot-labels .timeslot-label {
+.timeslot-label .timeslot-label {
   margin-top: 8px;
   margin-bottom: 12px;
 }
 
-#timeslot-labels .timeslot-label .label {
+.timeslot-label .label {
+  position: relative;
+  z-index: 10;
   display: inline-block;
   font-size: .8em;
+  min-height: 2.5em;
   height: 2.5em;
   width: 12em;
   line-height: 2;
+}
+
+.timeslot-button {
+  margin-top: 10px;
 }
 
 
