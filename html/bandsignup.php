@@ -42,7 +42,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" name="name" placeholder="John Doe" />
+                      <input required type="text" class="form-control" name="name" placeholder="John Doe" />
                   </div>
               </div>
           </div>
@@ -52,7 +52,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="email" class="form-control" name="email" placeholder="johndoe@gmail.com" />
+                      <input required type="email" class="form-control" name="email" placeholder="johndoe@gmail.com" />
                   </div>
               </div>
           </div>
@@ -62,7 +62,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="tel" class="form-control" name="mobile" placeholder="(123) 456-7891" />
+                      <input required type="tel" class="form-control" name="mobile" placeholder="(123) 456-7891" />
                   </div>
               </div>
           </div>
@@ -72,7 +72,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="password" name="password" class="form-control" placeholder="Password" />
+                      <input required type="password" name="password" class="form-control" placeholder="Password" />
                   </div>
               </div>
           </div>
@@ -82,7 +82,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="password" name="confirmPassword" class="form-control" placeholder="Password" />
+                      <input required type="password" name="confirmPassword" class="form-control" placeholder="Password" />
                   </div>
               </div>
           </div>
@@ -96,7 +96,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input name="bandname" type="text" class="form-control" placeholder="John and Friends" />
+                      <input required name="bandname" type="text" class="form-control" placeholder="John and Friends" />
                   </div>
               </div>
           </div>
@@ -106,7 +106,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input name="banddescription" type="text" class="form-control" placeholder="John and Friends plays cool music." />
+                      <input required name="banddescription" type="text" class="form-control" placeholder="John and Friends plays cool music." />
                   </div>
               </div>
           </div>
@@ -116,7 +116,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input name="porchlocation" id="autocomplete" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
+                      <input required name="porchlocation" id="autocomplete" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
                   </div>
               </div>
           </div>

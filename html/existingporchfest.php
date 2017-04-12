@@ -98,7 +98,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" name="name" placeholder="John Doe" />
+                      <input required type="text" class="form-control" name="name" placeholder="John Doe" />
                   </div>
               </div>
           </div>
@@ -109,7 +109,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="email" class="form-control" name="email" placeholder="johndoe@gmail.com" />
+                      <input required type="email" class="form-control" name="email" placeholder="johndoe@gmail.com" />
                   </div>
               </div>
           </div>
@@ -119,7 +119,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="tel" class="form-control" name="mobile" placeholder="(123) 456-7891" />
+                      <input required type="tel" class="form-control" name="mobile" placeholder="(123) 456-7891" />
                   </div>
               </div>
           </div>
@@ -130,7 +130,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="password" name="password" class="form-control" placeholder="Password" />
+                      <input required type="password" name="password" class="form-control" placeholder="Password" />
                   </div>
               </div>
           </div>
@@ -141,7 +141,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="password" class="form-control" placeholder="Password" />
+                      <input required type="password" class="form-control" placeholder="Password" />
                   </div>
               </div>
           </div>
@@ -156,7 +156,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" name="porchfestname" placeholder="Ithaca Porchfest" />
+                      <input required type="text" class="form-control" name="porchfestname" placeholder="Ithaca Porchfest" />
                   </div>
               </div>
           </div>
@@ -167,7 +167,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="url" class="form-control" name="porchfestURL" placeholder="ithacaporchfest.com" />
+                      <input required type="url" class="form-control" name="porchfestURL" placeholder="ithacaporchfest.com" />
                   </div>
               </div>
           </div>
@@ -178,7 +178,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" name="description" placeholder="John and Friends plays cool music." />
+                      <input required type="text" class="form-control" name="description" placeholder="John and Friends plays cool music." />
                   </div>
               </div>
           </div>
@@ -189,7 +189,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="text" class="form-control" name="location" placeholder="Location" />
+                      <input required type="text" class="form-control" name="location" placeholder="Location" />
                   </div>
               </div>
           </div>
@@ -200,7 +200,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="date" class="form-control" name="date" placeholder="Date" />
+                      <input required type="date" class="form-control" name="date" placeholder="Date" />
                   </div>
               </div>
           </div>
@@ -211,7 +211,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input type="datetime-local" class="form-control" />
+                      <input required type="datetime-local" class="form-control" />
                   </div>
               </div>
           </div>

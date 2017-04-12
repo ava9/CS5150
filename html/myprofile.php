@@ -32,31 +32,31 @@
         <div class="form-group">
           <label class="col-lg-3 control-label">Name:</label>
           <div class="col-lg-8">
-            <input class="form-control" value=<?php echo '"' . $user['Name'] . '"' ?> type="text">
+            <input required class="form-control" value=<?php echo '"' . $user['Name'] . '"' ?> type="text">
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-3 control-label">Email:</label>
           <div class="col-lg-8">
-            <input class="form-control" value=<?php echo '"' . $user['Email'] . '"' ?> type="email">
+            <input required class="form-control" value=<?php echo '"' . $user['Email'] . '"' ?> type="email">
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-3 control-label">Mobile:</label>
           <div class="col-lg-8">
-            <input class="form-control" value=<?php echo '"' . $user['ContactInfo'] . '"' ?> type="tel">
+            <input required class="form-control" value=<?php echo '"' . $user['ContactInfo'] . '"' ?> type="tel">
           </div>
         </div>
         <div class="form-group">
           <label class="col-md-3 control-label">New Password:</label>
           <div class="col-md-8">
-            <input class="form-control" type="password">
+            <input required class="form-control" type="password">
           </div>
         </div>
         <div class="form-group">
           <label class="col-md-3 control-label">Confirm New Password:</label>
           <div class="col-md-8">
-            <input class="form-control" type="password">
+            <input required class="form-control" type="password">
           </div>
         </div>
         <div class="form-group">
