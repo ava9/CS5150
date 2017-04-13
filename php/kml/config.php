@@ -1,13 +1,13 @@
 <?php // ** MySQL connection settings ** //
 // database host
-define('DB_HOST', '127.0.0.1');
+define('DB_HOST', 'localhost:8889');
 
 // database name
 define('DB_NAME', 'porchfest');
 // Your MySQL / Course Server username
-define('DB_USER', 'root');
+define('DB_USER', 'kevin');
 // ...and password
-define('DB_PASSWORD', '');
+define('DB_PASSWORD', 'password');
 // also salt
 define('SALT', 'PorchfestsForever');
 

@@ -81,7 +81,7 @@ if (!$resultTimeslotsPorchfests) { #to see all timeslots available for a porchfe
     exit();
 }
 
-$sqlBands = "SELECT b.BandID, b.Name, bp.PorchLocation, b.Conflicts FROM bands b, bandstoporchfests bp WHERE b.BandID = bp.BandID AND bp.PorchfestID = 1";
+$sqlBands = "SELECT b.BandID, b.Name, bp.PorchLocation, b.Conflicts, bp.Latitude, bp.Longitude FROM bands b, bandstoporchfests bp WHERE b.BandID = bp.BandID AND bp.PorchfestID = 1";
 $resultBands = $conn->query($sqlBands);
 if (!$resultBands) { #for band id, porch location and conflicts
     printf("Get Bands-Porchfests failed\n");
@@ -155,13 +155,13 @@ function createBandObjects(){
     $bandName = $tmp[$i][1];
     $bandLocation = $tmp[$i][2];
     $bandConflictsString = $tmp[$i][3];
+    $bandLatLng = array("lat" => $tmp[$i][4], "lng" => $tmp[$i][5]);
         
     // convert the string of conflicts into an array of conflicts
     $bandConflicts = explode(',', $bandConflictsString);
     if (sizeof($bandConflicts[0]) == 0) {
       $bandConflicts = [];
     }
-    $coordinateLocation = getCoordinates($bandLocation);
     $availableTimeSlots = [];
     
     for ($j = 0; $j < $totalNumTimeSlots; $j++) {
@@ -171,7 +171,7 @@ function createBandObjects(){
     foreach ($bandsTimeSlots[$bandId] as $canDoSlotID) {
       $availableTimeSlots[$canDoSlotID] = intVal(true);
     }
-    $bandsHashMap[$bandId] = new Band($bandId, $bandName, $coordinateLocation[0], $coordinateLocation[1], $availableTimeSlots, $bandConflicts, -1, []);
+    $bandsHashMap[$bandId] = new Band($bandId, $bandName, $bandLatLng["lat"], $bandLatLng["lng"], $availableTimeSlots, $bandConflicts, -1, []);
   }
   DEBUG_ECHO("created all band objects\n");
   return $bandsHashMap;
@@ -201,22 +201,11 @@ function populateBandsWithXTimeSlots() {
   DEBUG_ECHO("populated\n");
 }
 
-// input a string: address (i.e. "114 Summit Ave. Ithaca, NY 14850"
-// output is a latitude, longitude coordinate pair (i.e. 42.442064,-76.483469)
-function getCoordinates($address){
+// Returns random lat lng coordinates in the ithca area
+function getRandomCoordinates($address){
   $lat = 42 + (rand(0,10000)/10000000);
   $lng = -76 - (rand(0,10000)/10000000);
   return array($lat, $lng);
-  
-  /**** DON'T NEED THIS ANYMORE. I THINK.... ****/
-  // replace white space with "+" sign (match google search pattern)
-  $address = str_replace(" ", "+", $address); 
-  $url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=$address";
-  $response = file_get_contents($url);
-  $json = json_decode($response,TRUE); //array object from the web response
-  
-  //array of lat, long
-  return array((int)$json['results'][0]['geometry']['location']['lat'], (int)$json['results'][0]['geometry']['location']['lng']);
 }
 
 
