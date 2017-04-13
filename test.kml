@@ -2,6 +2,13 @@
 <kml xmlns='http://www.opengis.net/kml/2.2' xmlns:atom='http://www.w3.org/2005/Atom' xmlns:gx='http://www.google.com/kml/ext/2.2' xmlns:kml='http://www.opengis.net/kml/2.2' xmlns:xal='urn:oasis:names:tc:ciq:xsdschema:xAL:2.0'>
 	<Document>
 		<Folder id="8:30 AM">
+			<Style id="1">
+				<LabelStyle>
+					<color>501400FF</color>
+					<colorMode>normal</colorMode>
+					<scale>1</scale>
+				</LabelStyle>
+			</Style>
 			<name>8:30 AM</name>
 			<Placemark>
 				<name>Jeannie Burns </name>
@@ -269,6 +276,13 @@
 			</Placemark>
 		</Folder>
 		<Folder id="9:30 AM">
+			<Style id="2">
+				<LabelStyle>
+					<color>501478FF</color>
+					<colorMode>normal</colorMode>
+					<scale>1</scale>
+				</LabelStyle>
+			</Style>
 			<name>9:30 AM</name>
 			<Placemark>
 				<name>David Graybeard Band</name>
@@ -568,6 +582,13 @@
 			</Placemark>
 		</Folder>
 		<Folder id="10:30 AM">
+			<Style id="3">
+				<LabelStyle>
+					<color>5014F0FF</color>
+					<colorMode>normal</colorMode>
+					<scale>1</scale>
+				</LabelStyle>
+			</Style>
 			<name>10:30 AM</name>
 			<Placemark>
 				<name>Kitestring</name>
@@ -843,6 +864,13 @@
 			</Placemark>
 		</Folder>
 		<Folder id="11:30 AM">
+			<Style id="4">
+				<LabelStyle>
+					<color>5078FF00</color>
+					<colorMode>normal</colorMode>
+					<scale>1</scale>
+				</LabelStyle>
+			</Style>
 			<name>11:30 AM</name>
 			<Placemark>
 				<name>Tim Bang</name>
@@ -998,6 +1026,13 @@
 			</Placemark>
 		</Folder>
 		<Folder id="12:30 PM">
+			<Style id="5">
+				<LabelStyle>
+					<color>50FF7800</color>
+					<colorMode>normal</colorMode>
+					<scale>1</scale>
+				</LabelStyle>
+			</Style>
 			<name>12:30 PM</name>
 			<Placemark>
 				<name>Stone Cold Miracle</name>
@@ -1273,6 +1308,13 @@
 			</Placemark>
 		</Folder>
 		<Folder id="1:30 PM">
+			<Style id="6">
+				<LabelStyle>
+					<color>50FF78F0</color>
+					<colorMode>normal</colorMode>
+					<scale>1</scale>
+				</LabelStyle>
+			</Style>
 			<name>1:30 PM</name>
 			<Placemark>
 				<name>CUMEME (Cornell University Middle Eastern Music Ensemble)</name>
