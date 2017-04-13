@@ -34,7 +34,7 @@
           <!-- Trigger the modal with a button -->
           <div class="col-xs-12 col-sm-4 col-md-3">
             <div class="btn-group">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Create Porchfest</button>
+              <a href = "http://localhost/cs5150/html/"><button type="button" class="btn btn-primary">Create Porchfest</button></a>
             </div>
           </div>
 

@@ -58,8 +58,8 @@
                                 </ul>
                         </li>
                         
-                        <li><form role="form" id='logout-button' method='POST' action = "./">
-                            <button type='submit' class='btn btn-link navbar-btn' name="logout" >
+                        <li><form role="form" id='logout-button' method='POST' action = "http://localhost/cs5150/html/">
+                            <button type='submit' class='btn btn-link navbar-btn loginButton' name="logout" >
                             Logout
                             </button>
                         </form></li>

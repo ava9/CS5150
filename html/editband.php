@@ -60,13 +60,13 @@
         <div class="form-group">
           <label class="col-lg-3 control-label">Name:</label>
           <div class="col-lg-8">
-            <input name="bandname" class="form-control" value=<?php echo '"' . $band['Name'] . '"' ?> type="text">
+            <input required name="bandname" class="form-control" value=<?php echo '"' . $band['Name'] . '"' ?> type="text">
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-3 control-label">Description:</label>
           <div class="col-lg-8">
-            <input name="banddescription" class="form-control" value=<?php echo '"' . $band['Description'] . '"' ?> type="text">
+            <input required name="banddescription" class="form-control" value=<?php echo '"' . $band['Description'] . '"' ?> type="text">
           </div>
         </div>
         <div class="form-group">
@@ -90,7 +90,7 @@
         <div class="form-group">
           <label class="col-lg-3 control-label">Porch Location:</label>
           <div class="col-lg-8">
-            <input name="porchlocation" id="autocomplete" class="form-control" value=<?php echo '"' . $band['PorchLocation'] . '"' ?> onFocus="geolocate()"  type="text">
+            <input required name="porchlocation" id="autocomplete" class="form-control" value=<?php echo '"' . $band['PorchLocation'] . '"' ?> onFocus="geolocate()"  type="text">
           </div>
         </div>
         <div class="form-group">
@@ -135,6 +135,17 @@
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0LuERw-moYeLnWy_55RoShmUbQ51Yh-o&libraries=places&callback=initAutocomplete"
         async defer></script>
+
+<script type='text/javascript'>
+$(document).ready(function() {
+  $(window).keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
+});
+</script>
 
 </body>
 </html>
