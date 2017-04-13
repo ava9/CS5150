@@ -54,58 +54,23 @@
             <h4 class="modal-title"> Time Slots </h4>
           </div>
           <div class="modal-body">
-            <table class="responsive table timeslot-table"> <!-- begin table -->
-              <tr>
-                <th> </th>
-                <th> Thu </th>
-                <th> Fri </th>
-                <th> Sat </th>
-                <th> Sun </th>
-                <th> Mon </th>
-                <th> Tue </th>
-                <th> Wed </th>
-              </tr>
-              <tr>
-                <td class = "time"> 08:00 </td>
-                <td> -- </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> -- </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> -- </td>
-              </tr>
-              <tr>
-                <td class = "time"> 09:00 </td>
-                <td> -- </td>
-                <td> -- </td>
-                <td> <span class="glyphicon glyphicon-ok"> </span> </td>
-                <td> -- </td>
-                <td> -- </td>
-                <td> -- </td>
-                <td> -- </td>
-              </tr>
-              <tr>
-                <td class = "time"> 10:00 </td>
-                <td> -- </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> -- </td>
-              </tr>
-              <tr>
-                <td class = "time"> 11:00 </td>
-                <td> -- </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> -- </td>
-                <td> -- </td>
-                <td> -- </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-              </tr>
-            </table> <!-- end table -->
+          <?php 
+            $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID='1' ORDER BY StartTime";
+
+            $result = $conn->query($sql);
+            while($timeslot = $result->fetch_assoc()) {
+              $sql2 = "SELECT * FROM bandavailabletimes
+                       WHERE BandID = '1' AND TimeslotID = '" . $timeslot['TimeslotID'] . "'";
+              $result2 = $conn->query($sql2);
+
+              $starttime = date_format(date_create($timeslot['StartTime']), 'g:iA');
+              $endtime = date_format(date_create($timeslot['EndTime']), 'g:iA');
+              $day = date_format(date_create($timeslot['StartTime']), 'F j, Y');
+              if ($result2->num_rows > 0) {
+                echo $starttime . "-" . $endtime . " on " . $day . "<br>";
+              }
+            }
+          ?>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
