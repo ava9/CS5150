@@ -270,7 +270,7 @@ class Band {
   function getConflicts(){
     return $this->conflicts;
   }
-  
+
   /* Overwrites the php clone function to create a new Band object with the same values as this band object */
   function __clone() {
     return new Band($this->id, $this->name, $this->lat, $this->lng, $this->availableTimeSlots, $this->conflicts, $this->slot, $this->distances);
@@ -429,10 +429,13 @@ function generateBaseSchedule() {
   foreach ($unassignedBandIDs as $uBandID) {
     $uBand = $bandsHashMap[$uBandID];
 
-    foreach ($uBand->getConflicts() as $conflictingBandName) {
-      $band = $bandsHashMap[$conflictingBandName];
+    // this stuff assumes that getConflicts returns band IDs... however right now it returns band names
+    // so this doesn't work....
+    $conflictingIDs = namesToIDs($uBand->getConflicts());
+    foreach ($conflictingIDs as $conflictingBandID) {
+      $band = $bandsHashMap[$conflictingBandID];
       $oldTimeSlot = $band->slot;
-      $success = tryToMoveBand($conflictingBandName, $schedule);
+      $success = tryToMoveBand($conflictingBandID, $schedule);
       if ($success) {
         $schedule->add($oldTimeSlot, $uBand);
         $uBand->slot = $oldTimeSlot;
@@ -590,6 +593,21 @@ function bandOverMinDist($bandsArr, $band) {
 
   return true;
 
+}
+
+function namesToIDs($names) {
+  global $bandsHashMap;
+
+  $result = [];
+  foreach ($names as $n) {
+    foreach ($bandsHashMap as $bandID => $band) {
+      if ($band->name == $n) {
+        array_push($result, $bandID);
+      }
+    }
+  }
+  
+  return $result;
 }
 
 /* returns true if $band does not conflict with any band in $bandArr, false otherwise */
