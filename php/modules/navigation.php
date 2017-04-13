@@ -17,36 +17,6 @@
                     <a href="/cs5150/html/browse"> Browse Porchfests </a>
                 </li>
                 <?php 
-                    if (isset($_POST['logout'])) {
-                    // logout button pressed
-                        unset($_SESSION['logged_user']);
-                        unset($_POST['logout']);
-                    }
-
-                    if (isset($_POST['login'])) {
-                    // logged_user not set, but email and password were entered
-
-                        $email = $_POST['email'];
-                        $sanitized_username = filter_var($email, FILTER_SANITIZE_STRING);
-                        require_once('../php/config.php');
-                        $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-                        // future hashing
-                        // $password = hash("md5", ($_POST['password'] . SALT));
-                        $password = $_POST['password'];
-                        $result = $mysqli->query("SELECT password FROM users WHERE email = '$email'");
-                        $row = $result->fetch_row();
-                        if ($row[0] === $password) {
-                             $_SESSION['logged_user'] = $sanitized_username;
-                            unset($_POST['login']);
-                        } else {
-                            //return alert
-
-                            // Want to alert in a different way??? Check
-                            echo "<script type='text/javascript'>alert('Login failed. Try again.');</script>";
-                        }
-
-       
-                    } 
                     // user is logged in
                     if (isset($_SESSION['logged_user'])) {
                 ?>
@@ -58,7 +28,7 @@
                                 </ul>
                         </li>
                         
-                        <li><form role="form" id='logout-button' method='POST' action = "http://localhost/cs5150/html/">
+                        <li><form role="form" id='logout-button' method='POST' action = "/cs5150/html/">
                             <button type='submit' class='btn btn-link navbar-btn loginButton' name="logout" >
                             Logout
                             </button>
@@ -68,24 +38,13 @@
                     } else {
                 ?>
                         <!-- Button trigger modal -->
-                        <li><button type='button' class='btn btn-link navbar-btn loginButton' data-toggle='modal' data-target='#myModal'>
+                        <li><button type='button' class='btn btn-link navbar-btn loginButton' data-toggle='modal' data-target='#loginModal'>
                           Login
                         </button></li>
 
                 <?php
                     }
                 ?>
-<!--                 <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> My Account </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="myporchfests.php"> My Porchfests </a></li>
-                            <li><a href="myprofile.php"> My Profile </a></li>
-                        </ul>
-                </li> -->
-                <!-- Button trigger modal -->
-                <!-- <button type="button" class="btn btn-link navbar-btn loginButton" data-toggle="modal" data-target="#myModal">
-                  Login
-                </button> -->
             </ul>
         </div>
         <!-- /.navbar-collapse -->

@@ -1,4 +1,4 @@
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,6 +7,38 @@
                 <h4 class="modal-title" id="myModalLabel">
                     Login</h4>
             </div>
+            <?php
+                if (isset($_POST['logout'])) {
+                // logout button pressed
+                    unset($_SESSION['logged_user']);
+                    unset($_POST['logout']);
+                }
+
+                if (isset($_POST['login'])) {
+                // logged_user not set, but email and password were entered
+                    $email = $_POST['email'];
+                    $sanitized_username = filter_var($email, FILTER_SANITIZE_STRING);
+                    require_once('../php/config.php');
+                    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+                    // future hashing
+                    // $password = hash("md5", ($_POST['password'] . SALT));
+                    $password = $_POST['password'];
+                    $result = $mysqli->query("SELECT password, userID FROM users WHERE email = '$email'");
+                    $row = $result->fetch_row();
+
+                    if ($row[0] === $password) {
+                        $_SESSION['logged_user'] = $row[1];
+                        unset($_POST['login']);
+                    } else {
+            ?>
+                        <script type='text/javascript'>
+                            alert('Login failed. Try again.');
+                            $('#loginModal').modal();
+                        </script>
+            <?php
+                    }
+                } 
+            ?>
             <div class="modal-body">
                 <div class="row">
                     <form role="form" class="form-horizontal" id='login-form' method='POST'>
@@ -28,6 +60,13 @@
                                         <input type="password" name="password" class="form-control" placeholder="Password" />
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row" id='LoginErrorMessage' hidden>
+                            <div class="col-sm-5">
+                            </div>
+                            <div class="col-sm-4">
+                                <p> Error! </p>
                             </div>
                         </div>
                         <div class="row">
