@@ -41,8 +41,9 @@
 			echo "fail";
 		}
 
-	} elseif (isset($_POST['timeslotstart']) && isset($_POST['timeslotend']) && isset($_POST['start']) && isset($_POST['end'])) {
+	} elseif (isset($_POST['timeslotstart']) && isset($_POST['timeslotend']) && isset($_POST['start']) && isset($_POST['end']) && isset($_POST['timeslotid'])) {
 		// ** editporchfest.php: update timeslot.
+		$timeslotid = htmlentities($_POST['timeslotid']);
 		$timeslotstart = htmlentities($_POST['timeslotstart']);
 		$timeslotend = htmlentities($_POST['timeslotend']);
 		$start = date_create_from_format('Y.m.d g:i A', htmlentities($_POST['start']));
@@ -51,15 +52,23 @@
 		$datestart = date_create_from_format('g:i A', $timeslotstart);
 		$dateend = date_create_from_format('g:i A', $timeslotend);
 
-		
-		$sql = "SELECT TimeslotID FROM porchfesttimeslots WHERE StartTime='" . $start->format('Y-m-d H:i:s') . "' AND EndTime='". $end->format('Y-m-d H:i:s') . "'";
-		$result = $conn->query($sql);
-		$timeslotid = $result->fetch_assoc()['TimeslotID'];
-
 		$start->setTime($datestart->format('H'), $datestart->format('i'));
 		$end->setTime($dateend->format('H'), $dateend->format('i'));
 
 		$sql = "UPDATE porchfesttimeslots SET StartTime='" . $start->format('Y-m-d H:i:s') . "', EndTime='" . $end->format('Y-m-d H:i:s') . "' WHERE PorchfestID=1 AND TimeslotID=" . $timeslotid;
+
+		$result = $conn->query($sql);		
+
+		if ($result) {
+			echo 'success';
+		} else {
+			echo 'fail';
+		}
+
+	} elseif (isset($_POST['tid'])) {
+		$timeslotid = htmlentities($_POST['tid']);
+
+		$sql = "DELETE FROM `porchfesttimeslots` WHERE TimeslotID=" . $timeslotid;
 
 		$result = $conn->query($sql);		
 
@@ -80,11 +89,27 @@
 		echo "<th> Time Slots </th>";
 		echo "<th> Scheduled </th>";
 		echo "<th> Manage </th>";
+		echo "<th> Contact </th>";
 		echo "</tr>";
+
+		function email_href($conn, $name) {
+	        $result = $conn->query("SELECT Members FROM bands WHERE Name = '" . $name . "'");
+	        $band = $result->fetch_assoc();
+	        $members = explode(',', $band['Members']);
+
+	        $recipient = $members[0];
+	        $cc = '';
+	        unset($members[0]);
+	        foreach ($members as $key => $value) {
+	          $cc = $cc . $value . ',';
+	        }
+
+	        $subject = sprintf("[Porchfest] %s", $name);
+	        return sprintf("mailto:%s?cc=%s&subject=%s", $recipient, $cc, $subject);
+	    }
 
 		if ($name == "") {
 			$sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID WHERE PorchfestID = 1 ORDER BY bands.Name";
-			$result = $conn->query($sql);
 
 		} else {
 			$sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID WHERE PorchfestID = 1 AND bands.Name LIKE '%" . $name . "%' ORDER BY bands.Name; ";
@@ -94,12 +119,13 @@
 
 	    while($band = $result->fetch_assoc()) {
 			echo '<tr>';
-			echo '<td><a href="#"">' . $band['Name'] . '</a></td>';
+			echo '<td>' . $band['Name'] . '</td>';
 			echo '<td>' . $band['Description'] . '</td>';
 			echo '<td> List of members </td>';
 			echo '<td> <a data-target="#timeslotModal" data-toggle="modal"> Time Slots </a> </td>';
 			echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
-			echo '<td> <a href="#"> Edit </a> </td>';
+			echo '<td> <a href="../editband.php"> Edit </a> </td>';
+			echo '<td> <a href="' . email_href($conn, $band['Name']) . '" target="_blank"> Email </a> </td>';
 		}
 
 		echo '</table>';

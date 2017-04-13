@@ -11,8 +11,6 @@
   </head>
 
   <body>
-    <div id="editalert"></div>
-
     <?php 
       require_once "../php/config.php";
       require_once "../php/modules/navigation.php";
@@ -24,6 +22,9 @@
       $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
     ?>
+
+    <div id="editalert"></div>
+
     <!-- Modal -->
     <div id="edit-timeslot-modal" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -37,7 +38,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" id="save-timeslot-change" class="btn btn-success" data-dismiss="modal"> Save </button>
-            <button type="button" class="btn btn-danger" data-dismiss="modal"> Delete </button>
+            <button type="button" id="delete-timeslot" class="btn btn-danger" data-dismiss="modal"> Delete </button>
             <button type="button" class="btn btn-default" data-dismiss="modal"> Cancel </button>
           </div>
         </div>
@@ -54,58 +55,21 @@
             <h4 class="modal-title"> Time Slots </h4>
           </div>
           <div class="modal-body">
-            <table class="responsive table timeslot-table"> <!-- begin table -->
-              <tr>
-                <th> </th>
-                <th> Thu </th>
-                <th> Fri </th>
-                <th> Sat </th>
-                <th> Sun </th>
-                <th> Mon </th>
-                <th> Tue </th>
-                <th> Wed </th>
-              </tr>
-              <tr>
-                <td class = "time"> 08:00 </td>
-                <td> -- </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> -- </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> -- </td>
-              </tr>
-              <tr>
-                <td class = "time"> 09:00 </td>
-                <td> -- </td>
-                <td> -- </td>
-                <td> <span class="glyphicon glyphicon-ok"> </span> </td>
-                <td> -- </td>
-                <td> -- </td>
-                <td> -- </td>
-                <td> -- </td>
-              </tr>
-              <tr>
-                <td class = "time"> 10:00 </td>
-                <td> -- </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> -- </td>
-              </tr>
-              <tr>
-                <td class = "time"> 11:00 </td>
-                <td> -- </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-                <td> -- </td>
-                <td> -- </td>
-                <td> -- </td>
-                <td> <span class="glyphicon glyphicon-ok"></span> </td>
-              </tr>
-            </table> <!-- end table -->
+            <?php 
+              $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID='1' ORDER BY StartTime";
+              $result = $conn->query($sql);
+              while($timeslot = $result->fetch_assoc()) {
+                $sql2 = "SELECT * FROM bandavailabletimes
+                         WHERE BandID = '1' AND TimeslotID = '" . $timeslot['TimeslotID'] . "'";
+                $result2 = $conn->query($sql2);
+                $starttime = date_format(date_create($timeslot['StartTime']), 'g:iA');
+                $endtime = date_format(date_create($timeslot['EndTime']), 'g:iA');
+                $day = date_format(date_create($timeslot['StartTime']), 'F j, Y');
+                if ($result2->num_rows > 0) {
+                  echo $starttime . "-" . $endtime . " on " . $day . "<br>";
+                }
+              }
+            ?>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
@@ -157,9 +121,9 @@
                     echo '<textarea rows="5" id="porchfestdescription" class="form-control" placeholder="Porchfest Description">' . $porchfest['Description'] .  '</textarea>';
                     echo '<br />';
 
-                    echo '<label> Porchfest Deadline Time (format as XX:XXpm or XX:XXam) </label>';
+                    echo '<label> Porchfest Deadline Time (24 hr clock format) </label>';
                     $deadline = date_create($porchfest['Deadline']);
-                    $date = date_format($deadline, 'G:ia');
+                    $date = date_format($deadline, 'H:i');
                     echo '<input type="text" name="porchfesttime" class="form-control" value="' . $date . '" placeholder="Porchfest Deadline Time">';
                     echo '<br />';
 
@@ -193,6 +157,7 @@
                 <?php 
                   // Given a band name and SQL connection, get the registered emails of the band and 
                   // return a mailto link to them
+
                   function email_href($conn, $name) {
                     $result = $conn->query("SELECT Members FROM bands WHERE Name = '" . $name . "'");
                     $band = $result->fetch_assoc();
@@ -209,18 +174,21 @@
                     return sprintf("mailto:%s?cc=%s&subject=%s", $recipient, $cc, $subject);
                   }
 
+
+                  $result = $conn->query("SELECT Members FROM bands WHERE PorchfestID = 1");
+
                   $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = 1 ORDER BY bands.Name";
 
                   $result = $conn->query($sql);
 
                   while($band = $result->fetch_assoc()) {
                     echo '<tr>';
-                    echo '<td><a href="#">' . $band['Name'] . '</a></td>';
+                    echo '<td>' . $band['Name'] . '</td>';
                     echo '<td>' . $band['Description'] . '</td>';
                     echo '<td> List of members </td>';
                     echo '<td> <a data-target="#timeslotModal" data-toggle="modal"> Time Slots </a> </td>';
                     echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
-                    echo '<td> <a href="#"> Edit </a> </td>';
+                    echo '<td> <a href="../editband.php"> Edit </a> </td>';
                     echo '<td> <a href="' . email_href($conn, $band['Name']) . '" target="_blank"> Email </a> </td>';
                   }
 
@@ -244,25 +212,25 @@
                 $start_time = date_create($timeslot['StartTime']);
                 $end_time = date_create($timeslot['EndTime']);
 
-                echo '<div class="col-xs-6 col-sm-3 timeslot-label"><span id="' . date_format($start_time, 'Y.m.d g:i A') . " - " . date_format($end_time, 'Y.m.d g:i A') . '" class="label label-primary">' . date_format($start_time, 'g:i A') . " - " . date_format($end_time, 'g:i A')  . ' </span></div>';
+                echo '<div class="col-xs-6 col-sm-3 timeslot-label"><span id="' . $timeslot['TimeslotID'] . '-' . date_format($start_time, 'Y.m.d g:i A') . " - " . date_format($end_time, 'Y.m.d g:i A') . '" class="label label-primary">' . date_format($start_time, 'g:i A') . " - " . date_format($end_time, 'g:i A')  . ' </span></div>';
 
               }
 
             ?>
 
-            <div class="col-xs-12">
+            <div class="col-xs-12" id="timeslotheaders">
                 Add a Timeslot
             </div>
 
             <div class="col-xs-12">
-              <form role="form" class="form-horizontal" action="">
+              <form role="form" id="createtimeslot" class="form-horizontal" action="">
                 <div class="col-xs-6">
                   <label for="timeslot"> Start Time </label>
-                    <input type="datetime-local">
+                    <input type="time">
                 </div>
                 <div class="col-xs-6">
                   <label for="timeslot"> End Time </label>
-                    <input type="datetime-local">
+                    <input type="time">
                 </div>
                 <div class="col-xs-offset-9 col-xs-3 timeslot-button">
                   <button type="submit" class="btn btn-primary btn-sm"> Add Timeslot </button>
@@ -292,10 +260,33 @@
       $("#editalert").html('');
     });
 
+    $('#delete-timeslot').click(function(){
+      console.log('here1');
+      var tid = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[0].trim();
+
+      $.ajax({
+        url: ajaxurl,
+        type: "POST",
+        data: {tid: tid},
+        success: function(result){
+          if (result == "success") {
+            $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The timeslot was deleted successfully. </div>');
+          } else {
+            $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
+          }
+        },
+        error: function(result) {
+          console.log('error');
+        }
+      });
+    });
+
     $('#save-timeslot-change').click(function() {
-      var start = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[0].trim();
-      var end = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[1].trim();
+      var timeslotid = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[0].trim();
+      var start = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[1].trim();
+      var end = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[2].trim();
       var formData = {
+          timeslotid             : timeslotid,
           timeslotstart          : $('input[name=timeslot-start]').val(),
           timeslotend            : $('input[name=timeslot-end]').val(),
           start                  : start,
@@ -323,9 +314,9 @@
     });
 
     $('.label').click(function() {
-      var start_string = $(this).attr('id').split('-')[0].trim();
+      var start_string = $(this).attr('id').split('-')[1].trim();
       var start = start_string.substring(start_string.indexOf(' '), start_string.length).trim();
-      var end_string = $(this).attr('id').split('-')[1].trim();
+      var end_string = $(this).attr('id').split('-')[2].trim();
       var end = end_string.substring(end_string.indexOf(' '), end_string.length).trim();
 
       $('#edit-timeslot-modal').find('.modal-header').html(start + ' - ' + end);

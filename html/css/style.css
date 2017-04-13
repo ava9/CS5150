@@ -1,6 +1,10 @@
 /*    --------------------------------------------------
   :: editporchfest.php
   -------------------------------------------------- */
+.navbar {
+  height: 50px;
+}
+
 
 #editalert {
   /*position: fixed;
@@ -32,6 +36,11 @@
   position: relative;
   margin-top: 10px;
   z-index: 100;
+}
+
+#createtimeslot {
+  position: relative;
+  z-index: 110;
 }
 
 .timeslot-pane {
