@@ -14,8 +14,8 @@
     <div id="editalert"></div>
 
     <?php 
-      require_once "../php/modules/navigation.php";
       require_once "../php/config.php";
+      require_once "../php/modules/navigation.php";
       require_once "../php/modules/login.php";
       
 
@@ -54,23 +54,58 @@
             <h4 class="modal-title"> Time Slots </h4>
           </div>
           <div class="modal-body">
-          <?php 
-            $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID='1' ORDER BY StartTime";
-
-            $result = $conn->query($sql);
-            while($timeslot = $result->fetch_assoc()) {
-              $sql2 = "SELECT * FROM bandavailabletimes
-                       WHERE BandID = '1' AND TimeslotID = '" . $timeslot['TimeslotID'] . "'";
-              $result2 = $conn->query($sql2);
-
-              $starttime = date_format(date_create($timeslot['StartTime']), 'g:iA');
-              $endtime = date_format(date_create($timeslot['EndTime']), 'g:iA');
-              $day = date_format(date_create($timeslot['StartTime']), 'F j, Y');
-              if ($result2->num_rows > 0) {
-                echo $starttime . "-" . $endtime . " on " . $day . "<br>";
-              }
-            }
-          ?>
+            <table class="responsive table timeslot-table"> <!-- begin table -->
+              <tr>
+                <th> </th>
+                <th> Thu </th>
+                <th> Fri </th>
+                <th> Sat </th>
+                <th> Sun </th>
+                <th> Mon </th>
+                <th> Tue </th>
+                <th> Wed </th>
+              </tr>
+              <tr>
+                <td class = "time"> 08:00 </td>
+                <td> -- </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> -- </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> -- </td>
+              </tr>
+              <tr>
+                <td class = "time"> 09:00 </td>
+                <td> -- </td>
+                <td> -- </td>
+                <td> <span class="glyphicon glyphicon-ok"> </span> </td>
+                <td> -- </td>
+                <td> -- </td>
+                <td> -- </td>
+                <td> -- </td>
+              </tr>
+              <tr>
+                <td class = "time"> 10:00 </td>
+                <td> -- </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> -- </td>
+              </tr>
+              <tr>
+                <td class = "time"> 11:00 </td>
+                <td> -- </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+                <td> -- </td>
+                <td> -- </td>
+                <td> -- </td>
+                <td> <span class="glyphicon glyphicon-ok"></span> </td>
+              </tr>
+            </table> <!-- end table -->
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
@@ -95,7 +130,7 @@
         </div> <!-- end col 1 div -->
 
         <div class="col-sm-10"> <!-- begin col 2 div -->
-          <div class="tab-pane fade in active" id="manageporchfest"> <!-- begin manageporchfest div -->
+          <div class="tab-pane fade" id="manageporchfest"> <!-- begin manageporchfest div -->
             <div id="porchfestinfo"> <!-- begin porchfestinfo div -->
               <div class="input-group"> <!-- begin input-group div -->
                 <form action="editporchfest.php" method="POST" id="porchfestmanagesubmit">
@@ -122,9 +157,9 @@
                     echo '<textarea rows="5" id="porchfestdescription" class="form-control" placeholder="Porchfest Description">' . $porchfest['Description'] .  '</textarea>';
                     echo '<br />';
 
-                    echo '<label> Porchfest Deadline Time (24 hr clock format) </label>';
+                    echo '<label> Porchfest Deadline Time (format as XX:XXpm or XX:XXam) </label>';
                     $deadline = date_create($porchfest['Deadline']);
-                    $date = date_format($deadline, 'H:i');
+                    $date = date_format($deadline, 'G:ia');
                     echo '<input type="text" name="porchfesttime" class="form-control" value="' . $date . '" placeholder="Porchfest Deadline Time">';
                     echo '<br />';
 
@@ -150,23 +185,43 @@
                   <th> Name </th>
                   <th> Description </th>
                   <th> Members </th>
-                  <th> Time Slots </th>
+                  <th> Timeslots </th>
                   <th> Scheduled </th>
                   <th> Manage </th>
+                  <th> Contact </th>
                 </tr>
                 <?php 
+                  // Given a band name and SQL connection, get the registered emails of the band and 
+                  // return a mailto link to them
+                  function email_href($conn, $name) {
+                    $result = $conn->query("SELECT Members FROM bands WHERE Name = '" . $name . "'");
+                    $band = $result->fetch_assoc();
+                    $members = explode(',', $band['Members']);
+
+                    $recipient = $members[0];
+                    $cc = '';
+                    unset($members[0]);
+                    foreach ($members as $key => $value) {
+                      $cc = $cc . $value . ',';
+                    }
+
+                    $subject = sprintf("[Porchfest] %s", $name);
+                    return sprintf("mailto:%s?cc=%s&subject=%s", $recipient, $cc, $subject);
+                  }
+
                   $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = 1 ORDER BY bands.Name";
 
                   $result = $conn->query($sql);
 
                   while($band = $result->fetch_assoc()) {
                     echo '<tr>';
-                    echo '<td>' . $band['Name'] . '</td>';
+                    echo '<td><a href="#">' . $band['Name'] . '</a></td>';
                     echo '<td>' . $band['Description'] . '</td>';
                     echo '<td> List of members </td>';
                     echo '<td> <a data-target="#timeslotModal" data-toggle="modal"> Time Slots </a> </td>';
                     echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
-                    echo '<td> <a href="../editband.php"> Edit </a> </td>';
+                    echo '<td> <a href="#"> Edit </a> </td>';
+                    echo '<td> <a href="' . email_href($conn, $band['Name']) . '" target="_blank"> Email </a> </td>';
                   }
 
                 ?>
@@ -175,7 +230,7 @@
             </div> <!-- end table-container div -->
           </div> <!-- end bands div -->
 
-          <div class="tab-pane fade" id="timeslots"> <!-- begin timeslots div -->
+          <div class="tab-pane fade in active" id="timeslots"> <!-- begin timeslots div -->
             <div class="col-xs-12" id="timeslotheaders">
               Existing Timeslots
             </div>
@@ -195,7 +250,7 @@
 
             ?>
 
-            <div class="col-xs-12" id="timeslotheaders">
+            <div class="col-xs-12">
                 Add a Timeslot
             </div>
 
@@ -203,11 +258,11 @@
               <form role="form" class="form-horizontal" action="">
                 <div class="col-xs-6">
                   <label for="timeslot"> Start Time </label>
-                    <input type="time">
+                    <input type="datetime-local">
                 </div>
                 <div class="col-xs-6">
                   <label for="timeslot"> End Time </label>
-                    <input type="time">
+                    <input type="datetime-local">
                 </div>
                 <div class="col-xs-offset-9 col-xs-3 timeslot-button">
                   <button type="submit" class="btn btn-primary btn-sm"> Add Timeslot </button>
@@ -296,10 +351,8 @@
         data: formData,
         success: function(result){
           if (result == "success") {
-            console.log(result);
             $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The timeslot was updated successfully. </div>');
           } else {
-            console.log(result);
             $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
           }
         },
@@ -311,6 +364,7 @@
     });
 
     $("#search").keyup(function(){
+      console.log('here');
       $.ajax({
         url: ajaxurl,
         type: "GET",
@@ -319,17 +373,6 @@
           $("#bandstable").html(result);
         }});
     });
-  </script>
-
-  <script type='text/javascript'>
-  $(document).ready(function() {
-    $(window).keydown(function(event){
-      if(event.keyCode == 13) {
-        event.preventDefault();
-        return false;
-      }
-    });
-  });
   </script>
 
   </body>
