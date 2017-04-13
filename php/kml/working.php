@@ -24,13 +24,13 @@ function printStyle($colorArr, $i){
 	$s = '"' .$i . '"';
 	$i = $i - 1;
 	$i = $i % 20;
-	echo ("\t\t\t<Style id=".$s.">\n");
-	echo ("\t\t\t\t<LabelStyle>\n");
-	echo ("\t\t\t\t\t<color>".$colorArr[$i]."</color>\n");
-	echo ("\t\t\t\t\t<colorMode>normal</colorMode>\n");
-	echo ("\t\t\t\t\t<scale>1</scale>\n");
-	echo ("\t\t\t\t</LabelStyle>\n");
-	echo ("\t\t\t</Style>\n");
+	//echo ("\t\t\t<Style id=".$s.">\n");
+	//echo ("\t\t\t\t<LabelStyle>\n");
+	//echo ("\t\t\t\t\t<color>".$colorArr[$i]."</color>\n");
+	//echo ("\t\t\t\t\t<colorMode>normal</colorMode>\n");
+	//echo ("\t\t\t\t\t<scale>1</scale>\n");
+	//echo ("\t\t\t\t</LabelStyle>\n");
+	//echo ("\t\t\t</Style>\n");
 }
 
 $colorArray = array("501400FF", "501478FF", "5014F0FF", "5078FF00", "50FF7800", "50FF78F0", "50FF78B4", "50140000", "50147800", "5014F000", "50780000", "50780078", "507800B4", "500078F0", "507800F0", "507882F0", "508278F0", "50F07814", "5078A03C", "501478C8");
@@ -58,7 +58,7 @@ if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 } 
 
-$sql = "SELECT bands.Name, bands.Description, PorchLocation, porchfesttimeslots.StartTime FROM bands INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID INNER JOIN porchfesttimeslots ON porchfesttimeslots.TimeslotID = bandstoporchfests.TimeslotID ORDER BY porchfesttimeslots.StartTime;";
+$sql = "SELECT bands.Name, bands.Description, Latitude, Longitude, porchfesttimeslots.StartTime FROM bands INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID INNER JOIN porchfesttimeslots ON porchfesttimeslots.TimeslotID = bandstoporchfests.TimeslotID ORDER BY porchfesttimeslots.StartTime;";
 
 $result = $conn->query($sql);
 $colorIndex;
@@ -78,13 +78,14 @@ if ($result->num_rows > 0) {
 		$bandId = $row["BandID"];
 		$bandName = $row["Name"];
 		$bandDescription = $row["Description"];
-		$bandLocation = $row["PorchLocation"];
+		$bandLat = $row["Latitude"];
+		$bandLong = $row["Longitude"];
 		$bandTimeSlotID = $row["TimeslotID"];
 		$bandStartTime = $row["StartTime"];
 
 		// now you have the band name, decription, location, and start time
 		// $bandName, $bandDescription, $bandLocation, $bandStartTime
-		$bandLocation = getCoordinates($bandLocation);
+		//$bandLocation = getCoordinates($bandLocation);
 		// YYYY-MM-DD HH:MM:SS
 		$t = strtotime($bandStartTime);
 		$hour = date('g', $t);
@@ -136,7 +137,7 @@ if ($result->num_rows > 0) {
 		echo ("\t\t\t\t<description>".$bandDescription."</description>\n");
 		echo ("\t\t\t\t<styleUrl>#".$colorIndex."</styleUrl>\n");
 		echo ("\t\t\t\t<Point>\n");
-		echo ("\t\t\t\t\t<coordinates>".$bandLocation."</coordinates>\n");
+		echo ("\t\t\t\t\t<coordinates>".$bandLat.",".$bandLong.",0.0</coordinates>\n");
 		echo ("\t\t\t\t</Point>\n");
 		echo ("\t\t\t</Placemark>\n");
 		
