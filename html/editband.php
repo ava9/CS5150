@@ -12,9 +12,18 @@
 
   <?php // Database credentials
     require_once "../php/config.php";
+    require_once "../php/routing.php";
 
     // Create connection
     $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+    $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME_CLEAN);
+    $result = $conn->query($sql);
+    $porchfestID = $result->fetch_assoc()['PorchfestID'];
+
+    $sql = sprintf("SELECT BandID FROM bands WHERE bands.Name = '%s'", BAND_NAME_CLEAN);
+    $result = $conn->query($sql);
+    $bandID = $result->fetch_assoc()['BandID'];
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $bandname = htmlentities($_POST['bandname']);
@@ -43,10 +52,10 @@
     }
   }
 
-  $sql = "SELECT * FROM bands 
+  $sql = sprintf("SELECT * FROM bands 
         INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID
-        INNER JOIN userstobands ON bands.BandID = userstobands.BandID
-        WHERE userstobands.UserID = '1' AND bandstoporchfests.PorchfestID = '1' AND bands.BandID = '1'";
+        WHERE bandstoporchfests.PorchfestID = '%s' AND bands.BandID = '%s'", 
+        $porchfestID, $bandID);
 
   $result = $conn->query($sql);
   $band = $result->fetch_assoc();
@@ -101,8 +110,8 @@
 
             $result = $conn->query($sql);
             while($timeslot = $result->fetch_assoc()) {
-              $sql2 = "SELECT * FROM bandavailabletimes
-                       WHERE BandID = '1' AND TimeslotID = '" . $timeslot['TimeslotID'] . "'";
+              $sql2 = sprintf("SELECT * FROM bandavailabletimes WHERE BandID = '%s' AND TimeslotID = '%s'", 
+                        $bandID, $timeslot['TimeslotID']);
               $result2 = $conn->query($sql2);
 
               $starttime = date_format(date_create($timeslot['StartTime']), 'g:iA');
@@ -125,7 +134,7 @@
           <div class="col-md-8">
             <input name="submit" class="btn btn-primary" value="Save Changes" type="submit">
             <span></span>
-            <input class="btn btn-default" value="Cancel" type="reset">
+            <input class="btn btn-default" onclick="history.back()" value="Cancel" type="reset">
           </div>
         </div>
       </form>

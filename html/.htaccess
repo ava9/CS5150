@@ -17,10 +17,10 @@ RewriteRule ^bandsignup/([^/]+)/? bandsignup.php?name=$1 [NC,L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^editporchfest/([^/]+)/? editporchfest.php?name=$1 [NC,L]
+RewriteRule ^edit/([^/]+)/([^/]+)/? editband.php?name=$2 [NC,L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^editband/([^/]+)/? editband.php?name=$1 [NC,L]
+RewriteRule ^edit/([^/]+)/? editporchfest.php?name=$1 [NC,L]
 
 #RewriteRule ^(.*)? index.php [NC,L]
