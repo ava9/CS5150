@@ -99,7 +99,7 @@
                           <td> Organizer </td>
                           <td>' . $deadline . '</td>
                           <td>' . $isPublished . '</td>
-                          <td> <a href="editporchfest/' . strtolower($porchfest['Name']) . '"> Edit Porchfest </a> </td>
+                          <td> <a href="edit/' . strtolower($porchfest['Name']) . '"> Edit Porchfest </a> </td>
                         </tr>';
                   }
 

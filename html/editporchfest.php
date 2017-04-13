@@ -13,9 +13,9 @@
   <body>
     <?php 
       require_once "../php/config.php";
+      require_once "../php/routing.php";
       require_once "../php/modules/navigation.php";
       require_once "../php/modules/login.php";
-      
 
       // Create connection
       // add DB_USER and DB_PASSWORD later
@@ -188,7 +188,8 @@
                     echo '<td> List of members </td>';
                     echo '<td> <a data-target="#timeslotModal" data-toggle="modal"> Time Slots </a> </td>';
                     echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
-                    echo '<td> <a href="../editband.php"> Edit </a> </td>';
+                    echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NAME_RAW . '/' . 
+                                $band['Name'] . '"> Edit </a> </td>';
                     echo '<td> <a href="' . email_href($conn, $band['Name']) . '" target="_blank"> Email </a> </td>';
                   }
 

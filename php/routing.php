@@ -13,9 +13,13 @@
     // foreach ($uri_array as $key => $value) {
     //     $uri_array[$key] = ucwords(urldecode($value));
     // }
-    if (in_array($uri_array[0], ['singleporchfest', 'editporchfest', 'bandsignup', 'editband'])) {
+    if (in_array($uri_array[0], ['singleporchfest', 'edit', 'bandsignup'])) {
         define('PORCHFEST_NAME_RAW', $uri_array[1]);
         define('PORCHFEST_NAME_CLEAN', ucwords(urldecode($uri_array[1])));
+    }
+    if (isset($uri_array[2])) {
+        define('BAND_NAME_RAW', $uri_array[2]);
+        define('BAND_NAME_CLEAN', ucwords(urldecode($uri_array[2])));
     }
 ?>
 
