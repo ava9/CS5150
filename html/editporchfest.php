@@ -21,6 +21,10 @@
       // add DB_USER and DB_PASSWORD later
       $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
+      $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME_CLEAN);
+      $result = $conn->query($sql);
+      $porchfestID = $result->fetch_assoc()['PorchfestID'];
+
     ?>
 
     <div id="editalert"></div>
@@ -99,7 +103,7 @@
               <div class="input-group"> <!-- begin input-group div -->
                 <form action="editporchfest.php" method="POST" id="porchfestmanagesubmit">
                   <?php 
-                    $sql = "SELECT * FROM `porchfests` WHERE PorchfestID = 1";
+                    $sql = "SELECT * FROM `porchfests` WHERE PorchfestID = '" . $porchfestID . "'";
 
                     $result = $conn->query($sql);
 
@@ -175,9 +179,9 @@
                   }
 
 
-                  $result = $conn->query("SELECT Members FROM bands WHERE PorchfestID = 1");
+                  $result = $conn->query("SELECT Members FROM bands WHERE PorchfestID = '" . $porchfestID . "'");
 
-                  $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = 1 ORDER BY bands.Name";
+                  $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
 
                   $result = $conn->query($sql);
 
@@ -205,7 +209,7 @@
             </div>
 
             <?php
-              $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '1' ORDER BY StartTime;";
+              $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $porchfestID . "' ORDER BY StartTime;";
 
               $result = $conn->query($sql);
 

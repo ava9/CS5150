@@ -12,7 +12,7 @@
     // Create connection
     $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-    $sql = "SELECT * FROM users WHERE UserID = '1'";
+    $sql = "SELECT * FROM users WHERE UserID = '" . $_SESSION['logged_user'] . "'";
 
     $result = $conn->query($sql);
     $user = $result->fetch_assoc();

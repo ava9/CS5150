@@ -57,11 +57,11 @@
                 <th> Published </th>
                 <th> Manage </th>
               </tr>
-              <?php
+              <?php                 
                   $sql = "SELECT * 
                           FROM porchfests
                           INNER JOIN userstoporchfests ON userstoporchfests.PorchfestID = porchfests.PorchfestID
-                          WHERE UserID = '1'";
+                          WHERE UserID = '" . $_SESSION['logged_user'] . "'";
 
                   $result = $conn->query($sql);
 
@@ -107,12 +107,16 @@
                           FROM porchfests
                           INNER JOIN bandstoporchfests ON bandstoporchfests.PorchfestID = porchfests.PorchfestID
                           INNER JOIN userstobands ON userstobands.BandID = bandstoporchfests.BandID
-                          WHERE UserID = '1'";
+                          WHERE UserID = '" . $_SESSION['logged_user'] . "'";
 
                   $result = $conn->query($sql);
 
                   // Add each porchfest where you are a performer to the table
                   while($porchfest = $result->fetch_assoc()) {
+                    $sql2 = "SELECT * FROM bands where BandID = '" . $porchfest['BandID'] . "'";
+                    $result2 = $conn->query($sql2);
+                    $bandname = $result2->fetch_assoc()['Name'];
+
                     // Set published 
                     $isPublished = 'No';
                     if ($porchfest['Published'] != 0) {
@@ -140,10 +144,10 @@
                           <td>' . $day . '</td>
                           <td>' . $porchfest['Location'] . '</td>
                           <td>' . $porchfest['Description'] . '</td>
-                          <td> Performer () </td>
+                          <td> Performer (' . $bandname . ') </td>
                           <td>' . $deadline . '</td>
                           <td>' . $isPublished . '</td>
-                          <td> <a href="editband/' . strtolower($porchfest['Name']) . '"> Edit Band </a> </td>
+                          <td> <a href="edit/' . strtolower($porchfest['Name']) . '/' . $bandname . '"> Edit Band </a> </td>
                         </tr>';
                   }
               ?>

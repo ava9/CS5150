@@ -20,6 +20,10 @@
     // add DB_USER and DB_PASSWORD later
     $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
+    $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME_CLEAN);
+    $result = $conn->query($sql);
+    $porchfestID = $result->fetch_assoc()['PorchfestID'];
+
     // Check connection
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
@@ -91,7 +95,7 @@
                     FROM bands 
                     INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
                     INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID 
-                    WHERE bandstoporchfests.PorchfestID = '1' ORDER BY StartTime";
+                    WHERE bandstoporchfests.PorchfestID = '" . $porchfestID . "' ORDER BY StartTime";
 
             $result = $conn->query($sql);
 
@@ -125,7 +129,7 @@
             FROM bands 
             INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
             INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID 
-            WHERE bandstoporchfests.PorchfestID = '1'";
+            WHERE bandstoporchfests.PorchfestID = '" . $porchfestID . "'";
 
     $result = $conn->query($sql);
 

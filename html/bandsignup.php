@@ -130,8 +130,12 @@
             require_once "../php/config.php";
             // Create connection
             $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+            $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME_CLEAN);
+            $result = $conn->query($sql);
+            $porchfestID = $result->fetch_assoc()['PorchfestID'];
             
-            $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '1' ORDER BY StartTime;";
+            $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $porchfestID . "' ORDER BY StartTime;";
 
             $result = $conn->query($sql);
             while($timeslot = $result->fetch_assoc()) {
@@ -264,7 +268,6 @@
     $sql = "SELECT BandID FROM bands ORDER BY BandID DESC LIMIT 1";
     $result = $conn->query($sql);
     $bandID = $result->fetch_assoc();
-    $porchfestID = 1; // TODO CHANGE THIS TO REFLECT ACTUAL PORCHFEST NAME
 
     $prep = $mysqli->prepare("INSERT INTO bandstoporchfests (PorchfestID, BandID, PorchLocation, Latitude, Longitude) 
                               VALUES (?,?,?,?,?)");

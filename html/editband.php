@@ -37,7 +37,7 @@
             Members = '" . $bandmembers . "', Comment = '" . $bandcomment . "', Conflicts = '" . $bandconflicts . "' WHERE BandID='1'";
     $result = $conn->query($sql);
     
-    $sql = "UPDATE bandstoporchfests SET PorchLocation='" . $porchlocation . "'  WHERE PorchfestID = '1' AND BandID='1'";
+    $sql = "UPDATE bandstoporchfests SET PorchLocation='" . $porchlocation . "'  WHERE PorchfestID = '" . $porchfestID . "' AND BandID='1'";
     $result = $conn->query($sql);
 
     $sql = "DELETE FROM bandavailabletimes WHERE BandID = '1'";
