@@ -76,8 +76,8 @@ if ($result->num_rows > 0) {
 		$count = $count + 1;
 
 		$bandId = $row["BandID"];
-		$bandName = $row["Name"];
-		$bandDescription = $row["Description"];
+		$bandName = htmlspecialchars($row["Name"]);
+		$bandDescription = htmlspecialchars($row["Description"]);
 		$bandLat = $row["Latitude"];
 		$bandLong = $row["Longitude"];
 		$bandTimeSlotID = $row["TimeslotID"];
@@ -137,7 +137,7 @@ if ($result->num_rows > 0) {
 		echo ("\t\t\t\t<description>".$bandDescription."</description>\n");
 		echo ("\t\t\t\t<styleUrl>#".$colorIndex."</styleUrl>\n");
 		echo ("\t\t\t\t<Point>\n");
-		echo ("\t\t\t\t\t<coordinates>".$bandLat.",".$bandLong.",0.0</coordinates>\n");
+		echo ("\t\t\t\t\t<coordinates>".$bandLong.",".$bandLat.",0.0</coordinates>\n");
 		echo ("\t\t\t\t</Point>\n");
 		echo ("\t\t\t</Placemark>\n");
 		
