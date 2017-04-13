@@ -19,13 +19,25 @@
 		$porchfesttime = htmlentities($_POST['porchfesttime']);
 		$porchfestdeadlineday = htmlentities($_POST['porchfestdeadlineday']);
 
-		$sql = "UPDATE porchfests SET Name='" . $porchfestname . "', Location='" . $porchfestlocation . "', Date = '" . $porchfestdate . "' WHERE PorchfestID=1";
+		$sql = 'SELECT Deadline FROM porchfests WHERE PorchfestID=1';
+		$result = $conn->query($sql);
+
+		$deadline = new DateTime($result->fetch_assoc()['Deadline']);
+		list($hour, $minute) = explode(":", $porchfesttime);
+		date_time_set($deadline, intval($hour), intval($minute));
+
+		list($year, $month, $day) = explode("-", $porchfestdeadlineday);
+		$deadline->setDate(intval($year), intval($month), intval($day));
+
+		$sql = "UPDATE porchfests SET Name='" . $porchfestname . "', Location='" . $porchfestlocation . "', Date='" . $porchfestdate . "', Description='" . $porchfestdescription . "', Deadline='" . $deadline->format("Y-m-d H:i:s")  . "' WHERE PorchfestID=1";
 
 		$result = $conn->query($sql);
 		
 		if ($result) {
+			echo ($conn->error);
 			echo "success";
 		} else {
+			print_r($conn->error);
 			echo "fail";
 		}
 

@@ -14,8 +14,8 @@
     <div id="editalert"></div>
 
     <?php 
-      require_once "../php/config.php";
       require_once "../php/modules/navigation.php";
+      require_once "../php/config.php";
       require_once "../php/modules/login.php";
       
 
@@ -130,7 +130,7 @@
         </div> <!-- end col 1 div -->
 
         <div class="col-sm-10"> <!-- begin col 2 div -->
-          <div class="tab-pane fade" id="manageporchfest"> <!-- begin manageporchfest div -->
+          <div class="tab-pane fade in active" id="manageporchfest"> <!-- begin manageporchfest div -->
             <div id="porchfestinfo"> <!-- begin porchfestinfo div -->
               <div class="input-group"> <!-- begin input-group div -->
                 <form action="editporchfest.php" method="POST" id="porchfestmanagesubmit">
@@ -157,9 +157,9 @@
                     echo '<textarea rows="5" id="porchfestdescription" class="form-control" placeholder="Porchfest Description">' . $porchfest['Description'] .  '</textarea>';
                     echo '<br />';
 
-                    echo '<label> Porchfest Deadline Time (format as XX:XXpm or XX:XXam) </label>';
+                    echo '<label> Porchfest Deadline Time (24 hr clock format) </label>';
                     $deadline = date_create($porchfest['Deadline']);
-                    $date = date_format($deadline, 'G:ia');
+                    $date = date_format($deadline, 'H:i');
                     echo '<input type="text" name="porchfesttime" class="form-control" value="' . $date . '" placeholder="Porchfest Deadline Time">';
                     echo '<br />';
 
@@ -196,12 +196,12 @@
 
                   while($band = $result->fetch_assoc()) {
                     echo '<tr>';
-                    echo '<td><a href="#"">' . $band['Name'] . '</a></td>';
+                    echo '<td>' . $band['Name'] . '</td>';
                     echo '<td>' . $band['Description'] . '</td>';
                     echo '<td> List of members </td>';
                     echo '<td> <a data-target="#timeslotModal" data-toggle="modal"> Time Slots </a> </td>';
                     echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
-                    echo '<td> <a href="#"> Edit </a> </td>';
+                    echo '<td> <a href="../editband.php"> Edit </a> </td>';
                   }
 
                 ?>
@@ -210,7 +210,7 @@
             </div> <!-- end table-container div -->
           </div> <!-- end bands div -->
 
-          <div class="tab-pane fade in active" id="timeslots"> <!-- begin timeslots div -->
+          <div class="tab-pane fade" id="timeslots"> <!-- begin timeslots div -->
             <div class="col-xs-12" id="timeslotheaders">
               Existing Timeslots
             </div>
@@ -230,7 +230,7 @@
 
             ?>
 
-            <div class="col-xs-12">
+            <div class="col-xs-12" id="timeslotheaders">
                 Add a Timeslot
             </div>
 
@@ -238,11 +238,11 @@
               <form role="form" class="form-horizontal" action="">
                 <div class="col-xs-6">
                   <label for="timeslot"> Start Time </label>
-                    <input type="datetime-local">
+                    <input type="time">
                 </div>
                 <div class="col-xs-6">
                   <label for="timeslot"> End Time </label>
-                    <input type="datetime-local">
+                    <input type="time">
                 </div>
                 <div class="col-xs-offset-9 col-xs-3 timeslot-button">
                   <button type="submit" class="btn btn-primary btn-sm"> Add Timeslot </button>
@@ -331,8 +331,10 @@
         data: formData,
         success: function(result){
           if (result == "success") {
+            console.log(result);
             $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The timeslot was updated successfully. </div>');
           } else {
+            console.log(result);
             $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
           }
         },
@@ -344,7 +346,6 @@
     });
 
     $("#search").keyup(function(){
-      console.log('here');
       $.ajax({
         url: ajaxurl,
         type: "GET",
