@@ -65,9 +65,19 @@
       } else {
         echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
       }
+
+      $sql = "SELECT PorchfestID FROM porchfests ORDER BY PorchfestID DESC LIMIT 1";
+      $result = $mysqli->query($sql);
+      $porchfestID = $result->fetch_assoc();
+
+      $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
+      $result = $mysqli->query($sql);
+      $userID = $result->fetch_assoc();
+
+      $prep = $mysqli->prepare("INSERT INTO userstoporchfests (UserID, PorchfestID) VALUES (?,?)");
+      $prep->bind_param("ss", $userID['UserID'], $porchfestID['PorchfestID']);
+      $prep->execute();
     }
-
-
   } 
 ?>
   <div class="container"> 
