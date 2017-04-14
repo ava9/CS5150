@@ -41,6 +41,25 @@
 			echo "fail";
 		}
 
+	} elseif (isset($_GET['timeslotid']) && isset($_GET['bandid'])) {
+		$timeslotid = htmlentities($_GET['timeslotid']);
+		$bandid = htmlentities($_GET['bandid']);
+
+		$sql = "SELECT * FROM `bandstoporchfests` WHERE TimeslotID=" . $timeslotid . " AND NOT(BandID=" . $bandid .")";
+
+		$result = $conn->query($sql);
+
+		echo $conn->error;
+
+		$sql2 = "UPDATE `bandstoporchfests` SET TimeSlotID=" . $timeslotid . " WHERE BandID=" . $bandid;
+
+		$result2 = $conn->query($sql2);
+
+		if ($result->num_rows > 0) {
+			echo "overlap";
+		} else {
+			echo "no overlap";
+		}
 	} elseif (isset($_POST['timeslotstart']) && isset($_POST['timeslotend']) && isset($_POST['start']) && isset($_POST['end']) && isset($_POST['timeslotid'])) {
 		// ** editporchfest.php: update timeslot.
 		$timeslotid = htmlentities($_POST['timeslotid']);
