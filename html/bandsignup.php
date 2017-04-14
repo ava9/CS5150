@@ -23,18 +23,17 @@
       </h1>
     </div>
 
-    <p> If you would like to perform for <?php echo PORCHFEST_NAME_CLEAN; ?>,
+    <h4 style="text-align:center;"> If you would like to perform for <?php echo PORCHFEST_NAME_CLEAN; ?>,
       please fill out the form below. 
-      <br>Filling out this form will create an account that you can log back into to edit your information.
-    </p>
+    </h4>
 
     <?php if (!isset($_SESSION['logged_user'])) { ?>
-    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">
+    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#loginModal">
       Already have an account?
     </button>
     <?php } ?>
 
-    <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='index.php'>
+    <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='bandsignup.php'>
       <?php if (!isset($_SESSION['logged_user'])) { ?>
       <h4> Account Information </h4>
       <div class="form-group">
@@ -180,7 +179,16 @@
               </div>
           </div>
       </div>
-      <button type="submit" class="btn btn-primary btn-sm"> Submit </button>
+      <div class="form-group">
+        <label class="col-sm-2"></label>
+        <div class="col-sm-10">
+            <div class="row">
+                <div class="col-md-9">
+                  <button type="submit" name="submitInfo" class="btn btn-primary btn-sm"> Submit </button>
+                </div>
+            </div>
+        </div>
+      </div>  
     </form>
 
   </div> <!-- end container div -->
@@ -207,7 +215,7 @@
   }
 
 
-  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  if (isset($_POST['submitInfo'])) {
     if (!isset($_SESSION['logged_user'])) {
       $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
       $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
