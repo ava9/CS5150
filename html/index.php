@@ -65,9 +65,24 @@
       } else {
         echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
       }
+
+      $sql = "SELECT PorchfestID FROM porchfests ORDER BY PorchfestID DESC LIMIT 1";
+      $result = $mysqli->query($sql);
+      $porchfestID = $result->fetch_assoc();
+
+      if (!isset($_SESSION['logged_user'])) {
+        $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
+        $result = $mysqli->query($sql);
+        $userID = $result->fetch_assoc();
+      }
+      else {
+        $userID = $_SESSION['logged_user'];
+      }
+
+      $prep = $mysqli->prepare("INSERT INTO userstoporchfests (UserID, PorchfestID) VALUES (?,?)");
+      $prep->bind_param("ss", $userID, $porchfestID['PorchfestID']);
+      $prep->execute();
     }
-
-
   } 
 ?>
   <div class="container"> 
@@ -79,12 +94,11 @@
       <h1 style="text-align:center;"> Create a Porchfest Website </h1>
     </div>
 
-    <p> If you would like to create a Porchfest website, please fill out the form below. 
-      <br>Filling out this form will create an account that you can log back into to manage your Porchfest.
-    </p>
+    <h4 style="text-align:center;"> This website helps you create a simple Porchfest website to get started. <br> Attendees will be able to view all Porchfest information which you can also manage. <br> If you would like to create a Porchfest website, please fill out the form below. 
+    </h4>
 
     <?php if (!isset($_SESSION['logged_user'])) { ?>
-    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">
+    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#loginModal">
       Already have an account?
     </button>
     <?php } ?>
@@ -197,7 +211,16 @@
               </div>
           </div>
       </div>
-      <button type="submit" name="submitInfo" class="btn btn-primary btn-sm"> Submit </button>
+      <div class="form-group">
+        <label class="col-sm-2"></label>
+        <div class="col-sm-10">
+            <div class="row">
+                <div class="col-md-9">
+                  <button type="submit" name="submitInfo" class="btn btn-primary btn-sm"> Submit </button>
+                </div>
+            </div>
+        </div>
+      </div>
     </form>
   </div> <!-- end container div -->
 

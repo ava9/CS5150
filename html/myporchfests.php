@@ -85,9 +85,8 @@
                     // website's single porchfest view
                     $href = '"singleporchfest/' . strtolower($porchfest['Name']);
                     if ($porchfest['URL'] != '') {
-                      $href = $porchfest['URL'];
+                      $href = '"' . $porchfest['URL'];
                     }
-
                     // HTML code for table row
                     echo '<tr data-status = "' . $status . '">
                           <td> 
@@ -135,7 +134,7 @@
                     // website's single porchfest view
                     $href = '"singleporchfest/' . strtolower($porchfest['Name']);
                     if ($porchfest['URL'] != '') {
-                      $href = $porchfest['URL'];
+                      $href = '"' . $porchfest['URL'];
                     }
                     echo '<tr data-status = "' . $status . '">
                           <td> 

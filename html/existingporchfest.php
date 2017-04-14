@@ -54,7 +54,7 @@
       }
 
       // handle new porchfest Logic
-      if (isset($_POST['porchfestName']) && isset($_POST['description']) && isset($_POST['location']) && isset($_POST['date']) && isset($_POST['deadline']) && $porchfestName != '' && $description != '' && $location != '' && $date != '' && $deadline != '') {
+      if (isset($_POST['porchfestName']) && isset($_POST['description']) && isset($_POST['location']) && isset($_POST['date']) && isset($_POST['deadline']) && isset($_POST['porchfestURL']) && $porchfestName != '' && $description != '' && $location != '' && $date != '' && $deadline != '' && $porchfestURL != '') {
         require_once('../php/config.php');
         $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
@@ -66,6 +66,23 @@
         } else {
           echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
         }
+
+        $sql = "SELECT PorchfestID FROM porchfests ORDER BY PorchfestID DESC LIMIT 1";
+        $result = $mysqli->query($sql);
+        $porchfestID = $result->fetch_assoc();
+
+        if (!isset($_SESSION['logged_user'])) {
+          $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
+          $result = $mysqli->query($sql);
+          $userID = $result->fetch_assoc();
+        }
+        else {
+          $userID = $_SESSION['logged_user'];
+        }
+
+        $prep = $mysqli->prepare("INSERT INTO userstoporchfests (UserID, PorchfestID) VALUES (?,?)");
+        $prep->bind_param("ss", $userID, $porchfestID['PorchfestID']);
+        $prep->execute();
       }
     } 
   ?>
@@ -76,20 +93,19 @@
     <?php require_once "../php/modules/navigation.php"; ?>
     
     <div class="row">
-      <h1 style="text-align:center;"> Create a Porchfest Website </h1>
+      <h1 style="text-align:center;"> Integrate Your Porchfest Website </h1>
     </div>
 
-    <p> If you would like to link your existing Porchfest website, please fill out the form below. 
-      <br>Filling out this form will create an account that you can log back into to manage your Porchfest.
-    </p>
+    <h4 style="text-align:center;"> This website helps you manage your Porchfest by storing band sign-up information. <br> You can then schedule the performances for your Porchfest using our scheduling algorithm. <br> If you would like to integrate your Porchfest website, please fill out the form below. 
+    </h4>
 
     <?php if (!isset($_SESSION['logged_user'])) { ?>
-    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">
+    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#loginModal">
       Already have an account?
     </button>
     <?php } ?>
 
-    <form role="form" class="form-horizontal">
+    <form role="form" class="form-horizontal" id="submit-info-form" method="POST" action="existingporchfest.php">
       <?php if (!isset($_SESSION['logged_user'])) { ?>
       <h4> Account Information </h4>
       <div class="form-group">
@@ -156,7 +172,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="text" class="form-control" name="porchfestname" placeholder="Ithaca Porchfest" />
+                      <input required type="text" class="form-control" name="porchfestName" placeholder="Ithaca Porchfest" />
                   </div>
               </div>
           </div>
@@ -189,7 +205,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="text" class="form-control" name="location" placeholder="Location" />
+                      <input required id="autocomplete" name="location" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
                   </div>
               </div>
           </div>
@@ -211,12 +227,21 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="datetime-local" class="form-control" />
+                      <input required type="datetime-local" class="form-control" name="deadline" placeholder="Date" />
                   </div>
               </div>
           </div>
       </div>
-      <button type="submit" name="submitPorchfest" class="btn btn-primary btn-sm">Submit</button>
+      <div class="form-group">
+        <label class="col-sm-2"></label>
+        <div class="col-sm-10">
+          <div class="row">
+            <div class="col-md-9">
+              <button type="submit" name="submitInfo" class="btn btn-primary btn-sm">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </form>
   </div> <!-- end container div -->
 
