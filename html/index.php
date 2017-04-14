@@ -73,7 +73,7 @@
       if (!isset($_SESSION['logged_user'])) {
         $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
         $result = $mysqli->query($sql);
-        $userID = $result->fetch_assoc();
+        $userID = $result->fetch_assoc()['UserID'];
       }
       else {
         $userID = $_SESSION['logged_user'];
