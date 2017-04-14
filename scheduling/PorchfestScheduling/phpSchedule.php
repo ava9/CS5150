@@ -93,7 +93,7 @@ if (!$resultBands) { #for band id, porch location and conflicts
 /******************* GLOBAL VARIABLES ***********************/
 /************************************************************/
 
-$NUM_SCHEDS_TO_GENERATE = 10;
+$NUM_SCHEDS_TO_GENERATE = 1;
 $MIN_DISTANCE = 25; // minimum distance in meters allowed between playing bands
 $kNeighbors = 10; //how many nearest neighbors used to calculate distance variance
 
@@ -429,8 +429,7 @@ function generateBaseSchedule() {
   foreach ($unassignedBandIDs as $uBandID) {
     $uBand = $bandsHashMap[$uBandID];
 
-    // this stuff assumes that getConflicts returns band IDs... however right now it returns band names
-    // so this doesn't work....
+    // getConflicts returns string names...gotta get them as bandIDs
     $conflictingIDs = namesToIDs($uBand->getConflicts());
     foreach ($conflictingIDs as $conflictingBandID) {
       $band = $bandsHashMap[$conflictingBandID];
@@ -568,7 +567,7 @@ function tryToMoveBand($id, $schedule) {
     if ($slotID == $band->slot) {
       continue;
     }
-    if ( $band->availableTimeSlots[$slotID] && noConflicts($schedule[$slotID], $band) ) {
+    if ( $band->availableTimeSlots[$slotID] && noConflicts($schedule->schedule[$slotID], $band) ) {
         $schedule->delete($band->slot, $band);
         $schedule->add($slotID, $band);
         $band->slot = $slotID;
