@@ -282,6 +282,19 @@
     $prep->bind_param("issss", $porchfestID, $bandID['BandID'], $porchlocation, $lat, $long);
     $prep->execute();
 
+    if (!isset($_SESSION['logged_user'])) {
+      $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
+      $result = $mysqli->query($sql);
+      $userID = $result->fetch_assoc();
+    }
+    else {
+      $userID = $_SESSION['logged_user'];
+    }
+
+    $prep = $mysqli->prepare("INSERT INTO userstobands (UserID, BandID) VALUES (?,?)");
+    $prep->bind_param("ss", $userID, $bandID['BandID']);
+    $prep->execute();
+
     // Insert into bandavailabletimes
     if (isset($_POST['available'])) {
       $available = $_POST['available'];

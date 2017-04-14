@@ -70,9 +70,14 @@
       $result = $mysqli->query($sql);
       $porchfestID = $result->fetch_assoc();
 
-      $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
-      $result = $mysqli->query($sql);
-      $userID = $result->fetch_assoc();
+      if (!isset($_SESSION['logged_user'])) {
+        $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
+        $result = $mysqli->query($sql);
+        $userID = $result->fetch_assoc();
+      }
+      else {
+        $userID = $_SESSION['logged_user'];
+      }
 
       $prep = $mysqli->prepare("INSERT INTO userstoporchfests (UserID, PorchfestID) VALUES (?,?)");
       $prep->bind_param("ss", $userID['UserID'], $porchfestID['PorchfestID']);
