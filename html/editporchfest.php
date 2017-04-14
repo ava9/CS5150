@@ -98,7 +98,7 @@
         </div> <!-- end col 1 div -->
 
         <div class="col-sm-10"> <!-- begin col 2 div -->
-          <div class="tab-pane fade" id="manageporchfest"> <!-- begin manageporchfest div -->
+          <div class="tab-pane fade in active" id="manageporchfest"> <!-- begin manageporchfest div -->
             <div id="porchfestinfo"> <!-- begin porchfestinfo div -->
               <div class="input-group"> <!-- begin input-group div -->
                 <form action="editporchfest.php" method="POST" id="porchfestmanagesubmit">
@@ -203,7 +203,7 @@
             </div> <!-- end table-container div -->
           </div> <!-- end bands div -->
 
-          <div class="tab-pane fade in active" id="timeslots"> <!-- begin timeslots div -->
+          <div class="tab-pane fade" id="timeslots"> <!-- begin timeslots div -->
             <div class="col-xs-12" id="timeslotheaders">
               Existing Timeslots
             </div>
@@ -218,7 +218,6 @@
                 $end_time = date_create($timeslot['EndTime']);
 
                 echo '<div class="col-xs-6 col-sm-3 timeslot-label"><span id="' . $timeslot['TimeslotID'] . '-' . date_format($start_time, 'Y.m.d g:i A') . " - " . date_format($end_time, 'Y.m.d g:i A') . '" class="label label-primary">' . date_format($start_time, 'g:i A') . " - " . date_format($end_time, 'g:i A')  . ' </span></div>';
-
               }
 
             ?>
@@ -248,7 +247,61 @@
              
           </div> <!-- end timeslots div -->
           <div class="tab-pane fade" id="schedule"> <!-- begin schedule div -->
-            schedule
+            <div class="table-container table-responsive bands-table" id="bandstable"> <!-- begin table-container div -->
+              <table class="responsive table"> <!-- begin table -->
+                <tr data-status= "fixed">
+                  <th> Name </th>
+                  <th> Timeslots </th>
+                  <th> Conflicts </th>
+                </tr>
+                <?php 
+                  $result = $conn->query("SELECT Members FROM bands WHERE PorchfestID = '" . $porchfestID . "'");
+
+                  $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
+
+                  $result = $conn->query($sql);
+
+                  while($band = $result->fetch_assoc()) {
+                    echo '<tr>';
+                    echo '<td>' . $band['Name'] . '</td>';
+                    $sql2 = 'SELECT * FROM `porchfesttimeslots` INNER JOIN bandavailabletimes ON porchfesttimeslots.TimeslotID = bandavailabletimes.TimeslotID WHERE bandavailabletimes.bandID=' . $band['BandID'];
+
+                    echo '<td><select class="timesdropdown" id="times-' . $band['BandID'] . ' ">';
+
+                    $sql3 = "SELECT * FROM `bandstoporchfests` INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID WHERE bandstoporchfests.bandID=" . $band['BandID'];
+
+                    $result3 = $conn->query($sql3);
+
+
+                    if ($result3->num_rows > 0) {
+                      $assigned = $result3->fetch_assoc();
+
+                      var_dump($assigned);
+                      $start_time_assigned = date_create($assigned['StartTime']);
+                      $end_time_assigned = date_create($assigned['EndTime']);
+
+                      echo '<option value="' . $assigned['TimeslotID'] . '">' . date_format($start_time_assigned, 'g:i A') . "-" . date_format($end_time_assigned, 'g:i A') . '</option>';
+                    }
+                    
+                    $result2 = $conn->query($sql2);
+                    while ($timeslots = $result2->fetch_assoc()) {
+                      $start_time = date_create($timeslots['StartTime']);
+                      $end_time = date_create($timeslots['EndTime']);
+
+                      if (!($start_time == $start_time_assigned && $end_time == $end_time_assigned)) {
+                        echo '<option value="' . $timeslots['TimeslotID'] . '">' . date_format($start_time, 'g:i A') . "-" . date_format($end_time, 'g:i A') . '</option>';
+                      }
+                    }
+                    echo '</td></select>';
+
+                    echo '<td id="conflicts-' . $band['BandID'] .'"> No conflicts </td>';
+                    
+                  }
+
+                ?>
+
+              </table> <!-- end table -->
+            </div> <!-- end table-container div -->
           </div> <!-- end schedule div -->
           <div class="tab-pane fade" id="publish"> <!-- begin publish div -->
             publish
@@ -261,12 +314,38 @@
 
   <script>
     var ajaxurl = "http://localhost/cs5150/php/ajax.php";
+
+    $('.timesdropdown').change(function() {
+      var bandid = $(this).attr('id').split('-')[1];
+      var timeslotid = $(this).val();
+      var timeSlotInfo = {
+        timeslotid : timeslotid,
+        bandid     : bandid
+      };
+
+      $.ajax({
+        url: ajaxurl,
+        type: "GET",
+        data: timeSlotInfo,
+        success: function(result){
+          if (result == "overlap") {
+            $('#conflicts-' + bandid).html("This timeslot is taken by another band.");
+          } else {
+            $('#conflicts-' + bandid).html("No conflicts");
+          }
+        },
+        error: function(result) {
+          console.log('error');
+        }
+      });
+
+    });
+
     $('body').click(function() {
       $("#editalert").html('');
     });
 
     $('#delete-timeslot').click(function(){
-      console.log('here1');
       var tid = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[0].trim();
 
       $.ajax({
