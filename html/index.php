@@ -158,7 +158,7 @@
       </div>
       <br>
       <?php } ?>
-      <a href="existingporchfest.php"> Already have an existing Porchfest website? </a>
+      <a href="./existingporchfest"> Already have an existing Porchfest website? </a>
       <h4> Porchfest Information </h4>
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label"> Porchfest Name</label>

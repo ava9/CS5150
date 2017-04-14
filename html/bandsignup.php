@@ -33,7 +33,7 @@
     </button>
     <?php } ?>
 
-    <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='bandsignup.php'>
+    <form role="form" class="form-horizontal" id='submit-info-form' method='POST'>
       <?php if (!isset($_SESSION['logged_user'])) { ?>
       <h4> Account Information </h4>
       <div class="form-group">
@@ -133,7 +133,7 @@
             $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME_CLEAN);
             $result = $conn->query($sql);
             $porchfestID = $result->fetch_assoc()['PorchfestID'];
-            
+
             $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $porchfestID . "' ORDER BY StartTime;";
 
             $result = $conn->query($sql);
@@ -266,33 +266,28 @@
                               VALUES (?,?,?,?,?)");
     $prep->bind_param("sssss", $bandname, $banddescription, $bandmembers, $bandcomment, $bandconflicts);
     $prep->execute();
-    if ($prep->affected_rows) {
-        echo "<script type='text/javascript'>alert('The band, $bandname, has been added successfully!.');</script>";
-    } else {
-      echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
-    }
 
     // Insert into IDs
     $sql = "SELECT BandID FROM bands ORDER BY BandID DESC LIMIT 1";
     $result = $conn->query($sql);
-    $bandID = $result->fetch_assoc();
+    $bandID = $result->fetch_assoc()['BandID'];
 
     $prep = $mysqli->prepare("INSERT INTO bandstoporchfests (PorchfestID, BandID, PorchLocation, Latitude, Longitude) 
                               VALUES (?,?,?,?,?)");
-    $prep->bind_param("issss", $porchfestID, $bandID['BandID'], $porchlocation, $lat, $long);
+    $prep->bind_param("sssss", $porchfestID, $bandID, $porchlocation, $lat, $long);
     $prep->execute();
 
     if (!isset($_SESSION['logged_user'])) {
       $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
       $result = $mysqli->query($sql);
-      $userID = $result->fetch_assoc();
+      $userID = $result->fetch_assoc()['UserID'];
     }
     else {
       $userID = $_SESSION['logged_user'];
     }
 
     $prep = $mysqli->prepare("INSERT INTO userstobands (UserID, BandID) VALUES (?,?)");
-    $prep->bind_param("ss", $userID, $bandID['BandID']);
+    $prep->bind_param("ss", $userID, $bandID);
     $prep->execute();
 
     // Insert into bandavailabletimes
@@ -301,9 +296,15 @@
       foreach($available as $timeslot) {
         $prep = $mysqli->prepare("INSERT INTO bandavailabletimes (BandID, TimeslotID)
                                   VALUES (?,?)");
-        $prep->bind_param("ss", $bandID['BandID'], $timeslot);
+        $prep->bind_param("ss", $bandID, $timeslot);
         $prep->execute();
       }
+    }
+
+    if ($prep->affected_rows) {
+        echo "<script type='text/javascript'>alert('The band, $bandname, has been added successfully!.');</script>";
+    } else {
+      echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
     }
   }
 ?>
