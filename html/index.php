@@ -80,7 +80,7 @@
       }
 
       $prep = $mysqli->prepare("INSERT INTO userstoporchfests (UserID, PorchfestID) VALUES (?,?)");
-      $prep->bind_param("ss", $userID['UserID'], $porchfestID['PorchfestID']);
+      $prep->bind_param("ss", $userID, $porchfestID['PorchfestID']);
       $prep->execute();
     }
   } 

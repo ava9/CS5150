@@ -54,7 +54,7 @@
       }
 
       // handle new porchfest Logic
-      if (isset($_POST['porchfestName']) && isset($_POST['description']) && isset($_POST['location']) && isset($_POST['date']) && isset($_POST['deadline']) && $porchfestName != '' && $description != '' && $location != '' && $date != '' && $deadline != '') {
+      if (isset($_POST['porchfestName']) && isset($_POST['description']) && isset($_POST['location']) && isset($_POST['date']) && isset($_POST['deadline']) && isset($_POST['porchfestURL']) && $porchfestName != '' && $description != '' && $location != '' && $date != '' && $deadline != '' && $porchfestURL != '') {
         require_once('../php/config.php');
         $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
@@ -105,7 +105,7 @@
     </button>
     <?php } ?>
 
-    <form role="form" class="form-horizontal">
+    <form role="form" class="form-horizontal" id="submit-info-form" method="POST" action="existingporchfest.php">
       <?php if (!isset($_SESSION['logged_user'])) { ?>
       <h4> Account Information </h4>
       <div class="form-group">
@@ -172,7 +172,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="text" class="form-control" name="porchfestname" placeholder="Ithaca Porchfest" />
+                      <input required type="text" class="form-control" name="porchfestName" placeholder="Ithaca Porchfest" />
                   </div>
               </div>
           </div>
@@ -227,7 +227,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="datetime-local" class="form-control" />
+                      <input required type="datetime-local" class="form-control" name="deadline" placeholder="Date" />
                   </div>
               </div>
           </div>
