@@ -318,6 +318,7 @@
 
 
   <script>
+    // THIS NEEDS TO BE CHANGED ALANNNN
     var ajaxurl = "http://localhost/cs5150/php/ajax.php";
 
     $('.timesdropdown').change(function() {
