@@ -65,7 +65,7 @@
     <!-- edit form column -->
     <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
       <h3>Band Information</h3>
-      <form class="form-horizontal" role="form" action="editband.php" method="POST">
+      <form class="form-horizontal" role="form" action=<?php echo '"' . $band['Name'] . '"' ?> method="POST">
         <div class="form-group">
           <label class="col-lg-3 control-label">Name:</label>
           <div class="col-lg-8">

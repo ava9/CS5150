@@ -1,5 +1,6 @@
 <?php
 	require_once "config.php";
+	require_once "routing.php";
 
 	function __isset($name) {
 	    return $this->args[$name];
@@ -9,6 +10,10 @@
 	// Create connection
 	// add DB_USER and DB_PASSWORD later
 	$conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+	$sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME_CLEAN);
+    $result = $conn->query($sql);
+    $porchfestID = $result->fetch_assoc()['PorchfestID'];
 
 	// ** editporchfest.php: form to manage porchfest 
 	if (isset($_POST['porchfestname']) && isset($_POST['porchfestlocation']) && isset($_POST['porchfestdate']) && isset($_POST['porchfestdescription']) && isset($_POST['porchfesttime']) && isset($_POST['porchfestdeadlineday'])) {
@@ -29,8 +34,8 @@
 		list($year, $month, $day) = explode("-", $porchfestdeadlineday);
 		$deadline->setDate(intval($year), intval($month), intval($day));
 
-		$sql = "UPDATE porchfests SET Name='" . $porchfestname . "', Location='" . $porchfestlocation . "', Date='" . $porchfestdate . "', Description='" . $porchfestdescription . "', Deadline='" . $deadline->format("Y-m-d H:i:s")  . "' WHERE PorchfestID=1";
-
+		$sql = "UPDATE porchfests SET Name='" . $porchfestname . "', Location='" . $porchfestlocation . "', Date='" . $porchfestdate . "', Description='" . $porchfestdescription . "', Deadline='" . $deadline->format("Y-m-d H:i:s")  . "' WHERE PorchfestID = '" . $porchfestID . "'";
+		echo $sql;
 		$result = $conn->query($sql);
 		
 		if ($result) {
