@@ -102,7 +102,7 @@
         <div class="col-sm-10"> <!-- begin col 2 div -->
           <div class="tab-pane fade in active" id="manageporchfest"> <!-- begin manageporchfest div -->
             <div id="porchfestinfo"> <!-- begin porchfestinfo div -->
-              <div class="input-group"> <!-- begin input-group div -->
+              <div class="input-group"> <!-- begin input-group div -->   
                 <form action="editporchfest.php" method="POST" id="porchfestmanagesubmit">
                   <?php 
                     $sql = "SELECT * FROM `porchfests` WHERE PorchfestID = '" . $porchfestID . "'";
@@ -143,7 +143,6 @@
               </div> <!-- end input-group div -->
             </div>  <!-- end porchfestinfo div -->
           </div> <!-- end manageporchfest div -->
-
           <div class="tab-pane fade" id="bands"> <!-- begin bands div -->
             <div class="col-xs-offset-6 col-xs-6 col-sm-offset-9 col-sm-3">
               <input id="search" name="search" type="text" placeholder="Search..."/>
@@ -322,6 +321,7 @@
 
 
   <script>
+    // THIS NEEDS TO BE CHANGED ALANNNN
     var ajaxurl = "http://localhost/cs5150/php/ajax.php";
 
     $('.timesdropdown').change(function() {
@@ -395,7 +395,7 @@
           if (result == "success") {
             var id = $('#edit-timeslot-modal').find('.modal-header').attr('id');
             console.log($('#' + id).length);
-            $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your Porchfest information was updated successfully. </div>');
+            $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The timeslot was updated successfully </div>');
           } else {
             $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
           }
@@ -435,8 +435,9 @@
         data: formData,
         success: function(result){
           if (result == "success") {
-            $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The timeslot was updated successfully. </div>');
+            $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your Porchfest information was updated successfully. </div>');
           } else {
+            console.log(result);
             $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
           }
         },
