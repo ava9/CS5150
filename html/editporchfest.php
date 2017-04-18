@@ -92,8 +92,8 @@
                   <li><a href="#bands" data-toggle="tab"> Manage Bands </a></li>
                   <li><a href="#timeslots" data-toggle="tab"> Manage Time Slots </a></li>
                   <li><a href="#schedule" data-toggle="tab"> Schedule </a></li>
-                  <li><a href="#publish" data-toggle="tab"> Publish </a></li>
                   <li><a href="#export" data-toggle="tab"> Export </a></li>
+                  <li><a href="#publish" data-toggle="tab"> Publish </a></li>
                   <li class="nav-divider"></li>
                 </ul>
             </nav>
@@ -305,13 +305,16 @@
               </table> <!-- end table -->
             </div> <!-- end table-container div -->
           </div> <!-- end schedule div -->
+
+          <div class="tab-pane fade" id="export"> <!-- begin export div -->
+            <button id="exportbutton" class="btn btn-default" onclick="location.href='/cs5150/html/export.php'"> 
+              Export 
+            </button>
+          </div> <!-- end export div -->
+
           <div class="tab-pane fade" id="publish"> <!-- begin publish div -->
             publish
           </div> <!-- end publish div -->
-
-          <div class="tab-pane fade" id="export"> <!-- begin export div -->
-            <button id="exportbutton" class="btn btn-default"> Submit </button>
-          </div> <!-- end export div -->
 
         </div> <!-- end col 2 div -->
       </div> <!-- end row 1 div -->
