@@ -1,6 +1,10 @@
 /*    --------------------------------------------------
   :: editporchfest.php
   -------------------------------------------------- */
+input.form-control.error {
+  border-color: red;
+}
+
 .navbar {
   height: 50px;
 }
