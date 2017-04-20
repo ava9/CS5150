@@ -8,6 +8,7 @@
 
     <!-- Responsive tables CSS -->
     <link rel="stylesheet" href="../css/responsive-tables.css">
+    
     <title>PorchFest - Edit</title>
   </head>
 
@@ -55,7 +56,7 @@
         <div class="col-sm-2"> <!-- begin col 1 div -->
             <nav class="nav-sidebar">
                 <ul class="nav">
-                  <li class="active"><a href="#manageporchfest" data-toggle="tab"> Manage Porchfest </a></li>
+                  <li class="active"><a href="#manageporchfest" data-toggle="tab" onclick="enable('#manageporchfest')"> Manage Porchfest </a></li>
                   <li><a href="#bands" data-toggle="tab" onclick="enable('#bands');"> Manage Bands </a></li>
                   <li><a href="#timeslots" data-toggle="tab" onclick="enable('#timeslots');"> Manage Time Slots </a></li>
                   <li><a href="#schedule" data-toggle="tab" onclick="enable('#schedule');"> Schedule </a></li>
@@ -92,7 +93,7 @@
 
                     echo '<p>';
                     echo '<label> Porchfest Date </label>';
-                    echo '<input type="date" name="porchfestdate" class="form-control" value="' . $porchfest['Date'] . '" placeholder="Porchfest Date">';
+                    echo '<input data-validation="date" data-validation-format="yyyy-mm-dd" type="date" name="porchfestdate" class="form-control" value="' . $porchfest['Date'] . '" placeholder="Porchfest Date">';
                     echo '<br />';
                     echo '</p>';
 
@@ -354,7 +355,7 @@
     });
 
     function enable(id) {
-      $(id).css("pointer-events", "auto");
+      $(id).css({pointerEvents: "auto"});
       $(".tab-pane:not(" + id + ")").css({pointerEvents: "none"});
     }
 
