@@ -50,39 +50,6 @@
       </div>
     </div>
 
-    <!-- Modal -->
-    <div id="timeslotModal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title"> Time Slots </h4>
-          </div>
-          <div class="modal-body">
-            <?php 
-              $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID='1' ORDER BY StartTime";
-              $result = $conn->query($sql);
-              while($timeslot = $result->fetch_assoc()) {
-                $sql2 = "SELECT * FROM bandavailabletimes
-                         WHERE BandID = '1' AND TimeslotID = '" . $timeslot['TimeslotID'] . "'";
-                $result2 = $conn->query($sql2);
-                $starttime = date_format(date_create($timeslot['StartTime']), 'g:iA');
-                $endtime = date_format(date_create($timeslot['EndTime']), 'g:iA');
-                $day = date_format(date_create($timeslot['StartTime']), 'F j, Y');
-                if ($result2->num_rows > 0) {
-                  echo $starttime . "-" . $endtime . " on " . $day . "<br>";
-                }
-              }
-            ?>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="container"> <!-- begin container div -->
       <div class="row"> <!-- begin row 1 div -->
         <div class="col-sm-2"> <!-- begin col 1 div -->
@@ -204,13 +171,12 @@
                     echo '<td>' . $band['Name'] . '</td>';
                     echo '<td>' . $band['Description'] . '</td>';
                     echo '<td> List of members </td>';
-                    echo '<td> <a data-target="#timeslotModal" data-toggle="modal"> Time Slots </a> </td>';
+                    echo '<td> <a data-target="#timeslotModal' . $band['BandID'] . '" data-toggle="modal"> Time Slots </a> </td>';
                     echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
                     echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NAME_RAW . '/' . 
                                 $band['Name'] . '"> Edit </a> </td>';
-                    echo '<td> <a href="' . email_href($conn, $band['Name']) . '" target="_blank"> Email </a> </td>';
+                    echo '<td> <a href="' . email_href($conn, $band['Name']) . '" target="_blank"> Email </a> </td>'; 
                   }
-
                 ?>
 
               </table> <!-- end table -->
@@ -328,6 +294,42 @@
         </div> <!-- end col 2 div -->
       </div> <!-- end row 1 div -->
     </div> <!-- end container div -->
+  <?php 
+    $bandquery = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
+    $bandresults = $conn->query($bandquery);
+
+    while($band = $bandresults->fetch_assoc()) {
+      echo '<div id="timeslotModal' . $band['BandID'] . '" class="modal fade">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title"> Time Slots </h4>
+                </div>
+                <div class="modal-body">';
+                    $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID='" . $porchfestID . "' ORDER BY StartTime";
+                    $result = $conn->query($sql);
+                    while($timeslot = $result->fetch_assoc()) {
+                      $sql2 = "SELECT * FROM bandavailabletimes
+                               WHERE BandID='" . $band['BandID'] . "' AND TimeslotID = '" . $timeslot['TimeslotID'] . "'";
+                      $result2 = $conn->query($sql2);
+                      $starttime = date_format(date_create($timeslot['StartTime']), 'g:iA');
+                      $endtime = date_format(date_create($timeslot['EndTime']), 'g:iA');
+                      $day = date_format(date_create($timeslot['StartTime']), 'F j, Y');
+                      if ($result2->num_rows > 0) {
+                        echo $starttime . "-" . $endtime . " on " . $day . "<br>";
+                      }
+                    }
+                echo 
+                '</div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+                </div>
+              </div>
+            </div>
+          </div>';  
+    }
+  ?>
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
   <script>

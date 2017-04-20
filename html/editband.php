@@ -34,19 +34,19 @@
     $porchlocation = htmlentities($_POST['porchlocation']);
 
     $sql = "UPDATE bands SET Name='" . $bandname . "', Description='" . $banddescription . "', 
-            Members = '" . $bandmembers . "', Comment = '" . $bandcomment . "', Conflicts = '" . $bandconflicts . "' WHERE BandID='1'";
+            Members = '" . $bandmembers . "', Comment = '" . $bandcomment . "', Conflicts = '" . $bandconflicts . "' WHERE BandID= '" . $bandID . "'";
     $result = $conn->query($sql);
     
-    $sql = "UPDATE bandstoporchfests SET PorchLocation='" . $porchlocation . "'  WHERE PorchfestID = '" . $porchfestID . "' AND BandID='1'";
+    $sql = "UPDATE bandstoporchfests SET PorchLocation='" . $porchlocation . "'  WHERE PorchfestID = '" . $porchfestID . "' AND BandID= '" . $bandID . "'";
     $result = $conn->query($sql);
 
-    $sql = "DELETE FROM bandavailabletimes WHERE BandID = '1'";
+    $sql = "DELETE FROM bandavailabletimes WHERE BandID= '" . $bandID . "'";
     $result = $conn->query($sql);
 
     if (isset($_POST['available'])) {
       $available = $_POST['available'];
       foreach($available as $timeslot) {
-        $sql = "INSERT INTO bandavailabletimes (BandID, TimeslotID) VALUES ('1', '" . $timeslot . "')";
+        $sql = "INSERT INTO bandavailabletimes (BandID, TimeslotID) VALUES ('" . $bandID . "', '" . $timeslot . "')";
         $result = $conn->query($sql);
       }
     }
@@ -106,7 +106,7 @@
           <label for="name" class="col-lg-3 control-label"> Available Times </label>
           <div class="col-lg-8">
           <?php 
-            $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID='1' ORDER BY StartTime";
+            $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID= '" . $porchfestID . "' ORDER BY StartTime";
 
             $result = $conn->query($sql);
             while($timeslot = $result->fetch_assoc()) {
