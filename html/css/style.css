@@ -1,10 +1,18 @@
 /*    --------------------------------------------------
   :: editporchfest.php
   -------------------------------------------------- */
+input.form-control.error {
+  border-color: red;
+}
+
 .navbar {
   height: 50px;
 }
 
+#publishbutton {
+  position: absolute;
+  z-index: 10;
+}
 
 #exportbutton {
   position: absolute;

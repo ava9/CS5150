@@ -11,8 +11,8 @@
             <a class="navbar-brand" href="/cs5150/html/" id="navbrand"> Porchfest </a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
+        <div class="collapse navbar-collapse navbar-inverse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-inverse navbar-nav navbar-right">
                 <li>
                     <a href="/cs5150/html/browse"> Browse Porchfests </a>
                 </li>
