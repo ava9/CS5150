@@ -354,8 +354,8 @@
     });
 
     function enable(id) {
-      $(id).css("pointer-events", "none");
-      $(".tab-pane:not(" + id + ")").css({pointerEvents: "auto"});
+      $(id).css("pointer-events", "auto");
+      $(".tab-pane:not(" + id + ")").css({pointerEvents: "none"});
     }
 
     // THIS NEEDS TO BE CHANGED ALANNNN
