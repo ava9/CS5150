@@ -9,6 +9,10 @@ input.form-control.error {
   height: 50px;
 }
 
+#publishbutton {
+  position: absolute;
+  z-index: 10;
+}
 
 #exportbutton {
   position: absolute;
