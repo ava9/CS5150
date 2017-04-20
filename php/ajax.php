@@ -27,8 +27,6 @@
 		list($hour, $minute) = explode(":", $porchfesttime);
 		date_time_set($deadline, intval($hour), intval($minute));
 
-		echo $porchfestdeadlineday;
-
 		list($year, $month, $day) = explode("-", $porchfestdeadlineday);
 		$deadline->setDate(intval($year), intval($month), intval($day));
 

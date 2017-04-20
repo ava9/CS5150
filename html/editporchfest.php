@@ -89,11 +89,11 @@
             <nav class="nav-sidebar">
                 <ul class="nav">
                   <li class="active"><a href="#manageporchfest" data-toggle="tab"> Manage Porchfest </a></li>
-                  <li><a href="#bands" data-toggle="tab"> Manage Bands </a></li>
-                  <li><a href="#timeslots" data-toggle="tab"> Manage Time Slots </a></li>
-                  <li><a href="#schedule" data-toggle="tab"> Schedule </a></li>
-                  <li><a href="#publish" data-toggle="tab"> Publish </a></li>
-                  <li><a href="#export" data-toggle="tab"> Export </a></li>
+                  <li><a href="#bands" data-toggle="tab" onclick="enable('#bands');"> Manage Bands </a></li>
+                  <li><a href="#timeslots" data-toggle="tab" onclick="enable('#timeslots');"> Manage Time Slots </a></li>
+                  <li><a href="#schedule" data-toggle="tab" onclick="enable('#schedule');"> Schedule </a></li>
+                  <li><a href="#publish" data-toggle="tab" onclick="enable('#publish');"> Publish </a></li>
+                  <li><a href="#export" data-toggle="tab" onclick="enable('#export');"> Export </a></li>
                   <li class="nav-divider"></li>
                 </ul>
             </nav>
@@ -331,10 +331,19 @@
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
   <script>
+    
+    $("#manageporchfest").css("pointer-events", "auto");
+    $(".tab-pane:not(" + "#manageporchfest" + ")").css({pointerEvents: "none"});
+
     $.validate({
       lang: 'en',
       modules : 'date'
     });
+
+    function enable(id) {
+      $(id).css("pointer-events", "none");
+      $(".tab-pane:not(" + id + ")").css({pointerEvents: "auto"});
+    }
 
     // THIS NEEDS TO BE CHANGED ALANNNN
     var ajaxurl = "http://localhost/cs5150/php/ajax.php";
