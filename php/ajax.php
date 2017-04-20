@@ -1,16 +1,26 @@
 <?php
 	require_once "config.php";
 
-	// Create connection
-	// add DB_USER and DB_PASSWORD later
-	$conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    // Create connection
+    $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-	// $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", 1);
- //    $result = $conn->query($sql);
- //    $porchfestID = $result->fetch_assoc()['PorchfestID'];
+	function __isset($name) {
+	    return $this->args[$name];
+	}
 
+	// ** editporchfest.php: publish porchfest or not
+	if (isset($_POST['publishbutton'])) {
+		$sql = "UPDATE porchfests SET Published=NOT(Published) WHERE PorchfestID='" . $_POST['porchfestid'] . "'";
+		$result = $conn->query($sql);
+
+		if ($result) {
+			echo "success";
+		} else {
+			echo "fail";
+		}
+	}
 	// ** editporchfest.php: form to manage porchfest 
-	if (isset($_POST['porchfestname']) && isset($_POST['porchfestlocation']) && isset($_POST['porchfestdate']) && isset($_POST['porchfestdescription']) && isset($_POST['porchfesttime']) && isset($_POST['porchfestdeadlineday']) && isset($_POST['porchfestid'])) {
+	elseif (isset($_POST['porchfestname']) && isset($_POST['porchfestlocation']) && isset($_POST['porchfestdate']) && isset($_POST['porchfestdescription']) && isset($_POST['porchfesttime']) && isset($_POST['porchfestdeadlineday']) && isset($_POST['porchfestid'])) {
 		$porchfestname = htmlentities($_POST['porchfestname']);
 		$porchfestlocation = htmlentities($_POST['porchfestlocation']);
 		$porchfestdate = htmlentities($_POST['porchfestdate']);

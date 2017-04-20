@@ -86,7 +86,7 @@
 
                     echo '<p>';
                     echo '<label> Porchfest Location </label>';
-                    echo '<input type="text" name="porchfestlocation" class="form-control" value="' . $porchfest['Location'] . '" placeholder="Porchfest Location">';
+                    echo '<input id="autocomplete" onFocus="geolocate()" type="text" name="porchfestlocation" class="form-control" value="' . $porchfest['Location'] . '" placeholder="Porchfest Location">';
                     echo '<br />';
                     echo '</p>';
 
@@ -284,7 +284,18 @@
             </div> <!-- end table-container div -->
           </div> <!-- end schedule div -->
           <div class="tab-pane fade" id="publish"> <!-- begin publish div -->
-            publish
+            <?php
+              $sql = "SELECT Published from porchfests WHERE PorchfestID='" . $porchfestID . "'";
+              $result = $conn->query($sql);
+              $published = $result->fetch_assoc()['Published'];
+
+              if (!$published) {
+                echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default"> Publish </button>';
+              }
+              else {
+                echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default"> Unpublish </button>';
+              }
+            ?>
           </div> <!-- end publish div -->
 
           <div class="tab-pane fade" id="export"> <!-- begin export div -->
@@ -371,6 +382,32 @@
 
     $('body').click(function() {
       $("#editalert").html('');
+    });
+
+    $('#publishbutton').click(function() {
+      var publishbutton = true;
+
+      $.ajax({
+        url: ajaxurl,
+        type: "POST",
+        data: {publishbutton: publishbutton, porchfestid: porchfestid},
+        success: function(result){
+          if (result == "success") {
+            if ($('#publishbutton').html() == "Publish") {
+              $('#publishbutton').html("Unpublish");
+            } 
+            else {
+              $('#publishbutton').html("Publish");
+            }
+            $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your Porchfest was published/unpublished successfully. </div>');
+          } else {
+            $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
+          }
+        },
+        error: function(result) {
+          console.log('error');
+        }
+      });
     });
 
     $('#delete-timeslot').click(function(){
@@ -483,6 +520,9 @@
         }});
     });
   </script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0LuERw-moYeLnWy_55RoShmUbQ51Yh-o&libraries=places&callback=initAutocomplete"
+        async defer></script>
 
   </body>
 </html>
