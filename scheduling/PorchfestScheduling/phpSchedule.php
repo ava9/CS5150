@@ -38,7 +38,7 @@ require_once "config.php";
 
 
 function DEBUG_ECHO($val) {
-  $DEBUG_ON = true;
+  $DEBUG_ON = false;
   if ($DEBUG_ON) {
     echo $val;
     flush();
@@ -93,7 +93,10 @@ if (!$resultBands) { #for band id, porch location and conflicts
 /******************* GLOBAL VARIABLES ***********************/
 /************************************************************/
 
-$kNeighbors = 4; //how many nearest neighbors used to calculate distance variance
+$NUM_SCHEDS_TO_GENERATE = 1;
+$MIN_DISTANCE = 25; // minimum distance in meters allowed between playing bands
+$kNeighbors = 10; //how many nearest neighbors used to calculate distance variance
+
 $bandsTimeSlots = populateBandsTimeSlots(); //HashMap<BandID, TimeslotID>
 $bandsPorchfests = []; //array of all bands that can play at a particular porchfest
 while ($row = $resultBandsPorchfests->fetch_array(MYSQLI_NUM)) {
@@ -198,6 +201,7 @@ function populateBandsWithXTimeSlots() {
     }
     array_push($bandsWithXTimeSlots[$availTimeSlots], $bandID);
   }
+  ksort($bandsWithXTimeSlots);
   DEBUG_ECHO("populated\n");
 }
 
@@ -241,9 +245,8 @@ class Band {
 
   /* Takes a schedule object and calculates the k (specified in the global variables section
   		nearest bands to this band object. Returns an array of size k of bandIDs */
-  function calculateKNearest($sched) {
-    global $kNeighbors; //how many nearest neighbors used to calculate distance variance
-    
+  function calculateKNearest($sched, $kNeighbors) {
+
     $bands = $sched->getBandsAtSlot($this->slot); //Band[] 
     $this->sortByDistance($bands);
     $result = [];
@@ -267,7 +270,7 @@ class Band {
   function getConflicts(){
     return $this->conflicts;
   }
-  
+
   /* Overwrites the php clone function to create a new Band object with the same values as this band object */
   function __clone() {
     return new Band($this->id, $this->name, $this->lat, $this->lng, $this->availableTimeSlots, $this->conflicts, $this->slot, $this->distances);
@@ -321,7 +324,9 @@ class Schedule {
         if (noConflicts($this->schedule[$timeslotID], $band)){
           shuffle($this->schedule[$timeslotID]);
           foreach ($this->schedule[$timeslotID] as $possibleBandToSwap) {
-            if (noConflicts($this->schedule[$worstTimeSlot], $possibleBandToSwap)){
+            if (noConflicts($this->schedule[$worstTimeSlot], $possibleBandToSwap) && 
+              bandOverMinDist($this->schedule[$worstTimeSlot], $possibleBandToSwap)){
+
               $this->delete($timeslotID, $possibleBandToSwap);
               $this->delete($worstTimeSlot, $band);
               $this->add($worstTimeSlot, $possibleBandToSwap);
@@ -373,6 +378,8 @@ function generateBaseSchedule() {
   global $totalNumTimeSlots; //total number of timeslots for a porchfest
   global $timeslotsPorchfests; //array of all timeslots available for a particular porchfest
   
+  $success = true;
+
   DEBUG_ECHO("generating base schedule\n");
   $bandsHashMap = createBandObjects();
   populateBandsWithXTimeSlots();
@@ -397,13 +404,13 @@ function generateBaseSchedule() {
 
         $isAvailable = $band->availableTimeSlots[$slotID];
         $hasNoConflicts = noConflicts($schedule->schedule[$slotID], $band);
-        if ($isAvailable && $hasNoConflicts){
+        $locationOK = bandOverMinDist($schedule->schedule[$slotID], $band);
+        if ($isAvailable && $hasNoConflicts && $locationOK){
           # band can play at this time
           $schedule->add($slotID, $band);
           $currentTimeSlot = $slot + 1;
           $band->slot = $slotID;
           $assigned = true;
-          flush();
           break;
         }
         else{
@@ -421,9 +428,10 @@ function generateBaseSchedule() {
   DEBUG_ECHO("phase 2\n");
   foreach ($unassignedBandIDs as $uBandID) {
     $uBand = $bandsHashMap[$uBandID];
-    flush();
-    $success = false;
-    foreach ($uBand->getConflicts() as $conflictingBandID) {
+
+    // getConflicts returns string names...gotta get them as bandIDs
+    $conflictingIDs = namesToIDs($uBand->getConflicts());
+    foreach ($conflictingIDs as $conflictingBandID) {
       $band = $bandsHashMap[$conflictingBandID];
       $oldTimeSlot = $band->slot;
       $success = tryToMoveBand($conflictingBandID, $schedule);
@@ -434,13 +442,13 @@ function generateBaseSchedule() {
       }
     }
     if (!$success) {
-      die("this is actually impossible. exit with grace.");
+      // die("this is actually impossible. exit with grace.");
     }
   }
   DEBUG_ECHO("generated schedule!\n");
   DEBUG_ECHO("scoring the schedule...\n");
   score($schedule);
-  return $schedule;
+  return array($schedule, $success);
 }
 
 /* assigns a score to a schedule based on variance
@@ -470,7 +478,6 @@ function improve($sched) {
   for ($i = 0; $i < sizeof($bands); $i++) {
     $bi = $bands[$i];
     if ($bi === null) {
-      print_r($bands);
       DEBUG_ECHO($i . "\n");
       DEBUG_ECHO($highestVarianceTimeSlot + "\n");
     }
@@ -529,10 +536,11 @@ function stats_standard_deviation(array $a, $sample = false) {
 adjustable amount of nearest neighbors to calculate */
 function computeVariance($slot, $sched){
   global $kNeighbors; //how many nearest neighbors used to calculate distance variance
+  // $kNeighbors = sizeof($sched->getBandsAtSlot($slot));
   
   $knnData = [];
   foreach ($sched->getBandsAtSlot($slot) as $band) {
-    $knearest = $band->calculateKNearest($sched);
+    $knearest = $band->calculateKNearest($sched, $kNeighbors);
     $avg = 0;
     foreach ($knearest as $nearestBand){
       $avg = $avg + $band->distances[$nearestBand];
@@ -548,13 +556,18 @@ function computeVariance($slot, $sched){
   
 /* moves band to a different timeslot and returns true on success, false otherwise */
 function tryToMoveBand($id, $schedule) {
+  global $bandsHashMap;
+  global $totalNumTimeSlots;
+  global $timeslotsPorchfests;
+  global $availableTimeSlots;
+
   $band = $bandsHashMap[$id];
   for ($slot = 0; $slot < $totalNumTimeSlots; $slot++) {
     $slotID = $timeslotsPorchfests[$slot];
     if ($slotID == $band->slot) {
       continue;
     }
-    if ($band->availableTimeSlots[$slotID] && noConflicts($schedule[$slotID], $band)) {
+    if ( $band->availableTimeSlots[$slotID] && noConflicts($schedule->schedule[$slotID], $band) ) {
         $schedule->delete($band->slot, $band);
         $schedule->add($slotID, $band);
         $band->slot = $slotID;
@@ -564,12 +577,52 @@ function tryToMoveBand($id, $schedule) {
   return false;
 }
 
-/* returns true if $band does not conflict with any band in $bandArr, false otherwise */
-function noConflicts($bandsArr, $band){
+function bandOverMinDist($bandsArr, $band) {
+  global $MIN_DISTANCE;
+
   if (sizeof($bandsArr) == 0) {
     return true;
   }
+
+  foreach ($bandsArr as $b){
+    if ($band->getDistance($b->id) <= $MIN_DISTANCE) {
+      return false;
+    }
+  }
+
+  return true;
+
+}
+
+function namesToIDs($names) {
+  global $bandsHashMap;
+
+  $result = [];
+  foreach ($names as $n) {
+    foreach ($bandsHashMap as $bandID => $band) {
+      if ($band->name == $n) {
+        array_push($result, $bandID);
+      }
+    }
+  }
+  
+  return $result;
+}
+
+/* returns true if $band does not conflict with any band in $bandArr, false otherwise */
+function noConflicts($bandsArr, $band){
+  global $MIN_DISTANCE;
+
+  if (sizeof($bandsArr) == 0) {
+    return true;
+  }
+
   $conflicts = $band->getConflicts();
+
+  if ($conflicts[0] == null || sizeof($conflicts) == 0) {
+    return true;
+  }
+
   foreach ($bandsArr as $b){
     if (in_array($b->name, $conflicts)) {
       return false;
@@ -578,7 +631,7 @@ function noConflicts($bandsArr, $band){
   return true;
 }
 
-/* calculates the distance between two longitude/latitude coordinates */
+/* calculates the distance between two longitude/latitude coordinates in meters */
 function tdistance(
   $latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
 {
@@ -600,13 +653,27 @@ function tdistance(
 /* create schedule then repeat */
 function run(){
   global $conn;
+  global $NUM_SCHEDS_TO_GENERATE;
   $result = null;
-  $NUM_SCHEDS_TO_GENERATE = 1;
   
   for ($i = 0; $i < $NUM_SCHEDS_TO_GENERATE; $i++){
-    $tmp = generateBaseSchedule();
+    echo "running schedule " . $i . "\n";
+    $tmpAndSuccess = generateBaseSchedule($tmp);
+    $tmp = $tmpAndSuccess[0];
+    $success = $tmpAndSuccess[1];
+
+    if (!$success) {
+      echo "failed to generate base schedule\n";
+      continue;
+    }
     $noImprovements = 0;
     while (true){
+      /* 
+       * improve($tmp) returns an array of size 2 
+       * 0 index is a boolean saying whether we've improved, 
+       * 1 index is the new schedule if we improved or the 
+       * same schedule if we did not improve 
+       */
       $imp = improve($tmp);
       $tmp = $imp[1];
       $noImprovements = ($imp[0] ? 0 : $noImprovements + 1);
@@ -617,6 +684,7 @@ function run(){
     }
     if ($result === null || $tmp->score < $result->score){
       $result = $tmp;
+      echo "improved with score " . $result->score . "\n";
     }
   }
   
@@ -633,7 +701,7 @@ function run(){
       }
     }
   }
-  DEBUG_ECHO("Success!");
+  echo "Success!";
 }
 
 # (∩｀-´)⊃━☆ﾟ.*･｡ﾟ magic time #
