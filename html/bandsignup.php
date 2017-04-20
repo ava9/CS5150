@@ -5,6 +5,9 @@
 <!-- BEGIN head -->
 <head>
   <?php require_once "../php/modules/stdHead.php" ?>  
+  <link rel="stylesheet" href="/cs5150/php/modules/token-input-facebook.css" type="text/css" />
+
+
   <title>Band Sign-Up</title>
 </head>
 
@@ -164,7 +167,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input name="bandconflicts" type="text" class="form-control" placeholder="Band1,Band2,Band3" />
+                      <input name="bandconflicts" id="conflict-input" type="text" class="form-control" placeholder="Band1,Band2,Band3" />
                   </div>
               </div>
           </div>
@@ -310,14 +313,21 @@
 ?>
 
 <script type='text/javascript'>
-$(document).ready(function() {
-  $(window).keydown(function(event){
-    if(event.keyCode == 13) {
-      event.preventDefault();
-      return false;
-    }
+  $(document).ready(function () {
+      $("#conflict-input").tokenInput("/cs5150/html/band-listing.php", {
+                preventDuplicates: true, theme: "facebook"
+            });
   });
-});
+
+
+  $(document).ready(function() {
+    $(window).keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
+  });
 </script>
 
 </body>

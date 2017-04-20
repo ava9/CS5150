@@ -15,3 +15,5 @@
 <script src="/cs5150/js/addressautocomplete.js"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="/cs5150/js/jquery.tokeninput.js"></script>
