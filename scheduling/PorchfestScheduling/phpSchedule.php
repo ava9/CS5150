@@ -365,6 +365,16 @@ class Schedule {
     return $this->schedule[$timeSlot];
   }
   
+  function sortScheduleTimeslots($a, $b){
+      if (sizeof($a) < sizeof($b)){
+          return -1;
+      }
+      else if (sizeof($a) > sizeof($b)){
+          return 1;
+      }
+      return 0;
+  }
+  
 }
 
 /************************************************************/
@@ -398,10 +408,12 @@ function generateBaseSchedule() {
       $band = $bandsHashMap[$id];
       $i = 0;
       $assigned = false;
-      while ($i < $totalNumTimeSlots){ # round robin through all time slots and bands
-        $slot = (($currentTimeSlot + $i) % $totalNumTimeSlots);
-        $slotID = $timeslotsPorchfests[$slot];
-
+      
+      //sort the schedule to see which time slots have the fewest assigned bands
+      uasort($schedule, $schedule->sortScheduleTimeslots);
+      
+      for ($i = 0; $i < $totalNumTimeSlots; $i++){
+        $slotID = array_keys($schedule)[$i];
         $isAvailable = $band->availableTimeSlots[$slotID];
         $hasNoConflicts = noConflicts($schedule->schedule[$slotID], $band);
         $locationOK = bandOverMinDist($schedule->schedule[$slotID], $band);
@@ -413,10 +425,30 @@ function generateBaseSchedule() {
           $assigned = true;
           break;
         }
-        else{
-          $i++;
-        }
+        
       }
+      
+      //ROUND ROBIN
+//      while ($i < $totalNumTimeSlots){ # round robin through all time slots and bands
+//        $slot = (($currentTimeSlot + $i) % $totalNumTimeSlots);
+//        $slotID = $timeslotsPorchfests[$slot];
+//
+//        $isAvailable = $band->availableTimeSlots[$slotID];
+//        $hasNoConflicts = noConflicts($schedule->schedule[$slotID], $band);
+//        $locationOK = bandOverMinDist($schedule->schedule[$slotID], $band);
+//        if ($isAvailable && $hasNoConflicts && $locationOK){
+//          # band can play at this time
+//          $schedule->add($slotID, $band);
+//          $currentTimeSlot = $slot + 1;
+//          $band->slot = $slotID;
+//          $assigned = true;
+//          break;
+//        }
+//        else{
+//          $i++;
+//        }
+//      }
+      
       if (!$assigned) {
         DEBUG_ECHO("no available time slots for " . $id . "\n");
         array_push($unassignedBandIDs, $id); # will deal with these later...
