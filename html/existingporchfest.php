@@ -20,6 +20,7 @@
         $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
       }
       $porchfestName = filter_var($_POST['porchfestName'], FILTER_SANITIZE_STRING);
+      $nickname = filter_var($_POST['nickname'], FILTER_SANITIZE_STRING);
       $porchfestURL = filter_var($_POST['porchfestURL'], FILTER_SANITIZE_STRING);
       $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
       $location = filter_var($_POST['location'], FILTER_SANITIZE_STRING);
@@ -54,12 +55,12 @@
       }
 
       // handle new porchfest Logic
-      if (isset($_POST['porchfestName']) && isset($_POST['description']) && isset($_POST['location']) && isset($_POST['date']) && isset($_POST['deadline']) && isset($_POST['porchfestURL']) && $porchfestName != '' && $description != '' && $location != '' && $date != '' && $deadline != '' && $porchfestURL != '') {
+      if (isset($_POST['porchfestName']) && isset($_POST['nickname']) && isset($_POST['description']) && isset($_POST['location']) && isset($_POST['date']) && isset($_POST['deadline']) && isset($_POST['porchfestURL']) && $porchfestName != '' && $nickname != '' && $description != '' && $location != '' && $date != '' && $deadline != '' && $porchfestURL != '') {
         require_once('../php/config.php');
         $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-        $prep = $mysqli->prepare("INSERT INTO porchfests (URL, Name, Location, Date, Description, Deadline) VALUES (?,?,?,?,?,?)");
-        $prep->bind_param("ssssss", $porchfestURL, $porchfestName, $location, $date, $description, $deadline);
+        $prep = $mysqli->prepare("INSERT INTO porchfests (URL, Name, Nickname, Location, Date, Description, Deadline) VALUES (?,?,?,?,?,?)");
+        $prep->bind_param("sssssss", $porchfestURL, $porchfestName, $nickname, $location, $date, $description, $deadline);
         $prep->execute();
         if ($prep->affected_rows) {
           echo "<script type='text/javascript'>alert('The porchfest, $porchfestName, has been added successfully!.');</script>";
@@ -173,6 +174,17 @@
               <div class="row">
                   <div class="col-md-9">
                       <input required type="text" class="form-control" name="porchfestName" placeholder="Ithaca Porchfest" />
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label">
+              Nickname </label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input required type="text" class="form-control" name="nickname" placeholder="Ithaca Porchfest" />
                   </div>
               </div>
           </div>

@@ -83,7 +83,7 @@
 
                     // Set the URL to link to. Should one not exist (not provided), then link to
                     // website's single porchfest view
-                    $href = '"singleporchfest/' . strtolower($porchfest['Name']);
+                    $href = '"singleporchfest/' . strtolower($porchfest['Nickname']);
                     if ($porchfest['URL'] != '') {
                       $href = '"' . $porchfest['URL'];
                     }

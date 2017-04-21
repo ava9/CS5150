@@ -67,7 +67,7 @@
                   $day = date_format(date_create($porchfest['Date']), 'F j, Y');
                   $deadline = date_format(date_create($porchfest['Deadline']), 'g:iA \o\n F j, Y');
 
-                  $href = '"singleporchfest/' . strtolower($porchfest['Name']);
+                  $href = '"singleporchfest/' . strtolower($porchfest['Nickname']);
                   if ($porchfest['URL'] != '') {
                     $href = '"' . $porchfest['URL'];
                   }
