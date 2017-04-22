@@ -240,14 +240,25 @@
         async defer></script>
 
 <script type='text/javascript'>
-$(document).ready(function() {
-  $(window).keydown(function(event){
-    if(event.keyCode == 13) {
-      event.preventDefault();
-      return false;
-    }
+  $(document).ready(function() {
+    $(window).keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
   });
-});
+
+  $(function() {
+    $("[name='porchfestName']").blur(function(){
+      var val = $(this).val();
+      if (!$("[name='nickname']").val()) {
+        val = val.replace(/\s+/g, '-').toLowerCase();
+        $("[name='nickname']").val(val);
+      }
+    });
+  });
+
 </script>
 
 </body>
