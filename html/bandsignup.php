@@ -22,11 +22,11 @@
     
     <div class="row">
       <h1 style="text-align:center;"> 
-        Sign-up to perform for <?php echo PORCHFEST_NAME_CLEAN; ?>
+        Sign-up to perform for <?php echo PORCHFEST_NAME; ?>
       </h1>
     </div>
 
-    <h4 style="text-align:center;"> If you would like to perform for <?php echo PORCHFEST_NAME_CLEAN; ?>,
+    <h4 style="text-align:center;"> If you would like to perform for <?php echo PORCHFEST_NAME; ?>,
       please fill out the form below. 
     </h4>
 
@@ -133,7 +133,7 @@
             // Create connection
             $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-            $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME_CLEAN);
+            $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Nickname = '%s'", PORCHFEST_NICKNAME);
             $result = $conn->query($sql);
             $porchfestID = $result->fetch_assoc()['PorchfestID'];
 

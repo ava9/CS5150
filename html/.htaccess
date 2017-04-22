@@ -9,7 +9,7 @@ RewriteRule ^profile(\/)? myprofile.php [NC,L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^singleporchfest/([^/]+)/?$ singleporchfest.php?name=$1 [NC,L]
+RewriteRule ^view/([^/]+)/?$ viewporchfest.php?name=$1 [NC,L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

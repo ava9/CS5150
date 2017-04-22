@@ -23,7 +23,7 @@
       // add DB_USER and DB_PASSWORD later
       $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-      $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME_CLEAN);
+      $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME);
       $result = $conn->query($sql);
       $porchfestID = $result->fetch_assoc()['PorchfestID'];
 
@@ -174,7 +174,7 @@
                     echo '<td> List of members </td>';
                     echo '<td> <a data-target="#timeslotModal' . $band['BandID'] . '" data-toggle="modal"> Time Slots </a> </td>';
                     echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
-                    echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NAME_RAW . '/' . 
+                    echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NICKNAME . '/' . 
                                 $band['Name'] . '"> Edit </a> </td>';
                     echo '<td> <a href="' . email_href($conn, $band['Name']) . '" target="_blank"> Email </a> </td>'; 
                   }
