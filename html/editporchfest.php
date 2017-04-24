@@ -259,7 +259,6 @@
 
                     $result3 = $conn->query($sql3);
 
-
                     if ($result3->num_rows > 0) {
                       $assigned = $result3->fetch_assoc();
 
@@ -292,9 +291,21 @@
           </div> <!-- end schedule div -->
 
           <div class="tab-pane fade" id="export"> <!-- begin export div -->
-            <button id="exportbutton" class="btn btn-default" onclick="location.href='/cs5150/html/export.php'"> 
-              Export 
-            </button>
+            <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='/cs5150/php/export.php'>
+              <!-- TODO PRETTY THIS -->
+              <input type = "hidden" name = "porchfestid" value = <?php echo $porchfestID ?> />
+              <input type = "hidden" name = "mediatype" value = "csv" /> 
+              <div class="form-group">
+                <label class="col-sm-2"></label>
+                <div class="col-sm-10">
+                    <div class="row">
+                        <div class="col-md-9">
+                          <button type="submit" name="submitInfo" class="btn btn-primary btn-sm"> Export </button>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </form>
           </div> <!-- end export div -->
 
           <div class="tab-pane fade" id="publish"> <!-- begin publish div -->
@@ -368,7 +379,6 @@
       $(".tab-pane:not(" + id + ")").css({pointerEvents: "none"});
     }
 
-    // THIS NEEDS TO BE CHANGED ALANNNN
     var ajaxurl = "http://localhost/cs5150/php/ajax.php";
     var porchfestid = "<?php echo $porchfestID; ?>";
 

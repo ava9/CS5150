@@ -7,6 +7,10 @@ RewriteRule ^existing(\/)? existingporchfest.php [NC,L]
 RewriteRule ^myporchfests(\/)? myporchfests.php [NC,L]
 RewriteRule ^profile(\/)? myprofile.php [NC,L]
 
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule ^export/([^/]+)/?$ export.php?name=$1 [NC,L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^view/([^/]+)/?$ viewporchfest.php?name=$1 [NC,L]
