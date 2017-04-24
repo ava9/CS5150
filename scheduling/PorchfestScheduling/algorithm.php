@@ -13,9 +13,6 @@
   # In the section where we randomly swap between the worst time slot and any other,
   # it might make sense to swap with the best one instead
   
-  
-  
-  
 # ALGORITHM
 
 /*
