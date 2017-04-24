@@ -8,7 +8,7 @@
     require_once "../php/modules/stdHead.php";
     require_once "../php/routing.php";
   ?>
-  <title>PorchFest - <?php echo PORCHFEST_NAME_CLEAN ?> </title>
+  <title>PorchFest - <?php echo PORCHFEST_NAME ?> </title>
 </head>
 
 <!-- BEGIN body -->
@@ -20,7 +20,7 @@
     // add DB_USER and DB_PASSWORD later
     $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-    $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME_CLEAN);
+    $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME);
     $result = $conn->query($sql);
     $porchfestID = $result->fetch_assoc()['PorchfestID'];
 
@@ -48,7 +48,7 @@
     
     <div class="row">
       <h1 style="text-align:center;"> 
-        <?php echo PORCHFEST_NAME_CLEAN; ?> 
+        <?php echo PORCHFEST_NAME; ?> 
       </h1>
     </div>
 
@@ -105,12 +105,12 @@
               if ($lasttime != $band['StartTime']) {
                 $starttime = date_format(date_create($band['StartTime']), 'g:iA');
                 echo '<h3>' . $starttime . '</h3>';
-                echo '<button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal' . $band['BandID'] . '">
+                $lasttime = $band['StartTime'];
+              }
+              echo '<button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal' . $band['BandID'] . '">
                         <h4>' . $band['Name'] .'<h4>
                         </button>
                       <br>';
-                $lasttime = $band['StartTime'];
-              }
             }
           ?>
         </div> <!-- end date div -->

@@ -1,4 +1,7 @@
 <?php
+    require_once("config.php");
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
     function getCurrentUri() {
         $basepath = implode('/', array_slice(explode('/', $_SERVER['SCRIPT_NAME']), 0, -1)) . '/';
         $uri = substr($_SERVER['REQUEST_URI'], strlen($basepath));
@@ -10,16 +13,16 @@
     $base_url = getCurrentUri();
     // echo sprintf("Current URI: %s \n", $base_url);
     $uri_array = array_values(array_filter(explode('/', $base_url)));
-    // foreach ($uri_array as $key => $value) {
-    //     $uri_array[$key] = ucwords(urldecode($value));
-    // }
-    if (in_array($uri_array[0], ['singleporchfest', 'edit', 'bandsignup'])) {
-        define('PORCHFEST_NAME_RAW', $uri_array[1]);
-        define('PORCHFEST_NAME_CLEAN', ucwords(urldecode($uri_array[1])));
+    if (in_array($uri_array[0], ['view', 'edit', 'bandsignup'])) {
+        $sql = sprintf("SELECT Name from porchfests WHERE Nickname = '%s'", $uri_array[1]);
+        $result = $mysqli->query($sql);
+        $name = $result->fetch_assoc()['Name'];
+
+        define('PORCHFEST_NICKNAME', $uri_array[1]);
+        define('PORCHFEST_NAME', $name);
     }
     if (isset($uri_array[2])) {
-        define('BAND_NAME_RAW', $uri_array[2]);
-        define('BAND_NAME_CLEAN', ucwords(urldecode($uri_array[2])));
+        define('BAND_NAME', preg_replace('/-{2}/', '-', preg_replace('/([^-])-{1}([^-])/', '\1 \2', $uri_array[2])));
     }
 ?>
 

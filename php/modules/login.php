@@ -29,6 +29,7 @@
                     if ($row[0] === $password) {
                         $_SESSION['logged_user'] = $row[1];
                         unset($_POST['login']);
+                        header("Refresh:0");
                     } else {
             ?>
                         <script type='text/javascript'>

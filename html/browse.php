@@ -67,17 +67,20 @@
                   $day = date_format(date_create($porchfest['Date']), 'F j, Y');
                   $deadline = date_format(date_create($porchfest['Deadline']), 'g:iA \o\n F j, Y');
 
+                  $href = '"view/' . strtolower($porchfest['Nickname']);
+                  if ($porchfest['URL'] != '') {
+                    $href = '"' . $porchfest['URL'];
+                  }
                   echo '<tr data-status = "' . $status . '">
                         <td> 
-                          <a href="singleporchfest/' . strtolower($porchfest['Name']) . '">' 
-                            . $porchfest['Name'] . '</a>
+                          <a href=' . $href . '">' . $porchfest['Name'] . '</a>
                         </td>
                         <td>' . $day . '</td>
                         <td>' . $porchfest['Location'] . '</td>
                         <td>' . $porchfest['Description'] . '</td>
                         <td>' . $deadline . '</td>
                         <td>  
-                          <a href="bandsignup/' . strtolower($porchfest['Name']) . '"> Join </a>
+                          <a href="bandsignup/' . strtolower($porchfest['Nickname']) . '"> Join </a>
                         </td>
                       </tr>';
                 }

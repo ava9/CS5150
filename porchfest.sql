@@ -146,6 +146,7 @@ CREATE TABLE IF NOT EXISTS `porchfests` (
 `PorchfestID` int(11) NOT NULL,
   `URL` varchar(255) NOT NULL,
   `Name` varchar(255) NOT NULL,
+  `Nickname` varchar(255) NOT NULL,
   `Location` varchar(255) NOT NULL,
   `Date` date NOT NULL,
   `Description` text NOT NULL,
@@ -157,8 +158,8 @@ CREATE TABLE IF NOT EXISTS `porchfests` (
 -- Dumping data for table `porchfests`
 --
 
-INSERT INTO `porchfests` (`PorchfestID`, `URL`, `Name`, `Location`, `Date`, `Description`, `Deadline`, `Published`) VALUES
-(1, '', 'Ithaca Porchfest', 'Utica, NY', '2017-03-23', 'Porchfest began in 2007, inspired by some outdoor ukulele playing and a conversation between neighbors Gretchen Hildreth and Lesley Greene. They came up with the idea for it that day and gathered 20 bands to make it happen in September of that year. The number of bands has increased every year since then, with 185 in 2016.', '2017-03-31 10:00:00', 0);
+INSERT INTO `porchfests` (`PorchfestID`, `URL`, `Nickname`, `Name`, `Location`, `Date`, `Description`, `Deadline`, `Published`) VALUES
+(1, '', 'ithaca', 'Ithaca Porchfest', 'Utica, NY', '2017-03-23', 'Porchfest began in 2007, inspired by some outdoor ukulele playing and a conversation between neighbors Gretchen Hildreth and Lesley Greene. They came up with the idea for it that day and gathered 20 bands to make it happen in September of that year. The number of bands has increased every year since then, with 185 in 2016.', '2017-03-31 10:00:00', 0);
 
 -- --------------------------------------------------------
 

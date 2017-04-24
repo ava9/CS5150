@@ -23,7 +23,7 @@
       // add DB_USER and DB_PASSWORD later
       $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-      $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME_CLEAN);
+      $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME);
       $result = $conn->query($sql);
       $porchfestID = $result->fetch_assoc()['PorchfestID'];
 
@@ -60,8 +60,8 @@
                   <li><a href="#bands" data-toggle="tab" onclick="enable('#bands');"> Manage Bands </a></li>
                   <li><a href="#timeslots" data-toggle="tab" onclick="enable('#timeslots');"> Manage Time Slots </a></li>
                   <li><a href="#schedule" data-toggle="tab" onclick="enable('#schedule');"> Schedule </a></li>
-                  <li><a href="#publish" data-toggle="tab" onclick="enable('#publish');"> Publish </a></li>
                   <li><a href="#export" data-toggle="tab" onclick="enable('#export');"> Export </a></li>
+                  <li><a href="#publish" data-toggle="tab" onclick="enable('#publish');"> Publish </a></li>
                   <li class="nav-divider"></li>
                 </ul>
             </nav>
@@ -166,17 +166,23 @@
                   $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
 
                   $result = $conn->query($sql);
+                  
 
                   while($band = $result->fetch_assoc()) {
+                    $bandname = $band['Name'];
+                    // Modify the band name such that it looks good in the URL.
+                    // All spaces (' ') become '-' and all '-' become '--'.
+                    $urlbandname = str_replace(" ", "-", str_replace("-", "--", $bandname));
+
                     echo '<tr>';
                     echo '<td>' . $band['Name'] . '</td>';
                     echo '<td>' . $band['Description'] . '</td>';
                     echo '<td> List of members </td>';
                     echo '<td> <a data-target="#timeslotModal' . $band['BandID'] . '" data-toggle="modal"> Time Slots </a> </td>';
                     echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
-                    echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NAME_RAW . '/' . 
-                                $band['Name'] . '"> Edit </a> </td>';
-                    echo '<td> <a href="' . email_href($conn, $band['Name']) . '" target="_blank"> Email </a> </td>'; 
+                    echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NICKNAME . '/' . 
+                                $urlbandname . '"> Edit </a> </td>';
+                    echo '<td> <a href="' . email_href($conn, $bandname) . '" target="_blank"> Email </a> </td>'; 
                   }
                 ?>
 
@@ -253,7 +259,6 @@
 
                     $result3 = $conn->query($sql3);
 
-
                     if ($result3->num_rows > 0) {
                       $assigned = $result3->fetch_assoc();
 
@@ -284,6 +289,25 @@
               </table> <!-- end table -->
             </div> <!-- end table-container div -->
           </div> <!-- end schedule div -->
+
+          <div class="tab-pane fade" id="export"> <!-- begin export div -->
+            <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='/cs5150/php/export.php'>
+              <!-- TODO PRETTY THIS -->
+              <input type = "hidden" name = "porchfestid" value = <?php echo $porchfestID ?> />
+              <input type = "hidden" name = "mediatype" value = "csv" /> 
+              <div class="form-group">
+                <label class="col-sm-2"></label>
+                <div class="col-sm-10">
+                    <div class="row">
+                        <div class="col-md-9">
+                          <button type="submit" name="submitInfo" class="btn btn-primary btn-sm"> Export </button>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </form>
+          </div> <!-- end export div -->
+
           <div class="tab-pane fade" id="publish"> <!-- begin publish div -->
             <?php
               $sql = "SELECT Published from porchfests WHERE PorchfestID='" . $porchfestID . "'";
@@ -298,10 +322,6 @@
               }
             ?>
           </div> <!-- end publish div -->
-
-          <div class="tab-pane fade" id="export"> <!-- begin export div -->
-            <button id="exportbutton" class="btn btn-default"> Submit </button>
-          </div> <!-- end export div -->
 
         </div> <!-- end col 2 div -->
       </div> <!-- end row 1 div -->
@@ -359,7 +379,6 @@
       $(".tab-pane:not(" + id + ")").css({pointerEvents: "none"});
     }
 
-    // THIS NEEDS TO BE CHANGED ALANNNN
     var ajaxurl = "http://localhost/cs5150/php/ajax.php";
     var porchfestid = "<?php echo $porchfestID; ?>";
 
