@@ -83,7 +83,7 @@
 
                     // Set the URL to link to. Should one not exist (not provided), then link to
                     // website's single porchfest view
-                    $href = '"singleporchfest/' . strtolower($porchfest['Name']);
+                    $href = '"view/' . strtolower($porchfest['Nickname']);
                     if ($porchfest['URL'] != '') {
                       $href = '"' . $porchfest['URL'];
                     }
@@ -98,7 +98,7 @@
                           <td> Organizer </td>
                           <td>' . $deadline . '</td>
                           <td>' . $isPublished . '</td>
-                          <td> <a href="edit/' . strtolower($porchfest['Name']) . '"> Edit Porchfest </a> </td>
+                          <td> <a href="edit/' . strtolower($porchfest['Nickname']) . '"> Edit Porchfest </a> </td>
                         </tr>';
                   }
 
@@ -132,10 +132,14 @@
 
                     // Set the URL to link to. Should one not exist (not provided), then link to
                     // website's single porchfest view
-                    $href = '"singleporchfest/' . strtolower($porchfest['Name']);
+                    $href = '"view/' . strtolower($porchfest['Nickname']);
                     if ($porchfest['URL'] != '') {
                       $href = '"' . $porchfest['URL'];
                     }
+
+                    // Modify the band name such that it looks good in the URL.
+                    // All spaces (' ') become '-' and all '-' become '--'.
+                    $urlbandname = str_replace(" ", "-", str_replace("-", "--", $bandname));
                     echo '<tr data-status = "' . $status . '">
                           <td> 
                             <a href=' . $href . '">' . $porchfest['Name'] . '</a>
@@ -146,7 +150,7 @@
                           <td> Performer (' . $bandname . ') </td>
                           <td>' . $deadline . '</td>
                           <td>' . $isPublished . '</td>
-                          <td> <a href="edit/' . strtolower($porchfest['Name']) . '/' . $bandname . '"> Edit Band </a> </td>
+                          <td> <a href="edit/' . $porchfest['Nickname'] . '/' . $urlbandname . '"> Edit Band </a> </td>
                         </tr>';
                   }
               ?>

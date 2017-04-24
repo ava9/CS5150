@@ -23,7 +23,7 @@
       // add DB_USER and DB_PASSWORD later
       $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-      $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME_CLEAN);
+      $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME);
       $result = $conn->query($sql);
       $porchfestID = $result->fetch_assoc()['PorchfestID'];
 
@@ -166,17 +166,23 @@
                   $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
 
                   $result = $conn->query($sql);
+                  
 
                   while($band = $result->fetch_assoc()) {
+                    $bandname = $band['Name'];
+                    // Modify the band name such that it looks good in the URL.
+                    // All spaces (' ') become '-' and all '-' become '--'.
+                    $urlbandname = str_replace(" ", "-", str_replace("-", "--", $bandname));
+
                     echo '<tr>';
                     echo '<td>' . $band['Name'] . '</td>';
                     echo '<td>' . $band['Description'] . '</td>';
                     echo '<td> List of members </td>';
                     echo '<td> <a data-target="#timeslotModal' . $band['BandID'] . '" data-toggle="modal"> Time Slots </a> </td>';
                     echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
-                    echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NAME_RAW . '/' . 
-                                $band['Name'] . '"> Edit </a> </td>';
-                    echo '<td> <a href="' . email_href($conn, $band['Name']) . '" target="_blank"> Email </a> </td>'; 
+                    echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NICKNAME . '/' . 
+                                $urlbandname . '"> Edit </a> </td>';
+                    echo '<td> <a href="' . email_href($conn, $bandname) . '" target="_blank"> Email </a> </td>'; 
                   }
                 ?>
 

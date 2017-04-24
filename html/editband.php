@@ -17,11 +17,11 @@
     // Create connection
     $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-    $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME_CLEAN);
+    $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME);
     $result = $conn->query($sql);
     $porchfestID = $result->fetch_assoc()['PorchfestID'];
 
-    $sql = sprintf("SELECT BandID FROM bands WHERE bands.Name = '%s'", BAND_NAME_CLEAN);
+    $sql = sprintf("SELECT BandID FROM bands WHERE bands.Name = '%s'", BAND_NAME);
     $result = $conn->query($sql);
     $bandID = $result->fetch_assoc()['BandID'];
 
