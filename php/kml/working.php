@@ -24,21 +24,21 @@ function printStyle($colorArr, $i){
 	$s = '"' .$i . '"';
 	$i = $i - 1;
 	$i = $i % 20;
-	//echo ("\t\t\t<Style id=".$s.">\n");
-	//echo ("\t\t\t\t<LabelStyle>\n");
-	//echo ("\t\t\t\t\t<color>".$colorArr[$i]."</color>\n");
-	//echo ("\t\t\t\t\t<colorMode>normal</colorMode>\n");
-	//echo ("\t\t\t\t\t<scale>1</scale>\n");
-	//echo ("\t\t\t\t</LabelStyle>\n");
-	//echo ("\t\t\t</Style>\n");
+	//fwrite($myfile, "\t\t\t<Style id=".$s.">\n");
+	//fwrite($myfile, "\t\t\t\t<LabelStyle>\n");
+	//fwrite($myfile, "\t\t\t\t\t<color>".$colorArr[$i]."</color>\n");
+	//fwrite($myfile, "\t\t\t\t\t<colorMode>normal</colorMode>\n");
+	//fwrite($myfile, "\t\t\t\t\t<scale>1</scale>\n");
+	//fwrite($myfile, "\t\t\t\t</LabelStyle>\n");
+	//fwrite($myfile, "\t\t\t</Style>\n");
 }
 
 $colorArray = array("501400FF", "501478FF", "5014F0FF", "5078FF00", "50FF7800", "50FF78F0", "50FF78B4", "50140000", "50147800", "5014F000", "50780000", "50780078", "507800B4", "500078F0", "507800F0", "507882F0", "508278F0", "50F07814", "5078A03C", "501478C8");
 
-//$myfile = fopen("output.kml", "w");
-echo ("<?xml version='1.0' encoding='UTF-8'?>\n");
-echo ("<kml xmlns='http://www.opengis.net/kml/2.2' xmlns:atom='http://www.w3.org/2005/Atom' xmlns:gx='http://www.google.com/kml/ext/2.2' xmlns:kml='http://www.opengis.net/kml/2.2' xmlns:xal='urn:oasis:names:tc:ciq:xsdschema:xAL:2.0'>\n");
-echo ("\t<Document>\n");
+$myfile = fopen("output.kml", "w");
+fwrite($myfile, "<?xml version='1.0' encoding='UTF-8'?>\n");
+fwrite($myfile, "<kml xmlns='http://www.opengis.net/kml/2.2' xmlns:atom='http://www.w3.org/2005/Atom' xmlns:gx='http://www.google.com/kml/ext/2.2' xmlns:kml='http://www.opengis.net/kml/2.2' xmlns:xal='urn:oasis:names:tc:ciq:xsdschema:xAL:2.0'>\n");
+fwrite($myfile, "\t<Document>\n");
 
 
 
@@ -58,7 +58,7 @@ if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 } 
 
-$sql = "SELECT bands.Name, bands.Description, Latitude, Longitude, porchfesttimeslots.StartTime FROM bands INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID INNER JOIN porchfesttimeslots ON porchfesttimeslots.TimeslotID = bandstoporchfests.TimeslotID ORDER BY porchfesttimeslots.StartTime;";
+$sql = "SELECT bands.Name, bands.Description, bandstoporchfests.Latitude, bandstoporchfests.Longitude, porchfesttimeslots.StartTime FROM bands INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID INNER JOIN porchfesttimeslots ON porchfesttimeslots.TimeslotID = bandstoporchfests.TimeslotID ORDER BY porchfesttimeslots.StartTime;";
 
 $result = $conn->query($sql);
 $colorIndex;
@@ -114,32 +114,32 @@ if ($result->num_rows > 0) {
 		
 		if (($flipBit == 0) && ($internalCount == 1)){
 			$s1 = '"' .$curr . '"';
-			echo ("\t\t<Folder id=" . $s1 . ">\n");
+			fwrite($myfile, "\t\t<Folder id=" . $s1 . ">\n");
 			printStyle($colorArray, $colorIndex);
-			echo ("\t\t\t<name>". $curr ."</name>\n");
+			fwrite($myfile, "\t\t\t<name>". $curr ."</name>\n");
 			$open = $open + 1;
 		}
 		
 		if (($flipBit == 1) && ($internalCount == 1)){
 			if ($open == 1){
-				echo ("\t\t</Folder>\n");
+				fwrite($myfile, "\t\t</Folder>\n");
 				$open = $open - 1;
 			}
 			$s2 = '"' .$curr . '"';
-			echo ("\t\t<Folder id=" . $s2 . ">\n");
+			fwrite($myfile, "\t\t<Folder id=" . $s2 . ">\n");
 			printStyle($colorArray, $colorIndex);
-			echo ("\t\t\t<name>". $curr ."</name>\n");
+			fwrite($myfile, "\t\t\t<name>". $curr ."</name>\n");
 			$open = $open + 1;
 		}
 		
-		echo ("\t\t\t<Placemark>\n");
-		echo ("\t\t\t\t<name>".$bandName."</name>\n");
-		echo ("\t\t\t\t<description>".$bandDescription."</description>\n");
-		echo ("\t\t\t\t<styleUrl>#".$colorIndex."</styleUrl>\n");
-		echo ("\t\t\t\t<Point>\n");
-		echo ("\t\t\t\t\t<coordinates>".$bandLong.",".$bandLat.",0.0</coordinates>\n");
-		echo ("\t\t\t\t</Point>\n");
-		echo ("\t\t\t</Placemark>\n");
+		fwrite($myfile, "\t\t\t<Placemark>\n");
+		fwrite($myfile, "\t\t\t\t<name>".$bandName."</name>\n");
+		fwrite($myfile, "\t\t\t\t<description>".$bandDescription."</description>\n");
+		fwrite($myfile, "\t\t\t\t<styleUrl>#".$colorIndex."</styleUrl>\n");
+		fwrite($myfile, "\t\t\t\t<Point>\n");
+		fwrite($myfile, "\t\t\t\t\t<coordinates>".$bandLong.",".$bandLat.",0.0</coordinates>\n");
+		fwrite($myfile, "\t\t\t\t</Point>\n");
+		fwrite($myfile, "\t\t\t</Placemark>\n");
 		
 	}
 } else {
@@ -148,12 +148,12 @@ if ($result->num_rows > 0) {
 $conn->close();
 
 if ($open == 1){
-	echo ("\t\t</Folder>\n");
+	fwrite($myfile, "\t\t</Folder>\n");
 	$open = $open - 1;
 }
 
-echo ("\t</Document>\n");
-echo ("</kml>\n");
-//fclose($myfile);
+fwrite($myfile, "\t</Document>\n");
+fwrite($myfile, "</kml>\n");
+fclose($myfile);
 
 ?>

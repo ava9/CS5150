@@ -1,23 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<kml xmlns='http://www.opengis.net/kml/2.2'>
+<kml xmlns='http://www.opengis.net/kml/2.2' xmlns:atom='http://www.w3.org/2005/Atom' xmlns:gx='http://www.google.com/kml/ext/2.2' xmlns:kml='http://www.opengis.net/kml/2.2' xmlns:xal='urn:oasis:names:tc:ciq:xsdschema:xAL:2.0'>
 	<Document>
-	<name>Porchfest</name>
-	<description><![CDATA[]]></description>
-		<Placemark>
-			<name>Band 1</name>
-			<description>Band 1 Description</description>
-			<styleUrl>#icon-1899-0288D1</styleUrl>
-			<Point>
-				<coordinates>42.442064,-76.483469</coordinates>
-			</Point>
-		</Placemark>
-		<Placemark>
-			<name>Band 2</name>
-			<description>Band 2 Description</description>
-			<styleUrl>#icon-1899-0288D1</styleUrl>
-			<Point>
-				<coordinates>42.4421236,-76.4850031</coordinates>
-			</Point>
-		</Placemark>
 	</Document>
 </kml>
