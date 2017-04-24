@@ -105,12 +105,12 @@
               if ($lasttime != $band['StartTime']) {
                 $starttime = date_format(date_create($band['StartTime']), 'g:iA');
                 echo '<h3>' . $starttime . '</h3>';
-                echo '<button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal' . $band['BandID'] . '">
+                $lasttime = $band['StartTime'];
+              }
+              echo '<button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal' . $band['BandID'] . '">
                         <h4>' . $band['Name'] .'<h4>
                         </button>
                       <br>';
-                $lasttime = $band['StartTime'];
-              }
             }
           ?>
         </div> <!-- end date div -->
