@@ -155,6 +155,6 @@ function run(){
   echo "Success!";
 }
 
-# (∩｀-´)⊃━☆ﾟ.*･｡ﾟ magic time #
+# (∩^-^)⊃━☆ﾟ.*･｡ﾟ magic time #
 run();
 ?>
