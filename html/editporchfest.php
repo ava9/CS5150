@@ -166,8 +166,14 @@
                   $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
 
                   $result = $conn->query($sql);
+                  
 
                   while($band = $result->fetch_assoc()) {
+                    $bandname = $band['Name'];
+                    // Modify the band name such that it looks good in the URL.
+                    // All spaces (' ') become '-' and all '-' become '--'.
+                    $urlbandname = str_replace(" ", "-", str_replace("-", "--", $bandname));
+
                     echo '<tr>';
                     echo '<td>' . $band['Name'] . '</td>';
                     echo '<td>' . $band['Description'] . '</td>';
@@ -175,8 +181,8 @@
                     echo '<td> <a data-target="#timeslotModal' . $band['BandID'] . '" data-toggle="modal"> Time Slots </a> </td>';
                     echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
                     echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NICKNAME . '/' . 
-                                $band['Name'] . '"> Edit </a> </td>';
-                    echo '<td> <a href="' . email_href($conn, $band['Name']) . '" target="_blank"> Email </a> </td>'; 
+                                $urlbandname . '"> Edit </a> </td>';
+                    echo '<td> <a href="' . email_href($conn, $bandname) . '" target="_blank"> Email </a> </td>'; 
                   }
                 ?>
 

@@ -21,7 +21,7 @@
                     if (isset($_SESSION['logged_user'])) {
                 ?>
                         <li class='dropdown'>
-                                <a href='#'' class='dropdown-toggle' data-toggle='dropdown'> My Account </a>
+                                <a href='#' class='dropdown-toggle' data-toggle='dropdown'> My Account </a>
                                 <ul class='dropdown-menu'>
                                     <li><a href='/cs5150/html/myporchfests'> My Porchfests </a></li>
                                     <li><a href='/cs5150/html/profile'> My Profile </a></li>
