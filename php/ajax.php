@@ -13,7 +13,16 @@
 		$sql = "UPDATE porchfests SET Published=NOT(Published) WHERE PorchfestID='" . $_POST['porchfestid'] . "'";
 		$result = $conn->query($sql);
 
-		if ($result) {
+		if ($result) {	
+			echo "success";
+		} else {
+			echo "fail";
+		}
+	}
+	// ** editporchfest.php: run scheduling algorithm
+	elseif (isset($_POST['schedule'])) {
+		require_once '../scheduling/PorchfestScheduling/main.php';
+		if (True) {	
 			echo "success";
 		} else {
 			echo "fail";
@@ -159,7 +168,7 @@
 
 		echo '</table>';
 	} else {
-		echo 'here in ajax';
+		echo 'here in ajax ';
 		print_r($_POST);
 		// throw new Exception("variable not found");
 	}

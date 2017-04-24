@@ -1,10 +1,8 @@
 <?php
     require_once "config.php";
-
     // Create connection
     $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['exportCSV'])) {
         // Get the name of the porchfest using ID for the file name
         // Create the CSV file with the heading
         // 'Band Name, Location, Start Time, End Time' 
@@ -30,7 +28,7 @@
             // Write the band name, location, starttime, and endtime to the specified format, then export it
             $sql2 = sprintf("SELECT bands.Name, bandstoporchfests.PorchLocation from bands
                             JOIN bandstoporchfests on bands.BandID = bandstoporchfests.BandID 
-                            WHERE bandstoporchfests.PorchfestID = '%s' and bandstoporchfests.TimeslotID = '%s'",
+                            WHERE bandstoporchfests.P m,lhy78km,7y8ko9ollolo9o9lolllololololololo98y79loplp,mp,,opooooopiorchfestID = '%s' and bandstoporchfests.TimeslotID = '%s'",
                             $_POST['porchfestid'], $timeslot['TimeslotID']);
             $result2 = $conn->query($sql2);
 
@@ -46,6 +44,18 @@
         header("Content-Disposition: attachment; filename=$filename");
         header('Content-Length: ' . filesize($filename));
         header("Cache-Control: public");
+        
+        readfile($filename);
+    } elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['exportKML'])) {
+        
+
+        $filename = 'kml/output.kml';
+        header("Content-Description: File Transfer");
+        header('Content-Type: application/kml');
+        header("Content-Disposition: attachment; filename=$filename");
+        header('Content-Length: ' . filesize($filename));
+        header("Cache-Control: public");
+        require_once 'kml/working.php';
         
         readfile($filename);
     }
