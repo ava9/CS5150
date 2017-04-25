@@ -217,7 +217,7 @@
     return ($json['results'][0]['geometry']['location']['lat'].",".$json['results'][0]['geometry']['location']['lng'].",0.0");
 
   }
-
+  $bandnameError = $descriptionError = $locationError = "";
   if (isset($_POST['submitInfo'])) {
     if (!isset($_SESSION['logged_user'])) {
       if (empty($_POST['name'])) {
@@ -254,7 +254,6 @@
         $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
       }
     }
-    $bandnameError = $descriptionError = $locationError = "";
     if (empty($_POST['bandname'])) {
       $bandnameError = 'Missing';
     }

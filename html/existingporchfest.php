@@ -12,6 +12,7 @@
 <body>
   <?php
     $nameError = $emailError = $mobileError = $passwordError = $confirmPasswordError = "";
+    $porchfestNameError = $nicknameError = $urlError = $descriptionError = $locationError = $dateError = $deadlineError = "";
 
     if (isset($_POST['submitInfo'])) {
       if (!isset($_SESSION['logged_user'])) {
@@ -49,7 +50,6 @@
           $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
         }
       }
-      $porchfestNameError = $nicknameError = $urlError = $descriptionError = $locationError = $dateError = $deadlineError = "";
       if (empty($_POST['porchfestName'])) {
         $porchfestNameError = 'Missing';
       }

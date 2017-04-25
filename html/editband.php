@@ -25,8 +25,8 @@
     $result = $conn->query($sql);
     $bandID = $result->fetch_assoc()['BandID'];
 
+  $bandnameError = $descriptionError = $locationError = "";
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $bandnameError = $descriptionError = $locationError = "";
     if (empty($_POST['bandname'])) {
       $bandnameError = 'Missing';
     }
