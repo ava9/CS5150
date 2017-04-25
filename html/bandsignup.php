@@ -99,7 +99,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required name="bandname" type="text" class="form-control" placeholder="John and Friends" />
+                      <input required name="bandname" type="text" class="form-control" placeholder="John and Friends" /> <?php echo '<span class="error">'; echo $bandnameError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -109,7 +109,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required name="banddescription" type="text" class="form-control" placeholder="John and Friends plays cool music." />
+                      <input required name="banddescription" type="text" class="form-control" placeholder="John and Friends plays cool music." /> <?php echo '<span class="error">'; echo $descriptionError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -119,7 +119,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required name="porchlocation" id="autocomplete" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
+                      <input required name="porchlocation" id="autocomplete" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input> <?php echo '<span class="error">'; echo $locationError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -254,12 +254,28 @@
         $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
       }
     }
-    $bandname = htmlentities($_POST['bandname']);
-    $banddescription = htmlentities($_POST['banddescription']);
+    $bandnameError = $descriptionError = $locationError = "";
+    if (empty($_POST['bandname'])) {
+      $bandnameError = 'Missing';
+    }
+    else {
+      $bandname = htmlentities($_POST['bandname']);
+    }
+    if (empty($_POST['banddescription'])) {
+      $descriptionError = 'Missing';
+    }
+    else {
+      $banddescription = htmlentities($_POST['banddescription']);
+    }
     $bandmembers = htmlentities($_POST['bandmembers']);
     $bandcomment = htmlentities($_POST['bandcomment']);
     $bandconflicts = htmlentities($_POST['bandconflicts']);
-    $porchlocation = htmlentities($_POST['porchlocation']);
+    if (empty($_POST['porchlocation'])) {
+      $locationError = 'Missing';
+    }
+    else {
+      $porchlocation = htmlentities($_POST['porchlocation']);
+    }
 
     // handle new user logic
     if (!isset($_SESSION['logged_user'])) {

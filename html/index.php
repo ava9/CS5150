@@ -49,12 +49,43 @@
         $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
       }
     }
-    $porchfestName = filter_var($_POST['porchfestName'], FILTER_SANITIZE_STRING);
-    $nickname = filter_var($_POST['nickname'], FILTER_SANITIZE_STRING);
-    $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
-    $location = filter_var($_POST['location'], FILTER_SANITIZE_STRING);
-    $date = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
-    $deadline = filter_var($_POST['deadline'], FILTER_SANITIZE_STRING);
+    $porchfestNameError = $nicknameError = $descriptionError = $locationError = $dateError = $deadlineError = "";
+    if (empty($_POST['porchfestName'])) {
+      $porchfestNameError = 'Missing';
+    }
+    else {
+      $porchfestName = filter_var($_POST['porchfestName'], FILTER_SANITIZE_STRING);
+    }
+    if (empty($_POST['nickname'])) {
+      $nicknameError = 'Missing';
+    }
+    else {
+      $nickname = filter_var($_POST['nickname'], FILTER_SANITIZE_STRING);
+    }
+    if (empty($_POST['description'])) {
+      $descriptionError = 'Missing';
+    }
+    else {
+      $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+    }
+    if (empty($_POST['location'])) {
+      $locationError = 'Missing';
+    }
+    else {
+      $location = filter_var($_POST['location'], FILTER_SANITIZE_STRING);
+    }
+    if (empty($_POST['date'])) {
+      $dateError = 'Missing';
+    }
+    else {
+      $date = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
+    }
+    if (empty($_POST['deadline'])) {
+      $deadlineError = 'Missing';
+    }
+    else {
+      $deadline = filter_var($_POST['deadline'], FILTER_SANITIZE_STRING);
+    }
 
     // handle new user logic
     if (!isset($_SESSION['logged_user'])) {
@@ -196,7 +227,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="text" name="porchfestName" class="form-control" placeholder="Ithaca Porchfest" />
+                      <input required type="text" name="porchfestName" class="form-control" placeholder="Ithaca Porchfest" /> <?php echo '<span class="error">'; echo $porchfestNameError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -207,7 +238,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="text" class="form-control" name="nickname" placeholder="Ithaca Porchfest" />
+                      <input required type="text" class="form-control" name="nickname" placeholder="Ithaca Porchfest" /> <?php echo '<span class="error">'; echo $nicknameError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -218,7 +249,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="text" class="form-control" name="description" placeholder="John and Friends plays cool music." />
+                      <input required type="text" class="form-control" name="description" placeholder="John and Friends plays cool music." /> <?php echo '<span class="error">'; echo $descriptionError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -228,7 +259,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required id="autocomplete" name="location" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
+                      <input required id="autocomplete" name="location" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input> <?php echo '<span class="error">'; echo $locationError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -238,7 +269,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="date" name="date" class="form-control" placeholder="Date" />
+                      <input required type="date" name="date" class="form-control" placeholder="Date" /> <?php echo '<span class="error">'; echo $dateError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -248,7 +279,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="datetime-local" name="deadline" lass="form-control" placeholder="Deadline" />
+                      <input required type="datetime-local" name="deadline" lass="form-control" placeholder="Deadline" /> <?php echo '<span class="error">'; echo $deadlineError; echo '</span>'; ?>
                   </div>
               </div>
           </div>

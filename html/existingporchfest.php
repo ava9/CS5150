@@ -16,46 +16,82 @@
     if (isset($_POST['submitInfo'])) {
       if (!isset($_SESSION['logged_user'])) {
         if (empty($_POST['name'])) {
-        $nameError = 'Missing';
+          $nameError = 'Missing';
+        }
+        else {
+          $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+        }
+        if (empty($_POST['email'])) {
+          $emailError = 'Missing';
+        }
+        else {
+          $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
+              if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $emailError = "Invalid email format"; 
+              }
+        }
+        if (empty($_POST['mobile'])) {
+          $mobileError = 'Missing';
+        }
+        else {
+          $mobile = filter_var($_POST['mobile'], FILTER_SANITIZE_STRING);
+        }
+        if (empty($_POST['password'])) {
+          $passwordError = 'Missing';
+        }
+        else {
+          $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
+        }
+        if (empty($_POST['confirmPassword'])) {
+          $confirmPasswordError = 'Missing';
+        }
+        else {
+          $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
+        }
+      }
+      $porchfestNameError = $nicknameError = $urlError = $descriptionError = $locationError = $dateError = $deadlineError = "";
+      if (empty($_POST['porchfestName'])) {
+        $porchfestNameError = 'Missing';
       }
       else {
-        $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+        $porchfestName = filter_var($_POST['porchfestName'], FILTER_SANITIZE_STRING);
       }
-      if (empty($_POST['email'])) {
-        $emailError = 'Missing';
+      if (empty($_POST['nickname'])) {
+        $nicknameError = 'Missing';
       }
-      else {
-        $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-              $emailError = "Invalid email format"; 
-            }
-      }
-      if (empty($_POST['mobile'])) {
-        $mobileError = 'Missing';
+      if (empty($_POST['porchfestURL'])) {
+        $urlError = 'Missing';
       }
       else {
-        $mobile = filter_var($_POST['mobile'], FILTER_SANITIZE_STRING);
-      }
-      if (empty($_POST['password'])) {
-        $passwordError = 'Missing';
+        $porchfestURL = filter_var($_POST['porchfestURL'], FILTER_SANITIZE_STRING);
       }
       else {
-        $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
+        $nickname = filter_var($_POST['nickname'], FILTER_SANITIZE_STRING);
       }
-      if (empty($_POST['confirmPassword'])) {
-        $confirmPasswordError = 'Missing';
+      if (empty($_POST['description'])) {
+        $descriptionError = 'Missing';
       }
       else {
-        $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
+        $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
       }
+      if (empty($_POST['location'])) {
+        $locationError = 'Missing';
       }
-      $porchfestName = filter_var($_POST['porchfestName'], FILTER_SANITIZE_STRING);
-      $nickname = filter_var($_POST['nickname'], FILTER_SANITIZE_STRING);
-      $porchfestURL = filter_var($_POST['porchfestURL'], FILTER_SANITIZE_STRING);
-      $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
-      $location = filter_var($_POST['location'], FILTER_SANITIZE_STRING);
-      $date = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
-      $deadline = filter_var($_POST['deadline'], FILTER_SANITIZE_STRING);
+      else {
+        $location = filter_var($_POST['location'], FILTER_SANITIZE_STRING);
+      }
+      if (empty($_POST['date'])) {
+        $dateError = 'Missing';
+      }
+      else {
+        $date = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
+      }
+      if (empty($_POST['deadline'])) {
+        $deadlineError = 'Missing';
+      }
+      else {
+        $deadline = filter_var($_POST['deadline'], FILTER_SANITIZE_STRING);
+      }
     
       // handle new user logic
       if (!isset($_SESSION['logged_user'])) {
@@ -204,7 +240,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="text" class="form-control" name="porchfestName" placeholder="Ithaca Porchfest" />
+                      <input required type="text" class="form-control" name="porchfestName" placeholder="Ithaca Porchfest" /> <?php echo '<span class="error">'; echo $porchfestNameError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -215,7 +251,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="text" class="form-control" name="nickname" placeholder="Ithaca Porchfest" />
+                      <input required type="text" class="form-control" name="nickname" placeholder="Ithaca Porchfest" /> <?php echo '<span class="error">'; echo $nicknameError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -226,7 +262,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="url" class="form-control" name="porchfestURL" placeholder="ithacaporchfest.com" />
+                      <input required type="url" class="form-control" name="porchfestURL" placeholder="ithacaporchfest.com" /> <?php echo '<span class="error">'; echo $urlError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -237,7 +273,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="text" class="form-control" name="description" placeholder="John and Friends plays cool music." />
+                      <input required type="text" class="form-control" name="description" placeholder="John and Friends plays cool music." /> <?php echo '<span class="error">'; echo $descriptionError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -248,7 +284,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required id="autocomplete" name="location" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input>
+                      <input required id="autocomplete" name="location" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input> <?php echo '<span class="error">'; echo $locationError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -259,7 +295,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="date" class="form-control" name="date" placeholder="Date" />
+                      <input required type="date" class="form-control" name="date" placeholder="Date" /> <?php echo '<span class="error">'; echo $dateError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -270,7 +306,7 @@
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="datetime-local" class="form-control" name="deadline" placeholder="Date" />
+                      <input required type="datetime-local" class="form-control" name="deadline" placeholder="Date" /> <?php echo '<span class="error">'; echo $deadlineError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
