@@ -4,7 +4,7 @@
   <head>
     <?php require_once "../php/modules/stdHead.php" ?>
     <!-- Responsive table js -->
-    <script src="http://localhost/cs5150/js/responsive-tables.js"></script>
+    <script src="/cs5150/js/responsive-tables.js"></script>
 
     <!-- Responsive tables CSS -->
     <link rel="stylesheet" href="../css/responsive-tables.css">
@@ -81,7 +81,7 @@
 
                     echo '<p>';
                     echo '<label> Porchfest Name </label>';
-                    echo '<input data-validation="length" data-validation-length="min4"type="text" name="porchfestname" class="form-control" value="' . $porchfest['Name'] . '" placeholder="Porchfest Name">';
+                    echo '<input data-validation="length" data-validation-length="min4" type="text" name="porchfestname" class="form-control" value="' . $porchfest['Name'] . '" placeholder="Porchfest Name">';
                     echo '<br />';
                     echo '</p>';
 
@@ -144,10 +144,8 @@
                   // Given a band name and SQL connection, get the registered emails of the band and 
                   // return a mailto link to them
 
-                  function email_href($conn, $name) {
-                    $result = $conn->query("SELECT Members FROM bands WHERE Name = '" . $name . "'");
-                    $band = $result->fetch_assoc();
-                    $members = explode(',', $band['Members']);
+                  function email_href($bName, $bMembers) {
+                    $members = explode(',', $bMembers);
 
                     $recipient = $members[0];
                     $cc = '';
@@ -156,12 +154,9 @@
                       $cc = $cc . $value . ',';
                     }
 
-                    $subject = sprintf("[Porchfest] %s", $name);
+                    $subject = sprintf("[Porchfest] %s", $bName);
                     return sprintf("mailto:%s?cc=%s&subject=%s", $recipient, $cc, $subject);
                   }
-
-
-                  $result = $conn->query("SELECT Members FROM bands WHERE PorchfestID = '" . $porchfestID . "'");
 
                   $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
 
@@ -182,7 +177,7 @@
                     echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
                     echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NICKNAME . '/' . 
                                 $urlbandname . '"> Edit </a> </td>';
-                    echo '<td> <a href="' . email_href($conn, $bandname) . '" target="_blank"> Email </a> </td>'; 
+                    echo '<td> <a href="' . email_href($band['Name'], $band['Members']) . '" target="_blank"> Email </a> </td>'; 
                   }
                 ?>
 
@@ -234,6 +229,7 @@
              
           </div> <!-- end timeslots div -->
           <div class="tab-pane fade" id="schedule"> <!-- begin schedule div -->
+            <button id="schedule" class="btn btn-primary btn-sm"> Schedule it!</button>     
             <div class="table-container table-responsive bands-table" id="bandstable"> <!-- begin table-container div -->
               <table class="responsive table"> <!-- begin table -->
                 <tr data-status= "fixed">
@@ -288,10 +284,11 @@
 
               </table> <!-- end table -->
             </div> <!-- end table-container div -->
+                          
           </div> <!-- end schedule div -->
 
           <div class="tab-pane fade" id="export"> <!-- begin export div -->
-            <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='/cs5150/php/export.php'>
+            <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='/cs5150/php/export.php' target="_blank">
               <!-- TODO PRETTY THIS -->
               <input type = "hidden" name = "porchfestid" value = <?php echo $porchfestID ?> />
               <input type = "hidden" name = "mediatype" value = "csv" /> 
@@ -300,7 +297,8 @@
                 <div class="col-sm-10">
                     <div class="row">
                         <div class="col-md-9">
-                          <button type="submit" name="submitInfo" class="btn btn-primary btn-sm"> Export </button>
+                          <button type="submit" name="exportCSV" class="btn btn-primary btn-sm"> Export CSV</button>
+                          <button type="submit" name="exportKML" class="btn btn-primary btn-sm"> Export KML </button>
                         </div>
                     </div>
                 </div>
@@ -379,7 +377,7 @@
       $(".tab-pane:not(" + id + ")").css({pointerEvents: "none"});
     }
 
-    var ajaxurl = "http://localhost/cs5150/php/ajax.php";
+    var ajaxurl = "/cs5150/php/ajax.php";
     var porchfestid = "<?php echo $porchfestID; ?>";
 
     $('.timesdropdown').change(function() {
@@ -547,6 +545,22 @@
         success: function(result){
           $("#bandstable").html(result);
         }});
+    });
+
+    $('#schedule').click(function(){
+      $.ajax({
+        url: ajaxurl,
+        type: "POST",
+        data: {porchfestid: porchfestid, schedule: 1},
+        success: function(result){
+          console.log('Scheduled!');
+          console.log(result);
+        },
+        error: function(result) {
+          console.log('error');
+          console.log(result);
+        }
+      });
     });
   </script>
 

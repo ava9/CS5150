@@ -25,13 +25,29 @@
     $result = $conn->query($sql);
     $bandID = $result->fetch_assoc()['BandID'];
 
+  $bandnameError = $descriptionError = $locationError = "";
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $bandname = htmlentities($_POST['bandname']);
-    $banddescription = htmlentities($_POST['banddescription']);
+    if (empty($_POST['bandname'])) {
+      $bandnameError = 'Missing';
+    }
+    else {
+      $bandname = htmlentities($_POST['bandname']);
+    }
+    if (empty($_POST['banddescription'])) {
+      $descriptionError = 'Missing';
+    }
+    else {
+      $banddescription = htmlentities($_POST['banddescription']);
+    }
     $bandmembers = htmlentities($_POST['bandmembers']);
     $bandcomment = htmlentities($_POST['bandcomment']);
     $bandconflicts = htmlentities($_POST['bandconflicts']);
-    $porchlocation = htmlentities($_POST['porchlocation']);
+    if (empty($_POST['porchlocation'])) {
+      $locationError = 'Missing';
+    }
+    else {
+      $porchlocation = htmlentities($_POST['porchlocation']);
+    }
 
     $sql = "UPDATE bands SET Name='" . $bandname . "', Description='" . $banddescription . "', 
             Members = '" . $bandmembers . "', Comment = '" . $bandcomment . "', Conflicts = '" . $bandconflicts . "' WHERE BandID= '" . $bandID . "'";
@@ -69,13 +85,13 @@
         <div class="form-group">
           <label class="col-lg-3 control-label">Name:</label>
           <div class="col-lg-8">
-            <input required name="bandname" class="form-control" value=<?php echo '"' . $band['Name'] . '"' ?> type="text">
+            <input required name="bandname" class="form-control" value=<?php echo '"' . $band['Name'] . '"' ?> type="text"> <?php echo '<span class="error">'; echo $bandnameError; echo '</span>'; ?>
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-3 control-label">Description:</label>
           <div class="col-lg-8">
-            <input required name="banddescription" class="form-control" value=<?php echo '"' . $band['Description'] . '"' ?> type="text">
+            <input required name="banddescription" class="form-control" value=<?php echo '"' . $band['Description'] . '"' ?> type="text"> <?php echo '<span class="error">'; echo $descriptionError; echo '</span>'; ?>
           </div>
         </div>
         <div class="form-group">
@@ -99,7 +115,7 @@
         <div class="form-group">
           <label class="col-lg-3 control-label">Porch Location:</label>
           <div class="col-lg-8">
-            <input required name="porchlocation" id="autocomplete" class="form-control" value=<?php echo '"' . $band['PorchLocation'] . '"' ?> onFocus="geolocate()"  type="text">
+            <input required name="porchlocation" id="autocomplete" class="form-control" value=<?php echo '"' . $band['PorchLocation'] . '"' ?> onFocus="geolocate()"  type="text"> <?php echo '<span class="error">'; echo $locationError; echo '</span>'; ?>
           </div>
         </div>
         <div class="form-group">
