@@ -40,6 +40,9 @@
       }
       else {
         $mobile = filter_var($_POST['mobile'], FILTER_SANITIZE_STRING);
+        if(!preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/", $mobile)) {
+          $mobileError = 'Invalid mobile number';
+        }
       }
       if (empty($_POST['password'])) {
         $passwordError = 'Missing';
@@ -58,11 +61,16 @@
     if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['mobile']) && isset($_POST['password']) && isset($_POST['confirmPassword']) && $name != '' && $email != '' && $mobile != '' && $password != '' && $confirmPassword != '') {
         if ($password != $confirmPassword) {
           echo "<script type='text/javascript'>alert('Passwords do not match!');</script>";
+        } elseif(strlen($password) < 5) {
+          echo "<script type='text/javascript'>alert('Password must be at least five characters!');</script>";
         } else {
           $sql = "UPDATE users SET Name='" . $_POST['name'] . "', Email='" . $_POST['email'] . "', Password='" . $_POST['password'] . "', ContactInfo='" . $_POST['mobile'] . "' WHERE UserID='" . $_SESSION['logged_user'] . "'";
           $result = $conn->query($sql);
+          header("Refresh:0");
         }
       }
+
+
 
   ?>
 <!-- navBar and login -->
@@ -75,35 +83,35 @@
     <!-- edit form column -->
     <div class="col-md-8 col-sm-6 col-xs-12 col-centered personal-info">
       <h3>Personal Info</h3>
-      <form class="form-horizontal row-centered" role="form">
+      <form class="form-horizontal row-centered" role="form" method="post">
         <div class="form-group">
           <label class="col-lg-3 control-label">Name:</label>
           <div class="col-lg-8">
-            <input class="form-control" value=<?php echo '"' . $user['Name'] . '"' ?> type="text"> <?php echo '<span class="error">'; echo $nameError; echo '</span>'; ?>
+            <input class="form-control" data-validation="alphanumeric" data-validation-allowing="-_ " data-validation="length" data-validation-length="min1" name="name" value=<?php echo '"' . $user['Name'] . '"' ?> type="text"> <?php echo '<span class="error">'; echo $nameError; echo '</span>'; ?>
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-3 control-label">Email:</label>
           <div class="col-lg-8">
-            <input required class="form-control" value=<?php echo '"' . $user['Email'] . '"' ?> type="email"> <?php echo '<span class="error">'; echo $emailError; echo '</span>'; ?>
+            <input data-validation="email" required class="form-control" name="email" value=<?php echo '"' . $user['Email'] . '"' ?> type="email"> <?php echo '<span class="error">'; echo $emailError; echo '</span>'; ?>
           </div>
         </div>
         <div class="form-group">
-          <label class="col-lg-3 control-label">Mobile:</label>
+          <label class="col-lg-3 control-label">Mobile (xxx-xxx-xxxx):</label>
           <div class="col-lg-8">
-            <input required class="form-control" value=<?php echo '"' . $user['ContactInfo'] . '"' ?> type="tel"> <?php echo '<span class="error">'; echo $mobileError; echo '</span>'; ?>
+            <input required data-validation="custom" data-validation-regexp="^[0-9]{3}-[0-9]{3}-[0-9]{4}$" data-validation-help="Please format the number as xxx-xxx-xxxx" class="form-control" name="mobile" value=<?php echo '"' . $user['ContactInfo'] . '"' ?> type="tel"> <?php echo '<span class="error">'; echo $mobileError; echo '</span>'; ?>
           </div>
         </div>
         <div class="form-group">
           <label class="col-md-3 control-label">New Password:</label>
           <div class="col-md-8">
-            <input required class="form-control" type="password"> <?php echo '<span class="error">'; echo $passwordError; echo '</span>'; ?>
+            <input required data-validation="length" data-validation-length="min5" class="form-control" name="password" type="password"> <?php echo '<span class="error">'; echo $passwordError; echo '</span>'; ?>
           </div>
         </div>
         <div class="form-group">
           <label class="col-md-3 control-label">Confirm New Password:</label>
           <div class="col-md-8">
-            <input required class="form-control" type="password"> <?php echo '<span class="error">'; echo $confirmPasswordError; echo '</span>'; ?>
+            <input required data-validation="length" data-validation-length="min5" class="form-control" name="confirmPassword" type="password"> <?php echo '<span class="error">'; echo $confirmPasswordError; echo '</span>'; ?>
           </div>
         </div>
         <div class="form-group">
@@ -119,15 +127,22 @@
   </div>
 </div>
 
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+
 <script type='text/javascript'>
-$(document).ready(function() {
-  $(window).keydown(function(event){
-    if(event.keyCode == 13) {
-      event.preventDefault();
-      return false;
-    }
+  $.validate({
+      lang: 'en',
+      modules : 'date'
+    });
+
+  $(document).ready(function() {
+    $(window).keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
   });
-});
 </script>
 
 </body>
