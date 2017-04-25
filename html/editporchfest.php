@@ -167,7 +167,6 @@
 
                   $result = $conn->query($sql);
                   
-
                   while($band = $result->fetch_assoc()) {
                     $bandname = $band['Name'];
                     // Modify the band name such that it looks good in the URL.

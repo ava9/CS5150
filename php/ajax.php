@@ -54,6 +54,9 @@
 		$timeslotid = htmlentities($_GET['timeslotid']);
 		$bandid = htmlentities($_GET['bandid']);
 
+		// $sql = sprintf("SELECT * FROM bandconflicts WHERE ")
+
+
 		$sql = "SELECT * FROM `bandstoporchfests` WHERE TimeslotID=" . $timeslotid . " AND NOT(BandID=" . $bandid .")";
 
 		$result = $conn->query($sql);
