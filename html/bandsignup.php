@@ -19,188 +19,8 @@
     <?php require_once "../php/modules/login.php"; ?>
     <?php require_once "../php/modules/navigation.php"; ?>
     <?php require_once "../php/routing.php"; ?>
-    <?php $nameError = $emailError = $mobileError = $passwordError = $confirmPasswordError = ""; ?>
-    
-    <div class="row">
-      <h1 style="text-align:center;"> 
-        Sign-up to perform for <?php echo PORCHFEST_NAME; ?>
-      </h1>
-    </div>
 
-    <h4 style="text-align:center;"> If you would like to perform for <?php echo PORCHFEST_NAME; ?>,
-      please fill out the form below. 
-    </h4>
-
-    <?php if (!isset($_SESSION['logged_user'])) { ?>
-    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#loginModal">
-      Already have an account?
-    </button>
-    <?php } ?>
-
-    <form role="form" class="form-horizontal" id='submit-info-form' method='POST'>
-      <?php if (!isset($_SESSION['logged_user'])) { ?>
-      <h4> Account Information </h4>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Your Name</label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input required type="text" class="form-control" name="name" placeholder="John Doe" /> <?php echo '<span class="error">'; echo $nameError; echo '</span>'; ?>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Your Email</label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input required type="email" class="form-control" name="email" placeholder="johndoe@gmail.com" /> <?php echo '<span class="error">'; echo $emailError; echo '</span>'; ?>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Mobile</label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input required type="tel" class="form-control" name="mobile" placeholder="(123) 456-7891" /> <?php echo '<span class="error">'; echo $mobileError; echo '</span>'; ?>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Password </label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input required type="password" name="password" class="form-control" placeholder="Password" /> <?php echo '<span class="error">'; echo $passwordError; echo '</span>'; ?>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Confirm Password </label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input required type="password" name="confirmPassword" class="form-control" placeholder="Password" /> <?php echo '<span class="error">'; echo $confirmError; echo '</span>'; ?>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <br>
-      <?php } ?>
-      <br>
-      <h4> Band Information </h4>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Band Name </label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input required name="bandname" type="text" class="form-control" placeholder="John and Friends" /> <?php echo '<span class="error">'; echo $bandnameError; echo '</span>'; ?>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Description </label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input required name="banddescription" type="text" class="form-control" placeholder="John and Friends plays cool music." /> <?php echo '<span class="error">'; echo $descriptionError; echo '</span>'; ?>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Porch Location </label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input required name="porchlocation" id="autocomplete" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input> <?php echo '<span class="error">'; echo $locationError; echo '</span>'; ?>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Available Times </label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-          <?php
-            require_once "../php/config.php";
-            // Create connection
-            $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-
-            $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Nickname = '%s'", PORCHFEST_NICKNAME);
-            $result = $conn->query($sql);
-            $porchfestID = $result->fetch_assoc()['PorchfestID'];
-
-            $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $porchfestID . "' ORDER BY StartTime;";
-
-            $result = $conn->query($sql);
-            while($timeslot = $result->fetch_assoc()) {
-              $starttime = date_format(date_create($timeslot['StartTime']), 'g:iA');
-              $endtime = date_format(date_create($timeslot['EndTime']), 'g:iA');
-              $day = date_format(date_create($timeslot['StartTime']), 'F j, Y');
-              echo "<input name='available[]' type='checkbox' value='" . $timeslot['TimeslotID'] . "' />" . " " . $starttime . 
-                    "-" . $endtime . " on " . $day . "<br>";
-            }
-          ?>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Band Member Emails </label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input name="bandmembers" type="text" class="form-control" placeholder="member1@gmail.com,member2@gmail.com,member3@gmail.com" />
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Conflicting Bands </label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input name="bandconflicts" id="conflict-input" type="text" class="form-control" placeholder="Band1,Band2,Band3" />
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Comments </label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input name="bandcomment" type="text" class="form-control" placeholder="Any additional comments" />
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-2"></label>
-        <div class="col-sm-10">
-            <div class="row">
-                <div class="col-md-9">
-                  <button type="submit" name="submitInfo" class="btn btn-primary btn-sm"> Submit </button>
-                </div>
-            </div>
-        </div>
-      </div>  
-    </form>
-
-  </div> <!-- end container div -->
-
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0LuERw-moYeLnWy_55RoShmUbQ51Yh-o&libraries=places&callback=initAutocomplete"
-        async defer></script>
-
-<?php
+    <?php
   // input a string: address (i.e. "114 Summit Ave. Ithaca, NY 14850"
   // output is a latitude, longitude coordinate pair (i.e. 42.442064,-76.483469)
   function getCoordinates($address){
@@ -218,6 +38,7 @@
 
   }
   $bandnameError = $descriptionError = $locationError = "";
+
   if (isset($_POST['submitInfo'])) {
     if (!isset($_SESSION['logged_user'])) {
       if (empty($_POST['name'])) {
@@ -354,6 +175,192 @@
     }
   }
 ?>
+
+
+
+    <?php $nameError = $emailError = $mobileError = $passwordError = $confirmPasswordError = ""; ?>
+
+
+    
+    <div class="row">
+      <h1 style="text-align:center;"> 
+        Sign-up to perform for <?php echo PORCHFEST_NAME; ?>
+      </h1>
+    </div>
+
+    <h4 style="text-align:center;"> If you would like to perform for <?php echo PORCHFEST_NAME; ?>,
+      please fill out the form below. 
+    </h4>
+
+    <?php if (!isset($_SESSION['logged_user'])) { ?>
+    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#loginModal">
+      Already have an account?
+    </button>
+    <?php } ?>
+
+    <form role="form" class="form-horizontal" id='submit-info-form' method='POST'>
+      <?php if (!isset($_SESSION['logged_user'])) { ?>
+      <h4> Account Information </h4>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Your Name</label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input required type="text" class="form-control" name="name" placeholder="John Doe" /> <?php echo '<span class="error">'; echo $nameError; echo '</span>'; ?>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Your Email</label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input required type="email" class="form-control" name="email" placeholder="johndoe@gmail.com" /> <?php echo '<span class="error">'; echo $emailError; echo '</span>'; ?>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Mobile</label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input required type="tel" class="form-control" name="mobile" placeholder="(123) 456-7891" /> <?php echo '<span class="error">'; echo $mobileError; echo '</span>'; ?>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Password </label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input required type="password" name="password" class="form-control" placeholder="Password" /> <?php echo '<span class="error">'; echo $passwordError; echo '</span>'; ?>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Confirm Password </label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input required type="password" name="confirmPassword" class="form-control" placeholder="Password" /> <?php echo '<span class="error">'; echo $confirmPasswordError; echo '</span>'; ?>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <br>
+      <?php } ?>
+      <br>
+      <h4> Band Information </h4>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Band Name </label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input required name="bandname" type="text" class="form-control" placeholder="John and Friends" /> <?php echo '<span class="error">'; echo $bandnameError; echo '</span>'; ?>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Description </label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input required name="banddescription" type="text" class="form-control" placeholder="John and Friends plays cool music." /> <?php echo '<span class="error">'; echo $descriptionError; echo '</span>'; ?>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Porch Location </label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input required name="porchlocation" id="autocomplete" class="form-control" placeholder="Enter your address" onFocus="geolocate()" type="text"></input> <?php echo '<span class="error">'; echo $locationError; echo '</span>'; ?>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Available Times </label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+          <?php
+            require_once "../php/config.php";
+            // Create connection
+            $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+            $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Nickname = '%s'", PORCHFEST_NICKNAME);
+            $result = $conn->query($sql);
+            $porchfestID = $result->fetch_assoc()['PorchfestID'];
+
+            $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $porchfestID . "' ORDER BY StartTime;";
+
+            $result = $conn->query($sql);
+            while($timeslot = $result->fetch_assoc()) {
+              $starttime = date_format(date_create($timeslot['StartTime']), 'g:iA');
+              $endtime = date_format(date_create($timeslot['EndTime']), 'g:iA');
+              $day = date_format(date_create($timeslot['StartTime']), 'F j, Y');
+              echo "<input name='available[]' type='checkbox' value='" . $timeslot['TimeslotID'] . "' />" . " " . $starttime . 
+                    "-" . $endtime . " on " . $day . "<br>";
+            }
+          ?>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Band Member Emails </label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input name="bandmembers" type="text" class="form-control" placeholder="member1@gmail.com,member2@gmail.com,member3@gmail.com" />
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Conflicting Bands </label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input name="bandconflicts" id="conflict-input" type="text" class="form-control" placeholder="Band1,Band2,Band3" />
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label"> Comments </label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input name="bandcomment" type="text" class="form-control" placeholder="Any additional comments" />
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2"></label>
+        <div class="col-sm-10">
+            <div class="row">
+                <div class="col-md-9">
+                  <button type="submit" name="submitInfo" class="btn btn-primary btn-sm"> Submit </button>
+                </div>
+            </div>
+        </div>
+      </div>  
+    </form>
+
+  </div> <!-- end container div -->
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0LuERw-moYeLnWy_55RoShmUbQ51Yh-o&libraries=places&callback=initAutocomplete"
+        async defer></script>
+
 
 <script type='text/javascript'>
   $(document).ready(function () {
