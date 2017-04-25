@@ -109,7 +109,7 @@ function run(){
 
   for ($i = 0; $i < $NUM_SCHEDS_TO_GENERATE; $i++){
     echo "running schedule " . $i . "\n";
-    $tmpAndSuccess = generateBaseSchedule($tmp);
+    $tmpAndSuccess = generateBaseSchedule();
     $tmp = $tmpAndSuccess[0];
     $success = $tmpAndSuccess[1];
 
@@ -155,6 +155,6 @@ function run(){
   echo "Success!";
 }
 
-# (∩｀-´)⊃━☆ﾟ.*･｡ﾟ magic time #
+# (∩^-^)⊃━☆ﾟ.*･｡ﾟ magic time #
 run();
 ?>

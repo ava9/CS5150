@@ -48,7 +48,6 @@ require_once "config.php";
 
 // Set date timezone
 date_default_timezone_set('America/New_York');
-
 // Create connection
 // add DB_USER and DB_PASSWORD later
 $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
@@ -58,7 +57,7 @@ if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 } 
 
-$sql = "SELECT bands.Name, bands.Description, bandstoporchfests.Latitude, bandstoporchfests.Longitude, porchfesttimeslots.StartTime FROM bands INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID INNER JOIN porchfesttimeslots ON porchfesttimeslots.TimeslotID = bandstoporchfests.TimeslotID ORDER BY porchfesttimeslots.StartTime;";
+$sql = "SELECT bands.Name, bands.Description, bandstoporchfests.Latitude, bandstoporchfests.Longitude, porchfesttimeslots.StartTime, bands.BandID, bandstoporchfests.TimeslotID FROM bands INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID INNER JOIN porchfesttimeslots ON porchfesttimeslots.TimeslotID = bandstoporchfests.TimeslotID ORDER BY porchfesttimeslots.StartTime;";
 
 $result = $conn->query($sql);
 $colorIndex;
@@ -95,6 +94,7 @@ if ($result->num_rows > 0) {
 		
 		if ($count == 1){
 			$curr = $time;
+			$prev = -1;
 		}
 		else{
 			$prev = $curr;
