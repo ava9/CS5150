@@ -81,7 +81,7 @@
 
                     echo '<p>';
                     echo '<label> Porchfest Name </label>';
-                    echo '<input data-validation="length" data-validation-length="min4"type="text" name="porchfestname" class="form-control" value="' . $porchfest['Name'] . '" placeholder="Porchfest Name">';
+                    echo '<input data-validation="length" data-validation-length="min4" type="text" name="porchfestname" class="form-control" value="' . $porchfest['Name'] . '" placeholder="Porchfest Name">';
                     echo '<br />';
                     echo '</p>';
 
