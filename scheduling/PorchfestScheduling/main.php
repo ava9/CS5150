@@ -4,6 +4,7 @@ require_once "config.php";
 require_once "debug.php";
 require_once "Band.php";
 require_once "Schedule.php";
+require_once "Score.php";
 require_once "helperFuncs.php";
 require_once "algorithm.php";
 
@@ -21,9 +22,16 @@ $resultBandsPorchfests;
 $resultTimeslotsPorchfests;
 $resultBands;
 
+// TODO: COMMENT THESE
 $bandsTimeSlots;
+
+/* All bandIDs that can play at this PorchFest */
 $bandsPorchfests;
+
+/* array of all timeslot IDs */
 $timeslotsPorchfests;
+
+/* Hashmap<BandID, Band Object> */
 $bandsHashMap;
 $bandsWithXTimeSlots;
 $totalNumTimeSlots;
@@ -107,41 +115,55 @@ function run(){
   
 
 
+  /************************************************************/
+  /*********************** ALGORITHM LOOP *********************/
+  /************************************************************/
+
   for ($i = 0; $i < $NUM_SCHEDS_TO_GENERATE; $i++){
     echo "running schedule " . $i . "\n";
-    $tmpAndSuccess = generateBaseSchedule();
-    $tmp = $tmpAndSuccess[0];
-    $success = $tmpAndSuccess[1];
+      /* 
+       * generateBaseSchedule() returns an array of size 2 
+       * 0 index is a boolean saying whether we've successfully created a schedule,
+       * 1 index is the new schedule  
+       */
+    $successAndIntermediateSched = generateBaseSchedule();
+    $success = $successAndIntermediateSched[0];
+    $intermediateSchedule = $successAndIntermediateSched[1];
 
     if (!$success) {
-      echo "failed to generate base schedule...moving on\n";
+      echo "Failed to generate base schedule in this iteration. Moving on\n";
+      if ($i+1 == $NUM_SCHEDS_TO_GENERATE) {
+        echo "Error: failed to generate a single base schedule, 
+              either too many band conflicts or not enough spread 
+              apart porch locations\n";
+      }
       continue;
     }
+
     $noImprovements = 0;
     while (true){
       /* 
-       * improve($tmp) returns an array of size 2 
+       * improve($intermediateSchedule) returns an array of size 2 
        * 0 index is a boolean saying whether we've improved, 
        * 1 index is the new schedule if we improved or the 
        * same schedule if we did not improve 
        */
-      $imp = improve($tmp);
-      $tmp = $imp[1];
+      $imp = $intermediateSchedule->improve();
+      $intermediateSchedule = $imp[1];
       $noImprovements = ($imp[0] ? 0 : $noImprovements + 1);
-      if ($noImprovements === 100){
-       DEBUG_ECHO("no more improvements\n");
+      if ($noImprovements == 100){
+        DEBUG_ECHO("no more improvements\n");
         break;
       }
     }
-    if ($result === null || $tmp->score < $result->score){
-      $result = $tmp;
-      echo "improved with score " . $result->score . "\n";
+    if ($result === null || $intermediateSchedule->score < $result->score){
+      $result = $intermediateSchedule;
+      echo "finished improving with score " . $result->score->toInt() . "\n";
     }
   }
   
   #******* POST PROCESS *******
-  # write back to the database with the band's assigned timeslot
-  # $result.updateDB();
+  # write back to the database with the bands' assigned timeslot
   $finalSched = $result->schedule;
   foreach ($finalSched as $ts => $bands) {
     foreach ($bands as $b) {

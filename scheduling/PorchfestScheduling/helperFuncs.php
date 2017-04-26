@@ -27,26 +27,73 @@ function stats_standard_deviation(array $a, $sample = false) {
     return sqrt($carry / $n);
 }
 
-/* calculates average distance of k nearest neighbors where k is an
-adjustable amount of nearest neighbors to calculate */
-function computeVariance($slot, $sched){
+/*
+ * Computes the variance at each timeslot of a schedule and
+ * updates the schedule's score vector, timeSlotScores.
+ * 
+ * @param $timeSlotID   A slot ID to compute the min distance of
+ * @param $sched        A Schedule object
+ *
+ * @return              Variance between bands at timeSlotID
+ */
+function computeVariance($timeSlotID, $sched){
   global $kNeighbors; //how many nearest neighbors used to calculate distance variance
-  // $kNeighbors = sizeof($sched->getBandsAtSlot($slot));
+  // $kNeighbors = sizeof($sched->getBandsAtSlot($timeSlotID));
   
   $knnData = [];
-  foreach ($sched->getBandsAtSlot($slot) as $band) {
+  foreach ($sched->getBandsAtSlot($timeSlotID) as $band) {
     $knearest = $band->calculateKNearest($sched, $kNeighbors);
     $avg = 0;
     foreach ($knearest as $nearestBand){
       $avg = $avg + $band->distances[$nearestBand];
     }
     array_push($knnData, ($avg/$kNeighbors)) ;
-    # gets average distance from knn for each band at each time slot
+    # gets average distance from knn for each band at each timetimeSlotID 
   }
   # calculate variance
-  $tmp = stats_standard_deviation($knnData);
-  $sched->timeSlotVariances[$slot] = $tmp * $tmp;
-  return $sched->timeSlotVariances[$slot];
+  $deviation = stats_standard_deviation($knnData);
+  # update score of timetimeSlotID 
+  $sched->timeSlotScores[$timeSlotID]->variance = $deviation * $deviation;
+  return $deviation * $deviation;
+}
+
+/*
+ * Computes the minimum distance at each timeslot of a schedule and
+ * updates the schedule's score vector, timeSlotScores.
+ * 
+ * @param $timeSlotID   A slot ID to compute the min distance of
+ * @param $sched        A Schedule object
+ *
+ * @return              Minimum distance between bands at timeSlotID
+ */
+function computeMinDist($timeSlotID, $sched) {
+  global $bandsHashMap;
+
+  # iterate through all bands at each timeslot
+  $minDist = PHP_INT_MAX;
+
+  foreach ($sched->getBandsAtSlot($timeSlotID) as $bandObj) {
+    # calculateKNearest returns an array of size k and we just want
+    # the 0th one
+    $closestBandID = $bandObj->calculateKNearest($sched, 1)[0];
+    $distance = $bandObj->getDistance($closestBandID);
+
+    assert($distance != 0, "Timeslot should never have two bands with the same porch location!");
+
+    if ($distance < $minDist) {
+      $minDist = $distance;
+
+      # update the schedule score at this timeslot
+      $currScore = $sched->timeSlotScores[$timeSlotID];
+      $currScore->setMinDist($minDist);
+      $currScore->closestBandID1 = $bandObj->id;
+      $currScore->closestBandID2 = $closestBandID;
+    }
+
+  }
+
+  return $minDist;
+
 }
   
 /* moves band to a different timeslot and returns true on success, false otherwise */
@@ -72,6 +119,12 @@ function tryToMoveBand($id, $schedule) {
   return false;
 }
 
+/*
+ * Returns true if band is farther than MIN_DISTANCE away from every band in $bandsArr
+ *
+ * @param $bandsArr     Array of Band objects
+ * @param $band         Band object
+ */
 function bandOverMinDist($bandsArr, $band) {
   global $MIN_DISTANCE;
 

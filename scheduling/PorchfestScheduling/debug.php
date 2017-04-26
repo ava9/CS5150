@@ -5,7 +5,7 @@
 /************************************************************/
 
 function DEBUG_ECHO($val) {
-  $DEBUG_ON = false;
+  $DEBUG_ON = true;
   if ($DEBUG_ON) {
     echo $val;
     flush();
