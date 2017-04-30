@@ -1,20 +1,30 @@
 <?php
-
+/*
+ * A class to represent Bands participating in PorchFests. This is used to keep
+ * track of timeslots, conflicts, and location data.
+ */
 class Band {
 	
   function __construct($ID, $name, $lat, $lng, $availableTimeSlots, $conflicts, $slot, $distances) {
     //Band(int ID, float lat, float lng, String name, int[] conflicts, bool[] availableTimeSlots)
     $this->id = $ID; //int
-    $this->name = $name; //String      # say, "The Amazing Crooners"
-    $this->lat = $lat; //float        # say, 42.450962
-    $this->lng = $lng; //float        # say, -76.501122
+    $this->name = $name; //String       # say, "The Amazing Crooners"
+    $this->lat = $lat; //float          # say, 42.450962
+    $this->lng = $lng; //float          # say, -76.501122
     $this->availableTimeSlots = $availableTimeSlots; //<slotID, boolean> map   # say, [10: true, 21: true, 30: false, 13: true ]
     $this->conflicts = $conflicts;  // int[]   # say, [ 11111 ] band IDs that we conflict with
-    $this->slot = $slot; //int         # initially -1 until assigned
-    $this->distances = $distances; #HashMap<int bandID, int d> 
+    $this->slot = $slot; //int          # initially -1 until assigned
+    $this->distances = $distances; // HashMap<int bandID, int d> 
   }
   
-  /* Takes a bandID and calculates the distance between this band object and the band corresponding to bandID */
+  /*
+   * Takes a bandID and calculates the distance between this band object and
+   * the band corresponding to bandID.
+   * 
+   * @param $bandID The int of the band to be compared to
+   * 
+   * @return        The distance between this band and $bandID
+   */
   function getDistance($bandID)
   {
     global $bandsHashMap; //HashMap<int id, Band band>
@@ -26,8 +36,16 @@ class Band {
     return $this->distances[$bandID];
   }
 
-  /* Takes a schedule object and calculates the k (specified in the global variables section
-  		nearest bands to this band object. Returns an array of size k of bandIDs */
+  /*
+   * Takes a schedule object and calculates the k (specified in the global
+   * variables section nearest bands to this band object. Returns an array of
+   * size k of bandIDs.
+   * 
+   * @param $sched      A schedule object
+   * @param $kNeighbors An int representing the number of closest neighbors to calculate
+   * 
+   * @return            An array of the k closest bandIDs
+   */
   function calculateKNearest($sched, $kNeighbors) {
 
     $bands = $sched->getBandsAtSlot($this->slot); //Band[] 
@@ -44,7 +62,12 @@ class Band {
     
   }
   
-  /* Sorts the keys of the bands at the same time slot as this band object by distance to this band object */
+  /* 
+   * Sorts the IDs of the bands at the same time slot as this band object by
+   * distance to this band object.
+   * 
+   * @param $bands  An array of all Band objects in this timeslot
+   */
   function sortByDistance($bands) {
     $distances = [];
     for ($i = 0; $i < sizeof($bands); $i++) {
@@ -54,12 +77,22 @@ class Band {
     $bands = array_values($distances);
   }
   
-  /* Getter function that returns a list of all bands that conflict with this band object */
+  /* 
+   * Getter function that returns a list of all bands that conflict with this
+   * band object.
+   * 
+   * @return    The conflict array of bandIDs
+   */
   function getConflicts(){
     return $this->conflicts;
   }
 
-  /* Overwrites the php clone function to create a new Band object with the same values as this band object */
+  /*
+   * Overwrites the php clone function to create a new Band object with the same
+   * values as this band object.
+   * 
+   * @return    A new copy of this band object
+   */
   function __clone() {
     return new Band($this->id, $this->name, $this->lat, $this->lng, $this->availableTimeSlots, $this->conflicts, $this->slot, $this->distances);
   }
