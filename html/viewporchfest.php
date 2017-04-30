@@ -133,7 +133,6 @@
 
     $result = $conn->query($sql);
 
-
     while($band = $result->fetch_assoc()) {
       $starttime = date_format(date_create($band['StartTime']), 'g:iA');
       $endtime = date_format(date_create($band['EndTime']), 'g:iA');
