@@ -223,12 +223,10 @@
 
               </form>
             </div>
-
-            
-             
           </div> <!-- end timeslots div -->
+
           <div class="tab-pane fade" id="schedule"> <!-- begin schedule div -->
-            <button id="schedule" class="btn btn-primary btn-sm"> Schedule it!</button>     
+            <button id="schedule-button" class="btn btn-primary btn-sm"> Schedule it!</button>     
             <div class="table-container table-responsive bands-table" id="bandstable"> <!-- begin table-container div -->
               <table class="responsive table"> <!-- begin table -->
                 <tr data-status= "fixed">
@@ -394,7 +392,7 @@
         data: timeSlotInfo,
         success: function(result){
           if (result == "overlap") {
-            $('#conflicts-' + bandid).html("This timeslot is taken by another band.");
+            $('#conflicts-' + bandid).html("This timeslot is taken by a conflicting band.");
           } else {
             $('#conflicts-' + bandid).html("No conflicts");
           }
@@ -546,7 +544,7 @@
         }});
     });
 
-    $('#schedule').click(function(){
+    $('#schedule-button').click(function(){
       $.ajax({
         url: ajaxurl,
         type: "POST",

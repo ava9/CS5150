@@ -58,27 +58,41 @@
 		} else {
 			echo "fail";
 		}
-
+	// ** editporchfest.php: form to manage whether a conflict arose from a band change
 	} elseif (isset($_GET['timeslotid']) && isset($_GET['bandid'])) {
-		$timeslotid = htmlentities($_GET['timeslotid']);
-		$bandid = htmlentities($_GET['bandid']);
+		$timeslotID = htmlentities($_GET['timeslotid']); // The timeslot that the band was changed to 
+		$bandID = htmlentities($_GET['bandid']);         // The id of the band where the timeslot was changed
 
-		// $sql = sprintf("SELECT * FROM bandconflicts WHERE ")
+		// Query whether a band that was listed as conflicting with another band
+		// is currently in the timeslot that this band was updated to, then report a conflict 
 
-
-		$sql = "SELECT * FROM `bandstoporchfests` WHERE TimeslotID=" . $timeslotid . " AND NOT(BandID=" . $bandid .")";
-
+		// First, get all the conflicts related to the current band
+		// Conflicts are two way, so we have to find conflicts where the current band is either
+		// listed as the first or second band
+		$sql = sprintf("SELECT BandID2 FROM bandconflicts WHERE BandID1 = '%s'
+						UNION
+						SELECT BandID1 FROM bandconflicts WHERE BandID2 = '%s'", $bandID, $bandID);
 		$result = $conn->query($sql);
 
-		$sql2 = "UPDATE `bandstoporchfests` SET TimeSlotID=" . $timeslotid . " WHERE BandID=" . $bandid;
+		// For each conflicting band, see if it is currently in the $timeslotid. If so, conflict!
+		while ($conflict = $result->fetch_assoc()) {
+			$conflictbandID = -1;
+			try {
+				$conflictbandID = $conflict['BandID2'];
+			} catch (Exception $e) {
+				$conflictbandID = $conflict['BandID1'];
+			}
 
-		$result2 = $conn->query($sql2);
-
-		if ($result->num_rows > 0) {
-			echo "overlap";
-		} else {
-			echo "no overlap";
+			$sql2 = sprintf("SELECT * FROM bandstoporchfests WHERE BandID = '%s' AND TimeslotID = '%s'",
+							$conflictbandID, $timeslotID);
+			$result2 = $conn->query($sql2);
+			if ($result2->num_rows > 0) {
+				echo "overlap";
+				return;
+			}
 		}
+		echo "no overlap";
+
 	} elseif (isset($_POST['timeslotstart']) && isset($_POST['timeslotend']) && isset($_POST['start']) && isset($_POST['end']) && isset($_POST['timeslotid'])
 			&& isset($_POST['porchfestid'])) {
 		// ** editporchfest.php: update timeslot.
