@@ -6,15 +6,15 @@
 class Band {
 	
   function __construct($ID, $name, $lat, $lng, $availableTimeSlots, $conflicts, $slot, $distances) {
-    //Band(int ID, float lat, float lng, String name, int[] conflicts, bool[] availableTimeSlots)
-    $this->id = $ID; //int
-    $this->name = $name; //String       # say, "The Amazing Crooners"
-    $this->lat = $lat; //float          # say, 42.450962
-    $this->lng = $lng; //float          # say, -76.501122
-    $this->availableTimeSlots = $availableTimeSlots; //<slotID, boolean> map   # say, [10: true, 21: true, 30: false, 13: true ]
-    $this->conflicts = $conflicts;  // int[]   # say, [ 11111 ] band IDs that we conflict with
-    $this->slot = $slot; //int          # initially -1 until assigned
-    $this->distances = $distances; // HashMap<int bandID, int d> 
+    $this->id = $ID;                                  // int
+    $this->name = $name;                              // String         # say, "The Amazing Crooners"
+    $this->lat = $lat;                                // float          # say, 42.450962
+    $this->lng = $lng;                                // float          # say, -76.501122
+    $this->availableTimeSlots = $availableTimeSlots;  // hashmap (int slotID => bool available)  
+                                                                        # say, [10: true, 21: true, 30: false, 13: true ]
+    $this->conflicts = $conflicts;                    // int[]          # say, [ 11111 ] band IDs that we conflict with
+    $this->slot = $slot;                              // int            # initially -1 until assigned
+    $this->distances = $distances;                    // hashmap (int bandID => int distance)
   }
   
   /*
@@ -98,7 +98,5 @@ class Band {
   }
 
 }
-  
-
 
 ?>

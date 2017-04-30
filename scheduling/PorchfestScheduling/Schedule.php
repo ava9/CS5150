@@ -2,15 +2,18 @@
 
 /* This is a class for a schedule object. The schedule object contains three
  * fields: 
- * $schedule is a hashmap of timeslots to an array of Band objects scheduled
- *    to play in that timeslot 
- * $timeSlotScores is a hashmap of timeslots to vectors of scores
- *    Currently contains minimum distance between any two bands and variance
- * $score is a Score object for the overall score of the schedule
- *    This is the score of the worst time slot, which is checked in the
- *    compareTo function. It is weighted evenly between the minimum distance
- *    between any two bands in the timeslot and the variance of distances 
- *    between the bands in the timeslot.
+ *
+ * $schedule            is a hashmap of timeslots to an array of Band objects scheduled
+ *                      to play in that timeslot 
+ *
+ * $timeSlotScores      is a hashmap of timeslots to vectors of scores
+ *                      Currently contains minimum distance between any two bands and variance
+ *
+ * $score               is a Score object for the overall score of the schedule
+ *                      This is the score of the worst time slot, which is checked in the
+ *                      compareTo function. It is weighted evenly between the minimum distance
+ *                      between any two bands in the timeslot and the variance of distances 
+ *                      between the bands in the timeslot.
  */
 
 class Schedule {
@@ -21,7 +24,7 @@ class Schedule {
    * new Score object. 
     * 
    * @param timeSlotsArr    array of all timeslots available for a particular 
-   *    porchfest
+   *                        porchfest
    */
   function __construct($timeSlotsArr) {
     $this->schedule = [];
@@ -36,7 +39,7 @@ class Schedule {
    * Returns a copy of the schedule
    * 
    * @param timeSlotsArr    array of all timeslots available for a particular
-   *    porchfest
+   *                        porchfest
    */
   function deepCopy($timeSlotsArr) {
     $copy = new Schedule($timeSlotsArr);
@@ -77,7 +80,7 @@ class Schedule {
    * been successfully swapped or all time slots have been examined. 
    * 
    * @param $band   the band in the worst time slot that needs to be swapped
-   *    with a band from another time slot
+   *                with a band from another time slot
    */
   function randomSwap($band) {
     //array of all timeslots available for a particular porchfest
@@ -220,7 +223,7 @@ class Schedule {
    * schedule.
    * 
    * @param $timeSlot   the particular time slot for which we want to see the 
-   *    currently scheduled bands.
+   *                    currently scheduled bands.
    */
   function getBandsAtSlot($timeSlot){
     return $this->schedule[$timeSlot];

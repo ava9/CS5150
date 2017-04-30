@@ -24,7 +24,13 @@ for bands in each time slot
 /******************* INITIALIZATION FUNCTIONS ***************/
 /************************************************************/
 
-/* converts query result to an array */
+/* 
+ * Returns an array representing data from our database such that
+ * an index into the array is the column name, and the data at that 
+ * index is the row data.
+ *
+ * @param    $queryResult    A mysqli query result
+ */
 function getQueryArr($queryResult) {
   $result = [];
   while ($row = $queryResult->fetch_array(MYSQLI_NUM)) {
@@ -33,8 +39,10 @@ function getQueryArr($queryResult) {
   return $result;
 }
 
-# pull data from DB
-# for each band we'll need: available time slots, address, conflicts
+/*
+ * Returns a hashmap ( int bandID => int[] timeslotID ). This represents
+ * timeslots that a particular band is able to play at.
+ */
 function populateBandsTimeSlots(){
   global $resultBandsTimeSlots;
   $result = [];
@@ -52,6 +60,11 @@ function populateBandsTimeSlots(){
   return $result;
 }
 
+/*
+ * Returns a hashmap that represents the other Bands that a particular band conflicts with.
+ *
+ * $result    hashmap ( int bandID => int[] bandIDs )
+ */
 function populateBandConflicts(){
     global $resultBandConflicts;
     $result = [];
@@ -69,6 +82,11 @@ function populateBandConflicts(){
     return $result;
 }
 
+/*
+ * Returns a populated version of global variable $bandsHashMap. 
+ *
+ * $bandsHashMap      hashmap ( int bandID => Band bandObject ) 
+ */
 function createBandObjects(){
   DEBUG_ECHO("creating band objects\n");
   global $resultBands;
@@ -104,7 +122,12 @@ function createBandObjects(){
   return $bandsHashMap;
 }
 
-# populate the numberOfTimeSlots hashmap
+/*
+ * Updates the global variable $bandsWithXTimeslots which orders our bands based on
+ * the number of available timeslots they have.
+ *
+ * $bandsWithXTimeslots    hashmap ( int numberOfTimeslots => int[] bandIDs )
+ */
 function populateBandsWithXTimeSlots() {
   global $bandsWithXTimeSlots; //HashMap<int numberOfTimeSlots, int[] bandIds> max number of time slots a band can play in
   global $bandsPorchfests; //array of all bands that can play at a particular porchfest
@@ -133,12 +156,22 @@ function populateBandsWithXTimeSlots() {
 /*********************** ALGORITHM **************************/
 /************************************************************/
 
-/* Generates initial schedule with no conflicts */
+/* 
+ * Generates initial schedule with no conflicts 
+ * 
+ * Loops through every band and places them into timeslots 
+ * until all bands are placed. Picks bands in order from least 
+ * available timeslots to most available timeslots.
+ * 
+ * For each band, it places it into the timeslot with the fewest 
+ * bands so far as long as it has no conflicts and does not violate
+ * the minimum distance with any band scheduled in that slot. 
+ */
 function generateBaseSchedule() {
-  global $bandsHashMap; //HashMap<int id, Band band> 
-  global $bandsWithXTimeSlots; //HashMap<int numberOfTimeSlots, int[] bandIds> max number of time slots a band can play in
-  global $totalNumTimeSlots; //total number of timeslots for a porchfest
-  global $timeslotsPorchfests; //array of all timeslots available for a particular porchfest
+  global $bandsHashMap;             // HashMap<int id, Band band> 
+  global $bandsWithXTimeSlots;      // HashMap<int numberOfTimeSlots, int[] bandIds> max number of time slots a band can play in
+  global $totalNumTimeSlots;        // total number of timeslots for a porchfest
+  global $timeslotsPorchfests;      // array of all timeslots available for a particular porchfest
   
   $success = true;
 
@@ -146,22 +179,26 @@ function generateBaseSchedule() {
   $bandsHashMap = createBandObjects();
   populateBandsWithXTimeSlots();
   $schedule = new Schedule($timeslotsPorchfests);
-  $unassignedBandIDs = []; // int[] 
+  $unassignedBandIDs = [];          // int[] 
   $currentTimeSlot = 0;
   
-  # phase 1: place as many bands as possible
+  // Phase 1: place as many bands as possible
   DEBUG_ECHO("phase 1\n");
   foreach ($bandsWithXTimeSlots as $key => $bandIDs) {
+    // shuffle them to add randomness between iterations
     shuffle($bandIDs); 
-      #randomly pick bands one at a time. 
-      #we choose from the bands with the fewest available time slots first 
-      #then go up from there.
+
+    /*
+     * 1) Randomly pick bands one at a time. 
+     * 2) Choose from the bands with the fewest available time slots first 
+     * 3) Go up from there.
+     */
     foreach ($bandIDs as $id) { 
       $band = $bandsHashMap[$id];
       $i = 0;
       $assigned = false;
 
-            //sort the schedule to see which time slots have the fewest assigned bands
+      // Sort the schedule to see which time slots have the fewest assigned bands
       uasort($schedule->schedule, function ($a, $b){
         if (sizeof($a) < sizeof($b)){
             return -1;
@@ -178,7 +215,7 @@ function generateBaseSchedule() {
         $hasNoConflicts = noConflicts($schedule->schedule[$slotID], $band);
         $locationOK = bandOverMinDist($schedule->schedule[$slotID], $band);
         if ($isAvailable && $hasNoConflicts && $locationOK){
-          # band can play at this time
+          // band can play at this time
           $schedule->add($slotID, $band);
           $currentTimeSlot = $slot + 1;
           $band->slot = $slotID;
@@ -195,12 +232,10 @@ function generateBaseSchedule() {
     }
   }
 
-  # phase 2: deal with the bands that were unable to be assigned in phase 1
+  # Phase 2: deal with the bands that were unable to be assigned in phase 1
   DEBUG_ECHO("phase 2\n");
   foreach ($unassignedBandIDs as $uBandID) {
     $uBand = $bandsHashMap[$uBandID];
-
-    // getConflicts returns string names...gotta get them as bandIDs
     $conflictingIDs = $uBand->getConflicts();
     foreach ($conflictingIDs as $conflictingBandID) {
       $band = $bandsHashMap[$conflictingBandID];
@@ -213,7 +248,7 @@ function generateBaseSchedule() {
       }
     }
     if (!$success) {
-      // die("this is actually impossible. exit with grace.");
+      die("this is actually impossible. exit with grace.");
     }
   }
   DEBUG_ECHO("generated schedule!\n");
@@ -221,7 +256,5 @@ function generateBaseSchedule() {
   $schedule->score();
   return array($success, $schedule);
 }
-
-
 
 ?>
