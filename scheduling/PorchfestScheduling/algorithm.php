@@ -1,11 +1,5 @@
 <?php
 # TODO:
-  # TimeSlotID
-  # Conflicts by ID not name
-  # Visualization that the schedule is feasible (no conflicts) - graph
-    # 7 views
-    # 6 for each timeslot 1 general
-  # Latitude Longitude!!!
   
 # future ideas:
 # order by conflicts, or by location clusters. Add this in later
@@ -58,6 +52,23 @@ function populateBandsTimeSlots(){
   return $result;
 }
 
+function populateBandConflicts(){
+    global $resultBandConflicts;
+    $result = [];
+    $tmp = getQueryArr($resultBandConflicts);
+    for ($i = 0; $i < sizeof($tmp); $i++) {
+        $bandID1 = $tmp[$i][0];
+        $bandID2 = $tmp[$i][1];
+        if (array_key_exists($bandID1, $result)) {
+            array_push($result[$bandID1], $bandID2);
+        }
+        else {
+            $result[$bandID1] = array($bandID2);
+        }
+    }
+    return $result;
+}
+
 function createBandObjects(){
   DEBUG_ECHO("creating band objects\n");
   global $resultBands;
@@ -65,6 +76,7 @@ function createBandObjects(){
   global $bandsTimeSlots; //HashMap<BandID, TimeslotID>
   global $totalNumTimeSlots; //total number of timeslots for a porchfest
   global $timeslotsPorchfests; //array of all timeslots available for a particular porchfest
+  global $bandConflicts; //HashMap<int id, Array[BandID]> of all bands conflicting with a band ID
   
   $tmp = getQueryArr($resultBands);
   for ($i = 0; $i < sizeof($tmp); $i++){
@@ -72,14 +84,7 @@ function createBandObjects(){
     $bandId = $tmp[$i][0];
     $bandName = $tmp[$i][1];
     $bandLocation = $tmp[$i][2];
-    $bandConflictsString = $tmp[$i][3];
-    $bandLatLng = array("lat" => $tmp[$i][4], "lng" => $tmp[$i][5]);
-        
-    // convert the string of conflicts into an array of conflicts
-    $bandConflicts = explode(',', $bandConflictsString);
-    if (sizeof($bandConflicts[0]) == 0) {
-      $bandConflicts = [];
-    }
+    $bandLatLng = array("lat" => $tmp[$i][3], "lng" => $tmp[$i][4]);
     $availableTimeSlots = [];
     
     for ($j = 0; $j < $totalNumTimeSlots; $j++) {
@@ -89,7 +94,11 @@ function createBandObjects(){
     foreach ($bandsTimeSlots[$bandId] as $canDoSlotID) {
       $availableTimeSlots[$canDoSlotID] = intVal(true);
     }
-    $bandsHashMap[$bandId] = new Band($bandId, $bandName, $bandLatLng["lat"], $bandLatLng["lng"], $availableTimeSlots, $bandConflicts, -1, []);
+    $conflicts = $bandConflicts[$bandId];
+    if (!$conflicts) {
+        $conflicts = [];
+    }
+    $bandsHashMap[$bandId] = new Band($bandId, $bandName, $bandLatLng["lat"], $bandLatLng["lng"], $availableTimeSlots, $conflicts, -1, []);
   }
   DEBUG_ECHO("created all band objects\n");
   return $bandsHashMap;
@@ -192,7 +201,7 @@ function generateBaseSchedule() {
     $uBand = $bandsHashMap[$uBandID];
 
     // getConflicts returns string names...gotta get them as bandIDs
-    $conflictingIDs = namesToIDs($uBand->getConflicts());
+    $conflictingIDs = $uBand->getConflicts();
     foreach ($conflictingIDs as $conflictingBandID) {
       $band = $bandsHashMap[$conflictingBandID];
       $oldTimeSlot = $band->slot;

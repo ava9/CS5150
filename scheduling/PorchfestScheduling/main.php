@@ -21,6 +21,7 @@ $resultBandsTimeSlots;
 $resultBandsPorchfests;
 $resultTimeslotsPorchfests;
 $resultBands;
+$resultBandConflicts;
 
 // TODO: COMMENT THESE
 $bandsTimeSlots;
@@ -35,6 +36,7 @@ $timeslotsPorchfests;
 $bandsHashMap;
 $bandsWithXTimeSlots;
 $totalNumTimeSlots;
+$bandConflicts;
 
 /* create schedule then repeat */
 function run(){
@@ -49,6 +51,8 @@ function run(){
   global $bandsHashMap;
   global $bandsWithXTimeSlots;
   global $totalNumTimeSlots;
+  global $resultBandConflicts;
+  global $bandConflicts;
 
   $result = null;
 
@@ -89,10 +93,17 @@ function run(){
       exit();
   }
 
-  $sqlBands = "SELECT b.BandID, b.Name, bp.PorchLocation, b.Conflicts, bp.Latitude, bp.Longitude FROM bands b, bandstoporchfests bp WHERE b.BandID = bp.BandID AND bp.PorchfestID = " . $PorchfestID;
+  $sqlBands = "SELECT b.BandID, b.Name, bp.PorchLocation, bp.Latitude, bp.Longitude FROM bands b, bandstoporchfests bp WHERE b.BandID = bp.BandID AND bp.PorchfestID = " . $PorchfestID;
   $resultBands = $conn->query($sqlBands);
-  if (!$resultBands) { #for band id, porch location and conflicts
+  if (!$resultBands) { #for band id, porch location
       printf("Get Bands-Porchfests failed\n");
+      exit();
+  }
+  
+  $sqlBandConflicts = "SELECT bc.BandID1, bc.BandID2 FROM bandconflicts bc, bandstoporchfests bp WHERE bc.BandID1 = bp.BandID AND bp.PorchfestID = "  . $PorchfestID;
+  $resultBandConflicts = $conn->query($sqlBandConflicts);
+  if (!$resultBandConflicts) { #for band conflicts
+      printf("Get Bands-Conflicts failed\n");
       exit();
   }
 
@@ -112,6 +123,7 @@ function run(){
   $bandsHashMap; //HashMap<int id, Band band> 
   $bandsWithXTimeSlots = []; //HashMap<int numberOfTimeSlots, int[] bandIds> max number of time slots a band can play in
   $totalNumTimeSlots = sizeof($timeslotsPorchfests); //total number of timeslots for a porchfest
+  $bandConflicts = populateBandConflicts();
   
 
 

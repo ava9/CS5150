@@ -1,0 +1,1559 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://www.opengis.net/kml/2.2' xmlns:atom='http://www.w3.org/2005/Atom' xmlns:gx='http://www.google.com/kml/ext/2.2' xmlns:kml='http://www.opengis.net/kml/2.2' xmlns:xal='urn:oasis:names:tc:ciq:xsdschema:xAL:2.0'>
+	<Document>
+		<Folder id="8:30 AM">
+			<name>8:30 AM</name>
+			<Placemark>
+				<name>Kitestring</name>
+				<description>Kitestring is a lovable, alternative-folk quartet, sporting a tank-top or two.</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4998,42.4475,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Jeannie Burns </name>
+				<description>Singer Songwriter</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.498,42.4444,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Tyrannical Vegetable</name>
+				<description>Tyrannical Vegetable is a goofy garage band.</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4963,42.4483,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Pelotones</name>
+				<description>The Pelotones are a four-piece band that plays original swing-jazz, R&amp;B, blues, and country.</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4957,42.4468,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Third Story Band</name>
+				<description>Third Story Band is a classic rock cover band</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4983,42.4467,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Mathew Roth</name>
+				<description>Instrumental Piano &amp; Violin Loops</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4985,42.4463,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Darts</name>
+				<description>The Darts are a 5-piece alt rock band</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.5002,42.4463,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Acoustic Rust</name>
+				<description>Tightly blended harmonies and songs that will never fade away. </description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4998,42.4468,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Rich Recchia and one friend</name>
+				<description>Rich Recchia is a vocalist/guitarist/percussionist/ukulele player who plays outer and innerspace music.</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4989,42.4472,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The 18 Strings Of Luv</name>
+				<description> Click here for information about restrooms.  The 18 Strings of Luv is Jan Nigro, John Simon and Ken Zeserson playing Beatles, Byrds and other critters from the 60?s with shimmering harmonies over a bed of interweaving acous Click here for information abo</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4969,42.4501,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Sixteen Feathers</name>
+				<description>Sixteen Feathers plays originals and covers in the realms of indie folk, alt.country, and acoustic blues.</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4968,42.4459,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Mad Cow Tippers</name>
+				<description>3 Piece performing Rockabilly, Cow Punk and Alt Country</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4995,42.4536,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Sears Street String Band</name>
+				<description>The Sears Street String Band plays Scottish, Irish, New England Contra and Scandinavian tunes on acoustic stringed instruments.  </description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4969,42.448,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Thaelo </name>
+				<description>A thoughtful blend of Hip-Hop, Funk, Soul, and Electronic born in Ithaca NY.</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4951,42.4487,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Accords</name>
+				<description>The Accords is a cappella doo wop.</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4987,42.4477,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Finger Lakes Pipes &amp; Drums</name>
+				<description>The Finger Lakes Pipes &amp; Drums is a local, competetitive bagpipe band. </description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.5013,42.4497,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Comfort Ave</name>
+				<description>Comfort Ave is an aggressive roots rock band that plays original songs.</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.5004,42.4486,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Fall Creek Bluegrass Partners</name>
+				<description>The Fall Creek Bluegrass Partners play and sing bluegrass music</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4967,42.4475,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Maud Powell and the Ites</name>
+				<description>Young string players amaze!</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4974,42.446,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Opus Ithaca Jazz </name>
+				<description>Opus Ithaca Jazz is a small jazz combo of students and faculty from Opus Ithaca School of Music.</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4991,42.4468,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Sunny Weather </name>
+				<description>Sunny Weather music</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4982,42.45,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Not From Wisconsin</name>
+				<description>Not From Wisconsin is Chamber Folk/Indie Rock</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4979,42.4509,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Justin Friello</name>
+				<description>Justin Friello is a singer-songwriter who writes thoughtful, emotional music, inspired by hip-hop, chamber pop, and orchestral music.</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4998,42.4485,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Rungs</name>
+				<description>fuzzy synth pop</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4974,42.4443,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Spirit Soeaks</name>
+				<description>Spirit Speaks shares Earth Spirituality with a passionate edge.</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.5027,42.4457,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>HAL</name>
+				<description>HAL is a folk rock artist who plays guitar and harmonica (and possibly other instruments too!)</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.497,42.4424,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Sabbathwind</name>
+				<description>Judy Collins meets india.arie in Sabbathwind--whose musical storytelling weaves the playful, rhythmic and ethereal melodies of the indie-folk/jazz/r&amp;b fusion genre.</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4987,42.4533,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Opus Quartet</name>
+				<description>The Opus Quartet is a classical string quartet made up of vibrant young musicians</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.5001,42.4523,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Alt-Ac Quartet</name>
+				<description>Alt-Ac is a string quartet playing pop and classical music.</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.4988,42.4434,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Good Luck Mountain</name>
+				<description>Good Luck Mountain is a rootsy musical collective led by Mike Ferrio. </description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.5009,42.4475,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>DEL MANKS</name>
+				<description>DEL MANKS is a solo performer.</description>
+				<styleUrl>#1</styleUrl>
+				<Point>
+					<coordinates>-76.5051,42.4454,0.0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Folder id="9:30 AM">
+			<name>9:30 AM</name>
+			<Placemark>
+				<name>The Local Farmers Union</name>
+				<description>The Local Farmers Union - Farmer-folk Jam Funkgrass.</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.5026,42.4495,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Purple Valley</name>
+				<description>The Purple Valley plays dancing music!</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4994,42.4523,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Five2</name>
+				<description>A striking female vocal trio, Five2 captivates listeners with lush three-part harmonies and poignant songwriting. With Uniit Carruyo, Charisse Lucente, Yvette Lucente, Brian Dozoretz, and Dana Billings</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.5019,42.4472,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Cornell Ukulele Club</name>
+				<description>The Cornell Ukulele Club is a group of Cornell students who play a variety of music genres using ukuleles and percussion instruments.</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.5011,42.451,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Grey Wolf Jam</name>
+				<description>Grey Wolf Howls Raucous Oldies</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4957,42.4477,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Thru Spectrums</name>
+				<description>Original 7-piece funk-rock</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4957,42.4467,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>danny speer &amp; shuffle-tut</name>
+				<description>danny's songs. jazz-blues-pop</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4999,42.448,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Doug Robertson</name>
+				<description>Doug Robertson is an acoustic guitar enthusiast </description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.5013,42.4497,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Hilltoppers</name>
+				<description>The Hilltoppers play bluegrass the way everybody likes it!</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4964,42.4477,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>IthaCats</name>
+				<description>IthaCats is a classic rockabilly trio.</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4995,42.4536,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Grady Girls</name>
+				<description>The Grady Girls play Irish Traditional Music</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.5021,42.4449,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Brian Earle and Ed Clute</name>
+				<description>Clarinet and Piano</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4962,42.4445,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Long John and the Tights</name>
+				<description>Long John and the Tights plays Appalachian songs and fiddle tunes!</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4999,42.4455,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Isaac Sharp Classical Guitarist</name>
+				<description>Isaac Sharp is a classical guitarist with a modern flair.</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4957,42.4472,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Small Kings</name>
+				<description>The Small Kings is NOT a jam band and they'll deny it all afternoon long!</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.5002,42.4463,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Bert Scholl</name>
+				<description>Outlaw Honky Tonk Country Music</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4995,42.4501,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Laila Belle</name>
+				<description>LAILA BELLE rocks as much as it rolls, country style...</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.498,42.4444,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Gadje</name>
+				<description>Gadje is Ithaca?s own Gypsy Rock act.</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4976,42.4463,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Regina O'Brien with Charles d'Orban</name>
+				<description>Regina &amp; Charles play her original Americana songs.</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4967,42.4475,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Mike Treat and Friends</name>
+				<description>Small group jazz</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4979,42.4526,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Grand Turk</name>
+				<description>Cheap Trick in a knife fight with Wire, innocent bystanders.</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4989,42.4512,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Fauxs</name>
+				<description>The Fauxs: cellist, guitarist/pianist (and maybe more) who play faux crock.</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4949,42.4496,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Brookton Bridge</name>
+				<description>Brookton Bridge plays original passionate + savory alt-folk-rock with a world beat twist.</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4969,42.448,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Dusty Charts and his Peripheral Visions</name>
+				<description>One man cosmic chaos and melody.</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4968,42.4469,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Travis Knapp</name>
+				<description>Travis Knapp is an uplifting banjo folk-soul songwriter</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.5029,42.4498,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>?Viva Mayhem!</name>
+				<description>?Viva Mayhem! is a local, high-energy Ska/Punk band. </description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4944,42.4474,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Sundown Sally</name>
+				<description>Sundown Sally is an Americana infusion of folk, rock and blues.</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4948,42.4518,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>ephemera</name>
+				<description>ephemera is a 7 voice a capela improv group</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4971,42.4506,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Sabbathwind</name>
+				<description>Judy Collins meets india.arie in Sabbathwind--whose musical storytelling weaves the playful, rhythmic and ethereal melodies of the indie-folk/jazz/r&amp;b fusion genre.</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4987,42.4533,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Perry City 5</name>
+				<description>Perry City 5 plays classic rock and some newer rock too.</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.497,42.4492,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Head Band</name>
+				<description>Head Band is a Funky, Psychadelic Jazz Rock Trio</description>
+				<styleUrl>#2</styleUrl>
+				<Point>
+					<coordinates>-76.4956,42.4455,0.0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Folder id="10:30 AM">
+			<name>10:30 AM</name>
+			<Placemark>
+				<name>Richie Holtz &amp; friends</name>
+				<description>Richie Holtz &amp; friends play sing-able folk-rock</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.5005,42.4499,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Glacial Erotics</name>
+				<description>glacial erotics, original rock, shaken not stirred</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4955,42.4436,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>wild sounds</name>
+				<description>I make wild sounds</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.5003,42.4467,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Ithaca Gay Men's Chorus</name>
+				<description>men's chorus</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4975,42.4506,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Uncommons</name>
+				<description>The Uncommons performs original &amp; classic rock/jazz-rock/blues-rock/metamorphic rock! ;)</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4964,42.4475,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Road Man</name>
+				<description>Funky Reggae and uplifting soul music! </description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.499,42.4471,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Diana Leigh &amp; the Savoy Stompers</name>
+				<description>Diana Leigh &amp; the Savoy Stompers play, jazz and rhythm &amp; blues for swing dancing and joy!</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4962,42.4445,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Fall Crikkers Jug Band</name>
+				<description>The Fall Crikkers Jug band will play their 10th Annual Porchfest</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.5004,42.4493,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>ithaca Free concerts </name>
+				<description>ithaca Free concerts represented by a choir of local cellists </description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4991,42.4468,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The MonkeySquids</name>
+				<description>Rock/Alt/Punk cover band</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4997,42.4441,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Marc Berger and RIDE</name>
+				<description>American Roots Music</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4957,42.4468,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Darkwine</name>
+				<description>Darkwine is an acoustic trio featuring 3-part harmonies, 12-string guitars, a bit of fiddle &amp; keys, and a whole lotta sweet nostalgia.</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4964,42.4475,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Colleen Kattau &amp; Dos XX</name>
+				<description> &quot;Gringa grooves from the heart&quot;</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.497,42.4492,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Honky Tonk Hindooz</name>
+				<description>The Honky Tonk Hindooz specialize in original, countrified arrangements of popular songs by diverse artists, all in a jangly, swaggerly Roots-Americana stew.</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4995,42.4501,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Alan Rose</name>
+				<description>Alan Rose is the songwriter over the 12-String Edge!</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.5,42.4521,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>14 Strings!</name>
+				<description>14 Strings! is a Filipino Rondalla playing (mostly) 14 stringed fretted instruments.</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4968,42.4467,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Three 4s</name>
+				<description>5 piece alternative groove band trying to funk up rock</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4963,42.4455,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Craig Frey</name>
+				<description>Craig plays acoustic classic prog rock.</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.5004,42.4486,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Strumming and Blowing</name>
+				<description>Traditional Jazz on banjo and horns</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.5011,42.451,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>the Fly Rods</name>
+				<description>The Fly Rods are a rock and roll band.</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4961,42.4436,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Zach &amp; Zak</name>
+				<description>Two Guitars, Two guys named Zachary, and some other stuff too!</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4982,42.45,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Commons Crossing</name>
+				<description>Commons Crossing is a modern guitar and cello duo that features Alejandro Cortese (guitar and vocals) and Joe Sliker (cello).</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4997,42.4467,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Tent Date</name>
+				<description>surf influenced trio.</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4964,42.4482,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Timothy Weber</name>
+				<description>Timothy Weber writes and sings his own contemplative songs about love and family and spirit and water.</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4953,42.4492,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Cayuga Chimes</name>
+				<description>Cayuga Chimes is a women's a cappella chorus.</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4995,42.443,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Music's Recreation</name>
+				<description>Music's Recreation serves up informal, family-friendly chamber music</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.501,42.4472,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Lately Music Ensemble</name>
+				<description>The Lately Music Ensemble is a banjo and vocal group.</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4985,42.447,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>eCoArise</name>
+				<description>Original folk-funk with heart</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4981,42.4447,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Good Luck Mountain</name>
+				<description>Good Luck Mountain is a rootsy musical collective led by Mike Ferrio. </description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.5009,42.4475,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Pierce Walsh  </name>
+				<description>Pierce Walsh singer songwriter </description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.5027,42.4496,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Squirt!?</name>
+				<description>Rock Jazz Vocal Phsycadelic Duo</description>
+				<styleUrl>#3</styleUrl>
+				<Point>
+					<coordinates>-76.4981,42.4489,0.0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Folder id="11:30 AM">
+			<name>11:30 AM</name>
+			<Placemark>
+				<name>Tim Bang</name>
+				<description>Tim Bang is a singer songwriter playing folk  music</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4968,42.4467,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Bethel Grove</name>
+				<description>Bethel Grove is an inspirational folk/pop band</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.5006,42.4447,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Tryin' Joe and The Mad Scientist</name>
+				<description>&quot;Electro-acoustic original songs and improv&quot;</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4957,42.4468,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>GoGone</name>
+				<description>GoGone plays original roots, rock &amp; blues</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4995,42.4501,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Auntie Emo's Ukulele Workshop</name>
+				<description>Learn &quot;Over the Rainbow&quot;; accompany dancers of the hula</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.501,42.4472,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>LC Jones</name>
+				<description>Folk Punk preformance, lyric heavy, folksy and melodic</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.5004,42.447,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Burns And Kristy Band</name>
+				<description>Fun original material, rich vocals, lotsa fun.</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.498,42.4444,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Djug Django</name>
+				<description>Djug Django is a vintage jazz/blues/Latin/jug band</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.5004,42.4493,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Nightswimmers</name>
+				<description>Nightswimmers plays 60's,and 70's inspired folk/rock/psych/Americana</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.499,42.4471,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Anna O'Connell</name>
+				<description>Anna O'Connell, inventive folk harpistry.</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4979,42.4509,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>LilySilly Puppets</name>
+				<description>LilySilly Puppets performs an all ages puppet show with live music and a lot of absurdity.</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4957,42.4472,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Scratched Vinyl</name>
+				<description>Scratched Vinyl plays rock-n-roll</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4955,42.4516,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Mosaic Foundation</name>
+				<description>Mosaic Foundation plays reggae music!</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4983,42.4504,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>FLX Space Tribe</name>
+				<description>FLX Space Trio loves to jam on rock infused originals.</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.5009,42.4502,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Dickie Starfish Allstars</name>
+				<description>Genre hopping pop/rock cover band</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4955,42.4462,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Group Therapy Band</name>
+				<description>Group Therapy Eclectic portfolio - a grand time to be had by all...</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4967,42.4475,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>NEO Project</name>
+				<description>NEO Project is rooted in African-American funk music.</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.5013,42.4497,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Second Street String Band</name>
+				<description>Second Street plays southern old time fiddle tunes with a strong driving energy</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.5029,42.4451,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Tenzin Chopak &amp; Nicholas Walker</name>
+				<description>Tenzin Chopak is a singer songwriter of what sometimes gets called progressive folk: dynamic, driving, stark, and devoted to beauty. </description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.5027,42.4496,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Gunpoets</name>
+				<description>Gunpoets are live hip hop.</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4951,42.4487,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Avalnchez</name>
+				<description>Avalnchez sounds like a bucket of oranges poured down a wooden staircase.</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4989,42.4512,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Lucky Old Sun</name>
+				<description>Lucky Old Sun plays original rock, folk, soul, and jazz.</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4991,42.4481,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Ithaca Cats</name>
+				<description>Ithaca Cats is a bluegrass and folk duo on guitar and upright bass blending the tight vocal harmonies and instrumentals of Rob and Robin Steuteville. </description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4985,42.447,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Jai and Jonathan</name>
+				<description>Jai and Jonathan is an acoustic guitar and vocal duet playing indie rock and folk. </description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4955,42.4436,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Nate &amp; Kate</name>
+				<description>Nate &amp; Kate is folky music and juggling fun for the whole family.</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.5,42.4474,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Sum Dude &amp; Friends</name>
+				<description>Sum Dude &amp; Friends - rock/folk/funk love songs improvisational jams</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4981,42.4447,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>About a Harp</name>
+				<description>Folk Harp</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4964,42.4475,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Andrew Alling</name>
+				<description>Acoustic guitar, organ bass pedals and harmonicas, all at once.</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4956,42.4455,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Jennie Lowe Stearns and the Fire Choir</name>
+				<description>Queen of the Waltz plays Indie Dreamy Folk Pop</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.5019,42.4472,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Cielle and All Sounds On</name>
+				<description>Cielle and All Sounds On play all original music with 3 part harmonies.</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4957,42.448,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Johnny Dowd and The Sex Robots</name>
+				<description>Acid rock meets the avant garde. </description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.4968,42.4463,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Cubbage</name>
+				<description>Cubbage is a jazzy, folky, singer-songwriter, often playing with an acoustic trio (upright bass, drums and piano/guitar).</description>
+				<styleUrl>#4</styleUrl>
+				<Point>
+					<coordinates>-76.5051,42.4454,0.0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Folder id="12:30 PM">
+			<name>12:30 PM</name>
+			<Placemark>
+				<name>Stone Cold Miracle</name>
+				<description>Original soul music featuring sensational singer Trece Stevenson.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.5002,42.4463,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>CUMEME (Cornell University Middle Eastern Music Ensemble)</name>
+				<description>Middle Eastern music plus belly dancers ers</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4985,42.4463,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>CrownCityBrass</name>
+				<description>Crown City Brass is a non traditional group that plays music from Baroque to Jazz.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.5013,42.4497,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Stan Stewart</name>
+				<description>Stan Stewart is highlighting his folk stylings with a set of new singer-songwriter tracks.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4982,42.4501,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Professor Tuesday's Jazz Quartet</name>
+				<description>Professor Tuesday's Jazz Quartet plays fun, mainstream jazz.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4979,42.4526,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>JazzHappensBand</name>
+				<description>JazzHappens Band is a 7-piece traditional jazz band</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.5011,42.451,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Kats 'N' Janmmers</name>
+				<description>Old Celtic tunes and singalong songs.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4985,42.447,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Laura J. Peters</name>
+				<description>Laura J. Peters is an acoustic singer-songwriter partial to soulful storytelling songs and people who like to listen to them.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4981,42.4444,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Dr. K</name>
+				<description>Solo guitar with attitude.  </description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4948,42.4462,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Immortal Jellyfish</name>
+				<description>An ageless band playing timeless tunes</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4998,42.4468,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Noon Fifteen</name>
+				<description>Noon Fifteen is a soulful psychedelic pop/rock band</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4957,42.4467,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Jesse Collins Quartet with Diana Leigh</name>
+				<description>The Jesse Collins Quartet with Diana Leigh is a modern jazz quartet with vocalist.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4962,42.4445,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Mockingbeards</name>
+				<description>The Mockingbeards are a 5-piece folk-rock outfit.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4975,42.4471,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>ICO Brass Quintet</name>
+				<description>ICO Brass Quintet plays 5-part brass arrangements featuring many different genres.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4969,42.448,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>IthaSAMBAca</name>
+				<description>IthaSAMBAca is a small group dedicated to singing and playing Brazilian samba.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4999,42.4491,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Whiskey Priests</name>
+				<description>Sweet garage and indie in a blues rock wrapper.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4964,42.4489,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Doolin O'Dey</name>
+				<description>DOOLIN O'DEY - ORITINGAL AND TRADITIONAL CELTIC INSPIRED ENSEMBLE.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.5011,42.4485,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Sweats</name>
+				<description>The Sweats are a unified 5 piece groove rock band united in unionized unification.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.5002,42.4444,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Robot Detective and friends</name>
+				<description>Robot Detective is an electro-acoustic improvised live looping performance headed by Chris Knight</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.499,42.4443,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Better Weather String Band</name>
+				<description>Better Weather  plays southern old time tunes with a great groove.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.5029,42.4451,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Friends of the First Unitarian Society</name>
+				<description>Various performers including the UU Ukulele Union</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.496,42.4416,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Austin MacRae</name>
+				<description>Contemporary folk music.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4991,42.4475,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>George Prounis</name>
+				<description>George Prounis is an alternative folk singer-songwriter.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4981,42.4481,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Maplewood Jazz Team</name>
+				<description>Fabulous Jazz Trio</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4966,42.451,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Opus Ithaca Chamber Ensembles</name>
+				<description>Opus Ithaca Chamber Ensembles are small groups of young musicians on a variety of different instruments playing traditional classical, or fun arrangements of popular tunes.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4991,42.4468,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Domestic Duo</name>
+				<description>Progressive rock improv by 2 college freshmen</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4961,42.4436,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>FOGG</name>
+				<description>FOGG plays rock from when we were in high school.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4955,42.4436,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Janet Batch</name>
+				<description>Janet Batch is a spicy folk singer songwriter..</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4993,42.4501,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Arthur B and The Planetary Mix</name>
+				<description>Original Old School New School Future School R n B</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4987,42.4533,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Ophelia Sings</name>
+				<description>Ophelia Sings is Mary Casey playing guitar and singing songs she loves from a variety of genres and songwriters. </description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4964,42.4477,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Joey Dugan</name>
+				<description>world's greatest folksinger</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.5032,42.4454,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Maxwell Eller</name>
+				<description>Solo experimental improvisation</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4974,42.4443,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Suzuki Violin Studio of Angela Yantorno</name>
+				<description>Suzuki violin studio of Angela Yantorno</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.4979,42.4509,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Unitarian Universalist Ukulele Union</name>
+				<description>The UU Ukulele Union is an intergenerational group of enthusiastic players.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.496,42.4416,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>DeWitt Brass Quartet</name>
+				<description>The DeWitt Brass Quartet is a dedicated group of 8th graders at DeWitt Middle School.</description>
+				<styleUrl>#5</styleUrl>
+				<Point>
+					<coordinates>-76.496,42.4416,0.0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Folder id="1:30 PM">
+			<name>1:30 PM</name>
+			<Placemark>
+				<name>David Graybeard Band</name>
+				<description>100% original, blues, roots and Americana music.</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4985,42.4463,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Circus Culture</name>
+				<description>we would like to do circus performance on the porch! We will have musician friends accompany.</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4944,42.4474,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>WonderMonday</name>
+				<description>WonderMonday is a original artpoprock trio.</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.499,42.4462,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>El Caminos </name>
+				<description>El Caminos play a dangerously danceable mix of Americana and Alt-Country</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4994,42.4523,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Insolent Cur</name>
+				<description>Acoustic Americana and acoustic covers</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4991,42.4509,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Grassanova</name>
+				<description>Bluegrass, Newgrass, and Whoknowswhatgrass!</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4998,42.4469,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Wolf Tones</name>
+				<description>Sly pop/folk duo sing original tunes with harmonies.</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4997,42.4462,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Jon Kaplan and Dexter Kozen</name>
+				<description>Acoustic guitar/vocal duo</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.5011,42.451,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Ella Sarachan</name>
+				<description>Ella Sarachan sings jazz standards backed by Professor Tuesday's Jazz Quartet</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4979,42.4526,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Auntie Emo's Ukulele Showcase</name>
+				<description>The little ukulele climbs every mountain, fords every stream, exalts every valley.</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.501,42.4472,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Ageless Jazz Band</name>
+				<description>The Ageless Jazz Band is a 17-piece big band jazz ensemble</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4999,42.4455,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Fall Creek Brass Band</name>
+				<description>New-Orleans style brass band brings the funk and the fun to the streets of Ithaca.</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4974,42.4443,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Hickey's Rock School 'Summer Rocks'</name>
+				<description>Summer students band</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.5013,42.4497,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Cornell Gamelan Ensemble</name>
+				<description>The Cornell Gamelan Ensemble plays music from Indonesia and Malaysia</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.5022,42.4475,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Sadie Frederick</name>
+				<description>Sadie Frederick is a singer-songwriter from Florida.</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4961,42.4436,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Seneca St. Recorders</name>
+				<description>Seneca St Recorders will play lots of di</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4996,42.4499,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Matthew Ocone</name>
+				<description>Matthew Ocone is a guitarist who plays classical music, Spanish music, and Brazilian music.</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4957,42.4472,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>PIPERVENTILATORS</name>
+				<description>PIPERVENTILATORS- A TUESDAY IRISH SESSION BAND</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.5011,42.4485,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Whippoorwillow</name>
+				<description>Whippoorwillow plays many colors of grass with many kinds of folk, including the kind who rock.</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4964,42.4477,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Diamonds in the Rough</name>
+				<description>Diamonds in the Rough are three voices which shimmer when they sing together.</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4981,42.448,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Mad Goat String Band</name>
+				<description>Mad Goat is a southern-style stringband with compelling tunes and songs.</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4983,42.4515,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Mary Mary</name>
+				<description>Foot tapping thought provoking originals and awesome covers</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4974,42.446,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TRAONACH</name>
+				<description>Irish Traditional Music</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.495,42.4465,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The New York Rock </name>
+				<description>The New York Rock-5 piece high energy rock</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.5006,42.4515,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Singledowt</name>
+				<description>Singledowt is a trio of young musicians.</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4981,42.4447,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Ann Warde</name>
+				<description>Beautiful Sounds: Prepared Piano</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4979,42.4505,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Suite 107</name>
+				<description>Suite 107 is a funky blues/jazz/ bluegrass jam band </description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.502,42.4447,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Ithaca Talent Education Cellos</name>
+				<description>Ithaca Talent Education Cellists is a group of young Suzuki-trained musicians sharing gems from the classical cello repertoire</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.5001,42.4523,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Ghost Life</name>
+				<description>Psychedelic Folk rock</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.4978,42.4443,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Jen Cork &amp; the Good Hope</name>
+				<description>Jen Cork &amp; the Good Hope is an original, female-fronted folk-jazz outfit.</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.5032,42.4454,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Papa Muse</name>
+				<description>Papa Muse will play progressive world grunge</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.5005,42.4504,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Opera Ithaca</name>
+				<description>Opera Ithaca is Ithaca NY's professional opera company.</description>
+				<styleUrl>#6</styleUrl>
+				<Point>
+					<coordinates>-76.496,42.4416,0.0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+	</Document>
+</kml>
