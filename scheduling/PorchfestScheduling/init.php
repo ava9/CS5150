@@ -90,11 +90,11 @@ function populateBandConflicts(){
 function createBandObjects(){
   DEBUG_ECHO("creating band objects\n");
   global $resultBands;
-  global $bandsHashMap; //HashMap<int id, Band band> 
-  global $bandsTimeSlots; //HashMap<BandID, TimeslotID>
-  global $totalNumTimeSlots; //total number of timeslots for a porchfest
-  global $timeslotsPorchfests; //array of all timeslots available for a particular porchfest
-  global $bandConflicts; //HashMap<int id, Array[BandID]> of all bands conflicting with a band ID
+  global $bandsHashMap;         // HashMap<int id, Band band> 
+  global $bandsTimeSlots;       // HashMap<BandID, TimeslotID>
+  global $totalNumTimeSlots;    // total number of timeslots for a porchfest
+  global $timeslotsPorchfests;  // array of all timeslots available for a particular porchfest
+  global $bandConflicts;        // HashMap<int id, Array[BandID]> of all bands conflicting with a band ID
   
   $tmp = getQueryArr($resultBands);
   for ($i = 0; $i < sizeof($tmp); $i++){
@@ -129,11 +129,11 @@ function createBandObjects(){
  * $bandsWithXTimeslots    hashmap ( int numberOfTimeslots => int[] bandIDs )
  */
 function populateBandsWithXTimeSlots() {
-  global $bandsWithXTimeSlots; //HashMap<int numberOfTimeSlots, int[] bandIds> max number of time slots a band can play in
-  global $bandsPorchfests; //array of all bands that can play at a particular porchfest
-  global $bandsTimeSlots; //HashMap<BandID, TimeslotID>
-  global $totalNumTimeSlots; //total number of timeslots for a porchfest
-  global $bandsHashMap; //HashMap<int id, Band band> 
+  global $bandsWithXTimeSlots; // HashMap<int numberOfTimeSlots, int[] bandIds> max number of time slots a band can play in
+  global $bandsPorchfests;     // array of all bands that can play at a particular porchfest
+  global $bandsTimeSlots;      // HashMap<BandID, TimeslotID>
+  global $totalNumTimeSlots;   // total number of timeslots for a porchfest
+  global $bandsHashMap;        // HashMap<int id, Band band> 
   
   DEBUG_ECHO("populating bandsWithXTimeSlots\n");
   for ($i = 1; $i <= $totalNumTimeSlots; $i++) {
@@ -151,10 +151,6 @@ function populateBandsWithXTimeSlots() {
   ksort($bandsWithXTimeSlots);
   DEBUG_ECHO("populated\n");
 }
-
-/************************************************************/
-/*********************** ALGORITHM **************************/
-/************************************************************/
 
 /* 
  * Generates initial schedule with no conflicts 
