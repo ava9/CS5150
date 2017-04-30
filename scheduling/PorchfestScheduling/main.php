@@ -6,7 +6,37 @@ require_once "Band.php";
 require_once "Schedule.php";
 require_once "Score.php";
 require_once "helperFuncs.php";
-require_once "algorithm.php";
+require_once "init.php";
+
+# ALGORITHM OVERVIEW #
+
+/*
+ * Randomly create base schedule
+ * Score schedule - the method of scoring is based on the 
+ * implementation of the implmentation of the Score class
+ * 
+ * for bands in each time slot:
+ *   1) get k nearest neighbors
+ *   2) calculate average distance from those neighbors and store
+ *   3) get variance of that entire timeslot
+ *   4) keep track of the largest variance
+ */
+
+
+# ALGORITHM OVERVIEW #
+
+/*
+ * Randomly create base schedule
+ * Score schedule - the method of scoring is based on the 
+ * implementation of the implmentation of the Score class
+ * 
+ * for bands in each time slot:
+ *   1) get k nearest neighbors
+ *   2) calculate average distance from those neighbors and store
+ *   3) get variance of that entire timeslot
+ *   4) keep track of the largest variance
+ */
+
 
 /************************************************************/
 /******************* GLOBAL VARIABLES ***********************/
