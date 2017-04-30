@@ -33,10 +33,15 @@ class Band {
     $bands = $sched->getBandsAtSlot($this->slot); //Band[] 
     $this->sortByDistance($bands);
     $result = [];
-    for ($i = 0; $i < $kNeighbors; $i++) { # get the nearest k IDs
+    for ($i = 0; $i < $kNeighbors+1; $i++) { # get the nearest k IDs
+      # don't compare with self
+      if ($bands[$i]->id == $this->id) {
+        continue;
+      }
       array_push($result, $bands[$i]->id);
     }
     return $result;
+    
   }
   
   /* Sorts the keys of the bands at the same time slot as this band object by distance to this band object */

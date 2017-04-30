@@ -13,9 +13,6 @@
   # In the section where we randomly swap between the worst time slot and any other,
   # it might make sense to swap with the best one instead
   
-  
-  
-  
 # ALGORITHM
 
 /*
@@ -181,27 +178,6 @@ function generateBaseSchedule() {
         }
         
       }
-      
-      //ROUND ROBIN
-//      while ($i < $totalNumTimeSlots){ # round robin through all time slots and bands
-//        $slot = (($currentTimeSlot + $i) % $totalNumTimeSlots);
-//        $slotID = $timeslotsPorchfests[$slot];
-//
-//        $isAvailable = $band->availableTimeSlots[$slotID];
-//        $hasNoConflicts = noConflicts($schedule->schedule[$slotID], $band);
-//        $locationOK = bandOverMinDist($schedule->schedule[$slotID], $band);
-//        if ($isAvailable && $hasNoConflicts && $locationOK){
-//          # band can play at this time
-//          $schedule->add($slotID, $band);
-//          $currentTimeSlot = $slot + 1;
-//          $band->slot = $slotID;
-//          $assigned = true;
-//          break;
-//        }
-//        else{
-//          $i++;
-//        }
-//      }
 
       if (!$assigned) {
         DEBUG_ECHO("no available time slots for " . $id . "\n");
@@ -233,63 +209,10 @@ function generateBaseSchedule() {
   }
   DEBUG_ECHO("generated schedule!\n");
   DEBUG_ECHO("scoring the schedule...\n");
-  score($schedule);
-  return array($schedule, $success);
+  $schedule->score();
+  return array($success, $schedule);
 }
 
-/* assigns a score to a schedule based on variance
-k is an adjustable amount of nearest neighbors to calculate */
-function score($sched) {
-  global $timeslotsPorchfests; //array of all timeslots available for a particular porchfest
-  foreach ($timeslotsPorchfests as $slot){
-    $variance = computeVariance($slot, $sched);
-    DEBUG_ECHO($variance . "\n");
-    if ($sched->score < $variance) {
-      $sched->score = $variance;
-    }
-  }
-}
-    
-/* pairwise swaps to improve the schedule. recomputes the
-		variance of the two time slots that are affected by the swap */
-function improve($sched) {
-  global $timeslotsPorchfests; //array of all timeslots available for a particular porchfest
-  arsort($sched->timeSlotVariances);
-  $highestVarianceTimeSlot = array_keys($sched->timeSlotVariances)[0]; # index of highest variance corresponds to highestVarianceTimeSlot
-  
-  $bands = $sched->getBandsAtSlot($highestVarianceTimeSlot);
-  $minDistance = PHP_INT_MAX;
-  $bx; 
-  $by;
-  for ($i = 0; $i < sizeof($bands); $i++) {
-    $bi = $bands[$i];
-    if ($bi === null) {
-      DEBUG_ECHO($i . "\n");
-      DEBUG_ECHO($highestVarianceTimeSlot + "\n");
-    }
-    for ($j = 0; $j < $i; $j++){
-      $bj = $bands[$j];
-      $d = $bi->getDistance($bj->id);
-      if ($d < $minDistance) {
-        $bx = $bi;
-        $by = $bj;
-        $minDistance = $d;
-      }
-    }
-  }      
-  $br = (rand(0, 2) === 0 ? $bx : $by);
-  $newSched = $sched->deepCopy($timeslotsPorchfests);
-  $newSched->randomSwap($br); # update score in randomSwap()
-  if ($sched == $newSched) {
-    DEBUG_ECHO("didn't swap\n");
-  }
-  DEBUG_ECHO("old score " . $sched->score . "\n");
-  DEBUG_ECHO("new score " . $newSched->score . "\n");
-  if ($newSched->score < $sched->score) {
-    return array(true, $newSched);
-  }
-  return array(false, $sched);
-}
 
 
 ?>
