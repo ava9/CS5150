@@ -142,20 +142,20 @@ function bandOverMinDist($bandsArr, $band) {
 
 }
 
-function namesToIDs($names) {
-  global $bandsHashMap;
-
-  $result = [];
-  foreach ($names as $n) {
-    foreach ($bandsHashMap as $bandID => $band) {
-      if ($band->name == $n) {
-        array_push($result, $bandID);
-      }
-    }
-  }
-  
-  return $result;
-}
+//function namesToIDs($names) {
+//  global $bandsHashMap;
+//
+//  $result = [];
+//  foreach ($names as $n) {
+//    foreach ($bandsHashMap as $bandID => $band) {
+//      if ($band->name == $n) {
+//        array_push($result, $bandID);
+//      }
+//    }
+//  }
+//  
+//  return $result;
+//}
 
 /* returns true if $band does not conflict with any band in $bandArr, false otherwise */
 function noConflicts($bandsArr, $band){
@@ -172,7 +172,7 @@ function noConflicts($bandsArr, $band){
   }
 
   foreach ($bandsArr as $b){
-    if (in_array($b->name, $conflicts)) {
+    if (in_array($b->id, $conflicts)) {
       return false;
     }
   }
