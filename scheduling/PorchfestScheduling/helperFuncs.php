@@ -4,7 +4,16 @@
 /******************* HELPER FUNCTIONS ***********************/
 /************************************************************/
         
-/* calculates standard deviation of an array */
+/*
+ * Calculates standard deviation of an array.
+ * http://php.net/manual/en/function.stats-standard-deviation.php
+ * 
+ * @param $a        The array of data to find the standard deviation for. Note
+ *                  that all values of the array will be cast to float.
+ * @param $sample   Indicates if a represents a sample of the population; defaults to FALSE
+ * 
+ * @return          The standard deviation of the $a as a float
+ */
 function stats_standard_deviation(array $a, $sample = false) {
     $n = count($a);
     if ($n === 0) {
@@ -96,7 +105,15 @@ function computeMinDist($timeSlotID, $sched) {
 
 }
   
-/* moves band to a different timeslot and returns true on success, false otherwise */
+/*
+ * Moves band to a different timeslot and returns true on success, false
+ * otherwise.
+ * 
+ * @param $id           The id of the band we want to move
+ * @param $schedule     The current schedule object
+ * 
+ * @return              True if swap was successful, False otherwise
+ */
 function tryToMoveBand($id, $schedule) {
   global $bandsHashMap;
   global $totalNumTimeSlots;
@@ -120,10 +137,13 @@ function tryToMoveBand($id, $schedule) {
 }
 
 /*
- * Returns true if band is farther than MIN_DISTANCE away from every band in $bandsArr
+ * Returns true if band is farther than MIN_DISTANCE away from every band in
+ * $bandsArr
  *
  * @param $bandsArr     Array of Band objects
  * @param $band         Band object
+ * 
+ * @return              A boolean
  */
 function bandOverMinDist($bandsArr, $band) {
   global $MIN_DISTANCE;
@@ -142,22 +162,15 @@ function bandOverMinDist($bandsArr, $band) {
 
 }
 
-//function namesToIDs($names) {
-//  global $bandsHashMap;
-//
-//  $result = [];
-//  foreach ($names as $n) {
-//    foreach ($bandsHashMap as $bandID => $band) {
-//      if ($band->name == $n) {
-//        array_push($result, $bandID);
-//      }
-//    }
-//  }
-//  
-//  return $result;
-//}
-
-/* returns true if $band does not conflict with any band in $bandArr, false otherwise */
+/* 
+ * Returns true if $band does not conflict with any band in $bandArr, false
+ * otherwise
+ * 
+ * @param $bandsArr     An array of band objects
+ * @param $band         The band object of the band to compare with the array
+ * 
+ * @return              A boolean
+ */
 function noConflicts($bandsArr, $band){
   global $MIN_DISTANCE;
 
@@ -179,7 +192,17 @@ function noConflicts($bandsArr, $band){
   return true;
 }
 
-/* calculates the distance between two longitude/latitude coordinates in meters */
+/*
+ * Calculates the distance between two longitude/latitude coordinates in meters
+ * 
+ * @param latitudeFrom      The latitude of the first location
+ * @param longitudeFrom     The longitude of the first location
+ * @param latitudeTo        The latitude of the second location
+ * @param longitudeTo       The longitude of the second location
+ * @param earthRadius       The radius of the earth in meters, which is 6371000
+ * 
+ * @return                  The distance between two locations in meters
+ */
 function tdistance(
   $latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
 {
@@ -198,12 +221,5 @@ function tdistance(
   return $distance;
 }
   
-
-// Returns random lat lng coordinates in the Ithaca area
-function getRandomCoordinates($address){
-  $lat = 42 + (rand(0,10000)/10000000);
-  $lng = -76 - (rand(0,10000)/10000000);
-  return array($lat, $lng);
-}
 
 ?>
