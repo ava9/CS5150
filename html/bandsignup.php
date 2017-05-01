@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php 
+# This page is where bands can sign up for a specific porchfest.
+session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,8 +9,6 @@
 <head>
   <?php require_once "../php/modules/stdHead.php" ?>  
   <link rel="stylesheet" href="/cs5150/php/modules/token-input-facebook.css" type="text/css" />
-
-
   <title>Band Sign-Up</title>
 </head>
 
@@ -15,7 +16,7 @@
 <body>
 
   <div class="container"> <!-- Container div -->
-    <!-- navBar and login -->
+    <!-- navBar and login and routing -->
     <?php require_once "../php/modules/login.php"; ?>
     <?php require_once "../php/modules/navigation.php"; ?>
     <?php require_once "../php/routing.php"; ?>
@@ -37,10 +38,15 @@
     return ($json['results'][0]['geometry']['location']['lat'].",".$json['results'][0]['geometry']['location']['lng'].",0.0");
 
   }
+
+  // Variables for server side validation
   $bandnameError = $descriptionError = $locationError = "";
 
+  // Check that the form was submitted
   if (isset($_POST['submitInfo'])) {
+    // If the user is not logged in then new account will be created
     if (!isset($_SESSION['logged_user'])) {
+      // Server side validation to check that forms have required fields filled
       if (empty($_POST['name'])) {
         $nameError = 'Missing';
       }
@@ -97,17 +103,20 @@
       $porchlocation = htmlentities($_POST['porchlocation']);
     }
 
-    // handle new user logic
+    // Creates a new user if currently not logged in
     if (!isset($_SESSION['logged_user'])) {
       if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['mobile']) && isset($_POST['password']) && isset($_POST['confirmPassword']) && $name != '' && $email != '' && $mobile != '' && $password != '' && $confirmPassword != '') {
-        
+        // Create dataabase connection
         require_once('../php/config.php');
         $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        // Check that the passwords match otherwise create a popup
         if ($password != $confirmPassword) {
           echo "<script type='text/javascript'>alert('Passwords do not match!');</script>";
         } else {
+          // Check that the email is not already in the database
           $result = $mysqli->query("SELECT * FROM users WHERE email = '$email'");
           $row = $result->fetch_row();
+          // If email is unique then insert new user information into database
           if (empty($row)) {
             $prep = $mysqli->prepare("INSERT INTO users (Email, Password, Name, ContactInfo) VALUES (?,?,?,?)");
             $prep->bind_param("ssss", $email, $password, $name, $mobile);
@@ -128,22 +137,22 @@
     $lat = $latlong[0];
     $long = $latlong[1];
 
-    // Insert into bands
+    // Insert into bands table
     $prep = $mysqli->prepare("INSERT INTO bands (Name, Description, Members, Comment, Conflicts) 
                               VALUES (?,?,?,?,?)");
     $prep->bind_param("sssss", $bandname, $banddescription, $bandmembers, $bandcomment, $bandconflicts);
     $prep->execute();
 
-    // Insert into IDs
+    // Insert into bandstoporchfests table
     $sql = "SELECT BandID FROM bands ORDER BY BandID DESC LIMIT 1";
     $result = $conn->query($sql);
     $bandID = $result->fetch_assoc()['BandID'];
-
     $prep = $mysqli->prepare("INSERT INTO bandstoporchfests (PorchfestID, BandID, PorchLocation, Latitude, Longitude) 
                               VALUES (?,?,?,?,?)");
     $prep->bind_param("sssss", $porchfestID, $bandID, $porchlocation, $lat, $long);
     $prep->execute();
 
+    // Insert into userstobands table
     if (!isset($_SESSION['logged_user'])) {
       $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
       $result = $mysqli->query($sql);
@@ -152,7 +161,6 @@
     else {
       $userID = $_SESSION['logged_user'];
     }
-
     $prep = $mysqli->prepare("INSERT INTO userstobands (UserID, BandID) VALUES (?,?)");
     $prep->bind_param("ss", $userID, $bandID);
     $prep->execute();
@@ -168,19 +176,17 @@
       }
     }
 
+    // Popup to show if queries successfully executed
     if ($prep->affected_rows) {
         echo "<script type='text/javascript'>alert('The band, $bandname, has been added successfully!.');</script>";
     } else {
       echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
     }
   }
+  
+  // Variables for server side validation
+  $nameError = $emailError = $mobileError = $passwordError = $confirmPasswordError = ""; 
 ?>
-
-
-
-    <?php $nameError = $emailError = $mobileError = $passwordError = $confirmPasswordError = ""; ?>
-
-
     
     <div class="row">
       <h1 style="text-align:center;"> 
@@ -197,7 +203,7 @@
       Already have an account?
     </button>
     <?php } ?>
-
+    <!-- Form for submitting account information -->
     <form role="form" class="form-horizontal" id='submit-info-form' method='POST'>
       <?php if (!isset($_SESSION['logged_user'])) { ?>
       <h4> Account Information </h4>
@@ -255,6 +261,7 @@
       <?php } ?>
       <br>
       <h4> Band Information </h4>
+      <!-- Form for submitting band information -->
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label"> Band Name </label>
           <div class="col-sm-10">
@@ -295,10 +302,12 @@
             // Create connection
             $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
+            // Get the porchfestID from the url
             $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Nickname = '%s'", PORCHFEST_NICKNAME);
             $result = $conn->query($sql);
             $porchfestID = $result->fetch_assoc()['PorchfestID'];
 
+            // Get the available timeslots for the porchfest
             $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $porchfestID . "' ORDER BY StartTime;";
 
             $result = $conn->query($sql);

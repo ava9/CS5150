@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php 
+# This page is for users who do not have an existing porchfest and want to create one
+session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,11 +14,15 @@
 <!-- BEGIN body -->
 <body>
 <?php 
+  // Variables for server side validation
   $nameError = $emailError = $mobileError = $passwordError = $confirmPasswordError = "";
   $porchfestNameError = $nicknameError = $descriptionError = $locationError = $dateError = $deadlineError = "";
 
+  // Check if the form was submitted
   if (isset($_POST['submitInfo'])) {
+    // If the user is not logged in then new account will be created
     if (!isset($_SESSION['logged_user'])) {
+      // Server side validation to check that forms have required fields filled
       if (empty($_POST['name'])) {
         $nameError = 'Missing';
       }
@@ -87,7 +94,7 @@
       $deadline = filter_var($_POST['deadline'], FILTER_SANITIZE_STRING);
     }
 
-    // handle new user logic
+    // Creates a new user if currently not logged in
     if (!isset($_SESSION['logged_user'])) {
       if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['mobile']) && isset($_POST['password']) && isset($_POST['confirmPassword']) && $name != '' && $email != '' && $mobile != '' && $password != '' && $confirmPassword != '') {
         
@@ -114,7 +121,7 @@
       }
     }
 
-    // handle new porchfest Logic
+    /// Create new porchfest from information submitted in form
     if (isset($_POST['porchfestName']) && isset($_POST['nickname']) && isset($_POST['description']) && isset($_POST['location']) && isset($_POST['date']) && isset($_POST['deadline']) && $porchfestName != '' && $nickname != '' && $description != '' && $location != '' && $date != '' && $deadline != '') {
       require_once('../php/config.php');
       $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
@@ -128,10 +135,12 @@
         echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
       }
 
+      // Get newest porchfestID that was just created
       $sql = "SELECT PorchfestID FROM porchfests ORDER BY PorchfestID DESC LIMIT 1";
       $result = $mysqli->query($sql);
       $porchfestID = $result->fetch_assoc();
 
+      // Get newest userID that was just created
       if (!isset($_SESSION['logged_user'])) {
         $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
         $result = $mysqli->query($sql);
@@ -141,6 +150,7 @@
         $userID = $_SESSION['logged_user'];
       }
 
+      // Insert into userstoporchfests table
       $prep = $mysqli->prepare("INSERT INTO userstoporchfests (UserID, PorchfestID) VALUES (?,?)");
       $prep->bind_param("ss", $userID, $porchfestID['PorchfestID']);
       $prep->execute();
@@ -165,6 +175,7 @@
     </button>
     <?php } ?>
 
+    <!-- Form for submitting account information -->
     <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='index.php'>
       <?php if (!isset($_SESSION['logged_user'])) { ?>
       <h4> Account Information </h4>
@@ -222,6 +233,7 @@
       <?php } ?>
       <a href="./existingporchfest"> Already have an existing Porchfest website? </a>
       <h4> Porchfest Information </h4>
+      <!-- Form for submitting porchfest information -->
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label"> Porchfest Name</label>
           <div class="col-sm-10">
@@ -300,6 +312,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0LuERw-moYeLnWy_55RoShmUbQ51Yh-o&libraries=places&callback=initAutocomplete"
         async defer></script>
 
+<!-- JavaScript to not submit the form on enter -->
 <script type='text/javascript'>
   $(document).ready(function() {
     $(window).keydown(function(event){

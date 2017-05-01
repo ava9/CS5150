@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php 
+# This page is where an organizer can edit their porchfest information and do scheduling.
+session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,6 +26,7 @@
       // add DB_USER and DB_PASSWORD later
       $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
+      // Get porchfestID from url
       $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME);
       $result = $conn->query($sql);
       $porchfestID = $result->fetch_assoc()['PorchfestID'];
