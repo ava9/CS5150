@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php 
+# This page is for browsing all of your porchfests whether you are a musician or an organizer
+session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,7 +52,7 @@
           </div> <!-- end col 1 div -->
           <div class="col-md-12"> <!-- begin col 2 div -->
             <table class="responsive table">
-              <tr data-status= "fixed">
+              <tr data-status= "fixed"> <!-- Headers for table -->
                 <th> Name </th>
                 <th> Date </th>
                 <th> Location </th>
@@ -59,7 +62,8 @@
                 <th> Published </th>
                 <th> Manage </th>
               </tr>
-              <?php                 
+              <?php   
+                  // Query to get all porchfests for the current logged in user              
                   $sql = "SELECT * 
                           FROM porchfests
                           INNER JOIN userstoporchfests ON userstoporchfests.PorchfestID = porchfests.PorchfestID
@@ -104,6 +108,7 @@
                         </tr>';
                   }
 
+                  // Query to get all porchfests that the user is a musician for 
                   $sql = "SELECT * 
                           FROM porchfests
                           INNER JOIN bandstoporchfests ON bandstoporchfests.PorchfestID = porchfests.PorchfestID

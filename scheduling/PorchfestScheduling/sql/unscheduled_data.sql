@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Apr 13, 2017 at 07:06 PM
+-- Generation Time: Apr 30, 2017 at 11:30 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.0.15
 
@@ -1051,7 +1051,6 @@ CREATE TABLE `bandstoporchfests` (
 --
 
 INSERT INTO `bandstoporchfests` (`BandID`, `PorchfestID`, `PorchLocation`, `Latitude`, `Longitude`, `TimeslotID`) VALUES
-(0, 0, 'PorchLocation', 0, 0, 0),
 (1, 1, '112 W Marshall St, Ithaca, NY 14850', 42.4463, -76.5002, 0),
 (2, 1, '202 Utica St, Ithaca, NY 14850', 42.4463, -76.4985, 0),
 (3, 1, '706 N Cayuga St, Ithaca, NY 14850', 42.4475, -76.4998, 0),
@@ -1255,6 +1254,7 @@ CREATE TABLE `porchfests` (
   `PorchfestID` int(11) NOT NULL,
   `URL` varchar(255) NOT NULL,
   `Name` varchar(255) NOT NULL,
+  `Nickname` varchar(255) NOT NULL,
   `Location` varchar(255) NOT NULL,
   `Date` date NOT NULL,
   `Description` text NOT NULL,
@@ -1266,8 +1266,8 @@ CREATE TABLE `porchfests` (
 -- Dumping data for table `porchfests`
 --
 
-INSERT INTO `porchfests` (`PorchfestID`, `URL`, `Name`, `Location`, `Date`, `Description`, `Deadline`, `Published`) VALUES
-(1, '', 'Ithaca Porchfest', 'Utica, NY', '2017-03-23', 'Porchfest began in 2007, inspired by some outdoor ukulele playing and a conversation between neighbors Gretchen Hildreth and Lesley Greene. They came up with the idea for it that day and gathered 20 bands to make it happen in September of that year. The number of bands has increased every year since then, with 185 in 2016.', '2017-03-31 10:00:00', 0);
+INSERT INTO `porchfests` (`PorchfestID`, `URL`, `Name`, `Nickname`, `Location`, `Date`, `Description`, `Deadline`, `Published`) VALUES
+(1, '', 'Ithaca Porchfest', 'ithaca', 'Utica, NY', '2017-03-23', 'Porchfest began in 2007, inspired by some outdoor ukulele playing and a conversation between neighbors Gretchen Hildreth and Lesley Greene. They came up with the idea for it that day and gathered 20 bands to make it happen in September of that year. The number of bands has increased every year since then, with 185 in 2016.', '2017-03-31 10:00:00', 0);
 
 -- --------------------------------------------------------
 

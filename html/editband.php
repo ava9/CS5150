@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php 
+# This page is where bands can edit the information they submitted
+session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,16 +20,20 @@
     // Create connection
     $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
+    // Gets porchfestID from url
     $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME);
     $result = $conn->query($sql);
     $porchfestID = $result->fetch_assoc()['PorchfestID'];
 
+    // Gets bandID from url
     $sql = sprintf("SELECT BandID FROM bands WHERE bands.Name = '%s'", BAND_NAME);
     $result = $conn->query($sql);
     $bandID = $result->fetch_assoc()['BandID'];
 
   $bandnameError = $descriptionError = $locationError = "";
+  // Checks if form was submitted
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Checks to make sure required fields are not empty in form
     if (empty($_POST['bandname'])) {
       $bandnameError = 'Missing';
     }
@@ -49,16 +56,20 @@
       $porchlocation = htmlentities($_POST['porchlocation']);
     }
 
+    // Query to update information in the bands table
     $sql = "UPDATE bands SET Name='" . $bandname . "', Description='" . $banddescription . "', 
             Members = '" . $bandmembers . "', Comment = '" . $bandcomment . "', Conflicts = '" . $bandconflicts . "' WHERE BandID= '" . $bandID . "'";
     $result = $conn->query($sql);
     
+    // Query to update information in the bandstoporchfests table
     $sql = "UPDATE bandstoporchfests SET PorchLocation='" . $porchlocation . "'  WHERE PorchfestID = '" . $porchfestID . "' AND BandID= '" . $bandID . "'";
     $result = $conn->query($sql);
 
+    // First deletes all bandavailabletimes
     $sql = "DELETE FROM bandavailabletimes WHERE BandID= '" . $bandID . "'";
     $result = $conn->query($sql);
 
+    // Then adds back all new available times to bandavailabletimes
     if (isset($_POST['available'])) {
       $available = $_POST['available'];
       foreach($available as $timeslot) {
@@ -68,6 +79,7 @@
     }
   }
 
+  // Gets all band information
   $sql = sprintf("SELECT * FROM bands 
         INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID
         WHERE bandstoporchfests.PorchfestID = '%s' AND bands.BandID = '%s'", 
@@ -76,6 +88,7 @@
   $result = $conn->query($sql);
   $band = $result->fetch_assoc();
   ?>
+<!-- Form for bands to change their information with current information from database displayed -->
 <div class="container" style="padding-top: 60px;">
   <div class="row">
     <!-- edit form column -->
@@ -122,8 +135,10 @@
           <label for="name" class="col-lg-3 control-label"> Available Times </label>
           <div class="col-lg-8">
           <?php 
+            // Query to get all available timeslots from porchfest
             $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID= '" . $porchfestID . "' ORDER BY StartTime";
 
+            // Displays all available timeslots and then checks the boxes that the band already indicated as available
             $result = $conn->query($sql);
             while($timeslot = $result->fetch_assoc()) {
               $sql2 = sprintf("SELECT * FROM bandavailabletimes WHERE BandID = '%s' AND TimeslotID = '%s'", 
@@ -161,6 +176,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0LuERw-moYeLnWy_55RoShmUbQ51Yh-o&libraries=places&callback=initAutocomplete"
         async defer></script>
 
+<!-- JavaScript to prevent forms from submitting on enter -->
 <script type='text/javascript'>
 $(document).ready(function() {
   $(window).keydown(function(event){

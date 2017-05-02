@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php 
+# This page is where an organizer can edit their porchfest information and do scheduling.
+session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,6 +26,7 @@
       // add DB_USER and DB_PASSWORD later
       $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
+      // Get porchfestID from url
       $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME);
       $result = $conn->query($sql);
       $porchfestID = $result->fetch_assoc()['PorchfestID'];
@@ -125,13 +129,28 @@
             </div>  <!-- end porchfestinfo div -->
           </div> <!-- end manageporchfest div -->
           <div class="tab-pane fade" id="bands"> <!-- begin bands div -->
-            <div class="col-xs-offset-6 col-xs-6 col-sm-offset-9 col-sm-3">
+            <div class="btn-group" data-toggle="buttons">
+              <?php
+                $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $porchfestID . "' ORDER BY StartTime";
+
+                $result = $conn->query($sql);
+
+                while($timeslot = $result->fetch_assoc()) {
+                  $start = date_create($timeslot['StartTime']);
+                  $end = date_create($timeslot['EndTime']);
+
+                  echo '<label class="btn btn-primary" id="' . $timeslot['TimeslotID'] . '"><input class="filters" type="checkbox" autocomplete="off">' . date_format($start, 'g:iA') . '-' . date_format($end, 'g:iA') . '</label>';
+
+                }
+              ?>
+            </div>
+            <div class="col-xs-6 col-xs-offset-6 col-sm-4 col-sm-offset-8">
               <input id="search" name="search" type="text" placeholder="Search..."/>
             </div>
 
             <div class="table-container table-responsive bands-table" id="bandstable"> <!-- begin table-container div -->
               <table class="responsive table"> <!-- begin table -->
-                <tr data-status= "fixed">
+                <tr class='fixed' data-status= "fixed">
                   <th> Name </th>
                   <th> Description </th>
                   <th> Members </th>
@@ -168,7 +187,7 @@
                     // All spaces (' ') become '-' and all '-' become '--'.
                     $urlbandname = str_replace(" ", "-", str_replace("-", "--", $bandname));
 
-                    echo '<tr>';
+                    echo '<tr class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . '">';
                     echo '<td>' . $band['Name'] . '</td>';
                     echo '<td>' . $band['Description'] . '</td>';
                     echo '<td> List of members </td>';
@@ -367,6 +386,25 @@
     $.validate({
       lang: 'en',
       modules : 'date'
+    });
+
+    var filter = '#bandstable tr:not(.fixed)';
+    $('.filters').change(function() {
+      // if the button is toggled, aka want to filter by this.
+      var id = $(this).parent().attr('id');
+      if($(this).parent().hasClass('active')) {
+        $('#bandstable tr.' + id).show();
+        filter = filter + ':not(tr.' + id + ')';
+      } else {
+        // need to remove this filter
+        filter = filter.replace(':not(tr.' + id + ')', '');
+      }
+
+      $(filter).hide();
+
+      if (filter == '#bandstable tr:not(.fixed)') {
+        $('tr').show();
+      }
     });
 
     function enable(id) {

@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php 
+# This page is where attendees can view information about a porchfest
+session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,7 +56,6 @@
       <ul class="nav nav-pills">
         <li class="active"><a href="#name" data-toggle="tab"> Performers </a></li>
         <li><a href="#date" data-toggle="tab"> Schedule </a></li>
-        <li><a href="#map" data-toggle="tab"> Map </a></li>
       </ul>
     </div> <!-- end row div -->
 
@@ -62,6 +64,7 @@
 
         <div class="tab-pane fade in active" id="name"> <!-- begin name div -->
           <?php 
+            // Displays bands in alphabetical order
             $sql = sprintf("SELECT bands.BandID, bands.Name, bands.Description FROM bands 
                     INNER JOIN bandstoporchfests WHERE bands.BandID = bandstoporchfests.BandID 
                     AND bandstoporchfests.PorchfestID = '%s'
@@ -92,6 +95,7 @@
 
         <div class="tab-pane fade in" id="date"> <!-- begin date div -->
           <?php 
+            // Query to get the band information 
             $sql = "SELECT bands.BandID, Name, bandstoporchfests.PorchfestID, bandstoporchfests.TimeslotID, StartTime, EndTime 
                     FROM bands 
                     INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
@@ -102,6 +106,7 @@
 
             $lasttime = '';
 
+            // Orders bands by scheduled timeslot and displays
             while($band = $result->fetch_assoc()) {
               if ($lasttime != $band['StartTime']) {
                 $starttime = date_format(date_create($band['StartTime']), 'g:iA');
@@ -115,17 +120,13 @@
             }
           ?>
         </div> <!-- end date div -->
-
-        <div class="tab-pane fade in" id="map"> <!-- begin map div -->
-          <img src="/cs5150/img/map.png" alt="map" id = "map">
-        </div> <!-- end map div -->
-      
       </div> <!-- end tab-content div -->
     </div> <!-- end row div -->
   </div> <!-- end container div -->
 
 
   <?php 
+    // Query to get all band information
     $sql = "SELECT bands.BandID, Name, Description, PorchLocation, bandstoporchfests.PorchfestID, bandstoporchfests.TimeslotID, StartTime, EndTime 
             FROM bands 
             INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
@@ -134,6 +135,7 @@
 
     $result = $conn->query($sql);
 
+    // Creates the modal for each band so that when clicking on the band a modal will appear with band information
     while($band = $result->fetch_assoc()) {
       $starttime = date_format(date_create($band['StartTime']), 'g:iA');
       $endtime = date_format(date_create($band['EndTime']), 'g:iA');
