@@ -119,7 +119,8 @@
       require_once('../php/config.php');
       $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-      $prep = $mysqli->prepare("INSERT INTO porchfests (Name, Nickname, Location, Date, Description, Deadline) VALUES (?,?,?,?,?)");
+      $prep = $mysqli->prepare("INSERT INTO porchfests (Name, Nickname, Location, Date, Description, Deadline) 
+                                VALUES (?,?,?,?,?,?)");
       $prep->bind_param("ssssss", $porchfestName, $nickname, $location, $date, $description, $deadline);
       $prep->execute();
       if ($prep->affected_rows) {
@@ -165,7 +166,7 @@
     </button>
     <?php } ?>
 
-    <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='index.php'>
+    <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='.'>
       <?php if (!isset($_SESSION['logged_user'])) { ?>
       <h4> Account Information </h4>
       <div class="form-group">
@@ -220,7 +221,7 @@
       </div>
       <br>
       <?php } ?>
-      <a href="./existingporchfest"> Already have an existing Porchfest website? </a>
+      <?php create_hyperlink(EXISTING_PORCHFEST_URL, "Already have an existing Porchfest?") ?>
       <h4> Porchfest Information </h4>
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label"> Porchfest Name</label>

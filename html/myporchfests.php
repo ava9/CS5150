@@ -34,7 +34,9 @@
           <!-- Trigger the modal with a button -->
           <div class="col-xs-12 col-sm-4 col-md-3">
             <div class="btn-group">
-              <a href = "http://localhost/cs5150/html/"><button type="button" class="btn btn-primary">Create Porchfest</button></a>
+              <?php 
+                create_hyperlink(INDEX_URL, '<button type="button" class="btn btn-primary">Create Porchfest</button>');
+              ?>
             </div>
           </div>
 

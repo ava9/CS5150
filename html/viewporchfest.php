@@ -20,10 +20,6 @@
     // add DB_USER and DB_PASSWORD later
     $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-    $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME);
-    $result = $conn->query($sql);
-    $porchfestID = $result->fetch_assoc()['PorchfestID'];
-
     // Check connection
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
@@ -66,25 +62,30 @@
 
         <div class="tab-pane fade in active" id="name"> <!-- begin name div -->
           <?php 
-            $sql = "SELECT BandID, Name, Description FROM bands ORDER BY Name;";
-
+            $sql = sprintf("SELECT bands.BandID, bands.Name, bands.Description FROM bands 
+                    INNER JOIN bandstoporchfests WHERE bands.BandID = bandstoporchfests.BandID 
+                    AND bandstoporchfests.PorchfestID = '%s'
+                    ORDER BY Name", PORCHFEST_ID);
             $result = $conn->query($sql);
 
             $lastletter = '';
 
-            while($band = $result->fetch_assoc()) {
-              if ($lastletter != substr($band['Name'], 0, 1)) {
-                if ($lastletter != '') {
-                  echo '</div>';
-                }
-                echo '<div id = "' . strtolower(substr($band['Name'], 0, 1)) . '">';
-                $lastletter = substr($band['Name'], 0, 1);
-              }
-              echo '<span class="band" data-toggle="modal" data-target="#bandModal' . $band['BandID'] . '">' . $band['Name'] . '</span>';
+            if ($result->num_rows == 0) {
+              echo "Looks like no bands have signed up yet. Check back later!";
             }
-
-            echo '</div>';
-
+            else {
+              while($band = $result->fetch_assoc()) {
+                if ($lastletter != substr($band['Name'], 0, 1)) {
+                  if ($lastletter != '') {
+                    echo '</div>';
+                  }
+                  echo '<div id = "' . strtolower(substr($band['Name'], 0, 1)) . '">';
+                  $lastletter = substr($band['Name'], 0, 1);
+                }
+                echo '<span class="band" data-toggle="modal" data-target="#bandModal' . $band['BandID'] . '">' . $band['Name'] . '</span>';
+              }
+              echo '</div>';
+            }
           ?>
          
         </div> <!-- end name div -->
@@ -95,7 +96,7 @@
                     FROM bands 
                     INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
                     INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID 
-                    WHERE bandstoporchfests.PorchfestID = '" . $porchfestID . "' ORDER BY StartTime";
+                    WHERE bandstoporchfests.PorchfestID = '" . PORCHFEST_ID . "' ORDER BY StartTime";
 
             $result = $conn->query($sql);
 
@@ -129,7 +130,7 @@
             FROM bands 
             INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
             INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID 
-            WHERE bandstoporchfests.PorchfestID = '" . $porchfestID . "'";
+            WHERE bandstoporchfests.PorchfestID = '" . PORCHFEST_ID . "'";
 
     $result = $conn->query($sql);
 

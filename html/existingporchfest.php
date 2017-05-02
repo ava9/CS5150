@@ -59,14 +59,14 @@
       if (empty($_POST['nickname'])) {
         $nicknameError = 'Missing';
       }
+      else {
+        $nickname = filter_var($_POST['nickname'], FILTER_SANITIZE_STRING);
+      }
       if (empty($_POST['porchfestURL'])) {
         $urlError = 'Missing';
       }
       else {
         $porchfestURL = filter_var($_POST['porchfestURL'], FILTER_SANITIZE_STRING);
-      }
-      else {
-        $nickname = filter_var($_POST['nickname'], FILTER_SANITIZE_STRING);
       }
       if (empty($_POST['description'])) {
         $descriptionError = 'Missing';
@@ -173,7 +173,7 @@
     </button>
     <?php } ?>
 
-    <form role="form" class="form-horizontal" id="submit-info-form" method="POST" action="existingporchfest.php">
+    <form role="form" class="form-horizontal" id="submit-info-form" method="POST" action=".">
       <?php if (!isset($_SESSION['logged_user'])) { ?>
       <h4> Account Information </h4>
       <div class="form-group">
@@ -232,7 +232,7 @@
       </div>
       <?php } ?>
       <br>
-      <a href="/cs5150/html/"> Want to create a new Porchfest website? </a>
+      <?php create_hyperlink(INDEX_URL, 'Want to create a new Porchfest website?'); ?>
       <h4> Porchfest Information </h4>
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label">
