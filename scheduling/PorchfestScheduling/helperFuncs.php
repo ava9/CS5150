@@ -87,7 +87,7 @@ function computeMinDist($timeSlotID, $sched) {
     $closestBandID = $bandObj->calculateKNearest($sched, 1)[0];
     $distance = $bandObj->getDistance($closestBandID);
 
-    assert($distance != 0, "Timeslot should never have two bands with the same porch location!");
+    // assert($distance != 0, "Timeslot should never have two bands with the same porch location!");
 
     if ($distance < $minDist) {
       $minDist = $distance;
@@ -103,6 +103,28 @@ function computeMinDist($timeSlotID, $sched) {
 
   return $minDist;
 
+}
+
+
+
+/*
+ * Computes the distance of each band at each timeslot of a schedule and
+ * flags the band if any of its neighbors are within $distance.
+ * 
+ * @param $distance        Distance (in meters) to check 
+ * @param $schedule        A Schedule object
+ *
+ */
+function flagBandsAtDist($distance, $schedule) {
+  global $timeslotsPorchfests;
+  foreach ($timeslotsPorchfests as $timeslotID) {
+    $bandsArr = $schedule->getBandsAtSlot($timeslotID);
+    foreach ($bandsArr as $bandObj) {
+      if (!bandOverMinDist($bandsArr, $bandObj, $distance)) {
+        $bandObj->flag = true;
+      }
+    }
+  }
 }
   
 /*
@@ -137,23 +159,27 @@ function tryToMoveBand($id, $schedule) {
 }
 
 /*
- * Returns true if band is farther than MIN_DISTANCE away from every band in
+ * Returns true if band is farther than $minDist away from every band in
  * $bandsArr
  *
  * @param $bandsArr     Array of Band objects
  * @param $band         Band object
+ * @param $minDist      Int representing minimum distance to check (in meters)
  * 
  * @return              A boolean
  */
-function bandOverMinDist($bandsArr, $band) {
-  global $MIN_DISTANCE;
+function bandOverMinDist($bandsArr, $band, $minDist) {
 
   if (sizeof($bandsArr) == 0) {
     return true;
   }
 
   foreach ($bandsArr as $b){
-    if ($band->getDistance($b->id) <= $MIN_DISTANCE) {
+    if ($band->id == $b->id) {
+      continue;
+    }
+    
+    if ($band->getDistance($b->id) <= $minDist) {
       return false;
     }
   }

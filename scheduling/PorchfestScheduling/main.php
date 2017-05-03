@@ -45,7 +45,6 @@ require_once "init.php";
 $NUM_SCHEDS_TO_GENERATE = 1;
 $MIN_DISTANCE = 25; // minimum distance in meters allowed between playing bands
 $kNeighbors = 10; //how many nearest neighbors used to calculate distance variance
-$NUM_SCHEDS_TO_GENERATE;
 
 $resultBandsTimeSlots;
 $resultBandsPorchfests;
@@ -71,6 +70,7 @@ $bandConflicts;
 /* create schedule then repeat */
 function run(){
   global $NUM_SCHEDS_TO_GENERATE;
+  global $MIN_DISTANCE;
   global $resultBandsTimeSlots;
   global $resultBandsPorchfests;
   global $resultTimeslotsPorchfests;
@@ -202,6 +202,9 @@ function run(){
       $result = $intermediateSchedule;
       echo "finished improving with score " . $result->score->toInt() . "\n";
     }
+
+    flagBandsAtDist($MIN_DISTANCE * 2, $result);
+
   }
   
   #******* POST PROCESS *******
@@ -214,7 +217,20 @@ function run(){
       if ($conn->query($sql) === false) {
         DEBUG_ECHO("Error: " . $sql . "<br>" . $conn->error . "\n");
       }
+
+      // Update flagged column for each band in the DB
+      if ($b->flag) {
+        $sql = "UPDATE bandstoporchfests SET Flagged = 1 WHERE BandID = " . $id . " AND PorchfestID = " . $PorchfestID;
+        if ($conn->query($sql) === false) {
+          DEBUG_ECHO("Error: " . $sql . "<br>" . $conn->error . "\n");
+        }
+      }
+
     }
+  }
+  $setScheduled = "UPDATE porchfests SET Scheduled = 1 WHERE PorchfestID = " . $PorchfestID;
+  if ($conn->query($setScheduled) === false) {
+    DEBUG_ECHO("Error: " . $setScheduled . "<br>" . $conn->error . "\n");
   }
   echo "Success!";
 }

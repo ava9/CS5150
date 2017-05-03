@@ -23,7 +23,7 @@ class Score {
    * As of right now, we only output the minDistance. 
    */
   function toInt() {
-    return $this->minDistance;
+    return $this->variance;
   }
 
   /*

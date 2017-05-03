@@ -85,6 +85,7 @@ class Schedule {
   function randomSwap($band) {
     //array of all timeslots available for a particular porchfest
     global $timeslotsPorchfests; 
+    global $MIN_DISTANCE;
     
     $worstTimeSlot = $band->slot;
     
@@ -98,12 +99,12 @@ class Schedule {
       if (!$flag){
         $timeslotID = $timeslotsPorchfests[$i];
         if (noConflicts($this->schedule[$timeslotID], $band) &&
-            bandOverMinDist($this->schedule[$timeslotID], $band)) {
+            bandOverMinDist($this->schedule[$timeslotID], $band, $MIN_DISTANCE)) {
 
           shuffle($this->schedule[$timeslotID]);
           foreach ($this->schedule[$timeslotID] as $possibleBandToSwap) {
             if (noConflicts($this->schedule[$worstTimeSlot], $possibleBandToSwap) && 
-                bandOverMinDist($this->schedule[$worstTimeSlot], $possibleBandToSwap)
+                bandOverMinDist($this->schedule[$worstTimeSlot], $possibleBandToSwap, $MIN_DISTANCE)
               ){
 
               $this->delete($timeslotID, $possibleBandToSwap);

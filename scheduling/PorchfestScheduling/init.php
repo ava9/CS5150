@@ -89,6 +89,7 @@ function populateBandConflicts(){
  */
 function createBandObjects(){
   DEBUG_ECHO("creating band objects\n");
+  global $MIN_DISTANCE;
   global $resultBands;
   global $bandsHashMap;         // HashMap<int id, Band band> 
   global $bandsTimeSlots;       // HashMap<BandID, TimeslotID>
@@ -116,8 +117,21 @@ function createBandObjects(){
     if (!$conflicts) {
         $conflicts = [];
     }
-    $bandsHashMap[$bandId] = new Band($bandId, $bandName, $bandLatLng["lat"], $bandLatLng["lng"], $availableTimeSlots, $conflicts, -1, []);
+    $bandsHashMap[$bandId] = new Band($bandId, $bandName, $bandLatLng["lat"], $bandLatLng["lng"], $availableTimeSlots, $conflicts, -1, [], []);
   }
+
+  // Treat violation of MIN_DISTANCE the same as conflicts
+  foreach ($bandsHashMap as $bandID => $bandObj) {
+    foreach ($bandsHashMap as $otherBandID => $otherBandObj) {
+      if ($bandID == $otherBandID) {
+        continue;
+      }
+      if ($bandObj->getDistance($otherBandID) < $MIN_DISTANCE) {
+        array_push($bandObj->distanceConflicts, $otherBandID);
+      }
+    }
+  }
+
   DEBUG_ECHO("created all band objects\n");
   return $bandsHashMap;
 }
@@ -168,8 +182,9 @@ function generateBaseSchedule() {
   global $bandsWithXTimeSlots;      // HashMap<int numberOfTimeSlots, int[] bandIds> max number of time slots a band can play in
   global $totalNumTimeSlots;        // total number of timeslots for a porchfest
   global $timeslotsPorchfests;      // array of all timeslots available for a particular porchfest
+  global $MIN_DISTANCE;
   
-  $success = true;
+  $baseScheduleGenerated = true;
 
   DEBUG_ECHO("generating base schedule\n");
   $bandsHashMap = createBandObjects();
@@ -209,7 +224,7 @@ function generateBaseSchedule() {
         $slotID = array_keys($schedule->schedule)[$i];
         $isAvailable = $band->availableTimeSlots[$slotID];
         $hasNoConflicts = noConflicts($schedule->schedule[$slotID], $band);
-        $locationOK = bandOverMinDist($schedule->schedule[$slotID], $band);
+        $locationOK = bandOverMinDist($schedule->schedule[$slotID], $band, $MIN_DISTANCE);
         if ($isAvailable && $hasNoConflicts && $locationOK){
           // band can play at this time
           $schedule->add($slotID, $band);
@@ -233,24 +248,39 @@ function generateBaseSchedule() {
   foreach ($unassignedBandIDs as $uBandID) {
     $uBand = $bandsHashMap[$uBandID];
     $conflictingIDs = $uBand->getConflicts();
+    $success = false;
     foreach ($conflictingIDs as $conflictingBandID) {
+      DEBUG_ECHO("resolving conflict for " . $uBand->id . "\n");
       $band = $bandsHashMap[$conflictingBandID];
       $oldTimeSlot = $band->slot;
       $success = tryToMoveBand($conflictingBandID, $schedule);
       if ($success) {
         $schedule->add($oldTimeSlot, $uBand);
         $uBand->slot = $oldTimeSlot;
+        DEBUG_ECHO("updating slot for band " . $id . "... moving it to " . $oldTimeSlot . "\n");
         break;
       }
     }
     if (!$success) {
-      die("this is actually impossible. exit with grace.");
+      // die("this is actually impossible. exit with grace.");
+      foreach ($uBand->availableTimeSlots as $timeslotID => $available) {
+        if ($available && noConflicts($schedule->getBandsAtSlot($timeslotID), $uBand)) {
+          $uBand->slot = $timeslotID;
+          $schedule->add($timeslotID, $uBand);
+          DEBUG_ECHO("no sensible slot to put this band in, so we place it in a nonconflicting slot hoping that our 
+            algorithm will fix the min distance issue, so we place it in a nonconflicting slot hoping that our algorithm will 
+            fix the min distance issue for band " . $uBand->id . "... moving it to " . $timeslotID . "\n");
+          $success = true;
+          break;
+        }
+      }
+      $baseScheduleGenerated = $baseScheduleGenerated && $success;
     }
   }
   DEBUG_ECHO("generated schedule!\n");
   DEBUG_ECHO("scoring the schedule...\n");
   $schedule->score();
-  return array($success, $schedule);
+  return array($baseScheduleGenerated, $schedule);
 }
 
 ?>

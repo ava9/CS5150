@@ -5,7 +5,7 @@
  */
 class Band {
 	
-  function __construct($ID, $name, $lat, $lng, $availableTimeSlots, $conflicts, $slot, $distances) {
+  function __construct($ID, $name, $lat, $lng, $availableTimeSlots, $conflicts, $slot, $distances, $distanceConflicts) {
     $this->id = $ID;                                  // int
     $this->name = $name;                              // String         # say, "The Amazing Crooners"
     $this->lat = $lat;                                // float          # say, 42.450962
@@ -15,6 +15,8 @@ class Band {
     $this->conflicts = $conflicts;                    // int[]          # say, [ 11111 ] band IDs that we conflict with
     $this->slot = $slot;                              // int            # initially -1 until assigned
     $this->distances = $distances;                    // hashmap (int bandID => int distance)
+    $this->distanceConflicts = $distanceConflicts;    // int[]          # bandIDs that violate the minimum distance
+    $this->flag = false;
   }
   
   /*
@@ -94,7 +96,8 @@ class Band {
    * @return    A new copy of this band object
    */
   function __clone() {
-    return new Band($this->id, $this->name, $this->lat, $this->lng, $this->availableTimeSlots, $this->conflicts, $this->slot, $this->distances);
+    return new Band($this->id, $this->name, $this->lat, $this->lng, $this->availableTimeSlots, 
+      $this->conflicts, $this->slot, $this->distances, $this->distanceConflicts);
   }
 
 }
