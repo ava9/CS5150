@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php 
+# This page is where a user can edit their account information
+session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,9 +20,12 @@
     $result = $conn->query($sql);
     $user = $result->fetch_assoc();
 
+    // Variables for server side validation
     $nameError = $emailError = $mobileError = $passwordError = $confirmPasswordError = "";
 
+    // Check if the form was submitted
     if (isset($_POST['submitInfo'])) {
+      // Makes sure that required fields are filled out
       if (empty($_POST['name'])) {
         $nameError = 'Missing';
       }
@@ -80,7 +86,7 @@
 <div class="container" style="padding-top: 60px; text-align: center;">
   <h1 class="page-header">Edit Profile</h1>
   <div class="row">
-    <!-- edit form column -->
+    <!-- Form for editing account information with current information from database displayed -->
     <div class="col-md-8 col-sm-6 col-xs-12 col-centered personal-info">
       <h3>Personal Info</h3>
       <form class="form-horizontal row-centered" role="form" method="post">
