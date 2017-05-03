@@ -232,7 +232,7 @@ session_start();
       </div>
       <br>
       <?php } ?>
-      <?php create_hyperlink(EXISTING_PORCHFEST_URL, "Already have an existing Porchfest?") ?>
+      <?php create_hyperlink(EXISTING_PORCHFEST_URL, "Already have an existing Porchfest?"); ?>
       <h4> Porchfest Information </h4>
       <!-- Form for submitting porchfest information -->
       <div class="form-group">
