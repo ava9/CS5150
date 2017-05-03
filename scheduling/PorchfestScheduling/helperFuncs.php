@@ -120,8 +120,10 @@ function flagBandsAtDist($distance, $schedule) {
   foreach ($timeslotsPorchfests as $timeslotID) {
     $bandsArr = $schedule->getBandsAtSlot($timeslotID);
     foreach ($bandsArr as $bandObj) {
-      if (!bandOverMinDist($bandsArr, $bandObj, $distance)) {
-        $bandObj->flag = true;
+      if (!bandOverMinDist($bandsArr, $bandObj, 0)) {
+        $bandObj->flag = 1;
+      } else if (!bandOverMinDist($bandsArr, $bandObj, $distance)) {
+        $bandObj->flag = 2;
       }
     }
   }
@@ -178,7 +180,7 @@ function bandOverMinDist($bandsArr, $band, $minDist) {
     if ($band->id == $b->id) {
       continue;
     }
-    
+
     if ($band->getDistance($b->id) <= $minDist) {
       return false;
     }
