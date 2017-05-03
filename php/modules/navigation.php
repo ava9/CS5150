@@ -1,3 +1,7 @@
+<?php
+    require_once("stdHead.php");
+?>
+
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -8,13 +12,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/cs5150/html/" id="navbrand"> Porchfest </a>
+            <?php
+                echo '<a class="navbar-brand" href="' . INDEX_URL . '" id="navbrand"> Porchfest </a>';
+            ?>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-inverse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-inverse navbar-nav navbar-right">
                 <li>
-                    <a href="/cs5150/html/browse"> Browse Porchfests </a>
+                    <?php create_hyperlink(BROWSE_PORCHFEST_URL, 'Browse Porchfests'); ?>
                 </li>
                 <?php 
                     // user is logged in
@@ -23,8 +29,8 @@
                         <li class='dropdown'>
                                 <a href='#' class='dropdown-toggle' data-toggle='dropdown'> My Account </a>
                                 <ul class='dropdown-menu'>
-                                    <li><a href='/cs5150/html/myporchfests'> My Porchfests </a></li>
-                                    <li><a href='/cs5150/html/profile'> My Profile </a></li>
+                                    <li><?php create_hyperlink(MY_PORCHFEST_URL, 'My Porchfests'); ?></li>
+                                    <li><?php create_hyperlink(PROFILE_URL, 'My Profile'); ?></li>
                                 </ul>
                         </li>
                         

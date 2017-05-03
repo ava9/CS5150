@@ -17,3 +17,23 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <script type="text/javascript" src="/cs5150/js/jquery.tokeninput.js"></script>
+
+<!-- URL Links for every website page -->
+<?php
+	$root_dir = '/cs5150/html/';
+
+	define('INDEX_URL', $root_dir);
+	define('EXISTING_PORCHFEST_URL', $root_dir . 'existingporchfest');
+	define('BROWSE_PORCHFEST_URL', $root_dir . 'browse');
+	define('MY_PORCHFEST_URL', $root_dir . 'myporchfests');
+	define('PROFILE_URL', $root_dir . 'profile');
+
+	/**
+	 * Given a desired url to link to and text to display on the website,
+	 * create a <a> HTML tag. Used to link to other pages in HTML code.
+	 */
+	function create_hyperlink($url, $text) {
+		echo sprintf('<a href="%s">%s</a>', $url, $text);
+	}
+
+?>
