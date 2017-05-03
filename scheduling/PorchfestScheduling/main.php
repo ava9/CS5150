@@ -160,11 +160,9 @@ function run(){
       }
 
       // Update flagged column for each band in the DB
-      if ($b->flag > 0) {
-        $sql = "UPDATE bandstoporchfests SET Flagged = " . $b->flag . " WHERE BandID = " . $id . " AND PorchfestID = " . $PorchfestID;
-        if ($conn->query($sql) === false) {
-          DEBUG_ECHO("Error: " . $sql . "<br>" . $conn->error . "\n");
-        }
+      $sql = "UPDATE bandstoporchfests SET Flagged = " . $b->flag . " WHERE BandID = " . $id . " AND PorchfestID = " . $PorchfestID;
+      if ($conn->query($sql) === false) {
+        DEBUG_ECHO("Error: " . $sql . "<br>" . $conn->error . "\n");
       }
 
     }
