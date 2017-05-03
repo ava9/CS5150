@@ -23,7 +23,7 @@ function printStyle($colorArr, $i){
 	// TODO print style
 	$s = '"' .$i . '"';
 	$i = $i - 1;
-	$i = $i % 20;
+	$i = $i % 18;
 //	fwrite($myfile, "\t\t\t<Style id=".$s.">\n");
 //	fwrite($myfile, "\t\t\t\t<LabelStyle>\n");
 //	fwrite($myfile, "\t\t\t\t\t<color>".$colorArr[$i]."</color>\n");
@@ -35,8 +35,8 @@ function printStyle($colorArr, $i){
 
 $colorArray = array("icon-1899-000000", "icon-1899-006064", "icon-1899-0097A7", "icon-1899-01579B", "icon-1899-0288D1",
                     "icon-1899-0F9D58", "icon-1899-1A237E", "icon-1899-558B2F", "icon-1899-673AB7", "icon-1899-757575",
-                    "icon-1899-795548", "icon-1899-7CB342", "icon-1899-817717", "icon-1899-9C27B0", "icon-1899-C2185B",
-                    "icon-1899-E65100", "icon-1899-F57C00", "icon-1899-F9A825", "icon-1899-FFD600", "icon-1899-FFEA00");
+                    "icon-1899-795548", "icon-1899-7CB342", "icon-1899-817717", "icon-1899-9C27B0", //"icon-1899-C2185B",
+                    "icon-1899-E65100", "icon-1899-F57C00", "icon-1899-F9A825", "icon-1899-FFD600"); //, "icon-1899-FFEA00");
 shuffle($colorArray);
 $myfile = fopen("output.kml", "w");
 fwrite($myfile, "<?xml version='1.0' encoding='UTF-8'?>\n");
@@ -63,7 +63,7 @@ if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 } 
 
-$sql = "SELECT bands.Name, bands.Description, bandstoporchfests.Latitude, bandstoporchfests.Longitude, porchfesttimeslots.StartTime, bands.BandID, bandstoporchfests.TimeslotID FROM bands INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID INNER JOIN porchfesttimeslots ON porchfesttimeslots.TimeslotID = bandstoporchfests.TimeslotID ORDER BY porchfesttimeslots.StartTime;";
+$sql = "SELECT bands.Name, bands.Description, bandstoporchfests.Latitude, bandstoporchfests.Longitude, porchfesttimeslots.StartTime, bands.BandID, bandstoporchfests.TimeslotID, bandstoporchfests.Flagged FROM bands INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID INNER JOIN porchfesttimeslots ON porchfesttimeslots.TimeslotID = bandstoporchfests.TimeslotID ORDER BY porchfesttimeslots.StartTime;";
 
 $result = $conn->query($sql);
 $colorIndex;
@@ -87,6 +87,7 @@ if ($result->num_rows > 0) {
 		$bandLong = $row["Longitude"];
 		$bandTimeSlotID = $row["TimeslotID"];
 		$bandStartTime = $row["StartTime"];
+                $flagged = $row["Flagged"];
 
 		// now you have the band name, decription, location, and start time
 		// $bandName, $bandDescription, $bandLocation, $bandStartTime
@@ -115,7 +116,7 @@ if ($result->num_rows > 0) {
 			$flipBit = 1;
 			$internalCount = 1;
 			$colorIndex = $colorIndex + 1;
-			$colorIndex = $colorIndex % 20;
+			$colorIndex = $colorIndex % 18;
 		}
 		
 		if (($flipBit == 0) && ($internalCount == 1)){
@@ -143,7 +144,15 @@ if ($result->num_rows > 0) {
 		fwrite($myfile, "\t\t\t<Placemark>\n");
 		fwrite($myfile, "\t\t\t\t<name>".$bandName."</name>\n");
 		fwrite($myfile, "\t\t\t\t<description>".$bandDescription."</description>\n");
-		fwrite($myfile, "\t\t\t\t<styleUrl>#".$colorArray[$colorIndex]."</styleUrl>\n");
+                if ($flagged == 1) {
+                    // color red icon-1899-C2185B
+                    fwrite($myfile, "\t\t\t\t<styleUrl>#icon-1899-C2185B</styleUrl>\n");
+                } elseif ($flagged == 2) {
+                    // color yellow icon-1899-FFEA00
+                    fwrite($myfile, "\t\t\t\t<styleUrl>#icon-1899-FFEA00</styleUrl>\n");
+                } else {
+                    fwrite($myfile, "\t\t\t\t<styleUrl>#".$colorArray[$colorIndex]."</styleUrl>\n");
+                }
 		fwrite($myfile, "\t\t\t\t<Point>\n");
 		fwrite($myfile, "\t\t\t\t\t<coordinates>".$bandLong.",".$bandLat.",0.0</coordinates>\n");
 		fwrite($myfile, "\t\t\t\t</Point>\n");
