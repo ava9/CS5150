@@ -1,10 +1,28 @@
+/*    --------------------------------------------------
+  :: editporchfest.php
+  -------------------------------------------------- */
+#scheduletab-conflictstable {
+  position: absolute;
+}
+
+#scheduletab-button {
+  /*position: absolute;*/
+  width: 50%;
+  margin: 0 auto;
+}
+
+
+/* For the buttons that filter. */
+.btn-group .btn {
+  margin-top: 5px;
+  font-size: .8em;
+}
+
+
 .error {
   color: #FF0000;
 }
 
-/*    --------------------------------------------------
-  :: editporchfest.php
-  -------------------------------------------------- */
 input.form-control.error {
   border-color: red;
 }
@@ -35,7 +53,7 @@ input.form-control.error {
 }
 
 #porchfestinfo {
-  padding-top: 30px;
+  padding-top: 15px;
   margin-right: 10px;
 }
 
@@ -60,46 +78,12 @@ input.form-control.error {
   z-index: 110;
 }
 
-.timeslot-pane {
-  margin-top: 30px;
-  padding-right: 10px;
+#timeslottab-form {
   position: absolute;
-  border: 1px solid #d4d7db;
-  border-radius: 5px;
+  top: 0;
+  margin-top: 15px;
 }
 
-.timeslot-pane .date-row {
-  background-color: #eff1f4;
-  margin: 10px 0px 20px 0;
-  text-align: center;
-}
-
-.timeslot-pane .date-row p {
-  padding-top: 15px;
-}
-
-.timeslot-pane .date-row span {
-  padding-top: 15px;
-  color: #b4b6ba;
-}
-
-.timeslot-pane .time {
-  color: gray;
-}
-
-.timeslot-table th{
-  background-color: white;
-  font-weight: bold;
-  border: 1px solid #eff1f4;
-}
-
-.timeslot-table td{
-  border: 1px solid #eff1f4;
-}
-
-.timeslot-table .glyphicon {
-  color: #5cf442;
-}
 
 #addtimeslot {
   display: inline-block;
