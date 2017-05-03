@@ -24,6 +24,88 @@ for bands in each time slot
 /******************* INITIALIZATION FUNCTIONS ***************/
 /************************************************************/
 
+function initGlobals() {
+  global $resultBandsTimeSlots;
+  global $resultBandsPorchfests;
+  global $resultTimeslotsPorchfests;
+  global $resultBands;
+  global $bandsTimeSlots;
+  global $bandsPorchfests;
+  global $timeslotsPorchfests;
+  global $bandsHashMap;
+  global $bandsWithXTimeSlots;
+  global $totalNumTimeSlots;
+  global $resultBandConflicts;
+  global $bandConflicts;
+  global $PorchfestID;
+
+  /************************************************************/
+  /******************* DATABASE SQL QUERIES *******************/
+  /************************************************************/
+
+  // Create connection
+  $conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+  if ($conn->connect_errno) {
+    printf("Connect failed: %s\n", $conn->connect_error);
+    exit();
+  }
+
+  $sqlBandsTimeSlots = "SELECT ats.BandID, ats.TimeslotID FROM bandavailabletimes ats, bandstoporchfests bp WHERE ats.BandID = bp.BandID AND bp.PorchfestID = " . $PorchfestID;
+  $resultBandsTimeSlots = $conn->query($sqlBandsTimeSlots);
+  if (!$resultBandsTimeSlots) { #for available time slots
+    printf("Get Bands-Timeslots failed, with query " . $sqlBandsTimeSlots . "\n");
+    printf("Connect failed: %s\n", $conn->error);
+    exit();
+  }
+
+  $sqlBandsPorchfests = "SELECT bp.BandID FROM bandstoporchfests bp WHERE bp.PorchfestID = " . $PorchfestID;
+  $resultBandsPorchfests = $conn->query($sqlBandsPorchfests);
+  if (!$resultBandsPorchfests) { #for bands in this porchfest
+    printf("Get Bands-Porchfests failed\n");
+    exit();
+  }
+
+  $sqlTimeSlotsPorchfests = "SELECT ts.TimeslotID FROM porchfesttimeslots ts WHERE ts.PorchfestID = " . $PorchfestID;
+  $resultTimeslotsPorchfests = $conn->query($sqlTimeSlotsPorchfests);
+  if (!$resultTimeslotsPorchfests) { #to see all timeslots available for a porchfest
+    printf("Get Porchfest-Timeslots failed\n");
+    exit();
+  }
+
+  $sqlBands = "SELECT b.BandID, b.Name, bp.PorchLocation, bp.Latitude, bp.Longitude, bp.TimeslotID FROM bands b, bandstoporchfests bp WHERE b.BandID = bp.BandID AND bp.PorchfestID = " . $PorchfestID;
+  $resultBands = $conn->query($sqlBands);
+  if (!$resultBands) { #for band id, porch location
+    printf("Get Bands-Porchfests failed\n");
+    exit();
+  }
+
+  $sqlBandConflicts = "SELECT bc.BandID1, bc.BandID2 FROM bandconflicts bc, bandstoporchfests bp WHERE bc.BandID1 = bp.BandID AND bp.PorchfestID = "  . $PorchfestID;
+  $resultBandConflicts = $conn->query($sqlBandConflicts);
+  if (!$resultBandConflicts) { #for band conflicts
+    printf("Get Bands-Conflicts failed\n");
+    exit();
+  }
+  
+  /************************************************************/
+  /*********************** INITIALIZATION *********************/
+  /************************************************************/
+
+  $bandsTimeSlots = populateBandsTimeSlots(); //HashMap<BandID, TimeslotID>
+  $bandsPorchfests = []; //array of all bands that can play at a particular porchfest
+  while ($row = $resultBandsPorchfests->fetch_array(MYSQLI_NUM)) {
+    array_push($bandsPorchfests, $row[0]);
+  }
+  $timeslotsPorchfests = []; //array of all timeslots available for a particular porchfest
+  while ($row = $resultTimeslotsPorchfests->fetch_array(MYSQLI_NUM)) {
+    array_push($timeslotsPorchfests, $row[0]);
+  }
+  $bandsHashMap; //HashMap<int id, Band band> 
+  $bandsWithXTimeSlots = []; //HashMap<int numberOfTimeSlots, int[] bandIds> max number of time slots a band can play in
+  $totalNumTimeSlots = sizeof($timeslotsPorchfests); //total number of timeslots for a porchfest
+  $bandConflicts = populateBandConflicts();
+}
+
 /* 
  * Returns an array representing data from our database such that
  * an index into the array is the column name, and the data at that 
@@ -87,17 +169,21 @@ function populateBandConflicts(){
  *
  * $bandsHashMap      hashmap ( int bandID => Band bandObject ) 
  */
-function createBandObjects(){
-  DEBUG_ECHO("creating band objects\n");
-  global $MIN_DISTANCE;
+function createBandObjects(
+    $MIN_DISTANCE,
+    $resultBands,
+    $bandsTimeSlots,   
+    $totalNumTimeSlots, 
+    $timeslotsPorchfests,
+    $bandConflicts        
+  ){
   global $resultBands;
-  global $bandsHashMap;         // HashMap<int id, Band band> 
-  global $bandsTimeSlots;       // HashMap<BandID, TimeslotID>
-  global $totalNumTimeSlots;    // total number of timeslots for a porchfest
-  global $timeslotsPorchfests;  // array of all timeslots available for a particular porchfest
-  global $bandConflicts;        // HashMap<int id, Array[BandID]> of all bands conflicting with a band ID
+  global $bandsHashMap;
+
+  DEBUG_ECHO("creating band objects\n");
   
   $tmp = getQueryArr($resultBands);
+  $resultBands = $tmp;
   for ($i = 0; $i < sizeof($tmp); $i++){
     flush();
     $bandId = $tmp[$i][0];
@@ -120,7 +206,7 @@ function createBandObjects(){
     $bandsHashMap[$bandId] = new Band($bandId, $bandName, $bandLatLng["lat"], $bandLatLng["lng"], $availableTimeSlots, $conflicts, -1, [], []);
   }
 
-  // Treat violation of MIN_DISTANCE the same as conflicts
+  // Treat violation of MIN_DISTANCE as distanceConflicts 
   foreach ($bandsHashMap as $bandID => $bandObj) {
     foreach ($bandsHashMap as $otherBandID => $otherBandObj) {
       if ($bandID == $otherBandID) {
@@ -183,11 +269,21 @@ function generateBaseSchedule() {
   global $totalNumTimeSlots;        // total number of timeslots for a porchfest
   global $timeslotsPorchfests;      // array of all timeslots available for a particular porchfest
   global $MIN_DISTANCE;
+  global $resultBands;
+  global $bandsTimeSlots;   
+  global $bandConflicts;        
   
   $baseScheduleGenerated = true;
 
   DEBUG_ECHO("generating base schedule\n");
-  $bandsHashMap = createBandObjects();
+  $bandsHashMap = createBandObjects(
+    $MIN_DISTANCE,
+    $resultBands,
+    $bandsTimeSlots,   
+    $totalNumTimeSlots, 
+    $timeslotsPorchfests,
+    $bandConflicts        
+    );
   populateBandsWithXTimeSlots();
   $schedule = new Schedule($timeslotsPorchfests);
   $unassignedBandIDs = [];          // int[] 

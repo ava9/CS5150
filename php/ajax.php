@@ -134,10 +134,10 @@
 
 	} elseif (isset($_GET['bandname']) && isset($_GET['porchfestid'])) {
 		// ** editporchfest.php: search functionality to display bands that match name.
-		$name = htmlentities($_GET['bandname']);
+		$name = $mysqli->real_escape_string(htmlentities($_GET['bandname']));
 		$porchfestid = $_GET['porchfestid'];
 		echo "<table class='responsive table'> <!-- begin table -->";
-		echo "<tr data-status= 'fixed'>";
+		echo "<tr class='fixed' data-status= 'fixed'>";
 		echo "<th> Name </th>";
 		echo "<th> Description </th>";
 		echo "<th> Members </th>";
@@ -173,14 +173,14 @@
       	$result = $conn->query($sql);
 
 	    while($band = $result->fetch_assoc()) {
-			echo '<tr>';
+			echo '<tr class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . '">';
 			echo '<td>' . $band['Name'] . '</td>';
 			echo '<td>' . $band['Description'] . '</td>';
 			echo '<td> List of members </td>';
 			echo '<td> <a data-target="#timeslotModal" data-toggle="modal"> Time Slots </a> </td>';
 			echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
 			echo '<td> <a href="../editband.php"> Edit </a> </td>';
-			echo '<td> <a href="' . email_href($conn, $band['Name']) . '" target="_blank"> Email </a> </td>';
+			echo '<td> <a href="' . email_href($conn, $mysqli->real_escape_string($band['Name'])) . '" target="_blank"> Email </a> </td>';
 		}
 
 		echo '</table>';
