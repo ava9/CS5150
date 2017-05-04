@@ -16,7 +16,7 @@ class Band {
     $this->slot = $slot;                              // int            # initially -1 until assigned
     $this->distances = $distances;                    // hashmap (int bandID => int distance)
     $this->distanceConflicts = $distanceConflicts;    // int[]          # bandIDs that violate the minimum distance
-    $this->flag = false;
+    $this->flag = 0;
   }
   
   /*

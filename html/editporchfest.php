@@ -9,6 +9,13 @@ session_start();
     <!-- Responsive table js -->
     <script src="/cs5150/js/responsive-tables.js"></script>
 
+    <script>
+    // update when clickable tab elements with click. Used as an onclick function for the tabs.
+    function enable(id) {
+      $(id).css({pointerEvents: "auto"});
+      $(".tab-pane:not(" + id + ")").css({pointerEvents: "none"});
+    }
+    </script>
     <!-- Responsive tables CSS -->
     <link rel="stylesheet" href="../css/responsive-tables.css">
     
@@ -30,6 +37,23 @@ session_start();
       $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME);
       $result = $conn->query($sql);
       $porchfestID = $result->fetch_assoc()['PorchfestID'];
+
+      $result = $conn->query("SELECT Scheduled FROM porchfests WHERE PorchfestID = '" . $porchfestID . "'");
+
+      $scheduled = $result->fetch_assoc()['Scheduled'] == '1';
+
+      function create_filters($pid, $conn) {
+        $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $pid . "' ORDER BY StartTime";
+
+        $result = $conn->query($sql);
+
+        while($timeslot = $result->fetch_assoc()) {
+          $start = date_create($timeslot['StartTime']);
+          $end = date_create($timeslot['EndTime']);
+
+          echo '<label class="btn btn-primary" id="' . $timeslot['TimeslotID'] . '"><input class="filters" type="checkbox" autocomplete="off">' . date_format($start, 'g:iA') . '-' . date_format($end, 'g:iA') . '</label>';
+        }
+      }
 
     ?>
 
@@ -129,21 +153,14 @@ session_start();
             </div>  <!-- end porchfestinfo div -->
           </div> <!-- end manageporchfest div -->
           <div class="tab-pane fade" id="bands"> <!-- begin bands div -->
-            <div class="btn-group" data-toggle="buttons">
+            
               <?php
-                $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $porchfestID . "' ORDER BY StartTime";
+                echo '<div class="btn-group" data-toggle="buttons">';
 
-                $result = $conn->query($sql);
+                create_filters($porchfestID, $conn);
 
-                while($timeslot = $result->fetch_assoc()) {
-                  $start = date_create($timeslot['StartTime']);
-                  $end = date_create($timeslot['EndTime']);
-
-                  echo '<label class="btn btn-primary" id="' . $timeslot['TimeslotID'] . '"><input class="filters" type="checkbox" autocomplete="off">' . date_format($start, 'g:iA') . '-' . date_format($end, 'g:iA') . '</label>';
-
-                }
+                echo '</div>';
               ?>
-            </div>
             <div class="col-xs-6 col-xs-offset-6 col-sm-4 col-sm-offset-8">
               <input id="search" name="search" type="text" placeholder="Search..."/>
             </div>
@@ -153,7 +170,6 @@ session_start();
                 <tr class='fixed' data-status= "fixed">
                   <th> Name </th>
                   <th> Description </th>
-                  <th> Members </th>
                   <th> Timeslots </th>
                   <th> Scheduled </th>
                   <th> Manage </th>
@@ -190,7 +206,6 @@ session_start();
                     echo '<tr class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . '">';
                     echo '<td>' . $band['Name'] . '</td>';
                     echo '<td>' . $band['Description'] . '</td>';
-                    echo '<td> List of members </td>';
                     echo '<td> <a data-target="#timeslotModal' . $band['BandID'] . '" data-toggle="modal"> Time Slots </a> </td>';
                     echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
                     echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NICKNAME . '/' . 
@@ -204,56 +219,74 @@ session_start();
           </div> <!-- end bands div -->
 
           <div class="tab-pane fade" id="timeslots"> <!-- begin timeslots div -->
-            <div class="col-xs-12" id="timeslotheaders">
-              Existing Timeslots
-            </div>
+            <div id="timeslottab-form">
+              <div class="col-xs-12" id="timeslotheaders">
+                Existing Timeslots. Click on any of the timeslots below to edit or delete it.
+              </div>
 
-            <?php
-              $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $porchfestID . "' ORDER BY StartTime;";
+              <div id="existingslots">
+                <?php
+                  $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $porchfestID . "' ORDER BY StartTime;";
 
-              $result = $conn->query($sql);
+                  $result = $conn->query($sql);
 
-              while($timeslot = $result->fetch_assoc()) {
-                $start_time = date_create($timeslot['StartTime']);
-                $end_time = date_create($timeslot['EndTime']);
+                  while($timeslot = $result->fetch_assoc()) {
+                    $start_time = date_create($timeslot['StartTime']);
+                    $end_time = date_create($timeslot['EndTime']);
 
-                echo '<div class="col-xs-6 col-sm-3 timeslot-label"><span id="' . $timeslot['TimeslotID'] . '-' . date_format($start_time, 'Y.m.d-g:iA') . "-" . date_format($end_time, 'Y.m.d-g:iA') . '" class="label label-primary">' . date_format($start_time, 'g:i A') . " - " . date_format($end_time, 'g:i A')  . ' </span></div>';
-              }
+                    echo '<div class="col-xs-6 col-sm-3 timeslot-label"><span id="' . $timeslot['TimeslotID'] . '-' . date_format($start_time, 'Y.m.d-g:iA') . "-" . date_format($end_time, 'Y.m.d-g:iA') . '" class="label label-primary">' . date_format($start_time, 'g:i A') . " - " . date_format($end_time, 'g:i A')  . ' </span></div>';
+                  }
 
-            ?>
+                ?>
+              </div>
 
-            <div class="col-xs-12" id="timeslotheaders">
-                Add a Timeslot
-            </div>
+              <div class="col-xs-12" id="timeslotheaders">
+                  Add a Timeslot.
+              </div>
 
-            <div class="col-xs-12">
-              <form role="form" id="createtimeslot" class="form-horizontal" action="">
-                <div class="col-xs-6">
-                  <label for="timeslot"> Start Time </label>
-                    <input type="time">
-                </div>
-                <div class="col-xs-6">
-                  <label for="timeslot"> End Time </label>
-                    <input type="time">
-                </div>
-                <div class="col-xs-offset-9 col-xs-3 timeslot-button">
-                  <button type="submit" class="btn btn-primary btn-sm"> Add Timeslot </button>
-                </div>
+              <div class="col-xs-12">
+                <form role="form" id="createtimeslot" class="form-horizontal" action="">
+                  <div class="col-xs-6">
+                    <label for="timeslot" > Start Time (24 hr clock format) </label>
+                      <input name="newtimeslotstart" placeholder="HH:MM" type="text" data-validation="time" data-validation-optional="true" data-validation-help="Format as XX:XX">
+                  </div>
+                  <div class="col-xs-6">
+                    <label for="timeslot"> End Time (24 hr clock format)</label>
+                      <input name="newtimeslotend" placeholder="HH:MM" type="text" data-validation="time" data-validation-optional="true" data-validation-help="Format as XX:XX">
+                  </div>
+                  <div class="col-xs-offset-8 col-xs-4 timeslot-button">
+                    <button type="submit" class="btn btn-primary btn-sm"> Add Timeslot </button>
+                  </div>
 
-              </form>
+                </form>
+              </div>
             </div>
           </div> <!-- end timeslots div -->
 
           <div class="tab-pane fade" id="schedule"> <!-- begin schedule div -->
-            <button id="schedule-button" class="btn btn-primary btn-sm"> Schedule it!</button>     
-            <div class="table-container table-responsive bands-table" id="bandstable"> <!-- begin table-container div -->
+            <?php
+              $result = $conn->query("SELECT Scheduled FROM porchfests WHERE PorchfestID = '" . $porchfestID . "'");
+
+              if (!$scheduled) {
+                echo '<div id="scheduletab-button">';
+                echo '<button id="schedule-button" class="btn btn-primary btn-sm"> Schedule it!</button>';
+                echo '</div>';
+              } else {
+                echo '<div id="scheduletab-conflictstable">';
+                echo '<div class="btn-group" data-toggle="buttons">';
+                
+                create_filters($porchfestID, $conn);
+
+                echo '</div>';
+
+                echo '<div class="table-container table-responsive bands-table" id="bandstable"> <!-- begin table-container div -->
               <table class="responsive table"> <!-- begin table -->
-                <tr data-status= "fixed">
+                <tr class="fixed" data-status= "fixed">
                   <th> Name </th>
                   <th> Timeslots </th>
                   <th> Conflicts </th>
-                </tr>
-                <?php 
+                </tr>';
+
                   $result = $conn->query("SELECT Members FROM bands WHERE PorchfestID = '" . $porchfestID . "'");
 
                   $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
@@ -261,7 +294,7 @@ session_start();
                   $result = $conn->query($sql);
 
                   while($band = $result->fetch_assoc()) {
-                    echo '<tr>';
+                    echo '<tr class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . '">';
                     echo '<td>' . $band['Name'] . '</td>';
                     $sql2 = 'SELECT * FROM `porchfesttimeslots` INNER JOIN bandavailabletimes ON porchfesttimeslots.TimeslotID = bandavailabletimes.TimeslotID WHERE bandavailabletimes.bandID=' . $band['BandID'];
 
@@ -296,11 +329,13 @@ session_start();
                     
                   }
 
-                ?>
+                  echo '</table> <!-- end table -->
+                  </div> <!-- end table-container div -->';
 
-              </table> <!-- end table -->
-            </div> <!-- end table-container div -->
-                          
+                  echo '</div>';
+
+              }
+            ?>          
           </div> <!-- end schedule div -->
 
           <div class="tab-pane fade" id="export"> <!-- begin export div -->
@@ -311,12 +346,10 @@ session_start();
               <div class="form-group">
                 <label class="col-sm-2"></label>
                 <div class="col-sm-10">
-                    <div class="row">
-                        <div class="col-md-9">
-                          <button type="submit" name="exportCSV" class="btn btn-primary btn-sm"> Export CSV</button>
-                          <button type="submit" name="exportKML" class="btn btn-primary btn-sm"> Export KML </button>
-                        </div>
-                    </div>
+                  <div class="col-md-9">
+                    <button type="submit" name="exportCSV" class="btn btn-primary btn-sm"> Export CSV</button>
+                    <button type="submit" name="exportKML" class="btn btn-primary btn-sm"> Export KML </button>
+                  </div>
                 </div>
               </div>
             </form>
@@ -379,42 +412,63 @@ session_start();
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
   <script>
-    
+    // initialize only the first tab's elements as clickable, disable everything else.
     $("#manageporchfest").css("pointer-events", "auto");
     $(".tab-pane:not(" + "#manageporchfest" + ")").css({pointerEvents: "none"});
 
+    // enable form validation
     $.validate({
       lang: 'en',
       modules : 'date'
     });
 
-    var filter = '#bandstable tr:not(.fixed)';
+    // filter buttons for the Manage Bands tab.
+    var bfilter = '#bandstable tr:not(.fixed)';
+
     $('.filters').change(function() {
       // if the button is toggled, aka want to filter by this.
       var id = $(this).parent().attr('id');
       if($(this).parent().hasClass('active')) {
         $('#bandstable tr.' + id).show();
-        filter = filter + ':not(tr.' + id + ')';
+        bfilter = bfilter + ':not(tr.' + id + ')';
       } else {
         // need to remove this filter
-        filter = filter.replace(':not(tr.' + id + ')', '');
+        bfilter = bfilter.replace(':not(tr.' + id + ')', '');
       }
 
-      $(filter).hide();
+      $(bfilter).hide();
 
-      if (filter == '#bandstable tr:not(.fixed)') {
+      if (bfilter == '#bandstable tr:not(.fixed)') {
         $('tr').show();
       }
     });
 
-    function enable(id) {
-      $(id).css({pointerEvents: "auto"});
-      $(".tab-pane:not(" + id + ")").css({pointerEvents: "none"});
-    }
+    // filter buttons for the Schedule tab.
+    var sfilter = '#schedule tr:not(.fixed)';
 
-    var ajaxurl = "/cs5150/php/ajax.php";
+    $('.filters').change(function() {
+      // if the button is toggled, aka want to filter by this.
+      var id = $(this).parent().attr('id');
+      if($(this).parent().hasClass('active')) {
+        $('#schedule tr.' + id).show();
+        sfilter = sfilter + ':not(tr.' + id + ')';
+      } else {
+        // need to remove this filter
+        sfilter = sfilter.replace(':not(tr.' + id + ')', '');
+      }
+
+      $(sfilter).hide();
+
+      if (sfilter == '#schedule tr:not(.fixed)') {
+        $('tr').show();
+      }
+    });
+
+
+    var ajaxurl = "/cs5150/php/ajax.php"; // the path to the ajax file.
     var porchfestid = "<?php echo $porchfestID; ?>";
 
+    // ajax call for the Schedule tab, to determine if bands are conflicting.
     $('.timesdropdown').change(function() {
       var bandid = $(this).attr('id').split('-')[1];
       var timeslotid = $(this).val();
@@ -442,10 +496,12 @@ session_start();
 
     });
 
+    // get rid of edit alert when clicking anywhere on the page.
     $('body').click(function() {
       $("#editalert").html('');
     });
 
+    // ajax call for publishing.
     $('#publishbutton').click(function() {
       var publishbutton = true;
 
@@ -472,7 +528,9 @@ session_start();
       });
     });
 
+    // ajax call for deleting a timeslot in the modal.
     $('#delete-timeslot').click(function(){
+      var spid = $('#edit-timeslot-modal').find('.modal-header').attr('id');
       var tid = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[0].trim();
 
       $.ajax({
@@ -481,8 +539,10 @@ session_start();
         data: {tid: tid},
         success: function(result){
           if (result == "success") {
+            $('span[id="' + spid + '"]').remove();
             $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The timeslot was deleted successfully. </div>');
           } else {
+            console.log(result);
             $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
           }
         },
@@ -496,12 +556,12 @@ session_start();
       return s.substring(0, s.length-2) + " " + s.substring(s.length-2);
     }
 
+    // ajax calls to update a timeslot's time (can't change date) on the DB.
     $('#save-timeslot-change').click(function() {
       var timeslotid = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[0].trim();
+      var year = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[1].trim();
       var start = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[2].trim();
       var end = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[4].trim();
-
-      var year = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[1].trim();
 
       var formData = {
           timeslotid             : timeslotid,
@@ -531,7 +591,7 @@ session_start();
       });
     });
 
-    $('.label').click(function() {
+    function createTimeSlotModal() {
       var start = $(this).attr('id').split('-')[2].trim();
       var end = $(this).attr('id').split('-')[4].trim();
 
@@ -540,8 +600,41 @@ session_start();
 
       $('#edit-timeslot-modal').find('.modal-body').html('<form id="timeslot-form"><input type="text" name="timeslot-start" class="form-control" value="' + start + '" placeholder="Start Time"><input type="text" name="timeslot-end" class="form-control" value="' + end + '" placeholder="End Time"></form>');
       $('#edit-timeslot-modal').modal('show');
+    }
+
+    // dynamically generates a modal when clicking one of the timeslot labels
+    $('.label').click(createTimeSlotModal);
+
+    $("#createtimeslot").submit(function(event){
+      var formData = {
+        porchfestid : porchfestid,
+        newstart    : $('input[name=newtimeslotstart]').val(),
+        newend      : $('input[name=newtimeslotend]').val()
+      };
+
+      $.ajax({
+        url: ajaxurl,
+        type: "POST",
+        data: formData,
+        success: function(result){
+          if (result != "fail") {
+            $("#existingslots").append(result);
+            $('.label').last().click(createTimeSlotModal);
+            $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The new timeslot has been added. </div>');
+          } else {
+            console.log(result);
+            $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
+          }
+        },
+        error: function(result) {
+          console.log(result);
+        }
+      });
+
+      event.preventDefault();
     });
 
+    // submit the form on Manage Porchfest.
     $("#porchfestmanagesubmit").submit(function(event){
       var formData = {
           porchfestname          : $('input[name=porchfestname]').val(),
@@ -572,6 +665,7 @@ session_start();
       event.preventDefault();
     });
 
+    // the search bar in Manage Bands. AJAX call with the given input, displays data from the DB.
     $("#search").keyup(function(){
       $.ajax({
         url: ajaxurl,
@@ -579,6 +673,13 @@ session_start();
         data: {bandname: $("#search").val(), porchfestid: porchfestid},
         success: function(result){
           $("#bandstable").html(result);
+
+          // reapply the filters to the search results.
+          $(bfilter).hide();
+
+          if (bfilter == '#bandstable tr:not(.fixed)') {
+            $('tr').show();
+          }
         }});
     });
 
