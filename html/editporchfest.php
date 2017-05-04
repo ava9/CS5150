@@ -424,6 +424,10 @@ session_start();
 
     // filter buttons for the Manage Bands tab.
     var bfilter = '#bandstable tr:not(.fixed)';
+    // array of timeslotIDs, mapped to boolean
+    // that indicates whether it is currently selected or not
+    // used for emailing
+    var timeslotIDs = {}
 
     $('.filters').change(function() {
       // if the button is toggled, aka want to filter by this.
@@ -440,6 +444,13 @@ session_start();
 
       if (bfilter == '#bandstable tr:not(.fixed)') {
         $('tr').show();
+      }
+      
+      if (timeslotIDs[id] == null) {
+        timeslotIDs[id] = true;
+      }
+      else {
+        timeslotIDs[id] = !timeslotIDs[id];
       }
     });
 
