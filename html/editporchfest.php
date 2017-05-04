@@ -55,6 +55,53 @@ session_start();
         }
       }
 
+      // returns an associative array. Each element in the array represents a band's conflicts.
+      // The key is the band's bandID, the rest will be the id's of the conflicting bands
+      // if they exist.
+      // i.e. [bandid1 => [conflict1, conflict2, ...], bandid2 => [conflict1, ...], ...]
+      function findConflicts($conn, $porchfestID) {
+        $bandConflicts = array();
+
+        $sql = "SELECT BandID FROM bandstoporchfests WHERE PorchfestID=" . $porchfestID;
+
+        $result = $conn->query($sql);
+
+        if (!$result) {
+          throw new Exception('Query failed');
+        }
+
+        while ($bands = $result->fetch_assoc()) {
+          $bandID = $bands['BandID'];
+
+          $sql = sprintf("SELECT BandID2 FROM bandconflicts WHERE BandID1 = '%s'
+                          UNION
+                          SELECT BandID1 FROM bandconflicts WHERE BandID2 = '%s'", $bandID, $bandID);
+
+          $result2 = $conn->query($sql);
+
+          if (!$result2) {
+            throw new Exception('Query failed');
+          }
+
+          $conflicts = array();
+
+          while ($c = $result2->fetch_assoc()) {
+            $conflictbandID = -1;
+            try {
+              $conflictbandID = $c['BandID2'];
+            } catch (Exception $e) {
+              $conflictbandID = $c['BandID1'];
+            }
+            array_push($conflicts, $conflictbandID);
+          }
+
+          $bandConflicts[$bandID] =  $conflicts;
+
+        }
+
+        return $bandConflicts;
+      }
+
     ?>
 
     <div id="editalert"></div>
@@ -286,6 +333,8 @@ session_start();
                   <th> Timeslots </th>
                   <th> Conflicts </th>
                 </tr>';
+
+                  $bandConflicts = findConflicts($conn, $porchfestID);
 
                   $result = $conn->query("SELECT Members FROM bands WHERE PorchfestID = '" . $porchfestID . "'");
 
@@ -598,8 +647,15 @@ session_start();
       $('#edit-timeslot-modal').find('.modal-header').html(start + ' - ' + end);
       $('#edit-timeslot-modal').find('.modal-header').attr('id', $(this).attr('id'));
 
-      $('#edit-timeslot-modal').find('.modal-body').html('<form id="timeslot-form"><input type="text" name="timeslot-start" class="form-control" value="' + start + '" placeholder="Start Time"><input type="text" name="timeslot-end" class="form-control" value="' + end + '" placeholder="End Time"></form>');
+      
+
+      $('#edit-timeslot-modal').find('.modal-body').html('<form id="timeslot-form"><input type="text" data-validation="custom" data-validation-regexp="((1[0-2]|0?[1-9]):([0-5][0-9])([AP][M]))" data-validation-help="Format as XX:XXPM/AM" name="timeslot-start" class="form-control" value="' + start + '" placeholder="Start Time"><input type="text" data-validation="custom" data-validation-regexp="((1[0-2]|0?[1-9]):([0-5][0-9])([AP][M]))" data-validation-help="Format as XX:XXPM/AM" name="timeslot-end" class="form-control" value="' + end + '" placeholder="End Time"></form>');
       $('#edit-timeslot-modal').modal('show');
+
+      $.validate({
+        lang: 'en',
+        modules : 'date'
+      });
     }
 
     // dynamically generates a modal when clicking one of the timeslot labels
