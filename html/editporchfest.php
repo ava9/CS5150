@@ -205,7 +205,7 @@ session_start();
                 echo '<div class="btn-group" data-toggle="buttons">';
 
                 create_filters($porchfestID, $conn);
-
+                echo '<button id="email-bands-button" class="btn btn-primary btn-sm"> Email Selected Timeslots!</button>';
                 echo '</div>';
               ?>
             <div class="col-xs-6 col-xs-offset-6 col-sm-4 col-sm-offset-8">
@@ -473,6 +473,10 @@ session_start();
 
     // filter buttons for the Manage Bands tab.
     var bfilter = '#bandstable tr:not(.fixed)';
+    // array of timeslotIDs, mapped to boolean
+    // that indicates whether it is currently selected or not
+    // used for emailing
+    var timeslotIDs = {'mass_email': true}
 
     $('.filters').change(function() {
       // if the button is toggled, aka want to filter by this.
@@ -489,6 +493,13 @@ session_start();
 
       if (bfilter == '#bandstable tr:not(.fixed)') {
         $('tr').show();
+      }
+      
+      if (timeslotIDs[id] == null) {
+        timeslotIDs[id] = true;
+      }
+      else {
+        timeslotIDs[id] = !timeslotIDs[id];
       }
     });
 
@@ -516,6 +527,22 @@ session_start();
 
     var ajaxurl = "/cs5150/php/ajax.php"; // the path to the ajax file.
     var porchfestid = "<?php echo $porchfestID; ?>";
+
+    // ajax call for the Bands tab, to email a selected group of timeslots.
+    $('#email-bands-button').click(function() {
+      $.ajax({
+        url: ajaxurl,
+        type: "GET",
+        data: timeslotIDs,
+        success: function(result) {
+          console.log(result);
+          window.open(result, '_blank');
+        },
+        error: function(result) {
+          console.log(error);
+        }
+      });
+    });
 
     // ajax call for the Schedule tab, to determine if bands are conflicting.
     $('.timesdropdown').change(function() {

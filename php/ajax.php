@@ -27,6 +27,15 @@
 		} else {
 			echo "fail";
 		}
+	} elseif (isset($_GET['mass_email'])) {
+		// sprintf("mailto:%s?cc=%s&subject=%s", $recipient, $cc, $subject);
+		$all_emails = "";
+		// foreach ($_GET as $key => $value) {
+		// 	if (is_int($key) and $value) {
+
+		// 	}
+		// }
+		echo "mailto:?bcc=selectedmembers@porchfest.com&subject=[Ithaca Porchfest]";
 	} elseif (isset($_POST['porchfestname']) && isset($_POST['porchfestlocation']) && isset($_POST['porchfestdate']) && isset($_POST['porchfestdescription']) && isset($_POST['porchfesttime']) && isset($_POST['porchfestdeadlineday']) && isset($_POST['porchfestid'])) {
 		// ** editporchfest.php: MANAGE PORCHFEST: form to manage porchfest 
 		$porchfestname = htmlentities($_POST['porchfestname']);
@@ -224,6 +233,4 @@
 		print_r($_POST);
 		// throw new Exception("variable not found");
 	}
-
-
 ?>
