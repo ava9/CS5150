@@ -8,8 +8,9 @@
 	    return $this->args[$name];
 	}
 
-	// ** editporchfest.php: PUBLISH: publish porchfest or not
+	
 	if (isset($_POST['publishbutton'])) {
+		// ** editporchfest.php: PUBLISH: publish porchfest or not
 		$sql = "UPDATE porchfests SET Published=NOT(Published) WHERE PorchfestID='" . $_POST['porchfestid'] . "'";
 		$result = $conn->query($sql);
 
@@ -18,18 +19,16 @@
 		} else {
 			echo "fail";
 		}
-	}
-	// ** editporchfest.php: SCHEDULE: run scheduling algorithm
-	elseif (isset($_POST['schedule'])) {
+	} elseif (isset($_POST['schedule'])) {
+		// ** editporchfest.php: SCHEDULE: run scheduling algorithm
 		require_once '../scheduling/PorchfestScheduling/main.php';
 		if (True) {	
 			echo "success";
 		} else {
 			echo "fail";
 		}
-	}
-	// ** editporchfest.php: MANAGE PORCHFEST: form to manage porchfest 
-	elseif (isset($_POST['porchfestname']) && isset($_POST['porchfestlocation']) && isset($_POST['porchfestdate']) && isset($_POST['porchfestdescription']) && isset($_POST['porchfesttime']) && isset($_POST['porchfestdeadlineday']) && isset($_POST['porchfestid'])) {
+	} elseif (isset($_POST['porchfestname']) && isset($_POST['porchfestlocation']) && isset($_POST['porchfestdate']) && isset($_POST['porchfestdescription']) && isset($_POST['porchfesttime']) && isset($_POST['porchfestdeadlineday']) && isset($_POST['porchfestid'])) {
+		// ** editporchfest.php: MANAGE PORCHFEST: form to manage porchfest 
 		$porchfestname = htmlentities($_POST['porchfestname']);
 		$porchfestlocation = htmlentities($_POST['porchfestlocation']);
 		$porchfestdate = htmlentities($_POST['porchfestdate']);
@@ -58,8 +57,9 @@
 		} else {
 			echo "fail";
 		}
-	// ** editporchfest.php: SCHEDULE: form to manage whether a conflict arose from a band change
+	
 	} elseif (isset($_GET['timeslotid']) && isset($_GET['bandid'])) {
+		// ** editporchfest.php: SCHEDULE: form to manage whether a conflict arose from a band change
 		$timeslotID = htmlentities($_GET['timeslotid']); // The timeslot that the band was changed to 
 		$bandID = htmlentities($_GET['bandid']);         // The id of the band where the timeslot was changed
 
@@ -94,6 +94,7 @@
 		echo "no overlap";
 
 	} else if (isset($_POST['porchfestid']) && isset($_POST['newstart']) && isset($_POST['newend'])) {
+		// ** editporchfest.php: MANAGE TIMESLOTS: form to create new timeslot.
 		$porchfestid = $_POST['porchfestid'];
 		$timeslotstart = htmlentities($_POST['newstart']);
 		$timeslotend = htmlentities($_POST['newend']);
@@ -128,9 +129,7 @@
 		} else {
 			echo 'fail';
 		}
-
-	} elseif (isset($_POST['timeslotstart']) && isset($_POST['timeslotend']) && isset($_POST['start']) && isset($_POST['end']) && isset($_POST['timeslotid'])
-			&& isset($_POST['porchfestid'])) {
+	} elseif (isset($_POST['timeslotstart']) && isset($_POST['timeslotend']) && isset($_POST['start']) && isset($_POST['end']) && isset($_POST['timeslotid']) && isset($_POST['porchfestid'])) {
 		// ** editporchfest.php: MANAGE TIMESLOTS: update timeslot.
 		$porchfestid = $_POST['porchfestid'];
 		$timeslotid = htmlentities($_POST['timeslotid']);
