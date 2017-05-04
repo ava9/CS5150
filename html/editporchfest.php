@@ -9,6 +9,13 @@ session_start();
     <!-- Responsive table js -->
     <script src="/cs5150/js/responsive-tables.js"></script>
 
+    <script>
+    // update when clickable tab elements with click. Used as an onclick function for the tabs.
+    function enable(id) {
+      $(id).css({pointerEvents: "auto"});
+      $(".tab-pane:not(" + id + ")").css({pointerEvents: "none"});
+    }
+    </script>
     <!-- Responsive tables CSS -->
     <link rel="stylesheet" href="../css/responsive-tables.css">
     
@@ -163,7 +170,6 @@ session_start();
                 <tr class='fixed' data-status= "fixed">
                   <th> Name </th>
                   <th> Description </th>
-                  <th> Members </th>
                   <th> Timeslots </th>
                   <th> Scheduled </th>
                   <th> Manage </th>
@@ -200,7 +206,6 @@ session_start();
                     echo '<tr class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . '">';
                     echo '<td>' . $band['Name'] . '</td>';
                     echo '<td>' . $band['Description'] . '</td>';
-                    echo '<td> List of members </td>';
                     echo '<td> <a data-target="#timeslotModal' . $band['BandID'] . '" data-toggle="modal"> Time Slots </a> </td>';
                     echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
                     echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NICKNAME . '/' . 
@@ -216,36 +221,38 @@ session_start();
           <div class="tab-pane fade" id="timeslots"> <!-- begin timeslots div -->
             <div id="timeslottab-form">
               <div class="col-xs-12" id="timeslotheaders">
-                Existing Timeslots
+                Existing Timeslots. Click on any of the timeslots below to edit or delete it.
               </div>
 
-              <?php
-                $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $porchfestID . "' ORDER BY StartTime;";
+              <div id="existingslots">
+                <?php
+                  $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $porchfestID . "' ORDER BY StartTime;";
 
-                $result = $conn->query($sql);
+                  $result = $conn->query($sql);
 
-                while($timeslot = $result->fetch_assoc()) {
-                  $start_time = date_create($timeslot['StartTime']);
-                  $end_time = date_create($timeslot['EndTime']);
+                  while($timeslot = $result->fetch_assoc()) {
+                    $start_time = date_create($timeslot['StartTime']);
+                    $end_time = date_create($timeslot['EndTime']);
 
-                  echo '<div class="col-xs-6 col-sm-3 timeslot-label"><span id="' . $timeslot['TimeslotID'] . '-' . date_format($start_time, 'Y.m.d-g:iA') . "-" . date_format($end_time, 'Y.m.d-g:iA') . '" class="label label-primary">' . date_format($start_time, 'g:i A') . " - " . date_format($end_time, 'g:i A')  . ' </span></div>';
-                }
+                    echo '<div class="col-xs-6 col-sm-3 timeslot-label"><span id="' . $timeslot['TimeslotID'] . '-' . date_format($start_time, 'Y.m.d-g:iA') . "-" . date_format($end_time, 'Y.m.d-g:iA') . '" class="label label-primary">' . date_format($start_time, 'g:i A') . " - " . date_format($end_time, 'g:i A')  . ' </span></div>';
+                  }
 
-              ?>
+                ?>
+              </div>
 
               <div class="col-xs-12" id="timeslotheaders">
-                  Add a Timeslot
+                  Add a Timeslot.
               </div>
 
               <div class="col-xs-12">
                 <form role="form" id="createtimeslot" class="form-horizontal" action="">
                   <div class="col-xs-6">
-                    <label for="timeslot"> Start Time </label>
-                      <input type="time">
+                    <label for="timeslot" > Start Time (24 hr clock format) </label>
+                      <input name="newtimeslotstart" placeholder="HH:MM" type="text" data-validation="time" data-validation-optional="true" data-validation-help="Format as XX:XX">
                   </div>
                   <div class="col-xs-6">
-                    <label for="timeslot"> End Time </label>
-                      <input type="time">
+                    <label for="timeslot"> End Time (24 hr clock format)</label>
+                      <input name="newtimeslotend" placeholder="HH:MM" type="text" data-validation="time" data-validation-optional="true" data-validation-help="Format as XX:XX">
                   </div>
                   <div class="col-xs-offset-8 col-xs-4 timeslot-button">
                     <button type="submit" class="btn btn-primary btn-sm"> Add Timeslot </button>
@@ -405,15 +412,17 @@ session_start();
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
   <script>
-    
+    // initialize only the first tab's elements as clickable, disable everything else.
     $("#manageporchfest").css("pointer-events", "auto");
     $(".tab-pane:not(" + "#manageporchfest" + ")").css({pointerEvents: "none"});
 
+    // enable form validation
     $.validate({
       lang: 'en',
       modules : 'date'
     });
 
+    // filter buttons for the Manage Bands tab.
     var bfilter = '#bandstable tr:not(.fixed)';
 
     $('.filters').change(function() {
@@ -434,6 +443,7 @@ session_start();
       }
     });
 
+    // filter buttons for the Schedule tab.
     var sfilter = '#schedule tr:not(.fixed)';
 
     $('.filters').change(function() {
@@ -454,14 +464,11 @@ session_start();
       }
     });
 
-    function enable(id) {
-      $(id).css({pointerEvents: "auto"});
-      $(".tab-pane:not(" + id + ")").css({pointerEvents: "none"});
-    }
 
-    var ajaxurl = "/cs5150/php/ajax.php";
+    var ajaxurl = "/cs5150/php/ajax.php"; // the path to the ajax file.
     var porchfestid = "<?php echo $porchfestID; ?>";
 
+    // ajax call for the Schedule tab, to determine if bands are conflicting.
     $('.timesdropdown').change(function() {
       var bandid = $(this).attr('id').split('-')[1];
       var timeslotid = $(this).val();
@@ -489,10 +496,12 @@ session_start();
 
     });
 
+    // get rid of edit alert when clicking anywhere on the page.
     $('body').click(function() {
       $("#editalert").html('');
     });
 
+    // ajax call for publishing.
     $('#publishbutton').click(function() {
       var publishbutton = true;
 
@@ -519,7 +528,9 @@ session_start();
       });
     });
 
+    // ajax call for deleting a timeslot in the modal.
     $('#delete-timeslot').click(function(){
+      var spid = $('#edit-timeslot-modal').find('.modal-header').attr('id');
       var tid = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[0].trim();
 
       $.ajax({
@@ -528,8 +539,10 @@ session_start();
         data: {tid: tid},
         success: function(result){
           if (result == "success") {
+            $('span[id="' + spid + '"]').remove();
             $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The timeslot was deleted successfully. </div>');
           } else {
+            console.log(result);
             $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
           }
         },
@@ -543,12 +556,12 @@ session_start();
       return s.substring(0, s.length-2) + " " + s.substring(s.length-2);
     }
 
+    // ajax calls to update a timeslot's time (can't change date) on the DB.
     $('#save-timeslot-change').click(function() {
       var timeslotid = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[0].trim();
+      var year = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[1].trim();
       var start = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[2].trim();
       var end = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[4].trim();
-
-      var year = $('#edit-timeslot-modal').find('.modal-header').attr('id').split('-')[1].trim();
 
       var formData = {
           timeslotid             : timeslotid,
@@ -578,7 +591,7 @@ session_start();
       });
     });
 
-    $('.label').click(function() {
+    function createTimeSlotModal() {
       var start = $(this).attr('id').split('-')[2].trim();
       var end = $(this).attr('id').split('-')[4].trim();
 
@@ -587,8 +600,41 @@ session_start();
 
       $('#edit-timeslot-modal').find('.modal-body').html('<form id="timeslot-form"><input type="text" name="timeslot-start" class="form-control" value="' + start + '" placeholder="Start Time"><input type="text" name="timeslot-end" class="form-control" value="' + end + '" placeholder="End Time"></form>');
       $('#edit-timeslot-modal').modal('show');
+    }
+
+    // dynamically generates a modal when clicking one of the timeslot labels
+    $('.label').click(createTimeSlotModal);
+
+    $("#createtimeslot").submit(function(event){
+      var formData = {
+        porchfestid : porchfestid,
+        newstart    : $('input[name=newtimeslotstart]').val(),
+        newend      : $('input[name=newtimeslotend]').val()
+      };
+
+      $.ajax({
+        url: ajaxurl,
+        type: "POST",
+        data: formData,
+        success: function(result){
+          if (result != "fail") {
+            $("#existingslots").append(result);
+            $('.label').last().click(createTimeSlotModal);
+            $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The new timeslot has been added. </div>');
+          } else {
+            console.log(result);
+            $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
+          }
+        },
+        error: function(result) {
+          console.log(result);
+        }
+      });
+
+      event.preventDefault();
     });
 
+    // submit the form on Manage Porchfest.
     $("#porchfestmanagesubmit").submit(function(event){
       var formData = {
           porchfestname          : $('input[name=porchfestname]').val(),
@@ -619,6 +665,7 @@ session_start();
       event.preventDefault();
     });
 
+    // the search bar in Manage Bands. AJAX call with the given input, displays data from the DB.
     $("#search").keyup(function(){
       $.ajax({
         url: ajaxurl,
