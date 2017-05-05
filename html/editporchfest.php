@@ -372,7 +372,7 @@ session_start();
 
                 echo '<div class="col-xs-12" id="functionalitybtns">';
                   echo '<button id="save-changes-button" class="btn btn-primary btn-sm"> Save changes </button>';
-                echo '<div>';
+                echo '</div>';
 
                 echo '<div class="col-xs-12">';
                 echo '<div class="table-container table-responsive bands-table" id="bandstable"> <!-- begin table-container div -->
