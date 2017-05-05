@@ -63,6 +63,7 @@ session_start();
       // i.e. [bandid1 => [current=> [bandid2], potential=> [bandid2, bandid4], current, original], ...]
       function findConflictingBands($conn, $porchfestID) {
         $bandConflicts = array();
+        $bandConflicts["conflictCounter"] = 0;
 
         $sql = "SELECT BandID, TimeslotID FROM bandstoporchfests WHERE PorchfestID=" . $porchfestID;
 
@@ -75,6 +76,8 @@ session_start();
         while ($bands = $result->fetch_assoc()) {
           $bandID = $bands['BandID'];
 
+
+          // this query gets the potential conflicts two bands have.
           $sql = sprintf("SELECT BandID2 FROM bandconflicts WHERE BandID1 = '%s'
                           UNION
                           SELECT BandID1 FROM bandconflicts WHERE BandID2 = '%s'", $bandID, $bandID);
@@ -97,7 +100,7 @@ session_start();
             array_push($conflicting_bands, $conflictbandID);
           }
 
-
+          // this query checks to see if two bands are conflicting given their assigned timeslots.
           $sql = sprintf("SELECT bandconflicts.BandID1, bandconflicts.BandID2 FROM bandconflicts
               INNER JOIN bandstoporchfests AS C1
               ON BandID1 = C1.BandID
@@ -116,13 +119,25 @@ session_start();
           $current_conflicts = array();
 
           while ($b = $result3->fetch_assoc()) {
+            $bandConflicts["conflictCounter"]++;
             $id = ($b['BandID1'] == $bandID) ? $b['BandID2'] : $b['BandID1'];
             array_push($current_conflicts, $id);
           }
 
-          $bandConflicts[$bandID] =  array("potential" => $conflicting_bands, "current" => $current_conflicts, "original" => $bands['TimeslotID'], "tid" => $bands['TimeslotID']);
+          $sql = sprintf("SELECT Name FROM bands WHERE BandID='%s'", $bandID);
+
+          $result4 = $conn->query($sql);
+
+          if (!$result4) {
+            throw new Exception('Query failed');
+          }
+
+          $name = $result4->fetch_assoc()['Name'];
+
+          $bandConflicts[$bandID] =  array("name" => $name, "potential" => $conflicting_bands, "current" => $current_conflicts, "original" => $bands['TimeslotID'], "tid" => $bands['TimeslotID']);
 
         }
+
         return $bandConflicts;
       }
 
@@ -592,6 +607,39 @@ session_start();
       });
     });
 
+    function updateOldConflictingBand(conflictingid, id) {
+      var s = $('#conflicts-' + conflictingid).html();
+      var iconflicts  = s.substr(s.indexOf(":") + 2, s.length).split(", ");
+
+      if (iconflicts.length == 1) {
+        // the conflicting band only conflicted with the current band.
+        $('#conflicts-' + conflictingid).html('No conflicts');
+        conflicts[conflictingid]["current"] = [];
+      } else {
+        // the conflicting band has other conflicts.
+        var index = iconflicts.indexOf(id);
+        iconflicts = iconflicts.splice(index, 1);
+        conflicts[conflictingid]["current"] = iconflicts;
+        $('#conflicts-' + conflictingid).html("This bands conflicts with: " + iconflicts.join(", "));
+      }
+    }
+
+    function updateNewConflictingBand(conflictingid, id) {
+      var s = $('#conflicts-' + conflictingid).html();
+
+      var iconflicts;
+      if (s == 'No conflicts') {
+        iconflicts = [];
+      } else {
+        iconflicts  = s.substr(s.indexOf(":") + 2, s.length).split(", ");
+      }
+      
+      iconflicts.push(id);
+      
+      conflicts[conflictingid]["current"] = iconflicts;
+      $('#conflicts-' + conflictingid).html("This bands conflicts with: " + iconflicts.join(", "));
+    }
+
     var conflicts = <?php echo json_encode($conflicts); ?>;
     // ajax call for the Schedule tab, to determine if bands are conflicting.
     $('.timesdropdown').change(function() {
@@ -600,17 +648,26 @@ session_start();
 
       conflicts[id]["tid"] = newtid;
 
+      var new_conflicts = [];
       if (conflicts[id]["potential"].length > 0) {
-        var new_conflicts = [];
-        conflicts[id]["current"] = []; //reset the current list.
         for(var i = 0; i < conflicts[id]["potential"].length; i++) {
           var otid = $('#times-' + conflicts[id]["potential"][i]).val()
           
           if (otid == newtid) {
             // there is a conflict, because one of the potentials has the same timeslot id.
-            new_conflicts.push(conflicts[id]["potential"][i]);
+            var conflictingid = conflicts[id]["potential"][i];
+            updateNewConflictingBand(conflictingid, id);
+            new_conflicts.push(conflictingid);
           }
         }
+
+        // update the conflicting bands.
+        for (var i = 0; i < conflicts[id]["current"].length; i++) {
+          updateOldConflictingBand(conflicts[id]["current"][i], id);
+        }
+
+
+        conflicts["conflictCounter"] = conflicts["conflictCounter"] - (conflicts[id]["current"].length * 2);
 
         conflicts[id]["current"] = new_conflicts;
 
