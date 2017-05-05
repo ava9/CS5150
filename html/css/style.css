@@ -61,10 +61,18 @@ input.form-control.error {
   margin-right: 10px;
 }
 
+#functionalitybtns {
+  margin-top: 5px;
+}
+
+#email-bands-button {
+  margin-top: 5px;
+}
+
 
 /* Manage bands tab */
 #bandstable {
-  margin-top: 40px;
+  margin-top: 10px;
   padding-right: 25px;
   position: absolute;
   z-index: 10;

@@ -36,6 +36,24 @@
 		// 	}
 		// }
 		echo "mailto:?bcc=selectedmembers@porchfest.com&subject=[Ithaca Porchfest]";
+	} elseif (isset($_POST['json'])) {
+		$new_schedule = json_decode($_POST['json'], True);
+
+		$sql = "";
+		foreach($new_schedule as $key => $band) {
+			if ($band['original'] != $band['tid']) {
+				$sql.= "UPDATE bandstoporchfests SET TimeslotID='" . $band['tid'] . "' WHERE BandID='" . $key . "'; ";
+			}
+		}
+
+		$result = $conn->multi_query($sql);
+
+		if ($result) {
+			echo 'success';
+		} else {
+			echo 'failure';
+		}
+
 	} elseif (isset($_POST['porchfestname']) && isset($_POST['porchfestlocation']) && isset($_POST['porchfestdate']) && isset($_POST['porchfestdescription']) && isset($_POST['porchfesttime']) && isset($_POST['porchfestdeadlineday']) && isset($_POST['porchfestid'])) {
 		// ** editporchfest.php: MANAGE PORCHFEST: form to manage porchfest 
 		$porchfestname = htmlentities($_POST['porchfestname']);

@@ -53,16 +53,18 @@ session_start();
 
           echo '<label class="btn btn-primary" id="' . $timeslot['TimeslotID'] . '"><input class="filters" type="checkbox" autocomplete="off">' . date_format($start, 'g:iA') . '-' . date_format($end, 'g:iA') . '</label>';
         }
+
       }
 
-      // returns an associative array. Each element in the array represents a band's conflicts.
-      // The key is the band's bandID, the rest will be the id's of the conflicting bands
-      // if they exist.
-      // i.e. [bandid1 => [conflict1, conflict2, ...], bandid2 => [conflict1, ...], ...]
-      function findConflicts($conn, $porchfestID) {
+      // returns an associative array. Each element points to another associative
+      // array. One entry in this associative array is the 'current' conflicts,
+      // bands that are currently assigned to the same timeslot,
+      // and the other is the 'potential' conflicts.
+      // i.e. [bandid1 => [current=> [bandid2], potential=> [bandid2, bandid4], current, original], ...]
+      function findConflictingBands($conn, $porchfestID) {
         $bandConflicts = array();
 
-        $sql = "SELECT BandID FROM bandstoporchfests WHERE PorchfestID=" . $porchfestID;
+        $sql = "SELECT BandID, TimeslotID FROM bandstoporchfests WHERE PorchfestID=" . $porchfestID;
 
         $result = $conn->query($sql);
 
@@ -83,7 +85,7 @@ session_start();
             throw new Exception('Query failed');
           }
 
-          $conflicts = array();
+          $conflicting_bands = array();
 
           while ($c = $result2->fetch_assoc()) {
             $conflictbandID = -1;
@@ -92,15 +94,46 @@ session_start();
             } catch (Exception $e) {
               $conflictbandID = $c['BandID1'];
             }
-            array_push($conflicts, $conflictbandID);
+            array_push($conflicting_bands, $conflictbandID);
           }
 
-          $bandConflicts[$bandID] =  $conflicts;
+
+          $sql = sprintf("SELECT bandconflicts.BandID1, bandconflicts.BandID2 FROM bandconflicts
+              INNER JOIN bandstoporchfests AS C1
+              ON BandID1 = C1.BandID
+              INNER JOIN bandstoporchfests AS C2
+              on BandID2 = C2.BandID
+              WHERE C1.TimeslotID = C2.TimeslotID
+              AND (BandID1 = %s
+              OR BandID2 = %s)", $bandID, $bandID);
+
+          $result3 = $conn->query($sql);
+
+          if (!$result3) {
+            throw new Exception('Query failed');
+          }
+
+          $current_conflicts = array();
+
+          while ($b = $result3->fetch_assoc()) {
+            $id = ($b['BandID1'] == $bandID) ? $b['BandID2'] : $b['BandID1'];
+            array_push($current_conflicts, $id);
+          }
+
+          $bandConflicts[$bandID] =  array("potential" => $conflicting_bands, "current" => $current_conflicts, "original" => $bands['TimeslotID'], "tid" => $bands['TimeslotID']);
 
         }
-
         return $bandConflicts;
       }
+
+
+      function getConflicts($conflicts, $bandID) {
+        if(sizeof($conflicts[$bandID]["current"]) > 0) {
+          return 'This band conflicts with: ' . implode(", ", $conflicts[$bandID]["current"]);
+        } else {
+          return 'No conflicts';
+        }
+      } 
 
     ?>
 
@@ -202,67 +235,77 @@ session_start();
           <div class="tab-pane fade" id="bands"> <!-- begin bands div -->
             
               <?php
+                echo '<div class="col-xs-12">';
                 echo '<div class="btn-group" data-toggle="buttons">';
-
-                create_filters($porchfestID, $conn);
-                echo '<button id="email-bands-button" class="btn btn-primary btn-sm"> Email Selected Timeslots!</button>';
+                    create_filters($porchfestID, $conn);
                 echo '</div>';
+                echo '</div>';
+                
               ?>
-            <div class="col-xs-6 col-xs-offset-6 col-sm-4 col-sm-offset-8">
-              <input id="search" name="search" type="text" placeholder="Search..."/>
-            </div>
 
-            <div class="table-container table-responsive bands-table" id="bandstable"> <!-- begin table-container div -->
-              <table class="responsive table"> <!-- begin table -->
-                <tr class='fixed' data-status= "fixed">
-                  <th> Name </th>
-                  <th> Description </th>
-                  <th> Timeslots </th>
-                  <th> Scheduled </th>
-                  <th> Manage </th>
-                  <th> Contact </th>
-                </tr>
-                <?php 
-                  // Given a band name and SQL connection, get the registered emails of the band and 
-                  // return a mailto link to them
+              <div class="col-xs-12" id="functionalitybtns">
+                <div class="col-xs-6 col-md-8">
+                  <button id="email-bands-button" class="btn btn-primary btn-sm"> Email Selected Timeslots!</button>
+                </div>
+                
+                <div class="col-xs-6 col-md-4">
+                  <input id="search" name="search" type="text" placeholder="Search..."/>
+                </div>
+              </div>
 
-                  function email_href($bName, $bMembers) {
-                    $members = explode(',', $bMembers);
+            <div class="col-xs-12">
+              <div class="table-container table-responsive bands-table" id="bandstable"> <!-- begin table-container div -->
+                <table class="responsive table"> <!-- begin table -->
+                  <tr class='fixed' data-status= "fixed">
+                    <th> Name </th>
+                    <th> Description </th>
+                    <th> Timeslots </th>
+                    <th> Scheduled </th>
+                    <th> Manage </th>
+                    <th> Contact </th>
+                  </tr>
+                  <?php 
+                    // Given a band name and SQL connection, get the registered emails of the band and 
+                    // return a mailto link to them
 
-                    $recipient = $members[0];
-                    $cc = '';
-                    unset($members[0]);
-                    foreach ($members as $key => $value) {
-                      $cc = $cc . $value . ',';
+                    function email_href($bName, $bMembers) {
+                      $members = explode(',', $bMembers);
+
+                      $recipient = $members[0];
+                      $cc = '';
+                      unset($members[0]);
+                      foreach ($members as $key => $value) {
+                        $cc = $cc . $value . ',';
+                      }
+
+                      $subject = sprintf("[Porchfest] %s", $bName);
+                      return sprintf("mailto:%s?cc=%s&subject=%s", $recipient, $cc, $subject);
                     }
 
-                    $subject = sprintf("[Porchfest] %s", $bName);
-                    return sprintf("mailto:%s?cc=%s&subject=%s", $recipient, $cc, $subject);
-                  }
+                    $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
 
-                  $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
+                    $result = $conn->query($sql);
+                    
+                    while($band = $result->fetch_assoc()) {
+                      $bandname = $band['Name'];
+                      // Modify the band name such that it looks good in the URL.
+                      // All spaces (' ') become '-' and all '-' become '--'.
+                      $urlbandname = str_replace(" ", "-", str_replace("-", "--", $bandname));
 
-                  $result = $conn->query($sql);
-                  
-                  while($band = $result->fetch_assoc()) {
-                    $bandname = $band['Name'];
-                    // Modify the band name such that it looks good in the URL.
-                    // All spaces (' ') become '-' and all '-' become '--'.
-                    $urlbandname = str_replace(" ", "-", str_replace("-", "--", $bandname));
+                      echo '<tr class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . '">';
+                      echo '<td>' . $band['Name'] . '</td>';
+                      echo '<td>' . $band['Description'] . '</td>';
+                      echo '<td> <a data-target="#timeslotModal' . $band['BandID'] . '" data-toggle="modal"> Time Slots </a> </td>';
+                      echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
+                      echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NICKNAME . '/' . 
+                                  $urlbandname . '"> Edit </a> </td>';
+                      echo '<td> <a href="' . email_href($band['Name'], $band['Members']) . '" target="_blank"> Email </a> </td>'; 
+                    }
+                  ?>
 
-                    echo '<tr class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . '">';
-                    echo '<td>' . $band['Name'] . '</td>';
-                    echo '<td>' . $band['Description'] . '</td>';
-                    echo '<td> <a data-target="#timeslotModal' . $band['BandID'] . '" data-toggle="modal"> Time Slots </a> </td>';
-                    echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
-                    echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NICKNAME . '/' . 
-                                $urlbandname . '"> Edit </a> </td>';
-                    echo '<td> <a href="' . email_href($band['Name'], $band['Members']) . '" target="_blank"> Email </a> </td>'; 
-                  }
-                ?>
-
-              </table> <!-- end table -->
-            </div> <!-- end table-container div -->
+                </table> <!-- end table -->
+              </div> <!-- end table-container div -->
+            </div>
           </div> <!-- end bands div -->
 
           <div class="tab-pane fade" id="timeslots"> <!-- begin timeslots div -->
@@ -319,13 +362,19 @@ session_start();
                 echo '<button id="schedule-button" class="btn btn-primary btn-sm"> Schedule it!</button>';
                 echo '</div>';
               } else {
+                $conflicts = findConflictingBands($conn, $porchfestID);
                 echo '<div id="scheduletab-conflictstable">';
-                echo '<div class="btn-group" data-toggle="buttons">';
-                
-                create_filters($porchfestID, $conn);
-
+                echo '<div class="col-xs-12">';
+                  echo '<div class="btn-group" data-toggle="buttons">';
+                    create_filters($porchfestID, $conn);
+                  echo '</div>';
                 echo '</div>';
 
+                echo '<div class="col-xs-12" id="functionalitybtns">';
+                  echo '<button id="save-changes-button" class="btn btn-primary btn-sm"> Save changes </button>';
+                echo '<div>';
+
+                echo '<div class="col-xs-12">';
                 echo '<div class="table-container table-responsive bands-table" id="bandstable"> <!-- begin table-container div -->
               <table class="responsive table"> <!-- begin table -->
                 <tr class="fixed" data-status= "fixed">
@@ -334,8 +383,6 @@ session_start();
                   <th> Conflicts </th>
                 </tr>';
 
-                  $bandConflicts = findConflicts($conn, $porchfestID);
-
                   $result = $conn->query("SELECT Members FROM bands WHERE PorchfestID = '" . $porchfestID . "'");
 
                   $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
@@ -343,11 +390,11 @@ session_start();
                   $result = $conn->query($sql);
 
                   while($band = $result->fetch_assoc()) {
-                    echo '<tr class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . '">';
+                    echo '<tr id="' . 'band-' . $band['BandID'] . '" class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . '">';
                     echo '<td>' . $band['Name'] . '</td>';
                     $sql2 = 'SELECT * FROM `porchfesttimeslots` INNER JOIN bandavailabletimes ON porchfesttimeslots.TimeslotID = bandavailabletimes.TimeslotID WHERE bandavailabletimes.bandID=' . $band['BandID'];
 
-                    echo '<td><select class="timesdropdown" id="times-' . $band['BandID'] . ' ">';
+                    echo '<td><select class="timesdropdown" id="times-' . $band['BandID'] . '">';
 
                     $sql3 = "SELECT * FROM `bandstoporchfests` INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID WHERE bandstoporchfests.bandID=" . $band['BandID'];
 
@@ -374,12 +421,13 @@ session_start();
                     }
                     echo '</td></select>';
 
-                    echo '<td id="conflicts-' . $band['BandID'] .'"> No conflicts </td>';
+                    echo '<td id="conflicts-' . $band['BandID'] .'">' . getConflicts($conflicts, $band['BandID']) . '</td>';
                     
                   }
 
                   echo '</table> <!-- end table -->
                   </div> <!-- end table-container div -->';
+                  echo '</div>';
 
                   echo '</div>';
 
@@ -544,32 +592,54 @@ session_start();
       });
     });
 
+    var conflicts = <?php echo json_encode($conflicts); ?>;
     // ajax call for the Schedule tab, to determine if bands are conflicting.
     $('.timesdropdown').change(function() {
-      var bandid = $(this).attr('id').split('-')[1];
-      var timeslotid = $(this).val();
-      var timeSlotInfo = {
-        timeslotid   : timeslotid,
-        porchfestid  : porchfestid,
-        bandid       : bandid
-      };
+      var newtid = $(this).val();
+      var id = $(this).attr("id").split('-')[1].trim();
+
+      conflicts[id]["tid"] = newtid;
+
+      if (conflicts[id]["potential"].length > 0) {
+        var new_conflicts = [];
+        conflicts[id]["current"] = []; //reset the current list.
+        for(var i = 0; i < conflicts[id]["potential"].length; i++) {
+          var otid = $('#times-' + conflicts[id]["potential"][i]).val()
+          
+          if (otid == newtid) {
+            // there is a conflict, because one of the potentials has the same timeslot id.
+            new_conflicts.push(conflicts[id]["potential"][i]);
+          }
+        }
+
+        conflicts[id]["current"] = new_conflicts;
+
+        if (conflicts[id]["current"].length > 0) {
+          $('#conflicts-' + id).html("This bands conflicts with: " + conflicts[id]["current"].join(", "));
+        } else {
+          $('#conflicts-' + id).html('No conflicts');
+        }
+      }
+    });
+
+    $('#save-changes-button').click(function() {
+      var json = JSON.stringify(conflicts);
 
       $.ajax({
         url: ajaxurl,
-        type: "GET",
-        data: timeSlotInfo,
-        success: function(result){
-          if (result == "overlap") {
-            $('#conflicts-' + bandid).html("This timeslot is taken by a conflicting band.");
+        type: "POST",
+        data: {json: json},
+        success: function(result) {
+          if (result == 'success') {
+            $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The schedule was updated successfully. </div>');
           } else {
-            $('#conflicts-' + bandid).html("No conflicts");
+            $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
           }
         },
         error: function(result) {
-          console.log('error');
+          console.log(error);
         }
       });
-
     });
 
     // get rid of edit alert when clicking anywhere on the page.
