@@ -49,13 +49,13 @@
     } elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['exportKML'])) {
         
 
-        $filename = 'kml/output.kml';
+        $filename = $_POST['PORCHFEST_NICKNAME'] .'.kml';
         header("Content-Description: File Transfer");
         header('Content-Type: application/kml');
         header("Content-Disposition: attachment; filename=$filename");
         header('Content-Length: ' . filesize($filename));
         header("Cache-Control: public");
-        require_once 'kml/working.php';
+        require_once 'generateKML.php';
         
         readfile($filename);
     }
