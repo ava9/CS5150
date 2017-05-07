@@ -16,20 +16,17 @@
 
                 if (isset($_POST['login'])) {
                 // logged_user not set, but email and password were entered
-                    $email = $_POST['email'];
-                    $sanitized_username = filter_var($email, FILTER_SANITIZE_STRING);
+                    $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
                     require_once('../php/config.php');
                     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-                    // future hashing
-                    // $password = hash("md5", ($_POST['password'] . SALT));
-                    $password = $_POST['password'];
+                    $password = hash("sha256", ($_POST['password'] . SALT));
                     $result = $mysqli->query("SELECT password, userID FROM users WHERE email = '$email'");
                     $row = $result->fetch_row();
 
                     if ($row[0] === $password) {
                         $_SESSION['logged_user'] = $row[1];
                         unset($_POST['login']);
-                        header("Refresh:0");
+                        // header("Refresh:0");
                     } else {
             ?>
                         <script type='text/javascript'>

@@ -11,7 +11,7 @@ require_once "../php/config.php";
 $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 # Perform the query
-$query = sprintf("SELECT bands.Name FROM `bandstoporchfests` INNER JOIN bands on bands.BandID = bandstoporchfests.BandID WHERE PorchfestID = 1 AND bands.Name LIKE '%%%s%%' LIMIT 5", mysql_real_escape_string($_GET["q"]));
+$query = sprintf("SELECT bands.Name FROM `bandstoporchfests` INNER JOIN bands on bands.BandID = bandstoporchfests.BandID WHERE PorchfestID = 1 AND bands.Name LIKE '%%%s%%' LIMIT 5", $conn->real_escape_string($_GET["q"]));
 $arr = array();
 $result = $mysqli->query($query);
 

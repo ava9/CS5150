@@ -292,7 +292,7 @@ session_start();
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="datetime-local" name="deadline" lass="form-control" placeholder="Deadline" /> <?php echo '<span class="error">'; echo $deadlineError; echo '</span>'; ?>
+                      <input required type="date" name="deadline" lass="form-control" placeholder="Deadline" /> <?php echo '<span class="error">'; echo $deadlineError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
