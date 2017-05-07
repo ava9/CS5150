@@ -22,171 +22,176 @@ session_start();
     <?php require_once "../php/routing.php"; ?>
 
     <?php
-  // input a string: address (i.e. "114 Summit Ave. Ithaca, NY 14850"
-  // output is a latitude, longitude coordinate pair (i.e. 42.442064,-76.483469)
-  function getCoordinates($address){
-    
-    // replace white space with "+" sign (match google search pattern)
-    $address = str_replace(" ", "+", $address); 
-    
-    $url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=$address";
-     
-    $response = file_get_contents($url);
-     
-    $json = json_decode($response,TRUE); //array object from the web response
-     
-    return ($json['results'][0]['geometry']['location']['lat'].",".$json['results'][0]['geometry']['location']['lng'].",0.0");
+      // input a string: address (i.e. "114 Summit Ave. Ithaca, NY 14850"
+      // output is a latitude, longitude coordinate pair (i.e. 42.442064,-76.483469)
+      function getCoordinates($address){
+        
+        // replace white space with "+" sign (match google search pattern)
+        $address = str_replace(" ", "+", $address); 
+        
+        $url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=$address";
+         
+        $response = file_get_contents($url);
+         
+        $json = json_decode($response,TRUE); //array object from the web response
+         
+        return ($json['results'][0]['geometry']['location']['lat'].",".$json['results'][0]['geometry']['location']['lng'].",0.0");
 
-  }
+      }
 
-  // Variables for server side validation
-  $bandnameError = $descriptionError = $locationError = "";
+      // Variables for server side validation
+      $bandnameError = $descriptionError = $locationError = "";
 
-  // Check that the form was submitted
-  if (isset($_POST['submitInfo'])) {
-    // If the user is not logged in then new account will be created
-    if (!isset($_SESSION['logged_user'])) {
-      // Server side validation to check that forms have required fields filled
-      if (empty($_POST['name'])) {
-        $nameError = 'Missing';
-      }
-      else {
-        $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
-      }
-      if (empty($_POST['email'])) {
-        $emailError = 'Missing';
-      }
-      else {
-        $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-              $emailError = "Invalid email format"; 
-            }
-      }
-      if (empty($_POST['mobile'])) {
-        $mobileError = 'Missing';
-      }
-      else {
-        $mobile = filter_var($_POST['mobile'], FILTER_SANITIZE_STRING);
-      }
-      if (empty($_POST['password'])) {
-        $passwordError = 'Missing';
-      }
-      else {
-        $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
-      }
-      if (empty($_POST['confirmPassword'])) {
-        $confirmPasswordError = 'Missing';
-      }
-      else {
-        $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
-      }
-    }
-    if (empty($_POST['bandname'])) {
-      $bandnameError = 'Missing';
-    }
-    else {
-      $bandname = htmlentities($_POST['bandname']);
-    }
-    if (empty($_POST['banddescription'])) {
-      $descriptionError = 'Missing';
-    }
-    else {
-      $banddescription = htmlentities($_POST['banddescription']);
-    }
-    $bandmembers = htmlentities($_POST['bandmembers']);
-    $bandcomment = htmlentities($_POST['bandcomment']);
-    $bandconflicts = htmlentities($_POST['bandconflicts']);
-    if (empty($_POST['porchlocation'])) {
-      $locationError = 'Missing';
-    }
-    else {
-      $porchlocation = htmlentities($_POST['porchlocation']);
-    }
-
-    // Creates a new user if currently not logged in
-    if (!isset($_SESSION['logged_user'])) {
-      if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['mobile']) && isset($_POST['password']) && isset($_POST['confirmPassword']) && $name != '' && $email != '' && $mobile != '' && $password != '' && $confirmPassword != '') {
-        // Create dataabase connection
-        require_once('../php/config.php');
-        $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-        // Check that the passwords match otherwise create a popup
-        if ($password != $confirmPassword) {
-          echo "<script type='text/javascript'>alert('Passwords do not match!');</script>";
-        } else {
-          // Check that the email is not already in the database
-          $result = $mysqli->query("SELECT * FROM users WHERE email = '$email'");
-          $row = $result->fetch_row();
-          // If email is unique then insert new user information into database
-          if (empty($row)) {
-            $prep = $mysqli->prepare("INSERT INTO users (Email, Password, Name, ContactInfo) VALUES (?,?,?,?)");
-            $prep->bind_param("ssss", $email, $password, $name, $mobile);
-            $prep->execute();
-            if ($prep->affected_rows) {
-              echo "<script type='text/javascript'>alert('$name, you have been added successfully!.');</script>";
-            } else {
-              echo "<script type='text/javascript'>alert('DB failed to add you!.');</script>";
-            }
-          } else { 
-            echo "<script type='text/javascript'>alert('User already exists!.');</script>";
+      // Check that the form was submitted
+      if (isset($_POST['submitInfo'])) {
+        // If the user is not logged in then new account will be created
+        if (!isset($_SESSION['logged_user'])) {
+          // Server side validation to check that forms have required fields filled
+          if (empty($_POST['name'])) {
+            $nameError = 'Missing';
+          }
+          else {
+            $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+          }
+          if (empty($_POST['email'])) {
+            $emailError = 'Missing';
+          }
+          else {
+            $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                  $emailError = "Invalid email format"; 
+                }
+          }
+          if (empty($_POST['mobile'])) {
+            $mobileError = 'Missing';
+          }
+          else {
+            $mobile = filter_var($_POST['mobile'], FILTER_SANITIZE_STRING);
+          }
+          if (empty($_POST['password'])) {
+            $passwordError = 'Missing';
+          }
+          else {
+            $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
+          }
+          if (empty($_POST['confirmPassword'])) {
+            $confirmPasswordError = 'Missing';
+          }
+          else {
+            $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
           }
         }
-      }
-    }
+        if (empty($_POST['bandname'])) {
+          $bandnameError = 'Missing';
+        }
+        else {
+          $bandname = htmlentities($_POST['bandname']);
+        }
+        if (empty($_POST['banddescription'])) {
+          $descriptionError = 'Missing';
+        }
+        else {
+          $banddescription = htmlentities($_POST['banddescription']);
+        }
+        $bandmembers = htmlentities($_POST['bandmembers']);
+        $bandcomment = htmlentities($_POST['bandcomment']);
+        $bandconflicts = htmlentities($_POST['bandconflicts']);
+        if (empty($_POST['porchlocation'])) {
+          $locationError = 'Missing';
+        }
+        else {
+          $porchlocation = htmlentities($_POST['porchlocation']);
+        }
 
-    $latlong = explode(',', getCoordinates($porchlocation));
-    $lat = $latlong[0];
-    $long = $latlong[1];
+        // Creates a new user if currently not logged in
+        if (!isset($_SESSION['logged_user'])) {
+          if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['mobile']) && isset($_POST['password']) && isset($_POST['confirmPassword']) && $name != '' && $email != '' && $mobile != '' && $password != '' && $confirmPassword != '') {
+            // Create dataabase connection
+            require_once('../php/config.php');
+            $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+            // Check that the passwords match otherwise create a popup
+            if ($password != $confirmPassword) {
+              echo "<script type='text/javascript'>alert('Passwords do not match!');</script>";
+            } else {
+              // Check that the email is not already in the database
+              $result = $mysqli->query("SELECT * FROM users WHERE email = '$email'");
+              $row = $result->fetch_row();
+              // If email is unique then insert new user information into database
+              if (empty($row)) {
+                $prep = $mysqli->prepare("INSERT INTO users (Email, Password, Name, ContactInfo) VALUES (?,?,?,?)");
+                $prep->bind_param("ssss", $email, $password, $name, $mobile);
+                $prep->execute();
+                if ($prep->affected_rows) {
+                  echo "<script type='text/javascript'>alert('$name, you have been added successfully!.');</script>";
+                } else {
+                  echo "<script type='text/javascript'>alert('DB failed to add you!.');</script>";
+                }
+              } else { 
+                echo "<script type='text/javascript'>alert('User already exists!.');</script>";
+              }
+            }
+          }
+        }
 
-    // Insert into bands table
-    $prep = $mysqli->prepare("INSERT INTO bands (Name, Description, Members, Comment, Conflicts) 
-                              VALUES (?,?,?,?,?)");
-    $prep->bind_param("sssss", $bandname, $banddescription, $bandmembers, $bandcomment, $bandconflicts);
-    $prep->execute();
+        $latlong = explode(',', getCoordinates($porchlocation));
+        $lat = $latlong[0];
+        $long = $latlong[1];
 
-    // Insert into bandstoporchfests table
-    $sql = "SELECT BandID FROM bands ORDER BY BandID DESC LIMIT 1";
-    $result = $mysqli->query($sql);
-    $bandID = $result->fetch_assoc()['BandID'];
-    $prep = $mysqli->prepare("INSERT INTO bandstoporchfests (PorchfestID, BandID, PorchLocation, Latitude, Longitude) 
-                              VALUES (?,?,?,?,?)");
-    $prep->bind_param("sssss", $porchfestID, $bandID, $porchlocation, $lat, $long);
-    $prep->execute();
-
-    // Insert into userstobands table
-    if (!isset($_SESSION['logged_user'])) {
-      $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
-      $result = $mysqli->query($sql);
-      $userID = $result->fetch_assoc()['UserID'];
-    }
-    else {
-      $userID = $_SESSION['logged_user'];
-    }
-    $prep = $mysqli->prepare("INSERT INTO userstobands (UserID, BandID) VALUES (?,?)");
-    $prep->bind_param("ss", $userID, $bandID);
-    $prep->execute();
-
-    // Insert into bandavailabletimes
-    if (isset($_POST['available'])) {
-      $available = $_POST['available'];
-      foreach($available as $timeslot) {
-        $prep = $mysqli->prepare("INSERT INTO bandavailabletimes (BandID, TimeslotID)
-                                  VALUES (?,?)");
-        $prep->bind_param("ss", $bandID, $timeslot);
+        // Insert into bands table
+        $prep = $mysqli->prepare("INSERT INTO bands (Name, Description, Members, Comment, Conflicts) 
+                                  VALUES (?,?,?,?,?)");
+        $prep->bind_param("sssss", $bandname, $banddescription, $bandmembers, $bandcomment, $bandconflicts);
         $prep->execute();
-      }
-    }
 
-    // Popup to show if queries successfully executed
-    if ($prep->affected_rows) {
-        echo "<script type='text/javascript'>alert('The band, $bandname, has been added successfully!.');</script>";
-    } else {
-      echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
-    }
-  }
-  
-  // Variables for server side validation
-  $nameError = $emailError = $mobileError = $passwordError = $confirmPasswordError = ""; 
-?>
+        // Insert into bandstoporchfests table
+        $sql = "SELECT BandID FROM bands ORDER BY BandID DESC LIMIT 1";
+        $result = $mysqli->query($sql);
+        $bandID = $result->fetch_assoc()['BandID'];
+        $prep = $mysqli->prepare("INSERT INTO bandstoporchfests (PorchfestID, BandID, PorchLocation, Latitude, Longitude) 
+                                  VALUES (?,?,?,?,?)");
+        $prep->bind_param("sssss", $porchfestID, $bandID, $porchlocation, $lat, $long);
+        $prep->execute();
+
+        // Insert into userstobands table
+        if (!isset($_SESSION['logged_user'])) {
+          $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
+          $result = $mysqli->query($sql);
+          $userID = $result->fetch_assoc()['UserID'];
+        }
+        else {
+          $userID = $_SESSION['logged_user'];
+        }
+        $prep = $mysqli->prepare("INSERT INTO userstobands (UserID, BandID) VALUES (?,?)");
+        $prep->bind_param("ss", $userID, $bandID);
+        $prep->execute();
+
+        // Insert into bandavailabletimes
+        if (isset($_POST['available'])) {
+          $available = $_POST['available'];
+          foreach($available as $timeslot) {
+            $prep = $mysqli->prepare("INSERT INTO bandavailabletimes (BandID, TimeslotID)
+                                      VALUES (?,?)");
+            $prep->bind_param("ss", $bandID, $timeslot);
+            $prep->execute();
+          }
+        }
+
+        // Insert the conflicts into bandconflicts
+        if (isset($_POST['bandconflicts'])) {
+          echo $_POST['bandconflicts'];
+        }
+
+        // Popup to show if queries successfully executed
+        if ($prep->affected_rows) {
+            echo "<script type='text/javascript'>alert('The band, $bandname, has been added successfully!.');</script>";
+        } else {
+          echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
+        }
+      }
+    
+      // Variables for server side validation
+      $nameError = $emailError = $mobileError = $passwordError = $confirmPasswordError = ""; 
+    ?>
     
     <div class="row">
       <h1 style="text-align:center;"> 
@@ -373,9 +378,21 @@ session_start();
 
 <script type='text/javascript'>
   $(document).ready(function () {
-      $("#conflict-input").tokenInput("/cs5150/html/band-listing.php", {
-                preventDuplicates: true, theme: "facebook"
-            });
+    $.ajax({
+        url: "/cs5150/html/band-listing.php",
+        type: "GET",
+        data: {"q": "acoustic"},
+        success: function(result) {
+          console.log(result);
+        },
+        error: function(result) {
+          console.log(error);
+        }
+      });
+
+    $("#conflict-input").tokenInput("/cs5150/html/band-listing.php", {
+        preventDuplicates: true, theme: "facebook"
+    });
   });
 
 
