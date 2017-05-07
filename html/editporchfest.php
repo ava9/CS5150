@@ -274,6 +274,7 @@ session_start();
 
               <div class="col-xs-12" id="functionalitybtns">
                 <div class="col-xs-6 col-md-8">
+                  <button id="email-all" class="btn btn-primary btn-sm"> Email All Bands </button>
                   <button id="email-bands-button" class="btn btn-primary btn-sm"> Email Selected Timeslots!</button>
                 </div>
                 
@@ -556,6 +557,7 @@ session_start();
 
     // filter buttons for the Manage Bands tab.
     var bfilter = '#bandstable tr:not(.fixed)';
+    $('#email-bands-button').prop("disabled", true);
     // array of timeslotIDs, mapped to boolean
     // that indicates whether it is currently selected or not
     // used for emailing
@@ -565,6 +567,7 @@ session_start();
       // if the button is toggled, aka want to filter by this.
       var id = $(this).parent().attr('id');
       if($(this).parent().hasClass('active')) {
+        $('#email-bands-button').prop("disabled", false);
         $('#bandstable tr.' + id).show();
         bfilter = bfilter + ':not(tr.' + id + ')';
       } else {
@@ -576,6 +579,7 @@ session_start();
 
       if (bfilter == '#bandstable tr:not(.fixed)') {
         $('tr').show();
+        $('#email-bands-button').prop("disabled", true);
       }
       
       if (timeslotIDs[id] == null) {
