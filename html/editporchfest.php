@@ -731,6 +731,7 @@ session_start();
             $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The schedule was updated successfully. </div>');
           } else {
             $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
+            console.log(result);
           }
         },
         error: function(result) {
@@ -943,15 +944,19 @@ session_start();
         type: "POST",
         data: {porchfestid: porchfestid, schedule: 1},
         success: function(result){
-          $('#scheduletab-button img').hide();
-          $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The schedule was generated successfully. <a href="" onclick="location.reload()"> Refresh </a> the page to see the new schedule. </div>');
+          if (result == "success") {
+            $('#scheduletab-button img').hide();
+            $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The schedule was generated successfully. <a href="" onclick="location.reload()"> Refresh </a> the page to see the new schedule. </div>');
+          } else {
+            $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
+          }
           // console.log('Scheduled!');
-          // console.log(result);
+          console.log(result);
         },
         error: function(result) {
           $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
           // console.log('error');
-          // console.log(result);
+          console.log(result);
         }
       });
     });

@@ -21,8 +21,15 @@
 		}
 	} elseif (isset($_POST['schedule'])) {
 		// ** editporchfest.php: SCHEDULE: run scheduling algorithm
+		ob_start();
 		require_once '../scheduling/PorchfestScheduling/main.php';
-		if (True) {	
+		ob_end_clean();
+
+		$sql = 'SELECT scheduled FROM porchfests WHERE PorchfestID=' . $_POST['porchfestid'];
+		$result = $conn->query($sql);
+		$isSched = $result->fetch_assoc()['scheduled'];	
+
+		if ($isSched) {	
 			echo "success";
 		} else {
 			echo "fail";
@@ -36,7 +43,11 @@
 		// 	}
 		// }
 		echo "mailto:?bcc=selectedmembers@porchfest.com&subject=[Ithaca Porchfest]";
+
+
+	// Update schedule (save-changes-button)
 	} elseif (isset($_POST['json'])) {
+
 		$new_schedule = json_decode($_POST['json'], True);
 
 		$sql = "";
@@ -47,8 +58,13 @@
 		}
 
 		$result = $conn->multi_query($sql);
-
+		
 		if ($result) {
+			ob_start();
+			require_once '../scheduling/PorchfestScheduling/updateMap.php';
+			ob_end_clean();
+			echo 'success';
+		} elseif (!$sql) {
 			echo 'success';
 		} else {
 			echo 'failure';
