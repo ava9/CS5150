@@ -141,13 +141,27 @@ session_start();
         return $bandConflicts;
       }
 
+      function getBandNames($bands, $conflicts) {
+        $names = array();
+        foreach($bands as $band) {
+          array_push($names, $conflicts[$band]["name"]);
+        }
+
+        return $names;
+      }
+
 
       function getConflicts($conflicts, $bandID) {
-        if(sizeof($conflicts[$bandID]["current"]) > 0) {
-          return 'This band conflicts with: ' . implode(", ", $conflicts[$bandID]["current"]);
+        $result = array();
+        if (sizeof($conflicts[$bandID]["current"]) > 0) {
+          array_push($result, 'This band conflicts with: ' . implode(", ", getBandNames($conflicts[$bandID]["current"], $conflicts)));
+          array_push($result, 'This band conflicts with: ' . implode(", ", $conflicts[$bandID]["current"]));
         } else {
-          return 'No conflicts';
+          array_push($result, 'No conflicts');
+          array_push($result, 'No conflicts');
         }
+
+        return $result;
       } 
 
     ?>
@@ -436,7 +450,13 @@ session_start();
                     }
                     echo '</td></select>';
 
-                    echo '<td id="conflicts-' . $band['BandID'] .'">' . getConflicts($conflicts, $band['BandID']) . '</td>';
+                    $conflictList = getConflicts($conflicts, $band['BandID']);
+
+                    echo '<td>';
+                    echo '<p id="conflict-names-' . $band['BandID'] . '"> ' . $conflictList[0]  . ' <p>';
+                    echo '<input type="hidden" id="conflicts-' . $band['BandID'] .'" value="' . $conflictList[1] . '">';
+                    echo '</td>';
+
                     
                   }
 
@@ -607,25 +627,36 @@ session_start();
       });
     });
 
+    function getBandNames(conflicts, bands) {
+      var names = [];
+      for (var i = 0; i < bands.length; i++) {
+        names.push(conflicts[bands[i]]["name"]);
+      }
+
+      return names;
+    }
+
     function updateOldConflictingBand(conflictingid, id) {
-      var s = $('#conflicts-' + conflictingid).html();
+      var s = $('#conflicts-' + conflictingid).val();
       var iconflicts  = s.substr(s.indexOf(":") + 2, s.length).split(", ");
 
       if (iconflicts.length == 1) {
         // the conflicting band only conflicted with the current band.
-        $('#conflicts-' + conflictingid).html('No conflicts');
+        $('#conflicts-' + conflictingid).val('No conflicts');
+        $('#conflict-names-' + conflictingid).text('No conflicts');
         conflicts[conflictingid]["current"] = [];
       } else {
         // the conflicting band has other conflicts.
         var index = iconflicts.indexOf(id);
         iconflicts = iconflicts.splice(index, 1);
         conflicts[conflictingid]["current"] = iconflicts;
-        $('#conflicts-' + conflictingid).html("This bands conflicts with: " + iconflicts.join(", "));
+        $('#conflicts-' + conflictingid).val("This bands conflicts with: " + iconflicts.join(", "));
+        $('#conflict-names-' + conflictingid).text("This bands conflicts with: " + getBandNames(conflicts, iconflicts).join(", "));
       }
     }
 
     function updateNewConflictingBand(conflictingid, id) {
-      var s = $('#conflicts-' + conflictingid).html();
+      var s = $('#conflicts-' + conflictingid).val();
 
       var iconflicts;
       if (s == 'No conflicts') {
@@ -637,7 +668,8 @@ session_start();
       iconflicts.push(id);
       
       conflicts[conflictingid]["current"] = iconflicts;
-      $('#conflicts-' + conflictingid).html("This bands conflicts with: " + iconflicts.join(", "));
+      $('#conflicts-' + conflictingid).val("This bands conflicts with: " + iconflicts.join(", "));
+      $('#conflict-names-' + conflictingid).text("This bands conflicts with: " + getBandNames(conflicts, iconflicts).join(", "));
     }
 
     var conflicts = <?php echo json_encode($conflicts); ?>;
@@ -672,9 +704,11 @@ session_start();
         conflicts[id]["current"] = new_conflicts;
 
         if (conflicts[id]["current"].length > 0) {
-          $('#conflicts-' + id).html("This bands conflicts with: " + conflicts[id]["current"].join(", "));
+          $('#conflicts-' + id).val("This bands conflicts with: " + conflicts[id]["current"].join(", "));
+          $('#conflict-names-' + id).text("This bands conflicts with: " + getBandNames(conflicts, conflicts[id]["current"]).join(", "));
         } else {
-          $('#conflicts-' + id).html('No conflicts');
+          $('#conflicts-' + id).val('No conflicts');
+          $('#conflict-names-' + id).text('No conflicts');
         }
       }
     });
