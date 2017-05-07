@@ -43,6 +43,12 @@ session_start();
   <?php require_once "../php/modules/login.php"; ?>
   <?php require_once "../php/modules/navigation.php"; ?>
 
+  <style>
+    h4 {
+      text-align: center;
+    }
+  </style>
+
   <div class="container" id = "singleporchfestcontainer"> <!-- Container div -->
     
     <div class="row">
@@ -95,28 +101,42 @@ session_start();
 
         <div class="tab-pane fade in" id="date"> <!-- begin date div -->
           <?php 
-            // Query to get the band information 
-            $sql = "SELECT bands.BandID, Name, bandstoporchfests.PorchfestID, bandstoporchfests.TimeslotID, StartTime, EndTime 
-                    FROM bands 
-                    INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
-                    INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID 
-                    WHERE bandstoporchfests.PorchfestID = '" . PORCHFEST_ID . "' ORDER BY StartTime";
 
+            $sql = "SELECT Scheduled FROM porchfests WHERE PorchfestID=" . PORCHFEST_ID;
             $result = $conn->query($sql);
+            
+            if (!$result) {
+              throw new Exception("Query failed", 1);
+            }
 
-            $lasttime = '';
+            $scheduled = $result->fetch_assoc()['Scheduled'];
+            if ($scheduled == 1) {
+              // Query to get the band information 
+              $sql = "SELECT bands.BandID, Name, bandstoporchfests.PorchfestID, bandstoporchfests.TimeslotID, StartTime, EndTime 
+                      FROM bands 
+                      INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
+                      INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID 
+                      WHERE bandstoporchfests.PorchfestID = '" . PORCHFEST_ID . "' ORDER BY StartTime";
 
-            // Orders bands by scheduled timeslot and displays
-            while($band = $result->fetch_assoc()) {
-              if ($lasttime != $band['StartTime']) {
-                $starttime = date_format(date_create($band['StartTime']), 'g:iA');
-                echo '<h3>' . $starttime . '</h3>';
-                $lasttime = $band['StartTime'];
+              $result = $conn->query($sql);
+
+              $lasttime = '';
+
+
+              // Orders bands by scheduled timeslot and displays
+              while($band = $result->fetch_assoc()) {
+                if ($lasttime != $band['StartTime']) {
+                  $starttime = date_format(date_create($band['StartTime']), 'g:iA');
+                  echo '<h3>' . $starttime . '</h3>';
+                  $lasttime = $band['StartTime'];
+                }
+                echo '<button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal' . $band['BandID'] . '">
+                          <h4>' . $band['Name'] .'<h4>
+                          </button>
+                        <br>';
               }
-              echo '<button type="button" class="btn btn-link" data-toggle="modal" data-target="#bandModal' . $band['BandID'] . '">
-                        <h4>' . $band['Name'] .'<h4>
-                        </button>
-                      <br>';
+            } else {
+              echo '<h4> The bands have not been scheduled yet. Check back later to see when the bands are playing! </h4>';
             }
           ?>
         </div> <!-- end date div -->
