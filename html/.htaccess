@@ -1,11 +1,11 @@
 Options -MultiViews
 RewriteEngine On
-RewriteBase /cs5150/html/
 
 RewriteRule ^browse(\/)? browse.php [NC,L]
 RewriteRule ^existing(\/)? existingporchfest.php [NC,L]
 RewriteRule ^myporchfests(\/)? myporchfests.php [NC,L]
 RewriteRule ^profile(\/)? myprofile.php [NC,L]
+RewriteRule ^dashboard(\/)? dashboard.php [NC,L]
 
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_FILENAME} !-d
@@ -27,4 +27,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^edit/([^/]+)/? editporchfest.php?name=$1 [NC,L]
 
+
 #RewriteRule ^(.*)? index.php [NC,L]
+RewriteRule !\.(js|css|html|xml|csv)$ index.php [NC,L]
+#RewriteRule ^(.*)$ index.php [NC,L]
