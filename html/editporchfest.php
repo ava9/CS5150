@@ -476,7 +476,7 @@ session_start();
             <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='/cs5150/php/export.php' target="_blank">
               <!-- TODO PRETTY THIS -->
               <input type = "hidden" name = "porchfestid" value = <?php echo $porchfestID ?> />
-              <input type = "hidden" name = "mediatype" value = "csv" /> 
+              <input type = "hidden" name = "PORCHFEST_NICKNAME" value = <?php echo PORCHFEST_NICKNAME ?> />
               <div class="form-group">
                 <label class="col-sm-2"></label>
                 <div class="col-sm-10">
@@ -945,13 +945,13 @@ session_start();
         success: function(result){
           $('#scheduletab-button img').hide();
           $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The schedule was generated successfully. <a href="" onclick="location.reload()"> Refresh </a> the page to see the new schedule. </div>');
-          console.log('Scheduled!');
-          console.log(result);
+          // console.log('Scheduled!');
+          // console.log(result);
         },
         error: function(result) {
           $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
-          console.log('error');
-          console.log(result);
+          // console.log('error');
+          // console.log(result);
         }
       });
     });

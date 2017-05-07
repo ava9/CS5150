@@ -47,7 +47,7 @@ $MIN_DISTANCE = 25; // minimum distance in meters allowed between playing bands
 $kNeighbors = 10; //how many nearest neighbors used to calculate distance variance
 
 #Ithaca PorchFest
-$PorchfestID = 1;
+$PorchfestID = $_POST['porchfestid'];
 
 $resultBandsTimeSlots;
 $resultBandsPorchfests;
