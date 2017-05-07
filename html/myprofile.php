@@ -9,6 +9,7 @@ session_start();
   <title>PorchFest - My Profile</title>
 </head>
 <body>
+  <div id="editalert"></div>
   <?php // Database credentials
     require_once "../php/config.php";
 
@@ -66,13 +67,13 @@ session_start();
 
     if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['mobile']) && isset($_POST['password']) && isset($_POST['confirmPassword']) && $name != '' && $email != '' && $mobile != '' && $password != '' && $confirmPassword != '') {
         if ($password != $confirmPassword) {
-          echo "<script type='text/javascript'>alert('Passwords do not match!');</script>";
+          echo '<script> $("#editalert").html(\'<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> The passwords you entered do not match! Please try again. </div>\'); </script>';
         } elseif(strlen($password) < 5) {
-          echo "<script type='text/javascript'>alert('Password must be at least five characters!');</script>";
+          echo '<script> $("#editalert").html(\'<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Your password must be at least five characters long. Please try again. </div>\'); </script>';
         } else {
+          echo '<script> $("#editalert").html(\'<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your profile was updated successfuly!. </div>\'); </script>';
           $sql = "UPDATE users SET Name='" . $_POST['name'] . "', Email='" . $_POST['email'] . "', Password='" . $_POST['password'] . "', ContactInfo='" . $_POST['mobile'] . "' WHERE UserID='" . $_SESSION['logged_user'] . "'";
           $result = $conn->query($sql);
-          header("Refresh:0");
         }
       }
 
@@ -82,6 +83,7 @@ session_start();
 <!-- navBar and login -->
 <?php require_once "../php/modules/login.php"; ?>
 <?php require_once "../php/modules/navigation.php"; ?>
+
 
 <div class="container" style="padding-top: 60px; text-align: center;">
   <h1 class="page-header">Edit Profile</h1>
@@ -136,6 +138,10 @@ session_start();
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 
 <script type='text/javascript'>
+  $('body').click(function() {
+        $("#editalert").html('');
+  });
+
   $.validate({
       lang: 'en',
       modules : 'date'
