@@ -73,8 +73,11 @@ session_start();
     if (isset($_POST['available'])) {
       $available = $_POST['available'];
       foreach($available as $timeslot) {
-        $sql = "INSERT INTO bandavailabletimes (BandID, TimeslotID) VALUES ('" . $bandID . "', '" . $timeslot . "')";
-        $result = $conn->query($sql);
+        $sql = "INSERT INTO bandavailabletimes (BandID, TimeslotID) VALUES ('?', '?')";
+        // $result = $conn->query($sql);
+        $prep = $mysqli->prepare($sql);
+            $prep->bind_param("ssss", $bandID, $timeslot);
+            $prep->execute();
       }
     }
   }

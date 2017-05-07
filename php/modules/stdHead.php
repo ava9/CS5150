@@ -38,4 +38,16 @@
 		echo sprintf('<a href="%s">%s</a>', $url, $text);
 	}
 
+	function tooltip($text) {
+		echo 
+			'<span class="tool-tip" data-toggle="tooltip" data-placement="right" title="' . $text . '">
+			    <i class="glyphicon glyphicon-info-sign"></i>
+			</span>';
+	}
 ?>
+
+<script>
+	$(document).ready(function(){
+		$("span.tool-tip").tooltip();
+	});
+</script>
