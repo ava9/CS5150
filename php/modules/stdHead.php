@@ -27,6 +27,8 @@
 	define('BROWSE_PORCHFEST_URL', $root_dir . 'browse');
 	define('MY_PORCHFEST_URL', $root_dir . 'myporchfests');
 	define('PROFILE_URL', $root_dir . 'profile');
+	define('DASHBOARD_URL', $root_dir . 'dashboard');
+
 
 	/**
 	 * Given a desired url to link to and text to display on the website,

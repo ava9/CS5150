@@ -6,6 +6,7 @@ RewriteRule ^browse(\/)? browse.php [NC,L]
 RewriteRule ^existing(\/)? existingporchfest.php [NC,L]
 RewriteRule ^myporchfests(\/)? myporchfests.php [NC,L]
 RewriteRule ^profile(\/)? myprofile.php [NC,L]
+RewriteRule ^dashboard(\/)? dashboard.php [NC,L]
 
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_FILENAME} !-d
