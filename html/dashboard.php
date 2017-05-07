@@ -111,7 +111,6 @@ session_start();
                 echo '</select>';
               ?>
               <?php
-              $selectedPorchfest = $_POST['selected_porchfest'];
               if ( isset($_POST['selected_porchfest']) ) {
                 create_hyperlink('edit/' . $selectedPorchfest, '<button type="button" class="glyphicon glyphicon-pencil"/></button>');
                 $selectedPorchfest = $_POST["selected_porchfest"];
