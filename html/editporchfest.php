@@ -473,22 +473,36 @@ session_start();
           </div> <!-- end schedule div -->
 
           <div class="tab-pane fade" id="export"> <!-- begin export div -->
-            <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='/cs5150/php/export.php' target="_blank">
-              <!-- TODO PRETTY THIS -->
-              <input type = "hidden" name = "porchfestid" value = <?php echo $porchfestID ?> />
-              <input type = "hidden" name = "PORCHFEST_NICKNAME" value = <?php echo PORCHFEST_NICKNAME ?> />
-              <div class="form-group">
-                  <div class="col-md-1">
-                  </div>
-                  <div class="col-md-9">
-                    <p>Export CSV - Press this button to export the current schedule to a .csv file. The headers for the file are "Band Name, Location, Start Time, End Time"</p>
-                    <button type="submit" name="exportCSV" class="btn btn-primary btn-sm"> Export CSV</button>
-                    <p></p>
-                    <p>Export KML - Press this button to export the current schedule to a .kml file. You can then go <a href="https://mymaps.google.com"> here </a>to upload the kml file to generate a Google Map View of the schedule. In the Google Map View, the bands are sorted by the time slot they are playing at. The bands with a red pin are within 25 meters of another band. The bands with a yellow pin are within 25 to 50 meters of another band.</p>
-                    <button type="submit" name="exportKML" class="btn btn-primary btn-sm"> Export KML </button>
-                  </div>
-              </div>
-            </form>
+          <?php
+              $sql = "SELECT Scheduled from porchfests WHERE PorchfestID='" . $porchfestID . "'";
+              $result = $conn->query($sql);
+              $scheduled = $result->fetch_assoc()['Scheduled'];
+              if (!$scheduled) {
+                ?>
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-9">
+                <p>Your Porchfest hasn't been scheduled yet! Please see the schedule tab to schedule your Porchfest. </p>
+                </div>
+            <?php
+              } else {
+            ?>
+              <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='/cs5150/php/export.php' target="_blank">
+                <input type = "hidden" name = "porchfestid" value = <?php echo $porchfestID ?> />
+                <input type = "hidden" name = "PORCHFEST_NICKNAME" value = <?php echo PORCHFEST_NICKNAME ?> />
+                <div class="form-group">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-9">
+                      <p>Export CSV - Press this button to export the current schedule to a .csv file. The headers for the file are "Band Name, Location, Start Time, End Time"</p>
+                      <button type="submit" name="exportCSV" class="btn btn-primary btn-sm"> Export CSV</button>
+                      <p></p>
+                      <p>Export KML - Press this button to export the current schedule to a .kml file. You can then go <a href="https://mymaps.google.com"> here </a>to upload the kml file to generate a Google Map View of the schedule. In the Google Map View, the bands are sorted by the time slot they are playing at. The bands with a red pin are within 25 meters of another band. The bands with a yellow pin are within 25 to 50 meters of another band.</p>
+                      <button type="submit" name="exportKML" class="btn btn-primary btn-sm"> Export KML </button>
+                    </div>
+                </div>
+              </form>
+            <?php } ?>
           </div> <!-- end export div -->
 
           <div class="tab-pane fade" id="publish"> <!-- begin publish div -->
