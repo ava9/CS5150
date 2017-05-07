@@ -494,12 +494,11 @@ session_start();
               $sql = "SELECT Published from porchfests WHERE PorchfestID='" . $porchfestID . "'";
               $result = $conn->query($sql);
               $published = $result->fetch_assoc()['Published'];
-
               if (!$published) {
-                echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default"> Publish </button>';
+                echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default">Publish</button>';
               }
               else {
-                echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default"> Unpublish </button>';
+                echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default">Unpublish</button>';
               }
             ?>
           </div> <!-- end publish div -->
@@ -757,13 +756,14 @@ session_start();
           if (result == "success") {
             if ($('#publishbutton').html() == "Publish") {
               $('#publishbutton').html("Unpublish");
-            } 
-            else {
+              $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your Porchfest was Published successfully. </div>');
+            } else {
               $('#publishbutton').html("Publish");
+              $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your Porchfest was Unpublished successfully. </div>');
             }
-            $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your Porchfest was published/unpublished successfully. </div>');
           } else {
             $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
+            console.log(result);
           }
         },
         error: function(result) {
@@ -951,12 +951,12 @@ session_start();
             $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
           }
           // console.log('Scheduled!');
-          console.log(result);
+          // console.log(result);
         },
         error: function(result) {
           $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
           // console.log('error');
-          console.log(result);
+          // console.log(result);
         }
       });
     });

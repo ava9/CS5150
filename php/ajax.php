@@ -8,17 +8,44 @@
 	    return $this->args[$name];
 	}
 
-	
+	// publish button clicked
 	if (isset($_POST['publishbutton'])) {
-		// ** editporchfest.php: PUBLISH: publish porchfest or not
+		// flip the publish bit
 		$sql = "UPDATE porchfests SET Published=NOT(Published) WHERE PorchfestID='" . $_POST['porchfestid'] . "'";
-		$result = $conn->query($sql);
-
-		if ($result) {	
-			echo "success";
-		} else {
-			echo "fail";
+		$changePubResult = $conn->query($sql);
+		if (!$changePubResult) {
+			echo "fail\n";
+			die('Could not flip publish bit');
 		}
+
+		// get current publish status
+		$sql = "SELECT Published FROM porchfests WHERE PorchfestID='" .$_POST['porchfestid']. "'";
+		$getPubResult = $conn->query($sql);
+		if (!$getPubResult) {
+			echo "fail\n";
+			die('Could not get current pub status');
+		}
+
+		
+		// if unpublished, set all flags to the special values
+		$isPub = $getPubResult->fetch_assoc()['Published'];
+		if (!$isPub) {
+			ob_start();
+			require_once '../scheduling/PorchfestScheduling/updateMap.php';
+			ob_end_clean();
+		// if published, set all flags to 0
+		} else {
+			$sql = "UPDATE bandstoporchfests SET Flagged=0 WHERE PorchfestID='" . $_POST['porchfestid'] . "'";
+			$updateZerosResult = $conn->query($sql);
+			if (!$updateZerosResult) {
+				echo "fail\n";
+				die("Cound not update to all zeros");
+			}
+		}
+
+		// echo success if not dying already
+		echo 'success';
+
 	} elseif (isset($_POST['schedule'])) {
 		// ** editporchfest.php: SCHEDULE: run scheduling algorithm
 		ob_start();
