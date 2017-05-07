@@ -478,13 +478,15 @@ session_start();
               <input type = "hidden" name = "porchfestid" value = <?php echo $porchfestID ?> />
               <input type = "hidden" name = "PORCHFEST_NICKNAME" value = <?php echo PORCHFEST_NICKNAME ?> />
               <div class="form-group">
-                <label class="col-sm-2"></label>
-                <div class="col-sm-10">
+                  <div class="col-md-1">
+                  </div>
                   <div class="col-md-9">
+                    <p>Export CSV - Press this button to export the current schedule to a .csv file. The headers for the file are "Band Name, Location, Start Time, End Time"</p>
                     <button type="submit" name="exportCSV" class="btn btn-primary btn-sm"> Export CSV</button>
+                    <p></p>
+                    <p>Export KML - Press this button to export the current schedule to a .kml file. You can then go <a href="https://mymaps.google.com"> here </a>to upload the kml file to generate a Google Map View of the schedule. In the Google Map View, the bands are sorted by the time slot they are playing at. The bands with a red pin are within 25 meters of another band. The bands with a yellow pin are within 25 to 50 meters of another band.</p>
                     <button type="submit" name="exportKML" class="btn btn-primary btn-sm"> Export KML </button>
                   </div>
-                </div>
               </div>
             </form>
           </div> <!-- end export div -->
