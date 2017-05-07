@@ -27,4 +27,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^edit/([^/]+)/? editporchfest.php?name=$1 [NC,L]
 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)php index.php [NC,L]
+
 #RewriteRule ^(.*)? index.php [NC,L]
