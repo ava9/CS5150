@@ -388,6 +388,7 @@ session_start();
               $result = $conn->query("SELECT Scheduled FROM porchfests WHERE PorchfestID = '" . $porchfestID . "'");
 
               if (!$scheduled) {
+                $conflicts = findConflictingBands($conn, $porchfestID);
                 echo '<div id="scheduletab-button">';
                 echo '<button id="schedule-button" class="btn btn-primary btn-sm"> Schedule it!</button>';
                 echo '</div>';
@@ -640,6 +641,8 @@ session_start();
       return names;
     }
 
+    var conflicts = <?php echo json_encode($conflicts); ?>;
+
     function updateOldConflictingBand(conflictingid, id) {
       var s = $('#conflicts-' + conflictingid).val();
       var iconflicts  = s.substr(s.indexOf(":") + 2, s.length).split(", ");
@@ -676,7 +679,6 @@ session_start();
       $('#conflict-names-' + conflictingid).text("This bands conflicts with: " + getBandNames(conflicts, iconflicts).join(", "));
     }
 
-    var conflicts = <?php echo json_encode($conflicts); ?>;
     // ajax call for the Schedule tab, to determine if bands are conflicting.
     $('.timesdropdown').change(function() {
       var newtid = $(this).val();
