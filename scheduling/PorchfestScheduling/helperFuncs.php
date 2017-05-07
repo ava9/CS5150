@@ -200,24 +200,29 @@ function bandOverMinDist($bandsArr, $band, $minDist) {
  * @return              A boolean
  */
 function noConflicts($bandsArr, $band){
-  global $MIN_DISTANCE;
-
+  
   if (sizeof($bandsArr) == 0) {
     return true;
   }
 
   $conflicts = $band->getConflicts();
 
-  if ($conflicts[0] == null || sizeof($conflicts) == 0) {
+  if (sizeof($conflicts > 0)) {
+
+    if ($conflicts[0] == null) {
+      return true;
+    }
+
+    foreach ($bandsArr as $b){
+      if (in_array($b->id, $conflicts)) {
+        return false;
+      }
+    }
+
+  } else {
     return true;
   }
 
-  foreach ($bandsArr as $b){
-    if (in_array($b->id, $conflicts)) {
-      return false;
-    }
-  }
-  return true;
 }
 
 /*
