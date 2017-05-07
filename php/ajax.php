@@ -8,8 +8,9 @@
 	    return $this->args[$name];
 	}
 
-	// ** editporchfest.php: publish porchfest or not
+	
 	if (isset($_POST['publishbutton'])) {
+		// ** editporchfest.php: PUBLISH: publish porchfest or not
 		$sql = "UPDATE porchfests SET Published=NOT(Published) WHERE PorchfestID='" . $_POST['porchfestid'] . "'";
 		$result = $conn->query($sql);
 
@@ -18,18 +19,43 @@
 		} else {
 			echo "fail";
 		}
-	}
-	// ** editporchfest.php: run scheduling algorithm
-	elseif (isset($_POST['schedule'])) {
+	} elseif (isset($_POST['schedule'])) {
+		// ** editporchfest.php: SCHEDULE: run scheduling algorithm
 		require_once '../scheduling/PorchfestScheduling/main.php';
 		if (True) {	
 			echo "success";
 		} else {
 			echo "fail";
 		}
-	}
-	// ** editporchfest.php: form to manage porchfest 
-	elseif (isset($_POST['porchfestname']) && isset($_POST['porchfestlocation']) && isset($_POST['porchfestdate']) && isset($_POST['porchfestdescription']) && isset($_POST['porchfesttime']) && isset($_POST['porchfestdeadlineday']) && isset($_POST['porchfestid'])) {
+	} elseif (isset($_GET['mass_email'])) {
+		// sprintf("mailto:%s?cc=%s&subject=%s", $recipient, $cc, $subject);
+		$all_emails = "";
+		// foreach ($_GET as $key => $value) {
+		// 	if (is_int($key) and $value) {
+
+		// 	}
+		// }
+		echo "mailto:?bcc=selectedmembers@porchfest.com&subject=[Ithaca Porchfest]";
+	} elseif (isset($_POST['json'])) {
+		$new_schedule = json_decode($_POST['json'], True);
+
+		$sql = "";
+		foreach($new_schedule as $key => $band) {
+			if ($band['original'] != $band['tid']) {
+				$sql.= "UPDATE bandstoporchfests SET TimeslotID='" . $band['tid'] . "' WHERE BandID='" . $key . "'; ";
+			}
+		}
+
+		$result = $conn->multi_query($sql);
+
+		if ($result) {
+			echo 'success';
+		} else {
+			echo 'failure';
+		}
+
+	} elseif (isset($_POST['porchfestname']) && isset($_POST['porchfestlocation']) && isset($_POST['porchfestdate']) && isset($_POST['porchfestdescription']) && isset($_POST['porchfesttime']) && isset($_POST['porchfestdeadlineday']) && isset($_POST['porchfestid'])) {
+		// ** editporchfest.php: MANAGE PORCHFEST: form to manage porchfest 
 		$porchfestname = htmlentities($_POST['porchfestname']);
 		$porchfestlocation = htmlentities($_POST['porchfestlocation']);
 		$porchfestdate = htmlentities($_POST['porchfestdate']);
@@ -58,8 +84,9 @@
 		} else {
 			echo "fail";
 		}
-	// ** editporchfest.php: form to manage whether a conflict arose from a band change
+	
 	} elseif (isset($_GET['timeslotid']) && isset($_GET['bandid'])) {
+		// ** editporchfest.php: SCHEDULE: form to manage whether a conflict arose from a band change
 		$timeslotID = htmlentities($_GET['timeslotid']); // The timeslot that the band was changed to 
 		$bandID = htmlentities($_GET['bandid']);         // The id of the band where the timeslot was changed
 
@@ -93,9 +120,44 @@
 		}
 		echo "no overlap";
 
-	} elseif (isset($_POST['timeslotstart']) && isset($_POST['timeslotend']) && isset($_POST['start']) && isset($_POST['end']) && isset($_POST['timeslotid'])
-			&& isset($_POST['porchfestid'])) {
-		// ** editporchfest.php: update timeslot.
+	} else if (isset($_POST['porchfestid']) && isset($_POST['newstart']) && isset($_POST['newend'])) {
+		// ** editporchfest.php: MANAGE TIMESLOTS: form to create new timeslot.
+		$porchfestid = $_POST['porchfestid'];
+		$timeslotstart = htmlentities($_POST['newstart']);
+		$timeslotend = htmlentities($_POST['newend']);
+
+		$sql = "SELECT Date FROM porchfests WHERE PorchfestID=" . $porchfestid;
+
+		$result = $conn->query($sql);
+
+		$date = $result->fetch_assoc()['Date'];
+
+		$start = date_create_from_format("Y-m-d H:i", $date . " " . $timeslotstart);
+		$end = date_create_from_format("Y-m-d H:i", $date . " " . $timeslotend);
+
+		$sql1 = sprintf("INSERT INTO porchfesttimeslots (StartTime, EndTime, PorchfestID) VALUES ('%s', '%s', '%s')", $start->format('Y-m-d H:i:s'), $end->format('Y-m-d H:i:s'), $porchfestid);
+
+	    $result1 = $conn->query($sql1);
+
+	    $sql2 = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $porchfestid . "' AND TimeslotID='" . $conn->insert_id . "';";
+
+        $result2 = $conn->query($sql2);
+
+        $timeslot = $result2->fetch_assoc();
+
+        $start_time = date_create($timeslot['StartTime']);
+	    $end_time = date_create($timeslot['EndTime']);
+
+	    $label = '<div class="col-xs-6 col-sm-3 timeslot-label"><span id="' . $timeslot['TimeslotID'] . '-' . date_format($start_time, 'Y.m.d-g:iA') . "-" . date_format($end_time, 'Y.m.d-g:iA') . '" class="label label-primary">' . date_format($start_time, 'g:i A') . " - " . date_format($end_time, 'g:i A')  . ' </span></div>';
+
+		
+		if ($result1) {
+			echo $label;
+		} else {
+			echo 'fail';
+		}
+	} elseif (isset($_POST['timeslotstart']) && isset($_POST['timeslotend']) && isset($_POST['start']) && isset($_POST['end']) && isset($_POST['timeslotid']) && isset($_POST['porchfestid'])) {
+		// ** editporchfest.php: MANAGE TIMESLOTS: update timeslot.
 		$porchfestid = $_POST['porchfestid'];
 		$timeslotid = htmlentities($_POST['timeslotid']);
 		$timeslotstart = htmlentities($_POST['timeslotstart']);
@@ -120,27 +182,28 @@
 		}
 
 	} elseif (isset($_POST['tid'])) {
+		// ** editporchfest.php: MANAGE TIMESLOTS: delete timeslot.
 		$timeslotid = htmlentities($_POST['tid']);
 
-		$sql = "DELETE FROM `porchfesttimeslots` WHERE TimeslotID=" . $timeslotid;
+		$sql = "DELETE FROM `porchfesttimeslots` WHERE TimeslotID='" . $timeslotid . "'";
 
 		$result = $conn->query($sql);		
 
 		if ($result) {
 			echo 'success';
 		} else {
+			echo $conn->error;
 			echo 'fail';
 		}
 
 	} elseif (isset($_GET['bandname']) && isset($_GET['porchfestid'])) {
-		// ** editporchfest.php: search functionality to display bands that match name.
+		// ** editporchfest.php: MANAGE BANDS: search functionality to display bands that match name.
 		$name = $mysqli->real_escape_string(htmlentities($_GET['bandname']));
 		$porchfestid = $_GET['porchfestid'];
 		echo "<table class='responsive table'> <!-- begin table -->";
 		echo "<tr class='fixed' data-status= 'fixed'>";
 		echo "<th> Name </th>";
 		echo "<th> Description </th>";
-		echo "<th> Members </th>";
 		echo "<th> Time Slots </th>";
 		echo "<th> Scheduled </th>";
 		echo "<th> Manage </th>";
@@ -176,7 +239,6 @@
 			echo '<tr class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . '">';
 			echo '<td>' . $band['Name'] . '</td>';
 			echo '<td>' . $band['Description'] . '</td>';
-			echo '<td> List of members </td>';
 			echo '<td> <a data-target="#timeslotModal" data-toggle="modal"> Time Slots </a> </td>';
 			echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
 			echo '<td> <a href="../editband.php"> Edit </a> </td>';
@@ -189,6 +251,4 @@
 		print_r($_POST);
 		// throw new Exception("variable not found");
 	}
-
-
 ?>

@@ -145,7 +145,7 @@ session_start();
 
     // Insert into bandstoporchfests table
     $sql = "SELECT BandID FROM bands ORDER BY BandID DESC LIMIT 1";
-    $result = $conn->query($sql);
+    $result = $mysqli->query($sql);
     $bandID = $result->fetch_assoc()['BandID'];
     $prep = $mysqli->prepare("INSERT INTO bandstoporchfests (PorchfestID, BandID, PorchLocation, Latitude, Longitude) 
                               VALUES (?,?,?,?,?)");

@@ -28,7 +28,7 @@
             // Write the band name, location, starttime, and endtime to the specified format, then export it
             $sql2 = sprintf("SELECT bands.Name, bandstoporchfests.PorchLocation from bands
                             JOIN bandstoporchfests on bands.BandID = bandstoporchfests.BandID 
-                            WHERE bandstoporchfests.P m,lhy78km,7y8ko9ollolo9o9lolllololololololo98y79loplp,mp,,opooooopiorchfestID = '%s' and bandstoporchfests.TimeslotID = '%s'",
+                            WHERE bandstoporchfests.PorchfestID = '%s' and bandstoporchfests.TimeslotID = '%s'",
                             $_POST['porchfestid'], $timeslot['TimeslotID']);
             $result2 = $conn->query($sql2);
 
