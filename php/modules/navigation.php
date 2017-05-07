@@ -29,8 +29,10 @@
                         <li class='dropdown'>
                                 <a href='#' class='dropdown-toggle' data-toggle='dropdown'> My Account </a>
                                 <ul class='dropdown-menu'>
+                                    <li><?php create_hyperlink(DASHBOARD_URL, 'My Dashboard'); ?></li>
                                     <li><?php create_hyperlink(MY_PORCHFEST_URL, 'My Porchfests'); ?></li>
                                     <li><?php create_hyperlink(PROFILE_URL, 'My Profile'); ?></li>
+
                                 </ul>
                         </li>
                         
