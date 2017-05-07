@@ -19,7 +19,7 @@
                     $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
                     require_once('../php/config.php');
                     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-                    $password = hash("md5", ($_POST['password'] . SALT));
+                    $password = hash("sha256", ($_POST['password'] . SALT));
                     $result = $mysqli->query("SELECT password, userID FROM users WHERE email = '$email'");
                     $row = $result->fetch_row();
 
