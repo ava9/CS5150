@@ -6,7 +6,6 @@
     require_once("config.php");
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-
     // Return the URI of the current page (everything past the domain) 
     // Example: porchfest.life/a/b/c -> a/b/c
     function getCurrentUri() {
@@ -40,6 +39,14 @@
                 preg_replace('/(?<!-)-(?!-)/', '\1 \2', urldecode($uri_array[2]))));
     }
 
+    // For dashboard, you just have to be logged in
+    if ($uri_array[0] == 'dashboard') {
+        if (!isset($_SESSION['logged_user'])) {
+            header('HTTP/1.0 403 Forbidden');
+            die('FORBIDDEN');
+        }
+    }
+
     // Forbid the page if it is not able to be accessed by the user
     if (in_array($uri_array[0], ['edit'])) {
         // Simple case, if user is not logged in, then these pages should not be accessed
@@ -58,7 +65,9 @@
         if (isset($uri_array[2])) {
             $sql = sprintf("SELECT * FROM bands
                           INNER JOIN userstobands ON userstobands.UserID = '%s'
+                          AND userstobands.BandID = bands.BandID
                           WHERE bands.Name = '%s'", $_SESSION['logged_user'], BAND_NAME);
+            echo $sql;
             $result = $mysqli->query($sql);
             $accepted_users = $result->num_rows;
         }
