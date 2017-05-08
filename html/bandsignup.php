@@ -249,7 +249,7 @@ session_start();
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="text" class="form-control" name="name" placeholder="John Doe" /> <?php echo '<span class="error">'; echo $nameError; echo '</span>'; ?>
+                      <input data-validation="alphanumeric" data-validation-allowing="-_ " data-validation="length" data-validation-length="min1" required type="text" class="form-control" name="name" placeholder="John Doe" /> <?php echo '<span class="error">'; echo $nameError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -259,7 +259,7 @@ session_start();
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="email" class="form-control" name="email" placeholder="johndoe@gmail.com" /> <?php echo '<span class="error">'; echo $emailError; echo '</span>'; ?>
+                      <input data-validation="email" required type="email" class="form-control" name="email" placeholder="johndoe@gmail.com" /> <?php echo '<span class="error">'; echo $emailError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -269,7 +269,7 @@ session_start();
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="tel" class="form-control" name="mobile" placeholder="(123) 456-7891" /> <?php echo '<span class="error">'; echo $mobileError; echo '</span>'; ?>
+                      <input required data-validation="custom" data-validation-regexp="^[0-9]{3}-[0-9]{3}-[0-9]{4}$" data-validation-help="Please format the number as xxx-xxx-xxxx" required type="tel" class="form-control" name="mobile" placeholder="(123) 456-7891" /> <?php echo '<span class="error">'; echo $mobileError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -279,7 +279,7 @@ session_start();
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="password" name="password" class="form-control" placeholder="Password" /> <?php echo '<span class="error">'; echo $passwordError; echo '</span>'; ?>
+                      <input required data-validation="length" data-validation-length="min5" required type="password" name="password" class="form-control" placeholder="Password" /> <?php echo '<span class="error">'; echo $passwordError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -289,7 +289,7 @@ session_start();
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required type="password" name="confirmPassword" class="form-control" placeholder="Password" /> <?php echo '<span class="error">'; echo $confirmPasswordError; echo '</span>'; ?>
+                      <input required data-validation="length" data-validation-length="min5" required type="password" name="confirmPassword" class="form-control" placeholder="Password" /> <?php echo '<span class="error">'; echo $confirmPasswordError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -305,7 +305,7 @@ session_start();
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input required name="bandname" type="text" class="form-control" placeholder="John and Friends" /> <?php echo '<span class="error">'; echo $bandnameError; echo '</span>'; ?>
+                      <input data-validation="length" data-validation-length="min1" required name="bandname" type="text" class="form-control" placeholder="John and Friends" /> <?php echo '<span class="error">'; echo $bandnameError; echo '</span>'; ?>
                   </div>
               </div>
           </div>
@@ -409,6 +409,15 @@ session_start();
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0LuERw-moYeLnWy_55RoShmUbQ51Yh-o&libraries=places&callback=initAutocomplete"
         async defer></script>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+  <script>
+
+// enable form validation
+  $.validate({
+    lang: 'en',
+    modules : 'date'
+  });
 
 
 <script type='text/javascript'>
