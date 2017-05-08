@@ -26,7 +26,8 @@
                     if ($row[0] === $password) {
                         $_SESSION['logged_user'] = $row[1];
                         unset($_POST['login']);
-                        // header("Refresh:0");
+                        $dash = DASHBOARD_URL;
+                        header('Location: ' . $dash);
                     } else {
             ?>
                         <script type='text/javascript'>
@@ -39,7 +40,7 @@
             ?>
             <div class="modal-body">
                 <div class="row">
-                    <form role="form" class="form-horizontal" id='login-form' method='POST' action=<?php echo DASHBOARD_URL; ?>>
+                    <form role="form" class="form-horizontal" id='login-form' method='POST'>
                         <div class="form-group">
                             <label for="email" class="col-sm-2 control-label"> Email </label>
                             <div class="col-sm-10">
