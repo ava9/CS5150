@@ -23,6 +23,10 @@
   font-size: .8em;
 }
 
+.hasconflict {
+  background-color: #f9c1bb;
+}
+
 .error {
   color: #FF0000;
 }

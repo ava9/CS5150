@@ -60,6 +60,8 @@ session_start();
       // array. One entry in this associative array is the 'current' conflicts,
       // bands that are currently assigned to the same timeslot,
       // and the other is the 'potential' conflicts.
+      // Also contains original tid to check which bands need to be updated when saving
+      // changes, as well as a string containing the band's name.
       // i.e. [bandid1 => [current=> [bandid2], potential=> [bandid2, bandid4], current, original], ...]
       function findConflictingBands($conn, $porchfestID) {
         $bandConflicts = array();
@@ -282,7 +284,6 @@ session_start();
                   <input id="search" name="search" type="text" placeholder="Search..."/>
                 </div>
               </div>
-
             <div class="col-xs-12">
               <div class="table-container table-responsive bands-table" id="bandstable"> <!-- begin table-container div -->
                 <table class="responsive table"> <!-- begin table -->
@@ -421,7 +422,9 @@ session_start();
                   $result = $conn->query($sql);
 
                   while($band = $result->fetch_assoc()) {
-                    echo '<tr id="' . 'band-' . $band['BandID'] . '" class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . '">';
+                    $conflictList = getConflicts($conflicts, $band['BandID']);
+
+                    echo '<tr id="' . 'band-' . $band['BandID'] . '" class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . ' ' . ($conflictList[0] != 'No conflicts' ? 'hasconflict' : '') . '">';
                     echo '<td>' . $band['Name'] . '</td>';
                     $sql2 = 'SELECT * FROM `porchfesttimeslots` INNER JOIN bandavailabletimes ON porchfesttimeslots.TimeslotID = bandavailabletimes.TimeslotID WHERE bandavailabletimes.bandID=' . $band['BandID'];
 
@@ -452,7 +455,7 @@ session_start();
                     }
                     echo '</td></select>';
 
-                    $conflictList = getConflicts($conflicts, $band['BandID']);
+                    
 
                     echo '<td>';
                     echo '<p id="conflict-names-' . $band['BandID'] . '"> ' . $conflictList[0]  . ' <p>';
@@ -667,6 +670,7 @@ session_start();
         $('#conflicts-' + conflictingid).val('No conflicts');
         $('#conflict-names-' + conflictingid).text('No conflicts');
         conflicts[conflictingid]["current"] = [];
+        $('#band-' + conflictingid).removeClass('hasconflict');
       } else {
         // the conflicting band has other conflicts.
         var index = iconflicts.indexOf(id);
@@ -674,6 +678,7 @@ session_start();
         conflicts[conflictingid]["current"] = iconflicts;
         $('#conflicts-' + conflictingid).val("This bands conflicts with: " + iconflicts.join(", "));
         $('#conflict-names-' + conflictingid).text("This bands conflicts with: " + getBandNames(conflicts, iconflicts).join(", "));
+        $('#band-' + conflictingid).addClass('hasconflict');
       }
     }
 
@@ -692,6 +697,7 @@ session_start();
       conflicts[conflictingid]["current"] = iconflicts;
       $('#conflicts-' + conflictingid).val("This bands conflicts with: " + iconflicts.join(", "));
       $('#conflict-names-' + conflictingid).text("This bands conflicts with: " + getBandNames(conflicts, iconflicts).join(", "));
+      $('#band-' + conflictingid).addClass('hasconflict');
     }
 
     // ajax call for the Schedule tab, to determine if bands are conflicting.
@@ -719,22 +725,46 @@ session_start();
           updateOldConflictingBand(conflicts[id]["current"][i], id);
         }
 
-
         conflicts["conflictCounter"] = conflicts["conflictCounter"] - (conflicts[id]["current"].length * 2);
 
         conflicts[id]["current"] = new_conflicts;
 
+        conflicts["conflictCounter"] = conflicts["conflictCounter"] + (conflicts[id]["current"].length * 2)
+
         if (conflicts[id]["current"].length > 0) {
           $('#conflicts-' + id).val("This bands conflicts with: " + conflicts[id]["current"].join(", "));
           $('#conflict-names-' + id).text("This bands conflicts with: " + getBandNames(conflicts, conflicts[id]["current"]).join(", "));
+          $('#band-' + id).addClass('hasconflict');
         } else {
           $('#conflicts-' + id).val('No conflicts');
           $('#conflict-names-' + id).text('No conflicts');
+          $('#band-' + id).removeClass('hasconflict');
         }
       }
     });
 
-    $('#save-changes-button').click(function() {
+    function resolveConflict(status) {
+      $('#warningModal').remove();
+      $('.modal-backdrop.fade.in').remove();
+      $('body').removeClass('modal-open');
+      $("#editalert").html('');
+
+      if (status) {
+        saveAssignedTimeChanges();
+      }
+    }
+
+
+    function conflictWarning() {
+      console.log('here2');
+      var warningmodal = '<!-- Modal --><div class="modal fade" id="warningModal" role="dialog"><div class="modal-dialog"><!-- Modal content--><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title"> Your schedule has conflicts! </h4></div><div class="modal-body"><p> The schedule you are trying to save has some conflicts. If you want to continue, press accept. Otherwise, press cancel. Your changes will not be saved until you accept!</p></div><div class="modal-footer"><button type="button" class="btn btn-success" onclick="resolveConflict(true);" data-dismiss="modal" data-target="#warningModal">Accept</button><button type="button" class="btn btn-default" data-dismiss="modal" onclick="resolveConflict(false);" data-target="#warningModal">Cancel</button></div></div></div></div>';
+      $("#editalert").html(warningmodal);
+
+      $('#warningModal').modal('toggle');
+    }
+
+
+    function saveAssignedTimeChanges() {
       var json = JSON.stringify(conflicts);
 
       $.ajax({
@@ -753,6 +783,17 @@ session_start();
           console.log(error);
         }
       });
+    }
+
+    $('#save-changes-button').click(function() {
+      console.log(conflicts["conflictCounter"]);
+      if (conflicts["conflictCounter"] == 0) {
+        saveAssignedTimeChanges();
+      } else {
+        console.log('here1');
+        conflictWarning();
+      }
+
     });
 
     // get rid of edit alert when clicking anywhere on the page.
@@ -815,6 +856,7 @@ session_start();
     function addSpace(s) {
       return s.substring(0, s.length-2) + " " + s.substring(s.length-2);
     }
+
 
     // ajax calls to update a timeslot's time (can't change date) on the DB.
     $('#save-timeslot-change').click(function() {
