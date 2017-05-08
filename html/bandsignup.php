@@ -43,7 +43,7 @@ session_start();
       require_once('../php/config.php');
       $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
       date_default_timezone_set('America/New_York');
-      $sql = "SELECT * FROM porchfests WHERE PorchfestID='" . $porchfestID . "'";
+      $sql = "SELECT * FROM porchfests WHERE PorchfestID='" . PORCHFEST_ID . "'";
       $result = $mysqli->query($sql);
       $porchfestDate = new DateTime($result->fetch_assoc()['Deadline']);
       if ($porchfestDate->format("Y-m-d") < date("Y-m-d")) {
