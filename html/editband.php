@@ -26,7 +26,7 @@ session_start();
     $porchfestID = $result->fetch_assoc()['PorchfestID'];
 
     // Gets bandID from url
-    $sql = sprintf("SELECT BandID FROM bands WHERE bands.Name = '%s'", BAND_NAME);
+    $sql = sprintf("SELECT BandID FROM bands WHERE bands.Name = '%s'", $conn->real_escape_string(BAND_NAME));
     $result = $conn->query($sql);
     $bandID = $result->fetch_assoc()['BandID'];
 
