@@ -411,16 +411,14 @@ session_start();
         async defer></script>
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
-  <script>
 
-// enable form validation
+<script type='text/javascript'>
+  // enable form validation
   $.validate({
     lang: 'en',
     modules : 'date'
   });
-
-
-<script type='text/javascript'>
+  
   $(document).ready(function () {
     $("#conflict-input").tokenInput("/cs5150/html/band-listing.php", {
         preventDuplicates: true, theme: "facebook"

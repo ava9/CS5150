@@ -23,6 +23,7 @@
 	$root_dir = '/cs5150/html/';
 
 	define('INDEX_URL', $root_dir);
+	define('NEW_PORCHFEST_URL', $root_dir . 'newporchfest');
 	define('EXISTING_PORCHFEST_URL', $root_dir . 'existingporchfest');
 	define('BROWSE_PORCHFEST_URL', $root_dir . 'browse');
 	define('MY_PORCHFEST_URL', $root_dir . 'myporchfests');

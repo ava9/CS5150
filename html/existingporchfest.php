@@ -244,7 +244,7 @@ session_start();
       </div>
       <?php } ?>
       <br>
-      <?php create_hyperlink(INDEX_URL, 'Want to create a new Porchfest website?'); ?>
+      <?php create_hyperlink(NEW_PORCHFEST_URL, 'Want to create a new Porchfest website?'); ?>
       <h4> Porchfest Information </h4>
       <!-- Form for submitting porchfest information -->
       <div class="form-group">
@@ -341,16 +341,15 @@ session_start();
         async defer></script>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
-  <script>
 
-// enable form validation
+<!-- JavaScript to not submit the form on enter -->
+<script type='text/javascript'>
+  // enable form validation
   $.validate({
     lang: 'en',
     modules : 'date'
   });
-
-<!-- JavaScript to not submit the form on enter -->
-<script type='text/javascript'>
+  
   $(document).ready(function() {
     $(window).keydown(function(event){
       if(event.keyCode == 13) {

@@ -180,16 +180,15 @@ session_start();
         async defer></script>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
-  <script>
 
+<!-- JavaScript to prevent forms from submitting on enter -->
+<script type='text/javascript'>
 // enable form validation
   $.validate({
     lang: 'en',
     modules : 'date'
   });
-
-<!-- JavaScript to prevent forms from submitting on enter -->
-<script type='text/javascript'>
+  
 $(document).ready(function() {
   $(window).keydown(function(event){
     if(event.keyCode == 13) {
