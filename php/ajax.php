@@ -8,6 +8,29 @@
 	    return $this->args[$name];
 	}
 
+	function getBandNames($bands, $conflicts) {
+        $names = array();
+        foreach($bands as $band) {
+          array_push($names, $conflicts[$band]["name"]);
+        }
+
+        return $names;
+    }
+
+
+    function getConflicts($conflicts, $bandID) {
+        $result = array();
+        if (sizeof($conflicts[$bandID]["current"]) > 0) {
+          array_push($result, 'This band conflicts with: ' . implode(", ", getBandNames($conflicts[$bandID]["current"], $conflicts)));
+          array_push($result, 'This band conflicts with: ' . implode(", ", $conflicts[$bandID]["current"]));
+        } else {
+          array_push($result, 'No conflicts');
+          array_push($result, 'No conflicts');
+        }
+
+        return $result;
+    }
+
 	// publish button clicked
 	if (isset($_POST['publishbutton'])) {
 		// flip the publish bit
@@ -239,6 +262,68 @@
 			echo 'fail';
 		}
 
+	} elseif (isset($_POST['poid']) && isset($_POST['conflicts']) && isset($_POST['bname'])) {
+		$bname = $mysqli->real_escape_string(htmlentities($_POST['bname']));
+		$conflicts = json_decode($_POST['conflicts'], True);
+		$porchfestid = htmlentities($_POST['poid']);
+
+		echo '<table class="responsive table"> <!-- begin table -->
+		<tr class="fixed" data-status= "fixed">
+		<th> Name </th>
+		<th> Timeslots </th>
+		<th> Conflicts </th>
+		</tr>';
+
+		if ($bname == "") {
+			$sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID WHERE PorchfestID =" . $porchfestid . " ORDER BY bands.Name";
+
+		} else {
+			$sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID WHERE PorchfestID =" . $porchfestid . " AND bands.Name LIKE '%" . $bname . "%' ORDER BY bands.Name; ";
+		}
+
+		$result = $conn->query($sql);
+
+		while($band = $result->fetch_assoc()) {
+			$conflictList = getConflicts($conflicts, $band['BandID']);
+
+			echo '<tr id="' . 'band-' . $band['BandID'] . '" class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . ' ' . ($conflictList[0] != 'No conflicts' ? 'hasconflict' : '') . '">';
+			echo '<td>' . $band['Name'] . '</td>';
+			$sql2 = 'SELECT * FROM `porchfesttimeslots` INNER JOIN bandavailabletimes ON porchfesttimeslots.TimeslotID = bandavailabletimes.TimeslotID WHERE bandavailabletimes.bandID=' . $band['BandID'];
+
+			echo '<td><select class="timesdropdown" id="times-' . $band['BandID'] . '">';
+
+			$sql3 = "SELECT * FROM `bandstoporchfests` INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID WHERE bandstoporchfests.bandID=" . $band['BandID'];
+
+			$result3 = $conn->query($sql3);
+
+			if ($result3->num_rows > 0) {
+				$assigned = $result3->fetch_assoc();
+
+				$start_time_assigned = date_create($assigned['StartTime']);
+				$end_time_assigned = date_create($assigned['EndTime']);
+
+				echo '<option value="' . $assigned['TimeslotID'] . '">' . date_format($start_time_assigned, 'g:i A') . "-" . date_format($end_time_assigned, 'g:i A') . '</option>';
+			}
+
+			$result2 = $conn->query($sql2);
+			while ($timeslots = $result2->fetch_assoc()) {
+				$start_time = date_create($timeslots['StartTime']);
+				$end_time = date_create($timeslots['EndTime']);
+
+				if (!($start_time == $start_time_assigned && $end_time == $end_time_assigned)) {
+					echo '<option value="' . $timeslots['TimeslotID'] . '">' . date_format($start_time, 'g:i A') . "-" . date_format($end_time, 'g:i A') . '</option>';
+				}
+			}
+
+			echo '</td></select>';
+			echo '<td>';
+			echo '<p id="conflict-names-' . $band['BandID'] . '"> ' . $conflictList[0]  . ' <p>';
+			echo '<input type="hidden" id="conflicts-' . $band['BandID'] .'" value="' . $conflictList[1] . '">';
+			echo '</td>';
+		}
+
+		echo '</table> <!-- end table -->';
+
 	} elseif (isset($_GET['bandname']) && isset($_GET['porchfestid'])) {
 		// ** editporchfest.php: MANAGE BANDS: search functionality to display bands that match name.
 		$name = $mysqli->real_escape_string(htmlentities($_GET['bandname']));
@@ -291,7 +376,7 @@
 		echo '</table>';
 	} else {
 		echo 'here in ajax ';
-		print_r($_POST);
+		print_r($_GET);
 		// throw new Exception("variable not found");
 	}
 ?>
