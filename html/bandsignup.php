@@ -39,6 +39,20 @@ session_start();
 
       }
 
+      // Create dataabase connection
+      require_once('../php/config.php');
+      $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+      date_default_timezone_set('America/New_York');
+      $sql = "SELECT * FROM porchfests WHERE PorchfestID='" . $porchfestID . "'";
+      $result = $mysqli->query($sql);
+      $porchfestDate = new DateTime($result->fetch_assoc()['Deadline']);
+      if ($porchfestDate->format("Y-m-d") < date("Y-m-d")) {
+        echo '<h1 style="text-align:center;"> 
+        Sorry, the deadline for signing up to play for ' . PORCHFEST_NAME . ' has passed.
+        </h1>';
+      }
+      else {
+
       // Variables for server side validation
       $bandnameError = $descriptionError = $locationError = "";
 
@@ -106,9 +120,6 @@ session_start();
         // Creates a new user if currently not logged in
         if (!isset($_SESSION['logged_user'])) {
           if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['mobile']) && isset($_POST['password']) && isset($_POST['confirmPassword']) && $name != '' && $email != '' && $mobile != '' && $password != '' && $confirmPassword != '') {
-            // Create dataabase connection
-            require_once('../php/config.php');
-            $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
             // Check that the passwords match otherwise create a popup
             if ($password != $confirmPassword) {
               echo "<script type='text/javascript'>alert('Passwords do not match!');</script>";
@@ -376,6 +387,7 @@ session_start();
         </div>
       </div>  
     </form>
+    <?php } ?>
 
   </div> <!-- end container div -->
 
