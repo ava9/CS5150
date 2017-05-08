@@ -281,7 +281,7 @@ session_start();
                 </div>
                 
                 <div class="col-xs-6 col-md-4">
-                  <input id="search" name="search" type="text" placeholder="Search..."/>
+                  <input id="bandssearch" name="search" type="text" placeholder="Search..."/>
                 </div>
               </div>
             <div class="col-xs-12">
@@ -574,41 +574,6 @@ session_start();
       modules : 'date'
     });
 
-    // filter buttons for the Manage Bands tab.
-    var bfilter = '#bandstable tr:not(.fixed)';
-    $('#email-bands-button').prop("disabled", true);
-    // array of timeslotIDs, mapped to boolean
-    // that indicates whether it is currently selected or not
-    // used for emailing
-    var timeslotIDs = {'mass_email': true}
-
-    $('.filters').change(function() {
-      // if the button is toggled, aka want to filter by this.
-      var id = $(this).parent().attr('id');
-      if($(this).parent().hasClass('active')) {
-        $('#email-bands-button').prop("disabled", false);
-        $('#bandstable tr.' + id).show();
-        bfilter = bfilter + ':not(tr.' + id + ')';
-      } else {
-        // need to remove this filter
-        bfilter = bfilter.replace(':not(tr.' + id + ')', '');
-      }
-
-      $(bfilter).hide();
-
-      if (bfilter == '#bandstable tr:not(.fixed)') {
-        $('tr').show();
-        $('#email-bands-button').prop("disabled", true);
-      }
-      
-      if (timeslotIDs[id] == null) {
-        timeslotIDs[id] = true;
-      }
-      else {
-        timeslotIDs[id] = !timeslotIDs[id];
-      }
-    });
-
     function filterByTimeslot(obj, fid, filter) {
       // if the button is toggled, aka want to filter by this.
       var id = $(obj).parent().attr('id');
@@ -625,31 +590,53 @@ session_start();
 
       if (filter == fid + ' tr:not(.fixed)') {
         $('tr').show();
+        return fid + ' tr:not(.fixed)';
       }
 
       return filter;
     }
 
+    // filter buttons for the Manage Bands tab.
+    var bfilter = '#bandstable tr:not(.fixed)';
+
+    $('#email-bands-button').prop("disabled", true);
+
+
+    // array of timeslotIDs, mapped to boolean
+    // that indicates whether it is currently selected or not
+    // used for emailing
+    var timeslotIDs = {'mass_email': true}
+
+    $('#bands .filters').change(function() {
+      // if the button is toggled, aka want to filter by this.
+      var x = filterByTimeslot($(this), '#bandstable', bfilter);
+      var id = $(this).parent().attr('id');
+
+      bfilter = x;
+
+
+      if (bfilter == '#bandstable tr:not(.fixed)') {
+        $('#email-bands-button').prop("disabled", true);
+      } else {
+        $('#email-bands-button').prop("disabled", false);
+      }
+      
+      if (timeslotIDs[id] == null) {
+        timeslotIDs[id] = true;
+      }
+      else {
+        timeslotIDs[id] = !timeslotIDs[id];
+      }
+    });
+
+    
     // filter buttons for the Schedule tab.
     var sfilter = '#schedule tr:not(.fixed)';
 
     $('#schedule .filters').change(function() {
-      silfter = filterByTimeslot($(this), '#schedule', sfilter);
-      // // if the button is toggled, aka want to filter by this.
-      // var id = $(this).parent().attr('id');
-      // if($(this).parent().hasClass('active')) {
-      //   $('#schedule tr.' + id).show();
-      //   sfilter = sfilter + ':not(tr.' + id + ')';
-      // } else {
-      //   // need to remove this filter
-      //   sfilter = sfilter.replace(':not(tr.' + id + ')', '');
-      // }
+      var x = filterByTimeslot($(this), '#schedule', sfilter);
 
-      // $(sfilter).hide();
-
-      // if (sfilter == '#schedule tr:not(.fixed)') {
-      //   $('tr').show();
-      // }
+      sfilter = x;
     });
 
 
@@ -996,12 +983,13 @@ session_start();
       event.preventDefault();
     });
 
+
     // the search bar in Manage Bands. AJAX call with the given input, displays data from the DB.
-    $("#search").keyup(function(){
+    $("#bandssearch").keyup(function(){
       $.ajax({
         url: ajaxurl,
         type: "GET",
-        data: {bandname: $("#search").val(), porchfestid: porchfestid},
+        data: {bandname: $("#bandssearch").val(), porchfestid: porchfestid},
         success: function(result){
           $("#bandstable").html(result);
 
