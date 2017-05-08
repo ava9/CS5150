@@ -22,7 +22,7 @@ session_start();
     $user = $result->fetch_assoc();
 
     // Variables for server side validation
-    $nameError = $emailError = $mobileError = $passwordError = $confirmPasswordError = "";
+    $nameError = $emailError = $mobileError = $passwordError = $oldPasswordError = $confirmPasswordError = ""; 
 
     // Check if the form was submitted
     if (isset($_POST['submitInfo'])) {
@@ -63,16 +63,35 @@ session_start();
       else {
         $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
       }
+      if (empty($_POST['currPassword'])) {
+        $oldPasswordError = 'Missing';
+      }
+      else {
+        $currPassword = filter_var($_POST['currPassword'], FILTER_SANITIZE_STRING);
+      }
+      
     }
 
-    if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['mobile']) && isset($_POST['password']) && isset($_POST['confirmPassword']) && $name != '' && $email != '' && $mobile != '' && $password != '' && $confirmPassword != '') {
+    if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['mobile']) && isset($_POST['password']) && isset($_POST['confirmPassword']) && $name != '' && $email != '' && $mobile != '' && $password != '' && $confirmPassword != '' && $currPassword != '') {
+        $sql1 = "SELECT Password FROM users WHERE UserID=" . $_SESSION['logged_user'];
+        $result = $conn->query($sql1);
+
+        $dbpass = $result->fetch_assoc()['Password'];
+
+        $encpassword = hash("sha256", ($currPassword . SALT));
+
+        $newpass = hash("sha256", ($password . SALT));
+
+
         if ($password != $confirmPassword) {
           echo '<script> $("#editalert").html(\'<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> The passwords you entered do not match! Please try again. </div>\'); </script>';
         } elseif(strlen($password) < 5) {
           echo '<script> $("#editalert").html(\'<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Your password must be at least five characters long. Please try again. </div>\'); </script>';
+        } elseif($dbpass != $encpassword) {
+          echo '<script> $("#editalert").html(\'<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> The password you entered does not match your old password! Please try again. </div>\'); </script>';
         } else {
           echo '<script> $("#editalert").html(\'<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your profile was updated successfuly!. </div>\'); </script>';
-          $sql = "UPDATE users SET Name='" . $_POST['name'] . "', Email='" . $_POST['email'] . "', Password='" . $_POST['password'] . "', ContactInfo='" . $_POST['mobile'] . "' WHERE UserID='" . $_SESSION['logged_user'] . "'";
+          $sql = "UPDATE users SET Name='" . $_POST['name'] . "', Email='" . $_POST['email'] . "', Password='" . $newpass . "', ContactInfo='" . $_POST['mobile'] . "' WHERE UserID='" . $_SESSION['logged_user'] . "'";
           $result = $conn->query($sql);
         }
       }
@@ -108,6 +127,12 @@ session_start();
           <label class="col-lg-3 control-label">Mobile (xxx-xxx-xxxx):</label>
           <div class="col-lg-8">
             <input required data-validation="custom" data-validation-regexp="^[0-9]{3}-[0-9]{3}-[0-9]{4}$" data-validation-help="Please format the number as xxx-xxx-xxxx" class="form-control" name="mobile" value=<?php echo '"' . $user['ContactInfo'] . '"' ?> type="tel"> <?php echo '<span class="error">'; echo $mobileError; echo '</span>'; ?>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label">Current Password:</label>
+          <div class="col-md-8">
+            <input required data-validation="length" data-validation-length="min5" class="form-control" name="currPassword" type="password"> <?php echo '<span class="error">'; echo $oldPasswordError; echo '</span>'; ?>
           </div>
         </div>
         <div class="form-group">
