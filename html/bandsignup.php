@@ -268,7 +268,8 @@ session_start();
       <h4> Band Information </h4>
       <!-- Form for submitting band information -->
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Band Name </label>
+          <label for="name" class="col-sm-2 control-label"> 
+            Band Name <?php tooltip("Name as it will appear on the Porchfest website and schedule.") ?> </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -278,7 +279,8 @@ session_start();
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Description </label>
+          <label for="name" class="col-sm-2 control-label"> 
+            Description <?php tooltip("1-2 sentence description of your band/music/genre.") ?> </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -288,7 +290,8 @@ session_start();
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Porch Location </label>
+          <label for="name" class="col-sm-2 control-label"> 
+            Porch Location <?php tooltip("The address where your band will play during this Porchfest event. When typing the address, please select from the resulting dropdown so that the location pin can be placed on a Google map.") ?> </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -298,7 +301,8 @@ session_start();
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Available Times </label>
+          <label for="name" class="col-sm-2 control-label"> 
+            Available Times </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -329,7 +333,8 @@ session_start();
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Band Member Emails </label>
+          <label for="name" class="col-sm-2 control-label"> 
+            Band Member Emails <?php tooltip("Please provide all email addresses of the band members as points of contact for the organizer of this Porchfest event.") ?> </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -339,7 +344,8 @@ session_start();
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Conflicting Bands </label>
+          <label for="name" class="col-sm-2 control-label"> 
+            Conflicting Bands <?php tooltip("Please select all bands that conflict with your band. When you type the conflicting band name, it will either appear in the dropdown below and you can select it, or you will have the option to “add/register” the conflicting band. Conflicts are those bands that you cannot play at the same time as, i.e. because they will play at the same location or you share a member.") ?> </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -349,7 +355,8 @@ session_start();
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Comments </label>
+          <label for="name" class="col-sm-2 control-label"> 
+            Comments </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">

@@ -48,6 +48,7 @@
 
 <script>
 	$(document).ready(function(){
-		$("span.tool-tip").tooltip();
+		$("span.tool-tip").tooltip({'container':'body'});
+
 	});
 </script>
