@@ -247,7 +247,7 @@ session_start();
       </div>
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label">
-              Nickname </label>
+              Nickname <?php tooltip("This is the name that will appear in the url for attendees/musicians. For example, for the Ithaca Porchfest with nickname “ithaca”, the url will appear as porchfest.life/view/ithaca.") ?> </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -268,7 +268,8 @@ session_start();
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Location </label>
+          <label for="name" class="col-sm-2 control-label"> 
+            Location <?php tooltip("The city or town in which the Porchfest event will be held. When typing the location, please select from the resulting dropdown so that the corresponding pin can be placed on a Google map.") ?> </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -278,7 +279,8 @@ session_start();
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Date </label>
+          <label for="name" class="col-sm-2 control-label"> 
+            Date <?php tooltip("Date when the Porchfest will be held.") ?> </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
@@ -288,7 +290,8 @@ session_start();
           </div>
       </div>
       <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Sign-up Deadline </label>
+          <label for="name" class="col-sm-2 control-label"> 
+            Sign-up Deadline <?php tooltip("Day by which bands must register to play at this Porchfest event. Default time for the deadline in 11:59pm on this day.") ?> </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">

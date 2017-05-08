@@ -473,20 +473,36 @@ session_start();
           </div> <!-- end schedule div -->
 
           <div class="tab-pane fade" id="export"> <!-- begin export div -->
-            <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='/cs5150/php/export.php' target="_blank">
-              <!-- TODO PRETTY THIS -->
-              <input type = "hidden" name = "porchfestid" value = <?php echo $porchfestID ?> />
-              <input type = "hidden" name = "mediatype" value = "csv" /> 
-              <div class="form-group">
-                <label class="col-sm-2"></label>
-                <div class="col-sm-10">
-                  <div class="col-md-9">
-                    <button type="submit" name="exportCSV" class="btn btn-primary btn-sm"> Export CSV</button>
-                    <button type="submit" name="exportKML" class="btn btn-primary btn-sm"> Export KML </button>
-                  </div>
+          <?php
+              $sql = "SELECT Scheduled from porchfests WHERE PorchfestID='" . $porchfestID . "'";
+              $result = $conn->query($sql);
+              $scheduled = $result->fetch_assoc()['Scheduled'];
+              if (!$scheduled) {
+                ?>
+                <div class="col-md-1">
                 </div>
-              </div>
-            </form>
+                <div class="col-md-9">
+                <p>Your Porchfest hasn't been scheduled yet! Please see the schedule tab to schedule your Porchfest. </p>
+                </div>
+            <?php
+              } else {
+            ?>
+              <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='/cs5150/php/export.php' target="_blank">
+                <input type = "hidden" name = "porchfestid" value = <?php echo $porchfestID ?> />
+                <input type = "hidden" name = "PORCHFEST_NICKNAME" value = <?php echo PORCHFEST_NICKNAME ?> />
+                <div class="form-group">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-9">
+                      <p>Export CSV - Press this button to export the current schedule to a .csv file. The headers for the file are "Band Name, Location, Start Time, End Time"</p>
+                      <button type="submit" name="exportCSV" class="btn btn-primary btn-sm"> Export CSV</button>
+                      <p></p>
+                      <p>Export KML - Press this button to export the current schedule to a .kml file. You can then go <a href="https://mymaps.google.com"> here </a>to upload the kml file to generate a Google Map View of the schedule. In the Google Map View, the bands are sorted by the time slot they are playing at. The bands with a red pin are within 25 meters of another band. The bands with a yellow pin are within 25 to 50 meters of another band.</p>
+                      <button type="submit" name="exportKML" class="btn btn-primary btn-sm"> Export KML </button>
+                    </div>
+                </div>
+              </form>
+            <?php } ?>
           </div> <!-- end export div -->
 
           <div class="tab-pane fade" id="publish"> <!-- begin publish div -->
@@ -494,12 +510,11 @@ session_start();
               $sql = "SELECT Published from porchfests WHERE PorchfestID='" . $porchfestID . "'";
               $result = $conn->query($sql);
               $published = $result->fetch_assoc()['Published'];
-
               if (!$published) {
-                echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default"> Publish </button>';
+                echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default">Publish</button>';
               }
               else {
-                echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default"> Unpublish </button>';
+                echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default">Unpublish</button>';
               }
             ?>
           </div> <!-- end publish div -->
@@ -731,6 +746,7 @@ session_start();
             $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The schedule was updated successfully. </div>');
           } else {
             $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
+            console.log(result);
           }
         },
         error: function(result) {
@@ -756,13 +772,14 @@ session_start();
           if (result == "success") {
             if ($('#publishbutton').html() == "Publish") {
               $('#publishbutton').html("Unpublish");
-            } 
-            else {
+              $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your Porchfest was Published successfully. </div>');
+            } else {
               $('#publishbutton').html("Publish");
+              $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your Porchfest was Unpublished successfully. </div>');
             }
-            $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your Porchfest was published/unpublished successfully. </div>');
           } else {
             $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
+            console.log(result);
           }
         },
         error: function(result) {
@@ -943,15 +960,19 @@ session_start();
         type: "POST",
         data: {porchfestid: porchfestid, schedule: 1},
         success: function(result){
-          $('#scheduletab-button img').hide();
-          $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The schedule was generated successfully. <a href="" onclick="location.reload()"> Refresh </a> the page to see the new schedule. </div>');
-          console.log('Scheduled!');
-          console.log(result);
+          if (result == "success") {
+            $('#scheduletab-button img').hide();
+            $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> The schedule was generated successfully. <a href="" onclick="location.reload()"> Refresh </a> the page to see the new schedule. </div>');
+          } else {
+            $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
+          }
+          // console.log('Scheduled!');
+          // console.log(result);
         },
         error: function(result) {
           $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
-          console.log('error');
-          console.log(result);
+          // console.log('error');
+          // console.log(result);
         }
       });
     });

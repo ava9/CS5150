@@ -42,6 +42,7 @@ function createSchedule() {
 	  $bandObj->slot = $timeslotID;
 	  $schedule->add($timeslotID, $bandObj);
   }
+  DEBUG_ECHO("Initial Schedule Created\n");
   return $schedule;
 }
 
@@ -61,7 +62,7 @@ function updateMap() {
       $id = $b->id;
 
       $sql = "UPDATE bandstoporchfests SET Flagged = " . $b->flag . " WHERE BandID = " . $id . " AND PorchfestID = " . $PorchfestID;
-      if ($conn->query($sql) === false) {
+      if (!$conn->query($sql)) {
         DEBUG_ECHO("Error: " . $sql . "<br>" . $conn->error . "\n");
       }
     }

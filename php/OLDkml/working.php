@@ -42,7 +42,7 @@ $myfile = fopen("output.kml", "w");
 fwrite($myfile, "<?xml version='1.0' encoding='UTF-8'?>\n");
 fwrite($myfile, "<kml xmlns='http://www.opengis.net/kml/2.2' xmlns:atom='http://www.w3.org/2005/Atom' xmlns:gx='http://www.google.com/kml/ext/2.2' xmlns:kml='http://www.opengis.net/kml/2.2' xmlns:xal='urn:oasis:names:tc:ciq:xsdschema:xAL:2.0'>\n");
 fwrite($myfile, "\t<Document>\n");
-$style = file_get_contents("style.txt");
+$style = file_get_contents("kml/style.txt");
 //$style = fopen("style.txt", "a+");
 fwrite($myfile, $style);
 
@@ -63,7 +63,15 @@ if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 } 
 
-$sql = "SELECT bands.Name, bands.Description, bandstoporchfests.Latitude, bandstoporchfests.Longitude, porchfesttimeslots.StartTime, bands.BandID, bandstoporchfests.TimeslotID, bandstoporchfests.Flagged FROM bands INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID INNER JOIN porchfesttimeslots ON porchfesttimeslots.TimeslotID = bandstoporchfests.TimeslotID ORDER BY porchfesttimeslots.StartTime;";
+// $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME);
+// $result = $conn->query($sql);
+// $porchfestID = $result->fetch_assoc()['PorchfestID'];
+
+$sql = "SELECT bands.Name, bands.Description, bandstoporchfests.Latitude, bandstoporchfests.Longitude, porchfesttimeslots.StartTime, bands.BandID, bandstoporchfests.TimeslotID, bandstoporchfests.Flagged 
+	FROM bands INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
+	INNER JOIN porchfesttimeslots ON porchfesttimeslots.TimeslotID = bandstoporchfests.TimeslotID 
+	-- WHERE bandstoporchfests.porchfestID = '%d'
+	ORDER BY porchfesttimeslots.StartTime;";
 
 $result = $conn->query($sql);
 $colorIndex;
