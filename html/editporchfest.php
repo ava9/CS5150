@@ -397,7 +397,7 @@ session_start();
                 $conflicts = findConflictingBands($conn, $porchfestID);
                 echo '<div id="scheduletab-conflictstable">';
                 echo '<div class="col-xs-12">';
-                  echo '<div class="btn-group" data-toggle="buttons">';
+                  echo '<div class="btn-group" id="filterid" data-toggle="buttons">';
                     create_filters($porchfestID, $conn);
                   echo '</div>';
                 echo '</div>';

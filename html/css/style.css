@@ -13,7 +13,8 @@
 
 
 /* For the buttons that filter. */
-#schedule .btn-group .btn {
+
+#filterid .btn {
   margin-top: 5px;
   font-size: .8em;
 }
@@ -83,7 +84,7 @@ input.form-control.error {
 }
 
 /* Timeslot tab */
-#search {
+#bandssearch {
   position: relative;
   margin-top: 10px;
   z-index: 100;
