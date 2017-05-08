@@ -42,6 +42,12 @@ session_start();
       // Create dataabase connection
       require_once('../php/config.php');
       $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+      // Get the porchfestID from the url
+      $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Nickname = '%s'", PORCHFEST_NICKNAME);
+      $result = $mysqli->query($sql);
+      $porchfestID = $result->fetch_assoc()['PorchfestID'];
+
       date_default_timezone_set('America/New_York');
       $sql = "SELECT * FROM porchfests WHERE PorchfestID='" . PORCHFEST_ID . "'";
       $result = $mysqli->query($sql);
@@ -162,15 +168,21 @@ session_start();
         $bandID = $result->fetch_assoc()['BandID'];
 
         // Insert into bandconflicts table
-        $bandconflictlist = explode(',', $bandconflicts);
-        foreach ($bandconflictlist as $bconflict) {
-          $prep = $mysqli->prepare("INSERT INTO bandconflicts (BandID1, BandID2) 
-                                    VALUES (?,?)");
-          $prep->bind_param("ss", $bandID, $bconflict);
-          $prep->execute();
+        // Insert the conflicts into bandconflicts
+        if (isset($_POST['bandconflicts'])) {
+          $bandconflictlist = explode(',', $bandconflicts);
+          foreach ($bandconflictlist as $bconflict) {
+            $prep = $mysqli->prepare("INSERT INTO bandconflicts (BandID1, BandID2) 
+                                      VALUES (?,?)");
+            $prep->bind_param("ss", $bandID, $bconflict);
+            $prep->execute();
+          }
         }
 
         // Insert into bandstoporchfests table
+        $sql = "SELECT BandID FROM bands ORDER BY BandID DESC LIMIT 1";
+        $result = $mysqli->query($sql);
+        $bandID = $result->fetch_assoc()['BandID'];
         $prep = $mysqli->prepare("INSERT INTO bandstoporchfests (PorchfestID, BandID, PorchLocation, Latitude, Longitude) 
                                   VALUES (?,?,?,?,?)");
         $prep->bind_param("sssss", $porchfestID, $bandID, $porchlocation, $lat, $long);
@@ -200,11 +212,7 @@ session_start();
           }
         }
 
-        // Insert the conflicts into bandconflicts
-        if (isset($_POST['bandconflicts'])) {
-          echo $_POST['bandconflicts'];
-        }
-
+      
         // Popup to show if queries successfully executed
         if ($prep->affected_rows) {
             echo "<script type='text/javascript'>alert('The band, $bandname, has been added successfully!.');</script>";
@@ -335,11 +343,6 @@ session_start();
             // Create connection
             $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-            // Get the porchfestID from the url
-            $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Nickname = '%s'", PORCHFEST_NICKNAME);
-            $result = $conn->query($sql);
-            $porchfestID = $result->fetch_assoc()['PorchfestID'];
-
             // Get the available timeslots for the porchfest
             $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $porchfestID . "' ORDER BY StartTime;";
 
@@ -362,7 +365,7 @@ session_start();
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input name="bandmembers" type="text" class="form-control" placeholder="member1@gmail.com,member2@gmail.com,member3@gmail.com" />
+                      <input name="bandmembers" type="text" class="form-control" placeholder="member1@gmail.com, member2@gmail.com, member3@gmail.com" />
                   </div>
               </div>
           </div>
