@@ -149,15 +149,26 @@ session_start();
         $long = $latlong[1];
 
         // Insert into bands table
-        $prep = $mysqli->prepare("INSERT INTO bands (Name, Description, Members, Comment, Conflicts) 
-                                  VALUES (?,?,?,?,?)");
-        $prep->bind_param("sssss", $bandname, $banddescription, $bandmembers, $bandcomment, $bandconflicts);
+        $prep = $mysqli->prepare("INSERT INTO bands (Name, Description, Members, Comment) 
+                                  VALUES (?,?,?,?)");
+        $prep->bind_param("ssss", $bandname, $banddescription, $bandmembers, $bandcomment);
         $prep->execute();
 
-        // Insert into bandstoporchfests table
+        // Get the bandID of the just recently inserted band
         $sql = "SELECT BandID FROM bands ORDER BY BandID DESC LIMIT 1";
         $result = $mysqli->query($sql);
         $bandID = $result->fetch_assoc()['BandID'];
+
+        // Insert into bandconflicts table
+        $bandconflictlist = explode(',', $bandconflicts);
+        foreach ($bandconflictlist as $bconflict) {
+          $prep = $mysqli->prepare("INSERT INTO bandconflicts (BandID1, BandID2) 
+                                    VALUES (?,?)");
+          $prep->bind_param("ss", $bandID, $bconflict);
+          $prep->execute();
+        }
+
+        // Insert into bandstoporchfests table
         $prep = $mysqli->prepare("INSERT INTO bandstoporchfests (PorchfestID, BandID, PorchLocation, Latitude, Longitude) 
                                   VALUES (?,?,?,?,?)");
         $prep->bind_param("sssss", $porchfestID, $bandID, $porchlocation, $lat, $long);
@@ -397,18 +408,6 @@ session_start();
 
 <script type='text/javascript'>
   $(document).ready(function () {
-    $.ajax({
-        url: "/cs5150/html/band-listing.php",
-        type: "GET",
-        data: {"q": "acoustic"},
-        success: function(result) {
-          console.log(result);
-        },
-        error: function(result) {
-          console.log(error);
-        }
-      });
-
     $("#conflict-input").tokenInput("/cs5150/html/band-listing.php", {
         preventDuplicates: true, theme: "facebook"
     });
