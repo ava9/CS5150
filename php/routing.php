@@ -40,6 +40,6 @@
         define('PORCHFEST_ID', $porchfestID);
     }
     if (isset($uri_array[2])) {
-        define('BAND_NAME', preg_replace('/-{2}/', '-', preg_replace('/(?<!-)-(?!-)/', '\1 \2', $uri_array[2])));
+        define('BAND_NAME', preg_replace('/-{2}/', '-', preg_replace('/(?<!-)-(?!-)/', '\1 \2', urldecode($uri_array[2]))));
     }
 ?>

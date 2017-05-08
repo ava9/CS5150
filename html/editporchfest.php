@@ -328,7 +328,7 @@ session_start();
                       echo '<td> <a data-target="#timeslotModal' . $band['BandID'] . '" data-toggle="modal"> Time Slots </a> </td>';
                       echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
                       echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NICKNAME . '/' . 
-                                  $urlbandname . '"> Edit </a> </td>';
+                                  urlencode($urlbandname) . '"> Edit </a> </td>';
                       echo '<td> <a href="' . email_href($band['Name'], $band['Members']) . '" target="_blank"> Email </a> </td>'; 
                     }
                   ?>
