@@ -12,15 +12,10 @@ session_start();
   <div id="editalert"></div>
   <?php // Database credentials
     require_once "../php/config.php";
+    require_once "../php/routing.php";
 
     // Create connection
     $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-
-    $sql = "SELECT * FROM users WHERE UserID = '" . $_SESSION['logged_user'] . "'";
-
-    $result = $conn->query($sql);
-    $user = $result->fetch_assoc();
-
   ?>
 <!-- navBar and login -->
 <?php require_once "../php/modules/login.php"; ?>

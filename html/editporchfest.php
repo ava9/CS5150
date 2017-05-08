@@ -17,7 +17,7 @@ session_start();
     }
     </script>
     <!-- Responsive tables CSS -->
-    <link rel="stylesheet" href="../css/responsive-tables.css">
+    <link rel="stylesheet" href="/cs5150/html/css/responsive-tables.css">
     
     <title>PorchFest - Edit</title>
   </head>

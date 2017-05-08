@@ -109,11 +109,10 @@ session_start();
                   }
 
                   // Query to get all porchfests that the user is a musician for 
-                  $sql = "SELECT * 
-                          FROM porchfests
+                  $sql = sprintf("SELECT * FROM porchfests
                           INNER JOIN bandstoporchfests ON bandstoporchfests.PorchfestID = porchfests.PorchfestID
                           INNER JOIN userstobands ON userstobands.BandID = bandstoporchfests.BandID
-                          WHERE UserID = '" . $_SESSION['logged_user'] . "'";
+                          WHERE UserID = '%s'", $_SESSION['logged_user']);
 
                   $result = $conn->query($sql);
 
