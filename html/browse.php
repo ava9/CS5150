@@ -48,6 +48,7 @@ session_start();
                 require_once "../php/config.php";
                 // Create database connection
                 $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+                date_default_timezone_set('America/New_York');
 
                 // Select all porchfests
                 $sql = "SELECT * FROM porchfests ORDER BY Name";
@@ -61,7 +62,8 @@ session_start();
                   }
                   // Check if the porchfest is in the future or past and label correctly
                   $status = 'upcoming';
-                  if (strtotime($porchfest['Date']) < date("Y-m-d")) {
+                  $porchfestDate = new DateTime($porchfest['Date']);
+                  if ($porchfestDate->format("Y-m-d") < date("Y-m-d")) {
                     $status = 'past';
                   }
                   $day = date_format(date_create($porchfest['Date']), 'F j, Y');
