@@ -11,6 +11,14 @@
   margin: 0 auto;
 }
 
+#schedulesearch {
+  margin-top: 2px;
+}
+
+#scheduletable {
+  margin-top: 10px;
+}
+
 
 /* For the buttons that filter. */
 

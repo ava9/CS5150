@@ -403,19 +403,23 @@ session_start();
                 echo '</div>';
 
                 echo '<div class="col-xs-12" id="functionalitybtns">';
-                  echo '<button id="save-changes-button" class="btn btn-primary btn-sm"> Save changes </button>';
+                  echo '<div class="col-xs-6 col-sm-6 col-md-6">
+                          <button id="save-changes-button" class="btn btn-primary btn-sm"> Save changes </button>
+                        </div>';                          
+                  echo '<div class="col-xs-6 col-sm-6 col-md-6">
+                          <input id="schedulesearch" name="search" type="text" placeholder="Search..."/>
+                        </div>';
                 echo '</div>';
 
                 echo '<div class="col-xs-12">';
-                echo '<div class="table-container table-responsive bands-table" id="bandstable"> <!-- begin table-container div -->
+                echo '<div class="table-container table-responsive bands-table" id="scheduletable"> <!-- begin table-container div -->
               <table class="responsive table"> <!-- begin table -->
                 <tr class="fixed" data-status= "fixed">
                   <th> Name </th>
                   <th> Timeslots </th>
                   <th> Conflicts </th>
                 </tr>';
-
-                  $result = $conn->query("SELECT Members FROM bands WHERE PorchfestID = '" . $porchfestID . "'");
+                  
 
                   $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
 
@@ -631,10 +635,10 @@ session_start();
 
     
     // filter buttons for the Schedule tab.
-    var sfilter = '#schedule tr:not(.fixed)';
+    var sfilter = '#scheduletable tr:not(.fixed)';
 
     $('#schedule .filters').change(function() {
-      var x = filterByTimeslot($(this), '#schedule', sfilter);
+      var x = filterByTimeslot($(this), '#scheduletable', sfilter);
 
       sfilter = x;
     });
@@ -981,6 +985,26 @@ session_start();
         }
       });
       event.preventDefault();
+    });
+
+    // the search bar in Schedule tab. AJAX call with the given input, displays data from the DB.
+    $("#schedulesearch").keyup(function(){
+      var c = JSON.stringify(conflicts);
+      $.ajax({
+        url: ajaxurl,
+        type: "POST",
+        data: {bname: $("#schedulesearch").val(), conflicts: c, poid: porchfestid},
+        success: function(result){
+          $("#scheduletable").html(result);
+
+          // reapply the filters to the search results.
+          $(sfilter).hide();
+
+          if (sfilter == '#scheduletable tr:not(.fixed)') {
+            $('tr').show();
+          }
+        }
+      });
     });
 
 
