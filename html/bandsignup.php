@@ -129,6 +129,8 @@ session_start();
               $row = $result->fetch_row();
               // If email is unique then insert new user information into database
               if (empty($row)) {
+                // hash password
+                $password = hash("sha256", ($password . SALT));
                 $prep = $mysqli->prepare("INSERT INTO users (Email, Password, Name, ContactInfo) VALUES (?,?,?,?)");
                 $prep->bind_param("ssss", $email, $password, $name, $mobile);
                 $prep->execute();
