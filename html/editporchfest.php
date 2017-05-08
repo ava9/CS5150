@@ -609,25 +609,47 @@ session_start();
       }
     });
 
+    function filterByTimeslot(obj, fid, filter) {
+      // if the button is toggled, aka want to filter by this.
+      var id = $(obj).parent().attr('id');
+      if($(obj).parent().hasClass('active')) {
+        $(fid + ' tr.' + id).show();
+        // $('#schedule tr.' + id).show();
+        filter = filter + ':not(tr.' + id + ')';
+      } else {
+        // need to remove this filter
+        filter = filter.replace(':not(tr.' + id + ')', '');
+      }
+
+      $(filter).hide();
+
+      if (filter == fid + ' tr:not(.fixed)') {
+        $('tr').show();
+      }
+
+      return filter;
+    }
+
     // filter buttons for the Schedule tab.
     var sfilter = '#schedule tr:not(.fixed)';
 
-    $('.filters').change(function() {
-      // if the button is toggled, aka want to filter by this.
-      var id = $(this).parent().attr('id');
-      if($(this).parent().hasClass('active')) {
-        $('#schedule tr.' + id).show();
-        sfilter = sfilter + ':not(tr.' + id + ')';
-      } else {
-        // need to remove this filter
-        sfilter = sfilter.replace(':not(tr.' + id + ')', '');
-      }
+    $('#schedule .filters').change(function() {
+      silfter = filterByTimeslot($(this), '#schedule', sfilter);
+      // // if the button is toggled, aka want to filter by this.
+      // var id = $(this).parent().attr('id');
+      // if($(this).parent().hasClass('active')) {
+      //   $('#schedule tr.' + id).show();
+      //   sfilter = sfilter + ':not(tr.' + id + ')';
+      // } else {
+      //   // need to remove this filter
+      //   sfilter = sfilter.replace(':not(tr.' + id + ')', '');
+      // }
 
-      $(sfilter).hide();
+      // $(sfilter).hide();
 
-      if (sfilter == '#schedule tr:not(.fixed)') {
-        $('tr').show();
-      }
+      // if (sfilter == '#schedule tr:not(.fixed)') {
+      //   $('tr').show();
+      // }
     });
 
 
@@ -989,7 +1011,8 @@ session_start();
           if (bfilter == '#bandstable tr:not(.fixed)') {
             $('tr').show();
           }
-        }});
+        }
+      });
     });
 
     $('#schedule-button').click(function(){
