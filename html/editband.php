@@ -101,7 +101,7 @@ session_start();
         <div class="form-group">
           <label class="col-lg-3 control-label">Name:</label>
           <div class="col-lg-8">
-            <input required name="bandname" class="form-control" value=<?php echo '"' . $band['Name'] . '"' ?> type="text"> <?php echo '<span class="error">'; echo $bandnameError; echo '</span>'; ?>
+            <input data-validation="length" data-validation-length="min1" required name="bandname" class="form-control" value=<?php echo '"' . $band['Name'] . '"' ?> type="text"> <?php echo '<span class="error">'; echo $bandnameError; echo '</span>'; ?>
           </div>
         </div>
         <div class="form-group">
@@ -178,6 +178,15 @@ session_start();
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0LuERw-moYeLnWy_55RoShmUbQ51Yh-o&libraries=places&callback=initAutocomplete"
         async defer></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+  <script>
+
+// enable form validation
+  $.validate({
+    lang: 'en',
+    modules : 'date'
+  });
 
 <!-- JavaScript to prevent forms from submitting on enter -->
 <script type='text/javascript'>
