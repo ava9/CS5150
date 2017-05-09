@@ -238,18 +238,11 @@ session_start();
 
                     echo '<p>';
                     echo '<label> Porchfest Description </label>';
-                    echo '<textarea rows="5" id="porchfestdescription" class="form-control" placeholder="Porchfest Description">' . $porchfest['Description'] .  '</textarea>';
+                    echo '<textarea rows="5" cols="50" id="porchfestdescription" class="form-control" placeholder="Porchfest Description">' . $porchfest['Description'] .  '</textarea>';
                     echo '<br />';
                     echo '</p>';
 
-                    echo '<p>';
-                    echo '<label> Porchfest Deadline Time (24 hr clock format) </label>';
                     $deadline = date_create($porchfest['Deadline']);
-                    $date = date_format($deadline, 'H:i');
-                    echo '<input data-validation="time" type="text" name="porchfesttime" class="form-control" value="' . $date . '" placeholder="Porchfest Deadline Time">';
-                    echo '<br />';
-                    echo '</p>';
-
                     echo '<p>';
                     echo '<label> Porchfest Deadline Date </label>';
                     $day = new DateTime(date_format($deadline, 'Y-m-d')); // to drop the time
@@ -495,8 +488,8 @@ session_start();
               } else {
             ?>
               <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='/cs5150/php/export.php' target="_blank">
-                <input type = "hidden" name = "porchfestid" value = <?php echo $porchfestID ?> />
-                <input type = "hidden" name = "PORCHFEST_NICKNAME" value = <?php echo PORCHFEST_NICKNAME ?> />
+                <input type = "hidden" name = "porchfestid" value = <?php echo PORCHFEST_ID; ?> />
+                <input type = "hidden" name = "PORCHFEST_NICKNAME" value = <?php echo PORCHFEST_NICKNAME; ?> />
                 <div class="form-group">
                     <div class="col-md-1">
                     </div>
@@ -569,6 +562,10 @@ session_start();
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
   <script>
     // initialize only the first tab's elements as clickable, disable everything else.
+    var ajaxurl = "/cs5150/php/ajax.php"; // the path to the ajax file.
+    var porchfestid = "<?php echo PORCHFEST_ID; ?>";
+    var porchfestname = "<?php echo PORCHFEST_NAME; ?>"
+
     $("#manageporchfest").css("pointer-events", "auto");
     $(".tab-pane:not(" + "#manageporchfest" + ")").css({pointerEvents: "none"});
 
@@ -609,7 +606,11 @@ session_start();
     // array of timeslotIDs, mapped to boolean
     // that indicates whether it is currently selected or not
     // used for emailing
-    var timeslotIDs = {'mass_email': true}
+    var timeslotIDs = {
+      'mass_email': true, 
+      'porchfestid': porchfestid,
+      'porchfestname': porchfestname
+    };
 
     $('#bands .filters').change(function() {
       // if the button is toggled, aka want to filter by this.
@@ -643,9 +644,21 @@ session_start();
       sfilter = x;
     });
 
-
-    var ajaxurl = "/cs5150/php/ajax.php"; // the path to the ajax file.
-    var porchfestid = "<?php echo $porchfestID; ?>";
+    // ajax call for the Manage Bands tab, emails all performers (BCC)
+    $('#email-all').click(function() {
+      $.ajax({
+        url: ajaxurl,
+        type: "GET",
+        data: {"all_email": true, "porchfestid": porchfestid, "porchfestname": porchfestname},
+        success: function(result) {
+          console.log(result);
+          window.open(result, '_blank');
+        },
+        error: function(result) {
+          console.log(error);
+        }
+      });
+    });
 
     // ajax call for the Bands tab, to email a selected group of timeslots.
     $('#email-bands-button').click(function() {
@@ -963,7 +976,6 @@ session_start();
           porchfestlocation      : $('input[name=porchfestlocation]').val(),
           porchfestdate          : $('input[name=porchfestdate]').val(),
           porchfestdescription   : $('#porchfestdescription').val(),
-          porchfesttime          : $('input[name=porchfesttime]').val(),
           porchfestdeadlineday   : $('input[name=porchfestdeadlineday]').val(),
           porchfestid            : porchfestid
       };

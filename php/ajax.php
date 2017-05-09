@@ -84,17 +84,42 @@
 		} else {
 			echo "fail";
 		}
-	} elseif (isset($_GET['mass_email'])) {
-		// sprintf("mailto:%s?cc=%s&subject=%s", $recipient, $cc, $subject);
+	// Send out email to ALL band members
+	} elseif (isset($_GET['all_email'])) {
 		$all_emails = "";
-		// foreach ($_GET as $key => $value) {
-		// 	if (is_int($key) and $value) {
 
-		// 	}
-		// }
-		echo "mailto:?bcc=selectedmembers@porchfest.com&subject=[Ithaca Porchfest]";
+		// Members are comma seperated, can be joined together
+		$sql = sprintf("SELECT Members from bands 
+						INNER JOIN bandstoporchfests WHERE bandstoporchfests.PorchfestID = '%s' 
+						AND bands.BandID = bandstoporchfests.BandID", $_GET['porchfestid']);
+		$result = $conn->query($sql);
+		while ($emails = $result->fetch_assoc()) {
+			$all_emails = sprintf("%s%s,", $all_emails, $emails['Members']);
+		}
 
-
+		// Create mailto link
+		echo sprintf("mailto:?bcc=%s&subject=[%s]", $all_emails, $_GET['porchfestname']);
+	// Send out email to select group of timeslots
+	} elseif (isset($_GET['mass_email'])) {
+		$all_emails = "";
+		$timeslots = array();
+		foreach ($_GET as $key => $value) {
+			if (is_int($key) && filter_var($value, FILTER_VALIDATE_BOOLEAN)) {
+				array_push($timeslots, (string)$key);
+			}
+		}
+		$timeslots_str = join("', '", $timeslots);
+		// Members are comma seperated, can be joined together
+		$sql = sprintf("SELECT Members from bands 
+						INNER JOIN bandstoporchfests WHERE bandstoporchfests.PorchfestID = '%s' 
+						AND bands.BandID = bandstoporchfests.BandID
+						AND bandstoporchfests.TimeslotID IN ('$timeslots_str')", $_GET['porchfestid']);
+		$result = $conn->query($sql);
+		while ($emails = $result->fetch_assoc()) {
+			$all_emails = sprintf("%s%s,", $all_emails, $emails['Members']);
+		}
+		// Create mailto link
+		echo sprintf("mailto:?bcc=%s&subject=[%s]", $all_emails, $_GET['porchfestname']);
 	// Update schedule (save-changes-button)
 	} elseif (isset($_POST['json'])) {
 
@@ -120,13 +145,12 @@
 			echo 'failure';
 		}
 
-	} elseif (isset($_POST['porchfestname']) && isset($_POST['porchfestlocation']) && isset($_POST['porchfestdate']) && isset($_POST['porchfestdescription']) && isset($_POST['porchfesttime']) && isset($_POST['porchfestdeadlineday']) && isset($_POST['porchfestid'])) {
+	} elseif (isset($_POST['porchfestname']) && isset($_POST['porchfestlocation']) && isset($_POST['porchfestdate']) && isset($_POST['porchfestdescription']) && isset($_POST['porchfestdeadlineday']) && isset($_POST['porchfestid'])) {
 		// ** editporchfest.php: MANAGE PORCHFEST: form to manage porchfest 
 		$porchfestname = htmlentities($_POST['porchfestname']);
 		$porchfestlocation = htmlentities($_POST['porchfestlocation']);
 		$porchfestdate = htmlentities($_POST['porchfestdate']);
 		$porchfestdescription = htmlentities($_POST['porchfestdescription']);
-		$porchfesttime = htmlentities($_POST['porchfesttime']);
 		$porchfestdeadlineday = htmlentities($_POST['porchfestdeadlineday']);
 		$porchfestid = $_POST['porchfestid'];
 
@@ -135,8 +159,6 @@
 		$result = $conn->query($sql);
 
 		$deadline = new DateTime($result->fetch_assoc()['Deadline']);
-		list($hour, $minute) = explode(":", $porchfesttime);
-		date_time_set($deadline, intval($hour), intval($minute));
 
 		list($year, $month, $day) = explode("-", $porchfestdeadlineday);
 		$deadline->setDate(intval($year), intval($month), intval($day));
