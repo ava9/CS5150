@@ -969,6 +969,20 @@ session_start();
       event.preventDefault();
     });
 
+    function conflictingFirst() {
+      var c = $('.hasconflict');
+      var s = c.clone();
+      c.hide();
+      $('#scheduletable table tr:first').after(s);
+
+      return [c, s];
+    }
+
+    function undoConflictingFirst(l) {
+      l[1].hide();
+      l[0].show();
+    }
+
     // submit the form on Manage Porchfest.
     $("#porchfestmanagesubmit").submit(function(event){
       var formData = {
