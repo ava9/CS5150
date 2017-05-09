@@ -314,7 +314,7 @@
 
 			echo '<td><select class="timesdropdown" id="times-' . $band['BandID'] . '">';
 
-			$sql3 = "SELECT * FROM `bandstoporchfests` INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID WHERE bandstoporchfests.bandID=" . $band['BandID'];
+			$sql3 = 'SELECT * FROM `porchfesttimeslots` INNER JOIN bandavailabletimes ON porchfesttimeslots.TimeslotID = bandavailabletimes.TimeslotID WHERE bandavailabletimes.bandID="' . $band['BandID'] . '" AND TimeslotID=' . $conflicts[$band['BandID']]["tid"];
 
 			$result3 = $conn->query($sql3);
 

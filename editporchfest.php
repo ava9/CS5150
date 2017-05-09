@@ -690,8 +690,8 @@ session_start();
     var conflicts = <?php echo json_encode($conflicts); ?>;
 
     function updateOldConflictingBand(conflictingid, id) {
-      var s = $('#conflicts-' + conflictingid).val();
-      var iconflicts  = s.substr(s.indexOf(":") + 2, s.length).split(", ");
+      console.log(id);
+      var iconflicts = conflicts[conflictingid]["current"];
 
       if (iconflicts.length == 1) {
         // the conflicting band only conflicted with the current band.
@@ -701,24 +701,19 @@ session_start();
         $('#band-' + conflictingid).removeClass('hasconflict');
       } else {
         // the conflicting band has other conflicts.
-        var index = iconflicts.indexOf(id);
-        iconflicts = iconflicts.splice(index, 1);
+        console.log(iconflicts);
+        var index = iconflicts.indexOf('' + id + '');
+        iconflicts.splice(index, 1);
         conflicts[conflictingid]["current"] = iconflicts;
         $('#conflicts-' + conflictingid).val("This bands conflicts with: " + iconflicts.join(", "));
         $('#conflict-names-' + conflictingid).text("This bands conflicts with: " + getBandNames(conflicts, iconflicts).join(", "));
         $('#band-' + conflictingid).addClass('hasconflict');
+        console.log(iconflicts);
       }
     }
 
     function updateNewConflictingBand(conflictingid, id) {
-      var s = $('#conflicts-' + conflictingid).val();
-
-      var iconflicts;
-      if (s == 'No conflicts') {
-        iconflicts = [];
-      } else {
-        iconflicts  = s.substr(s.indexOf(":") + 2, s.length).split(", ");
-      }
+      var iconflicts = conflicts[conflictingid]["current"];
       
       iconflicts.push(id);
       
@@ -729,7 +724,8 @@ session_start();
     }
 
     // ajax call for the Schedule tab, to determine if bands are conflicting.
-    $('.timesdropdown').change(function() {
+    $('#scheduletable').on('change', '.timesdropdown', function() {
+      console.log('here');
       var newtid = $(this).val();
       var id = $(this).attr("id").split('-')[1].trim();
 
