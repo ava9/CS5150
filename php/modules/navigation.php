@@ -1,6 +1,4 @@
-<?php
-    require_once("stdHead.php");
-?>
+<?php require_once "stdHead.php"; ?>
 
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">

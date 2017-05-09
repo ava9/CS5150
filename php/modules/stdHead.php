@@ -1,19 +1,19 @@
 <!-- URL Links for every website page -->
 <?php
 	
-	require_once '../php/config.php';
-	$root_dir = CODE_ROOT;
+	require_once __DIR__.'/../../config.php';
+	$root_dir = SRCHREF_ROOT;
 
 	// CSS links
-	define('CSS_LINK', $root_dir . "css/style.css");
-	define('CSS_RESPONSIVE_TABLES_LINK', $root_dir . "css/responsive-tables.css");
-	define('CSS_TOKEN_INPUT', $root_dir . "../php/modules/token-input-facebook.css");
+	define('CSS_LINK', $root_dir . "/css/style.css");
+	define('CSS_RESPONSIVE_TABLES_LINK', $root_dir . "/css/responsive-tables.css");
+	define('CSS_TOKEN_INPUT', $root_dir . "/php/modules/token-input-facebook.css");
 
 	// JS links
-	define('JQEURY_LINK', $root_dir . "../js/jquery.js");
-	define('JS_ADDR_LINK', $root_dir . "../js/addressautocomplete.js");
-	define('JS_TOKENINPUT_LINK', $root_dir . "../js/jquery.tokeninput.js");
-	define('JS_RESPONSIVE_TABLES_LINK', $root_dir . "../js/responsive-tables.js");
+	define('JQEURY_LINK', $root_dir . "/js/jquery.js");
+	define('JS_ADDR_LINK', $root_dir . "/js/addressautocomplete.js");
+	define('JS_TOKENINPUT_LINK', $root_dir . "/js/jquery.tokeninput.js");
+	define('JS_RESPONSIVE_TABLES_LINK', $root_dir . "/js/responsive-tables.js");
 
 	// URL Links
 	define('INDEX_URL', $root_dir);
@@ -26,13 +26,13 @@
 	define('EDIT_PORCHFEST_URL', $root_dir . 'edit');
 
 	// PHP files
-	define('PHP_EXPORT', $root_dir . '../php/export.php');
-	define('PHP_AJAX', $root_dir . '../php/ajax.php');
-	define('PHP_BAND_LISTING', $root_dir . '../band-listing.php');
+	define('PHP_EXPORT', $root_dir . '/php/export.php');
+	define('PHP_AJAX', $root_dir . '/php/ajax.php');
+	define('PHP_BAND_LISTING', $root_dir . '/band-listing.php');
 
 	// IMG/GIF files
-	define('GIF_LOADING', $root_dir . '../img/ajax-loader.gif');
-	define('IMG_LANDING', $root_dir . '../img/landing.jpg');
+	define('GIF_LOADING', $root_dir . '/img/ajax-loader.gif');
+	define('IMG_LANDING', $root_dir . '/img/landing.jpg');
 
 	/**
 	 * Given a desired url to link to and text to display on the website,
@@ -63,7 +63,6 @@
 
 <script src="<?php echo JQEURY_LINK; ?>"></script>
 
-<!-- TODO: I put this in the standard header by accident, need to find out where this applies. -->
 <script src="<?php echo JS_ADDR_LINK; ?>"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

@@ -1,0 +1,540 @@
+/*    --------------------------------------------------
+  :: editporchfest.php
+  -------------------------------------------------- */
+#scheduletab-conflictstable {
+  position: absolute;
+}
+
+#scheduletab-button {
+  /*position: absolute;*/
+  width: 50%;
+  margin: 0 auto;
+}
+
+#schedulesearch {
+  margin-top: 2px;
+}
+
+#scheduletable {
+  margin-top: 10px;
+}
+
+
+/* For the buttons that filter. */
+
+#filterid .btn {
+  margin-top: 5px;
+  font-size: .8em;
+}
+
+#bands .btn-group .btn {
+  margin-top: 5px;
+  font-size: .8em;
+}
+
+.hasconflict {
+  background-color: #f9c1bb;
+}
+
+.error {
+  color: #FF0000;
+}
+
+input.form-control.error {
+  border-color: red;
+}
+
+.navbar {
+  height: 50px;
+}
+
+#publishbutton {
+  position: absolute;
+  z-index: 10;
+}
+
+#exportbutton {
+  position: absolute;
+  z-index: 10;
+}
+
+#editalert {
+  /*position: fixed;
+  padding-top: 10px;
+  margin-top: 10px;*/
+}
+
+#manageporchfest {
+  position: absolute;
+  z-index: 10;
+}
+
+#porchfestinfo {
+  padding-top: 15px;
+  margin-right: 10px;
+}
+
+#functionalitybtns {
+  margin-top: 5px;
+}
+
+#email-bands-button, #email-all {
+  margin-top: 5px;
+}
+
+
+/* Manage bands tab */
+#bandstable {
+  margin-top: 10px;
+  padding-right: 25px;
+  position: absolute;
+  z-index: 10;
+}
+
+/* Timeslot tab */
+#bandssearch {
+  position: relative;
+  margin-top: 10px;
+  z-index: 100;
+}
+
+#createtimeslot {
+  position: relative;
+  z-index: 110;
+}
+
+#timeslottab-form {
+  position: absolute;
+  top: 0;
+  margin-top: 15px;
+}
+
+
+#addtimeslot {
+  display: inline-block;
+}
+
+.timeslot-label {
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.timeslot-label .timeslot-label {
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.timeslot-label .label {
+  position: relative;
+  z-index: 10;
+  display: inline-block;
+  font-size: .8em;
+  min-height: 2.5em;
+  height: 2.5em;
+  width: 12em;
+  line-height: 2;
+}
+
+.timeslot-button {
+  margin-top: 10px;
+}
+
+#timeslotheaders {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+
+/* Scroll to bar */
+
+#scrollto {
+  list-style-type: none;
+  position: fixed;  
+  right: 0;
+  padding-right: 10px;
+  top: 5;
+  height:100%;
+}
+
+
+#scrollto li {
+  min-height: 20px;
+  display: block;
+  padding-top: 0;
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  width: 30px;
+  height: 3.6%;
+}
+
+#scrollto a {
+  color: gray;
+}
+
+
+/* Sidebar based on: http://bootsnipp.com/snippets/featured/sexy-sidebar-navigation*/
+
+.nav-sidebar {
+    width: 100%;
+    padding: 20px 0; 
+    border-right: 1px solid #ddd;
+}
+.nav-sidebar a {
+    color: #333;
+    -webkit-transition: all 0.08s linear;
+    -moz-transition: all 0.08s linear;
+    -o-transition: all 0.08s linear;
+    transition: all 0.08s linear;
+    -webkit-border-radius: 4px 0 0 4px; 
+    -moz-border-radius: 4px 0 0 4px; 
+    border-radius: 4px 0 0 4px;
+    background-color: white;
+}
+.nav-sidebar .active a {
+    cursor: default;
+    color: #fff; 
+    text-shadow: 1px 1px 1px #666; 
+}
+
+.nav-sidebar .active a:hover {
+  background-color: #428bca;
+}
+
+.nav-sidebar .active a {
+  background-color: #428bca;
+}
+
+.nav-sidebar .text-overflow a,
+.nav-sidebar .text-overflow .media-body {
+    white-space: nowrap;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis; 
+}
+
+
+
+
+/*    --------------------------------------------------
+  :: singleporchfest.html
+  -------------------------------------------------- */
+
+#singleporchfestcontainer {
+  padding-right: 50px;
+}
+
+:before, :after {
+  box-sizing: border-box;
+}
+
+span.band {
+  color: #555246;
+  opacity: .7;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  margin: 0 -5.5px 5px;
+  padding: 10px 0;
+  display: inline-block;
+  transition: all ease .3s;
+}
+
+span.band:hover {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+span.band::before {
+  content: "\25a0";
+  padding-right: 10px;
+}
+
+span.band::after {
+  content: "\25a0";
+  padding-left: 10px;
+}
+
+#bandname {
+  padding-left: 5px;
+}
+
+.col-centered {
+  float: none;
+  margin: 0 auto;
+}
+
+#bandModal {
+  text-align: center;
+}
+
+.tab-content #name{
+  text-align: center;
+}
+
+#bandModal img{
+  height: 70%;
+  width: 70%;
+}
+
+#map img{
+  height: 60%;
+  width: 50%;
+  display: block;
+  margin: 0 auto;
+  padding-top: 10px;
+}
+
+ .nav-tabs > li, .nav-pills > li {
+  float: none;
+  display: inline-block;
+  *display: inline; /* ie7 fix */
+  zoom: 1; /* hasLayout ie7 trigger */
+}
+
+.nav-tabs, .nav-pills {
+  padding-top: 20px;
+  text-align: center;
+}
+
+.contact {
+  padding-left: 50px;
+}
+
+.nav-tabs {
+    margin-bottom: 15px;
+}
+
+.tab-content {
+  padding: 5px;
+}
+
+
+/*    --------------------------------------------------
+  :: myporchfests.html & browse.html
+  -------------------------------------------------- */
+
+/* For the upcoming/past/all buttons in the Browse/My Porchfest tables. */
+.btn-group {
+  position: relative;
+  z-index: 10;
+  padding-top: 0;
+}
+
+table {
+  
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+th {
+  background-color: #eaecef;
+}
+
+
+
+/*    --------------------------------------------------
+  :: Login
+  -------------------------------------------------- */
+
+.loginButton:hover {
+  text-decoration: none;
+}
+
+.loginButton:focus {
+  text-decoration: none;
+}
+
+.login {
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+
+/*    --------------------------------------------------
+  :: Navbar
+  -------------------------------------------------- */
+/*.navbar {
+  color: red;
+  background-color: red;
+  border: blue;
+}
+
+#navbrand {
+  color: white;
+}
+
+.navbar-toggle {
+  color: blue;
+  background-color: blue;
+}
+
+.navbar-toggle .icon-bar {
+  color: red;
+  background-color: red;
+}*/
+
+
+
+
+/*    --------------------------------------------------
+  :: General
+  -------------------------------------------------- */
+body {
+  font-family: 'Open Sans', sans-serif;
+  color: #353535;
+  padding-top: 50px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+.content h2 {
+  text-align: center;
+}
+.content .content-footer p {
+  color: #6d6d6d;
+    font-size: 12px;
+    text-align: center;
+}
+.content .content-footer p a {
+  color: inherit;
+  font-weight: bold;
+}
+
+/* Customize the text color and shadow color and to optimize text legibility. */
+
+.tagline {
+    text-shadow: 0 0 10px #000;
+    color: #fff;
+}
+
+.img-center {
+    margin: 0 auto;
+}
+
+footer {
+    margin: 50px 0;
+}
+
+/*  --------------------------------------------------
+  :: Table Filter
+  -------------------------------------------------- */
+.panel {
+  border: 1px solid #ddd;
+  background-color: #fcfcfc;
+}
+.panel .btn-group {
+  margin: 15px 0 15px;
+}
+.panel .btn-group .btn {
+  transition: background-color .3s ease;
+}
+
+
+/* Probably don't need this, but leaving for now just in case. */
+
+/*.table-filter {
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+}
+.table-filter tbody tr:hover {
+  cursor: pointer;
+  background-color: #eee;
+}
+.table-filter tbody tr td {
+  padding: 10px;
+  vertical-align: middle;
+  border-top-color: #eee;
+}
+.table-filter tbody tr.selected td {
+  background-color: #eee;
+}
+.table-filter tr td:first-child {
+  width: 38px;
+}
+.table-filter tr td:nth-child(2) {
+  width: 35px;
+}
+.ckbox {
+  position: relative;
+}
+.ckbox input[type="checkbox"] {
+  opacity: 0;
+}
+.ckbox label {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.ckbox label:before {
+  content: '';
+  top: 1px;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  display: block;
+  position: absolute;
+  border-radius: 2px;
+  border: 1px solid #bbb;
+  background-color: #fff;
+}
+.ckbox input[type="checkbox"]:checked + label:before {
+  border-color: #2BBCDE;
+  background-color: #2BBCDE;
+}
+.ckbox input[type="checkbox"]:checked + label:after {
+  top: 3px;
+  left: 3.5px;
+  content: '\e013';
+  color: #fff;
+  font-size: 11px;
+  font-family: 'Glyphicons Halflings';
+  position: absolute;
+}
+.table-filter .star {
+  color: #ccc;
+  text-align: center;
+  display: block;
+}
+.table-filter .star.star-checked {
+  color: #F0AD4E;
+}
+.table-filter .star:hover {
+  color: #ccc;
+}
+.table-filter .star.star-checked:hover {
+  color: #F0AD4E;
+}
+.table-filter .media-photo {
+  width: 35px;
+}
+.table-filter .media-meta {
+  font-size: 11px;
+  color: #999;
+}
+.table-filter .media .title {
+  color: #2BBCDE;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: normal;
+  margin: 0;
+}
+.table-filter .media .title span {
+  font-size: .8em;
+  margin-right: 20px;
+}
+.table-filter .media .title span.upcoming {
+  color: #5cb85c;
+}
+.table-filter .media .title span.past {
+  color: #f0ad4e;
+}
+.table-filter .media .title span.all {
+  color: #d9534f;
+}
+.table-filter .media .summary {
+  font-size: 14px;
+}

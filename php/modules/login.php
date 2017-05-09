@@ -17,7 +17,7 @@
                 if (isset($_POST['login'])) {
                 // logged_user not set, but email and password were entered
                     $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
-                    require_once('../php/config.php');
+                    require_once __DIR__.'/../../config.php';
                     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
                     $password = hash("sha256", ($_POST['password'] . SALT));
                     $result = $mysqli->query("SELECT password, userID FROM users WHERE email = '$email'");
