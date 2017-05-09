@@ -1,6 +1,8 @@
 <!-- URL Links for every website page -->
 <?php
-	$root_dir = '/cs5150/html/';
+	
+	require_once '../php/config.php';
+	$root_dir = CODE_ROOT;
 
 	// CSS links
 	define('CSS_LINK', $root_dir . "css/style.css");
