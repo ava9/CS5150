@@ -16,7 +16,7 @@
 	define('JS_RESPONSIVE_TABLES_LINK', $root_dir . "/js/responsive-tables.js");
 
 	// URL Links
-	define('INDEX_URL', $root_dir);
+	define('INDEX_URL', $root_dir . '/');
 	define('NEW_PORCHFEST_URL', $root_dir . 'newporchfest');
 	define('EXISTING_PORCHFEST_URL', $root_dir . 'existingporchfest');
 	define('BROWSE_PORCHFEST_URL', $root_dir . 'browse');
