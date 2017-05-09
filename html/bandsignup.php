@@ -8,7 +8,7 @@ session_start();
 <!-- BEGIN head -->
 <head>
   <?php require_once "../php/modules/stdHead.php" ?>  
-  <link rel="stylesheet" href="/cs5150/php/modules/token-input-facebook.css" type="text/css" />
+  <link rel="stylesheet" href="<?php echo CSS_TOKEN_INPUT; ?>" type="text/css" />
   <title>Band Sign-Up</title>
 </head>
 
@@ -420,7 +420,7 @@ session_start();
   });
   
   $(document).ready(function () {
-    $("#conflict-input").tokenInput("/cs5150/html/band-listing.php", {
+    $("#conflict-input").tokenInput("<?php echo PHP_BAND_LISTING; ?>", {
         preventDuplicates: true, theme: "facebook"
     });
   });

@@ -34,7 +34,7 @@ session_start();
     </div>
 
     <center>
-      <img src="../img/landing.jpg" style="width:50%;height:50%;">
+      <img src="<?php echo IMG_LANDING; ?>" style="width:50%;height:50%;">
     </center>
 
   </div> <!-- end container div -->

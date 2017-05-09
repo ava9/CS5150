@@ -36,7 +36,7 @@
                                 </ul>
                         </li>
                         
-                        <li><form role="form" id='logout-button' method='POST' action = "/cs5150/html/">
+                        <li><form role="form" id='logout-button' method='POST' action = "<?php echo INDEX_URL; ?>">
                             <button type='submit' class='btn btn-link navbar-btn loginButton' name="logout" >
                             Logout
                             </button>

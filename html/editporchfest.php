@@ -7,7 +7,7 @@ session_start();
   <head>
     <?php require_once "../php/modules/stdHead.php" ?>
     <!-- Responsive table js -->
-    <script src="/cs5150/js/responsive-tables.js"></script>
+    <script src="<?php echo JS_RESPONSIVE_TABLES_LINK; ?>"></script>
 
     <script>
     // update when clickable tab elements with click. Used as an onclick function for the tabs.
@@ -17,7 +17,7 @@ session_start();
     }
     </script>
     <!-- Responsive tables CSS -->
-    <link rel="stylesheet" href="/cs5150/html/css/responsive-tables.css">
+    <link rel="stylesheet" href="<?php echo CSS_RESPONSIVE_TABLES_LINK; ?>">
     
     <title>PorchFest - Edit</title>
   </head>
@@ -321,7 +321,7 @@ session_start();
                       echo '<td>' . $band['Description'] . '</td>';
                       echo '<td> <a data-target="#timeslotModal' . $band['BandID'] . '" data-toggle="modal"> Time Slots </a> </td>';
                       echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
-                      echo '<td> <a href="http://localhost/cs5150/html/edit/' . PORCHFEST_NICKNAME . '/' . 
+                      echo '<td> <a href="' . EDIT_PORCHFEST_URL  . '/' . PORCHFEST_NICKNAME . '/' . 
                                   urlencode($urlbandname) . '"> Edit </a> </td>';
                       echo '<td> <a href="' . email_href($band['Name'], $band['Members']) . '" target="_blank"> Email </a> </td>'; 
                     }
@@ -487,7 +487,7 @@ session_start();
             <?php
               } else {
             ?>
-              <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='/cs5150/php/export.php' target="_blank">
+              <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='<?php echo PHP_EXPORT; ?>' target="_blank">
                 <input type = "hidden" name = "porchfestid" value = <?php echo PORCHFEST_ID; ?> />
                 <input type = "hidden" name = "PORCHFEST_NICKNAME" value = <?php echo PORCHFEST_NICKNAME; ?> />
                 <div class="form-group">
@@ -562,7 +562,7 @@ session_start();
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
   <script>
     // initialize only the first tab's elements as clickable, disable everything else.
-    var ajaxurl = "/cs5150/php/ajax.php"; // the path to the ajax file.
+    var ajaxurl = "<?php echo PHP_AJAX; ?>"; // the path to the ajax file.
     var porchfestid = "<?php echo PORCHFEST_ID; ?>";
     var porchfestname = "<?php echo PORCHFEST_NAME; ?>"
 
@@ -1054,7 +1054,7 @@ session_start();
     });
 
     $('#schedule-button').click(function(){
-      var loader_img = '<img src="/cs5150/img/ajax-loader.gif" alt="Loading" />';
+      var loader_img = '<img src="<?php echo GIF_LOADING; ?>" alt="Loading" />';
       $('#schedule-button').hide();
       $('#scheduletab-button').append(loader_img);
 
