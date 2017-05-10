@@ -37,7 +37,7 @@ session_start();
           <div class="col-xs-12 col-sm-4 col-md-3">
             <div class="btn-group">
               <?php 
-                create_hyperlink(INDEX_URL, '<button type="button" class="btn btn-primary">Create Porchfest</button>');
+                create_hyperlink(NEW_PORCHFEST_URL, '<button type="button" class="btn btn-primary">Create Porchfest</button>');
               ?>
             </div>
           </div>

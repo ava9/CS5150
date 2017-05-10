@@ -91,14 +91,11 @@ session_start();
         } elseif($dbpass != $encpassword) {
           echo '<script> $("#editalert").html(\'<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> The password you entered does not match your old password! Please try again. </div>\'); </script>';
         } else {
-          echo '<script> $("#editalert").html(\'<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your profile was updated successfuly!. </div>\'); </script>';
+          echo '<script> $("#editalert").html(\'<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your profile was updated successfully!. </div>\'); </script>';
           $sql = "UPDATE users SET Name='" . $_POST['name'] . "', Email='" . $_POST['email'] . "', Password='" . $newpass . "', ContactInfo='" . $_POST['mobile'] . "' WHERE UserID='" . $_SESSION['logged_user'] . "'";
           $result = $conn->query($sql);
         }
       }
-
-
-
   ?>
 <!-- navBar and login -->
 <?php 

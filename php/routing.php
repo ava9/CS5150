@@ -67,7 +67,6 @@
                           INNER JOIN userstobands ON userstobands.UserID = '%s'
                           AND userstobands.BandID = bands.BandID
                           WHERE bands.Name = '%s'", $_SESSION['logged_user'], BAND_NAME);
-            echo $sql;
             $result = $mysqli->query($sql);
             $accepted_users = $result->num_rows;
         }

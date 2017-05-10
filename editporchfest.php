@@ -361,7 +361,7 @@ session_start();
               </div>
 
               <div class="col-xs-12">
-                <form role="form" id="createtimeslot" class="form-horizontal" action="">
+                <form role="form" id="createtimeslot" class="form-horizontal" action="editporchfest.php">
                   <div class="col-xs-6">
                     <label for="timeslot" > Start Time (24 hr clock format) </label>
                       <input name="newtimeslotstart" placeholder="HH:MM" type="text" data-validation="time" data-validation-optional="true" data-validation-help="Format as XX:XX">

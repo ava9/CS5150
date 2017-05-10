@@ -18,6 +18,9 @@
         <div class="collapse navbar-collapse navbar-inverse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-inverse navbar-nav navbar-right">
                 <li>
+                    <?php create_hyperlink(ABOUT_URL, 'About'); ?>
+                </li>
+                <li>
                     <?php create_hyperlink(BROWSE_PORCHFEST_URL, 'Browse Porchfests'); ?>
                 </li>
                 <?php 

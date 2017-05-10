@@ -1,5 +1,5 @@
 <?php
-require_once "config.php";
+require_once __DIR__."/../../config.php";
 require_once "debug.php";
 require_once "Band.php";
 require_once "Schedule.php";

@@ -19,6 +19,7 @@
 	define('INDEX_URL', $root_dir);
 	define('NEW_PORCHFEST_URL', $root_dir . 'newporchfest');
 	define('EXISTING_PORCHFEST_URL', $root_dir . 'existingporchfest');
+	define('ABOUT_URL', $root_dir . 'about');
 	define('BROWSE_PORCHFEST_URL', $root_dir . 'browse');
 	define('MY_PORCHFEST_URL', $root_dir . 'myporchfests');
 	define('PROFILE_URL', $root_dir . 'profile');
@@ -33,6 +34,7 @@
 	// IMG/GIF files
 	define('GIF_LOADING', $root_dir . 'img/ajax-loader.gif');
 	define('IMG_LANDING', $root_dir . 'img/landing.jpg');
+	define('IMG_CORNELL', $root_dir . 'img/cornell.png');
 
 	/**
 	 * Given a desired url to link to and text to display on the website,

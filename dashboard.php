@@ -62,7 +62,7 @@ session_start();
 
           <p><?php create_hyperlink(BROWSE_PORCHFEST_URL, 'Browse All Porchfests'); ?></p>
           <p><?php create_hyperlink(MY_PORCHFEST_URL, 'View My Porchfests'); ?></p>
-          <p><?php create_hyperlink(INDEX_URL, 'Create New Porchfest');?></p>
+          <p><?php create_hyperlink(NEW_PORCHFEST_URL, 'Create New Porchfest');?></p>
 
       </div>
       <div class="col-sm-6" style="background-color:#E6E9E9;">

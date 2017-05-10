@@ -9,11 +9,12 @@ session_start();
     require_once "config.php";
     require_once CODE_ROOT . "/php/modules/stdHead.php";
   ?> 
-  
+  <link rel="stylesheet" href="<?php echo CSS_TOKEN_INPUT; ?>" type="text/css" />
   <title>Edit Band</title>
 </head>
 
 <body>
+  <div id="editalert"></div>
   <?php 
   require_once CODE_ROOT . "/php/routing.php";
   require_once CODE_ROOT . "/php/modules/login.php";
@@ -62,7 +63,7 @@ session_start();
 
     // Query to update information in the bands table
     $sql = "UPDATE bands SET Name='" . $bandname . "', Description='" . $banddescription . "', 
-            Members = '" . $bandmembers . "', Comment = '" . $bandcomment . "', Conflicts = '" . $bandconflicts . "' WHERE BandID= '" . $bandID . "'";
+            Members = '" . $bandmembers . "', Comment = '" . $bandcomment . "' WHERE BandID= '" . $bandID . "'";
     $result = $conn->query($sql);
     
     // Query to update information in the bandstoporchfests table
@@ -77,13 +78,31 @@ session_start();
     if (isset($_POST['available'])) {
       $available = $_POST['available'];
       foreach($available as $timeslot) {
-        $sql = "INSERT INTO bandavailabletimes (BandID, TimeslotID) VALUES ('?', '?')";
-        // $result = $conn->query($sql);
+        $sql = "INSERT INTO bandavailabletimes (BandID, TimeslotID) VALUES (?, ?)";
         $prep = $mysqli->prepare($sql);
-            $prep->bind_param("ssss", $bandID, $timeslot);
-            $prep->execute();
+        $prep->bind_param("ss", $bandID, $timeslot);
+        $prep->execute();
       }
     }
+
+    // First deletes all conflicts
+    $sql = "DELETE FROM bandconflicts WHERE BandID1= '" . $bandID . "' OR BandID2 = '" . $bandID . "'";
+    $result = $conn->query($sql);
+
+    // Insert into bandconflicts table
+    // Insert the conflicts into bandconflicts
+    if (isset($_POST['bandconflicts'])) {
+      $bandconflictlist = explode(',', $bandconflicts);
+      foreach ($bandconflictlist as $bconflict) {
+        $prep = $mysqli->prepare("INSERT INTO bandconflicts (BandID1, BandID2) 
+                                  VALUES (?,?)");
+        $prep->bind_param("ss", $bandID, $bconflict);
+        $prep->execute();
+      }
+    }
+
+    echo '<script> $("#editalert").html(\'<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your band information was updated successfully!. </div>\'); </script>';
+
   }
 
   // Gets all band information
@@ -129,7 +148,16 @@ session_start();
         <div class="form-group">
           <label class="col-lg-3 control-label">Conflicts:</label>
           <div class="col-lg-8">
-            <input name="bandconflicts" class="form-control" value=<?php echo '"' . $band['Conflicts'] . '"' ?> type="text">
+            <?php 
+              // Gets all band conflicts
+              $sql = "SELECT * from bands INNER JOIN bandconflicts ON 
+              (bands.BandID = bandconflicts.BandID1 OR bands.BandID = bandconflicts.BandID2) WHERE bands.BandID != '" . $bandID . "'";
+              $result = $conn->query($sql);
+              while ($conflictingbands = $result->fetch_assoc()) {
+                $conflictsarray[] = array("id" => $conflictingbands['BandID'], "name" => $conflictingbands['Name']);
+              }
+            ?>
+            <input name="bandconflicts" id="conflict-input" type="text" class="form-control" placeholder="Band1,Band2,Band3" />
           </div>
         </div>
         <div class="form-group">
@@ -187,10 +215,23 @@ session_start();
 
 <!-- JavaScript to prevent forms from submitting on enter -->
 <script type='text/javascript'>
-// enable form validation
+  // enable form validation
   $.validate({
     lang: 'en',
     modules : 'date'
+  });
+
+  var conflictlist = <?php echo json_encode($conflictsarray); ?>;
+
+  $(document).ready(function () {
+    $("#conflict-input").tokenInput("<?php echo PHP_BAND_LISTING; ?>", {
+        preventDuplicates: true, theme: "facebook", prePopulate: conflictlist
+    });
+  });
+
+  // function for editalert display
+  $('body').click(function() {
+        $("#editalert").html('');
   });
   
 $(document).ready(function() {

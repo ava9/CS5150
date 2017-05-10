@@ -373,7 +373,9 @@ session_start();
       </div>
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label"> 
-            Conflicting Bands <?php tooltip("Please select all bands that conflict with your band. When you type the conflicting band name, it will either appear in the dropdown below and you can select it, or you will have the option to “add/register” the conflicting band. Conflicts are those bands that you cannot play at the same time as, i.e. because they will play at the same location or you share a member.") ?> </label>
+            Conflicting Bands <?php tooltip("Please select all bands that conflict with your band. When you type the conflicting band name, it will either appear in the dropdown below and you can select it, or you will have the option to “add/register” the conflicting band. 
+            Conflicts are those bands that you cannot play at the same time as, i.e. because they will play at the same location or you share a member. If you do not see the conflicting band in the dropdown, then that means that band has not signed up yet and you must make sure they
+            list you as a conflict when they register their band.") ?> </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">

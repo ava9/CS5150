@@ -11,7 +11,7 @@ session_start();
     require_once "config.php";
     require_once CODE_ROOT . "/php/modules/stdHead.php";
   ?>
-  <title>PorchFest - Home (Existing Porchfest??)</title>
+  <title>PorchFest - Integrate Porchfest </title>
 </head>
 
 <!-- BEGIN body -->
@@ -187,7 +187,7 @@ session_start();
     <?php } ?>
 
     <!-- Form for submitting account information --> 
-    <form role="form" class="form-horizontal" id="submit-info-form" method="POST" action=".">
+    <form role="form" class="form-horizontal" id="submit-info-form" method="POST" action="existingporchfest.php">
       <?php if (!isset($_SESSION['logged_user'])) { ?>
       <h4> Account Information </h4>
       <div class="form-group">

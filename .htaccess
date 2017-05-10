@@ -1,6 +1,7 @@
 Options -MultiViews
 RewriteEngine On
 
+RewriteRule ^about(\/)? about.php [NC,L]
 RewriteRule ^browse(\/)? browse.php [NC,L]
 RewriteRule ^new(\/)? newporchfest.php [NC,L]
 RewriteRule ^existing(\/)? existingporchfest.php [NC,L]
