@@ -209,7 +209,7 @@ function noConflicts($bandsArr, $band){
 
   if (sizeof($conflicts > 0)) {
 
-    if ($conflicts[0] == null) {
+    if (sizeof($conflicts) == 0 || $conflicts[0] == null) {
       return true;
     }
 

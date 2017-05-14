@@ -47,7 +47,8 @@ $MIN_DISTANCE = 25; // minimum distance in meters allowed between playing bands
 $kNeighbors = 10; //how many nearest neighbors used to calculate distance variance
 
 #Ithaca PorchFest
-$PorchfestID = $_POST['porchfestid'];
+// $PorchfestID = $_POST['porchfestid'];
+$PorchfestID = 1;
 
 $resultBandsTimeSlots;
 $resultBandsPorchfests;
@@ -108,19 +109,17 @@ function run(){
        * 0 index is a boolean saying whether we've successfully created a schedule,
        * 1 index is the new schedule  
        */
-    $successAndIntermediateSched = generateBaseSchedule();
-    $success = $successAndIntermediateSched[0];
-    $intermediateSchedule = $successAndIntermediateSched[1];
+    $intermediateSchedule = generateBaseSchedule();
 
-    if (!$success) {
-      echo "Failed to generate base schedule in this iteration. Moving on\n";
-      if ($i+1 == $NUM_SCHEDS_TO_GENERATE) {
-        echo "Error: failed to generate a single base schedule, 
-              either too many band conflicts or not enough spread 
-              apart porch locations\n";
-      }
-      continue;
-    }
+    // if (!$success) {
+    //   echo "Failed to generate base schedule in this iteration. Moving on\n";
+    //   if ($i+1 == $NUM_SCHEDS_TO_GENERATE) {
+    //     echo "Error: failed to generate a single base schedule, 
+    //           either too many band conflicts or not enough spread 
+    //           apart porch locations\n";
+    //   }
+    //   continue;
+    // }
 
     $noImprovements = 0;
     while (true){

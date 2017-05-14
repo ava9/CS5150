@@ -1,20 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.11
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 14, 2017 at 11:16 PM
--- Server version: 5.5.25a
--- PHP Version: 5.6.3
+-- Host: localhost:3306
+-- Generation Time: May 14, 2017 at 11:54 PM
+-- Server version: 5.6.35
+-- PHP Version: 7.0.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `porchfest`
@@ -26,7 +20,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `bandavailabletimes`
 --
 
-CREATE TABLE IF NOT EXISTS `bandavailabletimes` (
+CREATE TABLE `bandavailabletimes` (
   `BandID` int(11) NOT NULL,
   `TimeslotID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -797,7 +791,7 @@ INSERT INTO `bandavailabletimes` (`BandID`, `TimeslotID`) VALUES
 -- Table structure for table `bandconflicts`
 --
 
-CREATE TABLE IF NOT EXISTS `bandconflicts` (
+CREATE TABLE `bandconflicts` (
   `BandID1` int(11) NOT NULL,
   `BandID2` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -808,14 +802,14 @@ CREATE TABLE IF NOT EXISTS `bandconflicts` (
 -- Table structure for table `bands`
 --
 
-CREATE TABLE IF NOT EXISTS `bands` (
-`BandID` int(11) NOT NULL,
+CREATE TABLE `bands` (
+  `BandID` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Description` varchar(255) NOT NULL,
   `Members` varchar(255) NOT NULL,
   `Comment` varchar(255) NOT NULL,
   `URL` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=194 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `bands`
@@ -833,7 +827,7 @@ INSERT INTO `bands` (`BandID`, `Name`, `Description`, `Members`, `Comment`, `URL
 (9, 'Bethel Grove', 'Bethel Grove is an inspirational folk/pop band', 'random', 'random', ''),
 (10, 'Circus Culture', 'we would like to do circus performance on the porch! We will have musician friends accompany.', 'random', 'random', 'Travis Knapp, Viva Mayhem, Nate Marshall'),
 (11, 'Tyrannical Vegetable', 'Tyrannical Vegetable is a goofy garage band.', 'random', 'random', ''),
-(12, 'Tryin'' Joe and The Mad Scientist', '"Electro-acoustic original songs and improv"', 'random', 'random', ''),
+(12, 'Tryin\' Joe and The Mad Scientist', '\"Electro-acoustic original songs and improv\"', 'random', 'random', ''),
 (13, 'Glacial Erotics', 'glacial erotics, original rock, shaken not stirred', 'random', 'random', ''),
 (14, 'WonderMonday', 'WonderMonday is a original artpoprock trio.', 'random', 'random', 'Black is Green, Stone Cold Miracle'),
 (15, 'El Caminos ', 'El Caminos play a dangerously danceable mix of Americana and Alt-Country', 'random', 'random', 'Purple Valley'),
@@ -849,15 +843,15 @@ INSERT INTO `bands` (`BandID`, `Name`, `Description`, `Members`, `Comment`, `URL
 (25, 'The Wolf Tones', 'Sly pop/folk duo sing original tunes with harmonies.', 'random', 'random', ''),
 (26, 'GoGone', 'GoGone plays original roots, rock & blues', 'random', 'random', ''),
 (27, 'Jon Kaplan and Dexter Kozen', 'Acoustic guitar/vocal duo', 'random', 'random', ''),
-(28, 'Professor Tuesday''s Jazz Quartet', 'Professor Tuesday''s Jazz Quartet plays fun, mainstream jazz.', 'random', 'random', ''),
-(29, 'Ella Sarachan', 'Ella Sarachan sings jazz standards backed by Professor Tuesday''s Jazz Quartet', 'random', 'random', ''),
-(30, 'Auntie Emo''s Ukulele Showcase', 'The little ukulele climbs every mountain, fords every stream, exalts every valley.', 'random', 'random', 'Jazz Happens, Brass Quintet'),
-(31, 'Auntie Emo''s Ukulele Workshop', 'Learn "Over the Rainbow"; accompany dancers of the hula', 'random', 'random', ''),
-(32, 'Ithaca Gay Men''s Chorus', 'men''s chorus', 'random', 'random', ''),
+(28, 'Professor Tuesday\'s Jazz Quartet', 'Professor Tuesday\'s Jazz Quartet plays fun, mainstream jazz.', 'random', 'random', ''),
+(29, 'Ella Sarachan', 'Ella Sarachan sings jazz standards backed by Professor Tuesday\'s Jazz Quartet', 'random', 'random', ''),
+(30, 'Auntie Emo\'s Ukulele Showcase', 'The little ukulele climbs every mountain, fords every stream, exalts every valley.', 'random', 'random', 'Jazz Happens, Brass Quintet'),
+(31, 'Auntie Emo\'s Ukulele Workshop', 'Learn \"Over the Rainbow\"; accompany dancers of the hula', 'random', 'random', ''),
+(32, 'Ithaca Gay Men\'s Chorus', 'men\'s chorus', 'random', 'random', ''),
 (33, 'JazzHappensBand', 'JazzHappens Band is a 7-piece traditional jazz band', 'random', 'random', 'Ageless Jazz Band, Crown City Brass'),
 (34, 'Mathew Roth', 'Instrumental Piano & Violin Loops', 'random', 'random', ''),
 (35, 'Ageless Jazz Band', 'The Ageless Jazz Band is a 17-piece big band jazz ensemble', 'random', 'random', 'Jazz Happens Band, Crown City Bass'),
-(36, 'Kats ''N'' Janmmers', 'Old Celtic tunes and singalong songs.', 'random', 'random', 'Blue Grass Band, IthaCats'),
+(36, 'Kats \'N\' Janmmers', 'Old Celtic tunes and singalong songs.', 'random', 'random', 'Blue Grass Band, IthaCats'),
 (37, 'Laura J. Peters', 'Laura J. Peters is an acoustic singer-songwriter partial to soulful storytelling songs and people who like to listen to them.', 'random', 'random', ''),
 (38, 'Cornell Ukulele Club', 'The Cornell Ukulele Club is a group of Cornell students who play a variety of music genres using ukuleles and percussion instruments.', 'random', 'random', ''),
 (39, 'The Darts', 'The Darts are a 5-piece alt rock band', 'random', 'random', 'Yardvarks, Radio London'),
@@ -865,10 +859,10 @@ INSERT INTO `bands` (`BandID`, `Name`, `Description`, `Members`, `Comment`, `URL
 (41, 'Dr. K', 'Solo guitar with attitude.  ', 'random', 'random', 'Wonder Monday'),
 (42, 'LC Jones', 'Folk Punk preformance, lyric heavy, folksy and melodic', 'random', 'random', ''),
 (43, 'The Uncommons', 'The Uncommons performs original & classic rock/jazz-rock/blues-rock/metamorphic rock! ;)', 'random', 'random', 'Darkwine, Teencat'),
-(44, 'The Immortal Jellyfish', 'An ageless band playing timeless tunes', 'random', 'random', 'Cat''s Elbow\n'),
+(44, 'The Immortal Jellyfish', 'An ageless band playing timeless tunes', 'random', 'random', 'Cat\'s Elbow\n'),
 (45, 'Thru Spectrums', 'Original 7-piece funk-rock', 'random', 'random', 'Julia Felice and the Whiskey Crisis, Fall Creek Brass Band'),
 (46, 'Acoustic Rust', 'Tightly blended harmonies and songs that will never fade away. ', 'random', 'random', ''),
-(47, 'danny speer & shuffle-tut', 'danny''s songs. jazz-blues-pop', 'random', 'random', 'Misses Bitches'),
+(47, 'danny speer & shuffle-tut', 'danny\'s songs. jazz-blues-pop', 'random', 'random', 'Misses Bitches'),
 (48, 'Fall Creek Brass Band', 'New-Orleans style brass band brings the funk and the fun to the streets of Ithaca.', 'random', 'random', 'Jeff Love Band, Remstar, Mosaic Foundation, Road Man, Noon-Fifteen, Thru Spectrums, The Accidentals'),
 (49, 'Rich Recchia and one friend', 'Rich Recchia is a vocalist/guitarist/percussionist/ukulele player who plays outer and innerspace music.', 'random', 'random', 'Richie Holtz'),
 (50, 'Noon Fifteen', 'Noon Fifteen is a soulful psychedelic pop/rock band', 'random', 'random', 'Fall Creek Brass Band, Julia Felice and the Whiskey Crisis'),
@@ -882,8 +876,8 @@ INSERT INTO `bands` (`BandID`, `Name`, `Description`, `Members`, `Comment`, `URL
 (58, 'Mad Cow Tippers', '3 Piece performing Rockabilly, Cow Punk and Alt Country', 'random', 'random', 'IthaCats'),
 (59, 'Djug Django', 'Djug Django is a vintage jazz/blues/Latin/jug band', 'random', 'random', 'Jen Cork, Rockwood Ferry, Pelotones, Burns and Kristy'),
 (60, 'Fall Crikkers Jug Band', 'The Fall Crikkers Jug band will play their 10th Annual Porchfest', 'random', 'random', ''),
-(61, 'Nightswimmers', 'Nightswimmers plays 60''s,and 70''s inspired folk/rock/psych/Americana', 'random', 'random', 'Ryan Vanderhoof, Jennie Lowe Stearns'),
-(62, 'Hickey''s Rock School ''Summer Rocks''', 'Summer students band', 'random', 'random', 'Road Man, Nightswimmers'),
+(61, 'Nightswimmers', 'Nightswimmers plays 60\'s,and 70\'s inspired folk/rock/psych/Americana', 'random', 'random', 'Ryan Vanderhoof, Jennie Lowe Stearns'),
+(62, 'Hickey\'s Rock School \'Summer Rocks\'', 'Summer students band', 'random', 'random', 'Road Man, Nightswimmers'),
 (63, 'The Mockingbeards', 'The Mockingbeards are a 5-piece folk-rock outfit.', 'random', 'random', 'Viva Mayhem'),
 (64, 'The Sears Street String Band', 'The Sears Street String Band plays Scottish, Irish, New England Contra and Scandinavian tunes on acoustic stringed instruments.  ', 'random', 'random', 'Piper Ventilators, 14 Strings'),
 (65, 'ithaca Free concerts ', 'ithaca Free concerts represented by a choir of local cellists ', 'random', 'random', ''),
@@ -893,13 +887,13 @@ INSERT INTO `bands` (`BandID`, `Name`, `Description`, `Members`, `Comment`, `URL
 (69, 'Thaelo ', 'A thoughtful blend of Hip-Hop, Funk, Soul, and Electronic born in Ithaca NY.', 'random', 'random', 'Fall Creek Brass Band'),
 (70, 'Marc Berger and RIDE', 'American Roots Music', 'random', 'random', ''),
 (71, 'Darkwine', 'Darkwine is an acoustic trio featuring 3-part harmonies, 12-string guitars, a bit of fiddle & keys, and a whole lotta sweet nostalgia.', 'random', 'random', 'The Uncommons'),
-(72, 'Colleen Kattau & Dos XX', ' "Gringa grooves from the heart"', 'random', 'random', ''),
+(72, 'Colleen Kattau & Dos XX', ' \"Gringa grooves from the heart\"', 'random', 'random', ''),
 (73, 'IthaCats', 'IthaCats is a classic rockabilly trio.', 'random', 'random', 'Mad Cow Tippers, Purple Valley'),
 (74, 'Cornell Gamelan Ensemble', 'The Cornell Gamelan Ensemble plays music from Indonesia and Malaysia', 'random', 'random', ''),
 (75, 'Honky Tonk Hindooz', 'The Honky Tonk Hindooz specialize in original, countrified arrangements of popular songs by diverse artists, all in a jangly, swaggerly Roots-Americana stew.', 'random', 'random', ''),
 (76, 'The Grady Girls', 'The Grady Girls play Irish Traditional Music', 'random', 'random', ''),
 (77, 'The Accords', 'The Accords is a cappella doo wop.', 'random', 'random', 'Diamonds in the Rough'),
-(78, 'Anna O''Connell', 'Anna O''Connell, inventive folk harpistry.', 'random', 'random', 'Dave Yantorno'),
+(78, 'Anna O\'Connell', 'Anna O\'Connell, inventive folk harpistry.', 'random', 'random', 'Dave Yantorno'),
 (79, 'Sadie Frederick', 'Sadie Frederick is a singer-songwriter from Florida.', 'random', 'random', ''),
 (80, 'IthaSAMBAca', 'IthaSAMBAca is a small group dedicated to singing and playing Brazilian samba.', 'random', 'random', 'Palonegro'),
 (81, 'Brian Earle and Ed Clute', 'Clarinet and Piano', 'random', 'random', ''),
@@ -907,7 +901,7 @@ INSERT INTO `bands` (`BandID`, `Name`, `Description`, `Members`, `Comment`, `URL
 (83, 'Whiskey Priests', 'Sweet garage and indie in a blues rock wrapper.', 'random', 'random', ''),
 (84, 'Long John and the Tights', 'Long John and the Tights plays Appalachian songs and fiddle tunes!', 'random', 'random', ''),
 (85, 'Isaac Sharp Classical Guitarist', 'Isaac Sharp is a classical guitarist with a modern flair.', 'random', 'random', ''),
-(86, 'The Small Kings', 'The Small Kings is NOT a jam band and they''ll deny it all afternoon long!', 'random', 'random', 'Gunpoets'),
+(86, 'The Small Kings', 'The Small Kings is NOT a jam band and they\'ll deny it all afternoon long!', 'random', 'random', 'Gunpoets'),
 (87, 'LilySilly Puppets', 'LilySilly Puppets performs an all ages puppet show with live music and a lot of absurdity.', 'random', 'random', ''),
 (88, 'Scratched Vinyl', 'Scratched Vinyl plays rock-n-roll', 'random', 'random', ''),
 (89, 'Mosaic Foundation', 'Mosaic Foundation plays reggae music!', 'random', 'random', ''),
@@ -915,8 +909,8 @@ INSERT INTO `bands` (`BandID`, `Name`, `Description`, `Members`, `Comment`, `URL
 (91, 'Matthew Ocone', 'Matthew Ocone is a guitarist who plays classical music, Spanish music, and Brazilian music.', 'random', 'random', 'LilySilly Puppets'),
 (92, 'Comfort Ave', 'Comfort Ave is an aggressive roots rock band that plays original songs.', 'random', 'random', 'Craig Frey'),
 (93, 'FLX Space Tribe', 'FLX Space Trio loves to jam on rock infused originals.', 'random', 'random', ''),
-(94, 'Doolin O''Dey', 'DOOLIN O''DEY - ORITINGAL AND TRADITIONAL CELTIC INSPIRED ENSEMBLE.', 'random', 'random', 'Piperventilators'),
-(95, 'PIPERVENTILATORS', 'PIPERVENTILATORS- A TUESDAY IRISH SESSION BAND', 'random', 'random', 'Doolin O''Dey'),
+(94, 'Doolin O\'Dey', 'DOOLIN O\'DEY - ORITINGAL AND TRADITIONAL CELTIC INSPIRED ENSEMBLE.', 'random', 'random', 'Piperventilators'),
+(95, 'PIPERVENTILATORS', 'PIPERVENTILATORS- A TUESDAY IRISH SESSION BAND', 'random', 'random', 'Doolin O\'Dey'),
 (96, 'Dickie Starfish Allstars', 'Genre hopping pop/rock cover band', 'random', 'random', ''),
 (97, 'The Sweats', 'The Sweats are a unified 5 piece groove rock band united in unionized unification.', 'random', 'random', ''),
 (98, 'The Fall Creek Bluegrass Partners', 'The Fall Creek Bluegrass Partners play and sing bluegrass music', 'random', 'random', 'Ithaca Cats'),
@@ -940,7 +934,7 @@ INSERT INTO `bands` (`BandID`, `Name`, `Description`, `Members`, `Comment`, `URL
 (116, 'George Prounis', 'George Prounis is an alternative folk singer-songwriter.', 'random', 'random', ''),
 (117, 'Maplewood Jazz Team', 'Fabulous Jazz Trio', 'random', 'random', ''),
 (118, 'Mad Goat String Band', 'Mad Goat is a southern-style stringband with compelling tunes and songs.', 'random', 'random', 'Town Squares, Ithaca Bottom Boys'),
-(119, 'Regina O''Brien with Charles d''Orban', 'Regina & Charles play her original Americana songs.', 'random', 'random', ''),
+(119, 'Regina O\'Brien with Charles d\'Orban', 'Regina & Charles play her original Americana songs.', 'random', 'random', ''),
 (120, 'Mary Mary', 'Foot tapping thought provoking originals and awesome covers', 'random', 'random', 'Djug Django, Burns and Kristy '),
 (121, 'The Three 4s', '5 piece alternative groove band trying to funk up rock', 'random', 'random', 'Fall Creek Brass Band, Thaelo'),
 (122, 'Mike Treat and Friends', 'Small group jazz', 'random', 'random', 'Fall Creek Brass Band'),
@@ -978,7 +972,7 @@ INSERT INTO `bands` (`BandID`, `Name`, `Description`, `Members`, `Comment`, `URL
 (154, 'Arthur B and The Planetary Mix', 'Original Old School New School Future School R n B', 'random', 'random', ''),
 (155, 'Ithaca Talent Education Cellos', 'Ithaca Talent Education Cellists is a group of young Suzuki-trained musicians sharing gems from the classical cello repertoire', 'random', 'random', ''),
 (156, 'Opus Quartet', 'The Opus Quartet is a classical string quartet made up of vibrant young musicians', 'random', 'random', ''),
-(157, 'Sum Dude & Friends', 'Sum Dude & Friends - rock/folk/funk love songs improvisational jams', 'random', 'random', 'Cat''s Elbow, The Darts'),
+(157, 'Sum Dude & Friends', 'Sum Dude & Friends - rock/folk/funk love songs improvisational jams', 'random', 'random', 'Cat\'s Elbow, The Darts'),
 (158, '?Viva Mayhem!', '?Viva Mayhem! is a local, high-energy Ska/Punk band. ', 'random', 'random', 'The Mockingbeards, Junkyard Theory'),
 (159, 'About a Harp', 'Folk Harp', 'random', 'random', ''),
 (160, 'Commons Crossing', 'Commons Crossing is a modern guitar and cello duo that features Alejandro Cortese (guitar and vocals) and Joe Sliker (cello).', 'random', 'random', ''),
@@ -995,22 +989,22 @@ INSERT INTO `bands` (`BandID`, `Name`, `Description`, `Members`, `Comment`, `URL
 (171, 'Cielle and All Sounds On', 'Cielle and All Sounds On play all original music with 3 part harmonies.', 'random', 'random', ''),
 (172, 'Johnny Dowd and The Sex Robots', 'Acid rock meets the avant garde. ', 'random', 'random', ''),
 (173, 'Good Luck Mountain', 'Good Luck Mountain is a rootsy musical collective led by Mike Ferrio. ', 'random', 'random', 'Not From Wisconsin, Marc Berger'),
-(174, 'Cayuga Chimes', 'Cayuga Chimes is a women''s a cappella chorus.', 'random', 'random', ''),
-(175, 'Joey Dugan', 'world''s greatest folksinger', 'random', 'random', ''),
+(174, 'Cayuga Chimes', 'Cayuga Chimes is a women\'s a cappella chorus.', 'random', 'random', ''),
+(175, 'Joey Dugan', 'world\'s greatest folksinger', 'random', 'random', ''),
 (176, 'Jen Cork & the Good Hope', 'Jen Cork & the Good Hope is an original, female-fronted folk-jazz outfit.', 'random', 'random', 'Janet Batch, Traonach'),
 (177, 'Cubbage', 'Cubbage is a jazzy, folky, singer-songwriter, often playing with an acoustic trio (upright bass, drums and piano/guitar).', 'random', 'random', ''),
 (178, 'Maxwell Eller', 'Solo experimental improvisation', 'random', 'random', ''),
 (179, 'Perry City 5', 'Perry City 5 plays classic rock and some newer rock too.', 'random', 'random', ''),
 (180, 'DEL MANKS', 'DEL MANKS is a solo performer.', 'random', 'random', ''),
 (181, 'Head Band', 'Head Band is a Funky, Psychadelic Jazz Rock Trio', 'random', 'random', ''),
-(182, 'Music''s Recreation', 'Music''s Recreation serves up informal, family-friendly chamber music', 'random', 'random', ''),
+(182, 'Music\'s Recreation', 'Music\'s Recreation serves up informal, family-friendly chamber music', 'random', 'random', ''),
 (183, 'Lately Music Ensemble', 'The Lately Music Ensemble is a banjo and vocal group.', 'random', 'random', ''),
 (184, 'eCoArise', 'Original folk-funk with heart', 'random', 'random', ''),
 (185, 'Good Luck Mountain', 'Good Luck Mountain is a rootsy musical collective led by Mike Ferrio. ', 'random', 'random', 'Not From Wisconsin, Marc Berger'),
 (186, 'Papa Muse', 'Papa Muse will play progressive world grunge', 'random', 'random', ''),
 (187, 'Suzuki Violin Studio of Angela Yantorno', 'Suzuki violin studio of Angela Yantorno', 'random', 'random', ''),
 (188, 'Pierce Walsh  ', 'Pierce Walsh singer songwriter ', 'random', 'random', ''),
-(189, 'Opera Ithaca', 'Opera Ithaca is Ithaca NY''s professional opera company.', 'random', 'random', ''),
+(189, 'Opera Ithaca', 'Opera Ithaca is Ithaca NY\'s professional opera company.', 'random', 'random', ''),
 (190, 'Unitarian Universalist Ukulele Union', 'The UU Ukulele Union is an intergenerational group of enthusiastic players.', 'random', 'random', ''),
 (191, 'Squirt!?', 'Rock Jazz Vocal Phsycadelic Duo', 'random', 'random', ''),
 (192, 'DeWitt Brass Quartet', 'The DeWitt Brass Quartet is a dedicated group of 8th graders at DeWitt Middle School.', 'random', 'random', ''),
@@ -1022,7 +1016,7 @@ INSERT INTO `bands` (`BandID`, `Name`, `Description`, `Members`, `Comment`, `URL
 -- Table structure for table `bandstoporchfests`
 --
 
-CREATE TABLE IF NOT EXISTS `bandstoporchfests` (
+CREATE TABLE `bandstoporchfests` (
   `BandID` int(11) NOT NULL,
   `PorchfestID` int(11) NOT NULL,
   `PorchLocation` varchar(255) NOT NULL,
@@ -1237,8 +1231,8 @@ INSERT INTO `bandstoporchfests` (`BandID`, `PorchfestID`, `PorchLocation`, `Lati
 -- Table structure for table `porchfests`
 --
 
-CREATE TABLE IF NOT EXISTS `porchfests` (
-`PorchfestID` int(11) NOT NULL,
+CREATE TABLE `porchfests` (
+  `PorchfestID` int(11) NOT NULL,
   `URL` varchar(255) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Nickname` varchar(255) NOT NULL,
@@ -1248,14 +1242,14 @@ CREATE TABLE IF NOT EXISTS `porchfests` (
   `Deadline` date NOT NULL,
   `Published` tinyint(1) NOT NULL,
   `Scheduled` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `porchfests`
 --
 
 INSERT INTO `porchfests` (`PorchfestID`, `URL`, `Name`, `Nickname`, `Location`, `Date`, `Description`, `Deadline`, `Published`, `Scheduled`) VALUES
-(1, '', 'Ithaca Porchfest', 'ithaca', 'Utica, NY', '2017-05-31', 'Porchfest began in 2007, inspired by some outdoor ukulele playing and a conversation between neighbors Gretchen Hildreth and Lesley Greene. They came up with the idea for it that day and gathered 20 bands to make it happen in September of that year. The number of bands has increased every year since then, with 185 in 2016.', '2017-05-30', 0, 1);
+(1, '', 'Ithaca Porchfest', 'ithaca', 'Utica, NY', '2017-05-31', 'Porchfest began in 2007, inspired by some outdoor ukulele playing and a conversation between neighbors Gretchen Hildreth and Lesley Greene. They came up with the idea for it that day and gathered 20 bands to make it happen in September of that year. The number of bands has increased every year since then, with 185 in 2016.', '2017-05-30', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1263,12 +1257,12 @@ INSERT INTO `porchfests` (`PorchfestID`, `URL`, `Name`, `Nickname`, `Location`, 
 -- Table structure for table `porchfesttimeslots`
 --
 
-CREATE TABLE IF NOT EXISTS `porchfesttimeslots` (
-`TimeslotID` int(11) NOT NULL,
+CREATE TABLE `porchfesttimeslots` (
+  `TimeslotID` int(11) NOT NULL,
   `PorchfestID` int(11) NOT NULL,
   `StartTime` datetime NOT NULL,
   `EndTime` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `porchfesttimeslots`
@@ -1288,20 +1282,20 @@ INSERT INTO `porchfesttimeslots` (`TimeslotID`, `PorchfestID`, `StartTime`, `End
 -- Table structure for table `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
-`UserID` int(11) NOT NULL,
+CREATE TABLE `users` (
+  `UserID` int(11) NOT NULL,
   `Email` varchar(255) NOT NULL,
   `Password` varchar(255) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `ContactInfo` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`UserID`, `Email`, `Password`, `Name`, `ContactInfo`) VALUES
-(1, 'user@porchfest.com', 'e6c36f9f003a23d1d897bdd00d44d16413ff85ddf107da397028000275b9346f', 'porchfest', 'porchfest'),
+(1, 'user@porchfest.com', 'e03efc8eca81527e27d0d55ad1781cf564c2b086665321ee5a615fe9f506ee99', 'porchfest', 'porchfest'),
 (2, 'candy@gmail.com', 'ad24d01ac5410490aef6e0944725ef9c2636585d98ba3faf3bbd7f11af491f39', 'Candy', '845-123-4565');
 
 -- --------------------------------------------------------
@@ -1310,7 +1304,7 @@ INSERT INTO `users` (`UserID`, `Email`, `Password`, `Name`, `ContactInfo`) VALUE
 -- Table structure for table `userstobands`
 --
 
-CREATE TABLE IF NOT EXISTS `userstobands` (
+CREATE TABLE `userstobands` (
   `UserID` int(11) NOT NULL,
   `BandID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1329,7 +1323,7 @@ INSERT INTO `userstobands` (`UserID`, `BandID`) VALUES
 -- Table structure for table `userstoporchfests`
 --
 
-CREATE TABLE IF NOT EXISTS `userstoporchfests` (
+CREATE TABLE `userstoporchfests` (
   `UserID` int(11) NOT NULL,
   `PorchfestID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1349,55 +1343,66 @@ INSERT INTO `userstoporchfests` (`UserID`, `PorchfestID`) VALUES
 -- Indexes for table `bandavailabletimes`
 --
 ALTER TABLE `bandavailabletimes`
- ADD PRIMARY KEY (`BandID`,`TimeslotID`), ADD KEY `BandID` (`BandID`,`TimeslotID`), ADD KEY `TimeslotID` (`TimeslotID`);
+  ADD PRIMARY KEY (`BandID`,`TimeslotID`),
+  ADD KEY `BandID` (`BandID`,`TimeslotID`),
+  ADD KEY `TimeslotID` (`TimeslotID`);
 
 --
 -- Indexes for table `bandconflicts`
 --
 ALTER TABLE `bandconflicts`
- ADD PRIMARY KEY (`BandID1`,`BandID2`), ADD KEY `BandID2` (`BandID2`);
+  ADD PRIMARY KEY (`BandID1`,`BandID2`),
+  ADD KEY `BandID2` (`BandID2`);
 
 --
 -- Indexes for table `bands`
 --
 ALTER TABLE `bands`
- ADD PRIMARY KEY (`BandID`);
+  ADD PRIMARY KEY (`BandID`);
 
 --
 -- Indexes for table `bandstoporchfests`
 --
 ALTER TABLE `bandstoporchfests`
- ADD PRIMARY KEY (`BandID`,`PorchfestID`), ADD KEY `BandID` (`BandID`,`PorchfestID`,`TimeslotID`), ADD KEY `PorchfestID` (`PorchfestID`), ADD KEY `TimeslotID` (`TimeslotID`);
+  ADD PRIMARY KEY (`BandID`,`PorchfestID`),
+  ADD KEY `BandID` (`BandID`,`PorchfestID`,`TimeslotID`),
+  ADD KEY `PorchfestID` (`PorchfestID`),
+  ADD KEY `TimeslotID` (`TimeslotID`);
 
 --
 -- Indexes for table `porchfests`
 --
 ALTER TABLE `porchfests`
- ADD PRIMARY KEY (`PorchfestID`);
+  ADD PRIMARY KEY (`PorchfestID`);
 
 --
 -- Indexes for table `porchfesttimeslots`
 --
 ALTER TABLE `porchfesttimeslots`
- ADD PRIMARY KEY (`TimeslotID`), ADD KEY `PorchfestID` (`PorchfestID`);
+  ADD PRIMARY KEY (`TimeslotID`),
+  ADD KEY `PorchfestID` (`PorchfestID`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
- ADD PRIMARY KEY (`UserID`);
+  ADD PRIMARY KEY (`UserID`);
 
 --
 -- Indexes for table `userstobands`
 --
 ALTER TABLE `userstobands`
- ADD PRIMARY KEY (`UserID`,`BandID`), ADD KEY `UserID` (`UserID`,`BandID`), ADD KEY `BandID` (`BandID`);
+  ADD PRIMARY KEY (`UserID`,`BandID`),
+  ADD KEY `UserID` (`UserID`,`BandID`),
+  ADD KEY `BandID` (`BandID`);
 
 --
 -- Indexes for table `userstoporchfests`
 --
 ALTER TABLE `userstoporchfests`
- ADD PRIMARY KEY (`UserID`,`PorchfestID`), ADD KEY `UserID` (`UserID`), ADD KEY `PorchfestID` (`PorchfestID`);
+  ADD PRIMARY KEY (`UserID`,`PorchfestID`),
+  ADD KEY `UserID` (`UserID`),
+  ADD KEY `PorchfestID` (`PorchfestID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -1407,22 +1412,22 @@ ALTER TABLE `userstoporchfests`
 -- AUTO_INCREMENT for table `bands`
 --
 ALTER TABLE `bands`
-MODIFY `BandID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=194;
+  MODIFY `BandID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=194;
 --
 -- AUTO_INCREMENT for table `porchfests`
 --
 ALTER TABLE `porchfests`
-MODIFY `PorchfestID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `PorchfestID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `porchfesttimeslots`
 --
 ALTER TABLE `porchfesttimeslots`
-MODIFY `TimeslotID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `TimeslotID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Constraints for dumped tables
 --
@@ -1431,44 +1436,40 @@ MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 -- Constraints for table `bandavailabletimes`
 --
 ALTER TABLE `bandavailabletimes`
-ADD CONSTRAINT `bandavailabletimes_ibfk_2` FOREIGN KEY (`TimeslotID`) REFERENCES `porchfesttimeslots` (`TimeslotID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `bandavailabletimes_ibfk_1` FOREIGN KEY (`BandID`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `bandavailabletimes_ibfk_1` FOREIGN KEY (`BandID`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `bandavailabletimes_ibfk_2` FOREIGN KEY (`TimeslotID`) REFERENCES `porchfesttimeslots` (`TimeslotID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `bandconflicts`
 --
 ALTER TABLE `bandconflicts`
-ADD CONSTRAINT `bandconflicts_ibfk_2` FOREIGN KEY (`BandID2`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `bandconflicts_ibfk_1` FOREIGN KEY (`BandID1`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `bandconflicts_ibfk_1` FOREIGN KEY (`BandID1`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `bandconflicts_ibfk_2` FOREIGN KEY (`BandID2`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `bandstoporchfests`
 --
 ALTER TABLE `bandstoporchfests`
-ADD CONSTRAINT `bandstoporchfests_ibfk_3` FOREIGN KEY (`TimeslotID`) REFERENCES `porchfesttimeslots` (`TimeslotID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `bandstoporchfests_ibfk_1` FOREIGN KEY (`BandID`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `bandstoporchfests_ibfk_2` FOREIGN KEY (`PorchfestID`) REFERENCES `porchfests` (`PorchfestID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `bandstoporchfests_ibfk_1` FOREIGN KEY (`BandID`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `bandstoporchfests_ibfk_2` FOREIGN KEY (`PorchfestID`) REFERENCES `porchfests` (`PorchfestID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `bandstoporchfests_ibfk_3` FOREIGN KEY (`TimeslotID`) REFERENCES `porchfesttimeslots` (`TimeslotID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `porchfesttimeslots`
 --
 ALTER TABLE `porchfesttimeslots`
-ADD CONSTRAINT `porchfesttimeslots_ibfk_1` FOREIGN KEY (`PorchfestID`) REFERENCES `porchfests` (`PorchfestID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `porchfesttimeslots_ibfk_1` FOREIGN KEY (`PorchfestID`) REFERENCES `porchfests` (`PorchfestID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `userstobands`
 --
 ALTER TABLE `userstobands`
-ADD CONSTRAINT `userstobands_ibfk_2` FOREIGN KEY (`BandID`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `userstobands_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `userstobands_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `userstobands_ibfk_2` FOREIGN KEY (`BandID`) REFERENCES `bands` (`BandID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `userstoporchfests`
 --
 ALTER TABLE `userstoporchfests`
-ADD CONSTRAINT `userstoporchfests_ibfk_2` FOREIGN KEY (`PorchfestID`) REFERENCES `porchfests` (`PorchfestID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `userstoporchfests_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+  ADD CONSTRAINT `userstoporchfests_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `userstoporchfests_ibfk_2` FOREIGN KEY (`PorchfestID`) REFERENCES `porchfests` (`PorchfestID`) ON DELETE CASCADE ON UPDATE CASCADE;

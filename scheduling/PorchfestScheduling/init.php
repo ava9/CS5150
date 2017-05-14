@@ -185,7 +185,6 @@ function createBandObjects(
   $tmp = getQueryArr($resultBands);
   $resultBands = $tmp;
   for ($i = 0; $i < sizeof($tmp); $i++){
-    flush();
     $bandId = $tmp[$i][0];
     $bandName = $tmp[$i][1];
     $bandLocation = $tmp[$i][2];
@@ -196,13 +195,21 @@ function createBandObjects(
       $slotID = $timeslotsPorchfests[$j];
       $availableTimeSlots[$slotID] = intVal(false);
     }
-    foreach ($bandsTimeSlots[$bandId] as $canDoSlotID) {
-      $availableTimeSlots[$canDoSlotID] = intVal(true);
+    if (!array_key_exists($bandId, $bandsTimeSlots) || sizeof($bandsTimeSlots[$bandId]) == 0) {
+      echo "***************************** no time slots for " . $bandId . " *****************************\n";
+    } else {
+      foreach ($bandsTimeSlots[$bandId] as $canDoSlotID) {
+        $availableTimeSlots[$canDoSlotID] = intVal(true);
+      }
     }
-    $conflicts = $bandConflicts[$bandId];
-    if (!$conflicts) {
+
+    if (array_key_exists($bandId, $bandConflicts)) {
+      $conflicts = $bandConflicts[$bandId];
+    }
+    else {
         $conflicts = [];
     }
+
     $bandsHashMap[$bandId] = new Band($bandId, $bandName, $bandLatLng["lat"], $bandLatLng["lng"], $availableTimeSlots, $conflicts, -1, [], []);
   }
 
@@ -242,11 +249,14 @@ function populateBandsWithXTimeSlots() {
   
   foreach ($bandsPorchfests as $bandID) {
     // assuming bandsTimeSlots is a hashmap of our DB, we count the number of available time slots a band has
-    $availTimeSlots = sizeof($bandsTimeSlots[$bandID]);
-    if ($bandsWithXTimeSlots[$availTimeSlots] === null) {
-      $bandsWithXTimeSlots[$availTimeSlots] = [];
+    if (array_key_exists($bandID, $bandsTimeSlots)) {
+      $availTimeSlots = sizeof($bandsTimeSlots[$bandID]);
+      if ($bandsWithXTimeSlots[$availTimeSlots] === null) {
+        $bandsWithXTimeSlots[$availTimeSlots] = [];
+      }
+      array_push($bandsWithXTimeSlots[$availTimeSlots], $bandID);
     }
-    array_push($bandsWithXTimeSlots[$availTimeSlots], $bandID);
+
   }
   ksort($bandsWithXTimeSlots);
   DEBUG_ECHO("populated\n");
@@ -273,8 +283,6 @@ function generateBaseSchedule() {
   global $bandsTimeSlots;   
   global $bandConflicts;        
   
-  $baseScheduleGenerated = true;
-
   DEBUG_ECHO("generating base schedule\n");
   $bandsHashMap = createBandObjects(
     $MIN_DISTANCE,
@@ -287,7 +295,6 @@ function generateBaseSchedule() {
   populateBandsWithXTimeSlots();
   $schedule = new Schedule($timeslotsPorchfests);
   $unassignedBandIDs = [];          // int[] 
-  $currentTimeSlot = 0;
   
   // Phase 1: place as many bands as possible
   DEBUG_ECHO("phase 1\n");
@@ -324,7 +331,6 @@ function generateBaseSchedule() {
         if ($isAvailable && $hasNoConflicts && $locationOK){
           // band can play at this time
           $schedule->add($slotID, $band);
-          $currentTimeSlot = $slot + 1;
           $band->slot = $slotID;
           $assigned = true;
           break;
@@ -370,13 +376,12 @@ function generateBaseSchedule() {
           break;
         }
       }
-      $baseScheduleGenerated = $baseScheduleGenerated && $success;
     }
   }
   DEBUG_ECHO("generated schedule!\n");
   DEBUG_ECHO("scoring the schedule...\n");
   $schedule->score();
-  return array($baseScheduleGenerated, $schedule);
+  return $schedule;
 }
 
 ?>
