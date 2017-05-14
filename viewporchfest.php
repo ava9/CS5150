@@ -175,7 +175,7 @@ session_start();
               '</h3></div>
               <div class="modal-body">
                 <p>' . $starttime . "-" . $endtime . ' • ' . $band['PorchLocation'] . '</p>
-                <p>' . $band['URL'] . '</p>
+                <a href="' . $band['URL'] . '">' . $band['URL'] . '</a>
                 <p>' . $band['Description'] . '</p>
               </div>
               <div class="modal-footer">
