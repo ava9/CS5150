@@ -7,7 +7,7 @@
 	// CSS links
 	define('CSS_LINK', $root_dir . "css/style.css");
 	define('CSS_RESPONSIVE_TABLES_LINK', $root_dir . "css/responsive-tables.css");
-	define('CSS_TOKEN_INPUT', $root_dir . "php/modules/token-input-facebook.css");
+	define('CSS_TOKEN_INPUT', $root_dir . "css/token-input-facebook.css");
 
 	// JS links
 	define('JQEURY_LINK', $root_dir . "js/jquery.js");
