@@ -277,7 +277,7 @@ session_start();
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
-                      <input data-validation="url" required type="url" class="form-control" name="porchfestURL" placeholder="ithacaporchfest.com" /> <?php echo '<span class="error">'; echo $urlError; echo '</span>'; ?>
+                      <input data-validation="url" required type="url" class="form-control" name="porchfestURL" placeholder="http://www.porchfest.org" /> <?php echo '<span class="error">'; echo $urlError; echo '</span>'; ?>
                   </div>
               </div>
           </div>

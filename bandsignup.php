@@ -62,7 +62,7 @@ session_start();
       else {
 
       // Variables for server side validation
-      $bandnameError = $descriptionError = $locationError = "";
+      $bandnameError = $descriptionError = $locationError = $urlError = "";
 
       // Check that the form was submitted
       if (isset($_POST['submitInfo'])) {
@@ -115,6 +115,12 @@ session_start();
         else {
           $banddescription = htmlentities($_POST['banddescription']);
         }
+        if (empty($_POST['bandURL'])) {
+          $urlError = 'Missing';
+        }
+        else {
+          $bandURL = filter_var($_POST['bandURL'], FILTER_SANITIZE_STRING);
+        }
         $bandmembers = htmlentities($_POST['bandmembers']);
         $bandcomment = htmlentities($_POST['bandcomment']);
         $bandconflicts = htmlentities($_POST['bandconflicts']);
@@ -159,9 +165,9 @@ session_start();
         $long = $latlong[1];
 
         // Insert into bands table
-        $prep = $mysqli->prepare("INSERT INTO bands (Name, Description, Members, Comment) 
-                                  VALUES (?,?,?,?)");
-        $prep->bind_param("ssss", $bandname, $banddescription, $bandmembers, $bandcomment);
+        $prep = $mysqli->prepare("INSERT INTO bands (Name, Description, Members, Comment, URL) 
+                                  VALUES (?,?,?,?,?)");
+        $prep->bind_param("sssss", $bandname, $banddescription, $bandmembers, $bandcomment, $bandURL);
         $prep->execute();
 
         // Get the bandID of the just recently inserted band
@@ -319,6 +325,17 @@ session_start();
               <div class="row">
                   <div class="col-md-9">
                       <input required name="banddescription" type="text" class="form-control" placeholder="John and Friends plays cool music." /> <?php echo '<span class="error">'; echo $descriptionError; echo '</span>'; ?>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="name" class="col-sm-2 control-label">
+              Band Website URL <?php tooltip("If you have a website for your band, paste the url here so people can view it.") ?> </label>
+          <div class="col-sm-10">
+              <div class="row">
+                  <div class="col-md-9">
+                      <input data-validation="url" type="url" class="form-control" name="bandURL" placeholder="http://www.porchfest.org" /> <?php echo '<span class="error">'; echo $urlError; echo '</span>'; ?>
                   </div>
               </div>
           </div>

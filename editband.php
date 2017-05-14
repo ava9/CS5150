@@ -35,7 +35,7 @@ session_start();
     $result = $conn->query($sql);
     $bandID = $result->fetch_assoc()['BandID'];
 
-  $bandnameError = $descriptionError = $locationError = "";
+  $bandnameError = $descriptionError = $locationError = $urlError = "";
   // Checks if form was submitted
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Checks to make sure required fields are not empty in form
@@ -51,6 +51,12 @@ session_start();
     else {
       $banddescription = htmlentities($_POST['banddescription']);
     }
+    if (empty($_POST['bandURL'])) {
+      $urlError = 'Missing';
+    }
+    else {
+      $bandURL = filter_var($_POST['bandURL'], FILTER_SANITIZE_STRING);
+    }
     $bandmembers = htmlentities($_POST['bandmembers']);
     $bandcomment = htmlentities($_POST['bandcomment']);
     $bandconflicts = htmlentities($_POST['bandconflicts']);
@@ -63,7 +69,7 @@ session_start();
 
     // Query to update information in the bands table
     $sql = "UPDATE bands SET Name='" . $bandname . "', Description='" . $banddescription . "', 
-            Members = '" . $bandmembers . "', Comment = '" . $bandcomment . "' WHERE BandID= '" . $bandID . "'";
+            URL = '" . $bandURL . "', Members = '" . $bandmembers . "', Comment = '" . $bandcomment . "' WHERE BandID= '" . $bandID . "'";
     $result = $conn->query($sql);
     
     // Query to update information in the bandstoporchfests table
@@ -131,6 +137,12 @@ session_start();
           <label class="col-lg-3 control-label">Description:</label>
           <div class="col-lg-8">
             <input required name="banddescription" class="form-control" value=<?php echo '"' . $band['Description'] . '"' ?> type="text"> <?php echo '<span class="error">'; echo $descriptionError; echo '</span>'; ?>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Description:</label>
+          <div class="col-lg-8">
+            <input required name="bandURL" class="form-control" value=<?php echo '"' . $band['URL'] . '"' ?> type="text"> <?php echo '<span class="error">'; echo $urlError; echo '</span>'; ?>
           </div>
         </div>
         <div class="form-group">
