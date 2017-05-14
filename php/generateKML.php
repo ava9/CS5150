@@ -40,7 +40,6 @@ $colorArray = array("icon-1899-000000", "icon-1899-006064", "icon-1899-0097A7", 
 shuffle($colorArray);
 
 // Database credentials
-require_once "config.php";
 require_once 'routing.php';
 
 // Set date timezone
