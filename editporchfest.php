@@ -321,7 +321,7 @@ session_start();
                       echo '<tr class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . '">';
                       echo '<td>' . $band['Name'] . '</td>';
                       echo '<td>' . $band['Description'] . '</td>';
-                      echo '<td> <a data-target="#timeslotModal' . $band['BandID'] . '" data-toggle="modal"> Time Slots </a> </td>';
+                      echo '<td> <a style="cursor: pointer" data-target="#timeslotModal' . $band['BandID'] . '" data-toggle="modal"> Time Slots </a> </td>';
                       echo '<td>' . (is_null($band['TimeslotID']) ? 'No' : 'Yes') . '</td>';
                       echo '<td> <a href="' . EDIT_PORCHFEST_URL  . '/' . PORCHFEST_NICKNAME . '/' . 
                                   urlencode($urlbandname) . '"> Edit </a> </td>';
@@ -534,7 +534,7 @@ session_start();
               <div class="modal-content">
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title"> Time Slots </h4>
+                  <h4 class="modal-title"> Available Time Slots for ' . $band['Name'] . '</h4>
                 </div>
                 <div class="modal-body">';
                     $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID='" . $porchfestID . "' ORDER BY StartTime";
