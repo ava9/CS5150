@@ -151,7 +151,7 @@ session_start();
 
   <?php 
     // Query to get all band information
-    $sql = "SELECT bands.BandID, Name, Description, PorchLocation, bandstoporchfests.PorchfestID, bandstoporchfests.TimeslotID, StartTime, EndTime 
+    $sql = "SELECT bands.BandID, Name, Description, PorchLocation, URL, bandstoporchfests.PorchfestID, bandstoporchfests.TimeslotID, StartTime, EndTime 
             FROM bands 
             INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
             INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID 
