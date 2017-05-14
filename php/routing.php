@@ -60,7 +60,6 @@
                         WHERE porchfests.Nickname = '%s'", $_SESSION['logged_user'], PORCHFEST_NICKNAME);
         $result = $mysqli->query($sql);
         $accepted_users = $result->num_rows;
-
         // For editband, the userID is either the organizer or a member of the band
         if (isset($uri_array[2])) {
             $sql = sprintf("SELECT * FROM bands
@@ -68,9 +67,8 @@
                           AND userstobands.BandID = bands.BandID
                           WHERE bands.Name = '%s'", $_SESSION['logged_user'], BAND_NAME);
             $result = $mysqli->query($sql);
-            $accepted_users = $result->num_rows;
+            $accepted_users = $accepted_users + $result->num_rows;
         }
-        
         if ($accepted_users == 0) {
             header('HTTP/1.0 403 Forbidden');
             die('FORBIDDEN');
