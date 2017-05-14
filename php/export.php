@@ -11,7 +11,7 @@
 
         $filename = sprintf("%s_schedule.csv", $porchfestName);
         $csv = fopen($filename, 'w');
-        fputcsv($csv, array('Band Name, Location, Start Time, End Time'));
+        fputcsv($csv, array('Band Name', 'Location', 'Start Time', 'End Time', 'Description', 'Members', 'URL', 'Comment'));
 
         // Get all timeslots for the requested porchfest
         // Store in array format [ID -> start/end time]
@@ -26,14 +26,15 @@
             
             // For each timeslotID, pull all bands in that timeslot from the porchfest
             // Write the band name, location, starttime, and endtime to the specified format, then export it
-            $sql2 = sprintf("SELECT bands.Name, bandstoporchfests.PorchLocation from bands
+            $sql2 = sprintf("SELECT * from bands
                             JOIN bandstoporchfests on bands.BandID = bandstoporchfests.BandID 
                             WHERE bandstoporchfests.PorchfestID = '%s' and bandstoporchfests.TimeslotID = '%s'",
                             $_POST['porchfestid'], $timeslot['TimeslotID']);
             $result2 = $conn->query($sql2);
 
             while ($bandinfo = $result2->fetch_assoc()) {
-                fputcsv($csv, array($bandinfo['Name'], $bandinfo['PorchLocation'], $start_time, $end_time));
+                fputcsv($csv, array($bandinfo['Name'], $bandinfo['PorchLocation'], $start_time, $end_time, 
+                    $bandinfo['Description'], $bandinfo['Members'], $bandinfo['URL'], $bandinfo['Comment']));
             }
         }
         fclose($csv);
