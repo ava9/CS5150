@@ -26,8 +26,11 @@
                     if ($row[0] === $password) {
                         $_SESSION['logged_user'] = $row[1];
                         unset($_POST['login']);
-                        $dash = DASHBOARD_URL;
-                        header('Location: ' . $dash);
+                        echo 
+                            '<script type="text/javascript">
+                                window.location ="' . DASHBOARD_URL . '";
+                            </script>';
+                            
                     } else {
             ?>
                         <script type='text/javascript'>
