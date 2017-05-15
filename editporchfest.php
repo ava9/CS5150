@@ -208,7 +208,7 @@ session_start();
             </nav>
         </div> <!-- end col 1 div -->
 
-        <div class="col-sm-10"> <!-- begin col 2 div -->
+        <div class="col-sm-10 tab-content"> <!-- begin col 2 div -->
           <div class="tab-pane fade in active" id="manageporchfest"> <!-- begin manageporchfest div -->
             <div id="porchfestinfo"> <!-- begin porchfestinfo div -->
               <div class="input-group"> <!-- begin input-group div -->   
@@ -259,7 +259,7 @@ session_start();
             </div>  <!-- end porchfestinfo div -->
           </div> <!-- end manageporchfest div -->
           <div class="tab-pane fade" id="bands"> <!-- begin bands div -->
-            
+            <div id="porchfestinfo"> <!-- begin porchfestinfo div -->
               <?php
                 echo '<div class="col-xs-12">';
                 echo '<div class="btn-group" data-toggle="buttons">';
@@ -332,10 +332,11 @@ session_start();
                 </table> <!-- end table -->
               </div> <!-- end table-container div -->
             </div>
+            </div>
           </div> <!-- end bands div -->
 
           <div class="tab-pane fade" id="timeslots"> <!-- begin timeslots div -->
-            <div id="timeslottab-form">
+            <div id="porchfestinfo">
               <div class="col-xs-12" id="timeslotheaders">
                 Existing Timeslots. Click on any of the timeslots below to edit or delete it.
               </div>
@@ -376,10 +377,11 @@ session_start();
 
                 </form>
               </div>
-            </div>
+          </div>
           </div> <!-- end timeslots div -->
 
           <div class="tab-pane fade" id="schedule"> <!-- begin schedule div -->
+            <div id="porchfestinfo">
             <?php
               $result = $conn->query("SELECT Scheduled FROM porchfests WHERE PorchfestID = '" . $porchfestID . "'");
 
@@ -471,10 +473,12 @@ session_start();
                   echo '</div>';
 
               }
-            ?>          
+            ?> 
+            </div>         
           </div> <!-- end schedule div -->
 
           <div class="tab-pane fade" id="export"> <!-- begin export div -->
+            <div id="porchfestinfo">
           <?php
               $sql = "SELECT Scheduled from porchfests WHERE PorchfestID='" . $porchfestID . "'";
               $result = $conn->query($sql);
@@ -505,9 +509,11 @@ session_start();
                 </div>
               </form>
             <?php } ?>
+          </div>
           </div> <!-- end export div -->
 
           <div class="tab-pane fade" id="publish"> <!-- begin publish div -->
+            <div id="porchfestinfo">
             <?php
               $sql = "SELECT Published from porchfests WHERE PorchfestID='" . $porchfestID . "'";
               $result = $conn->query($sql);
@@ -519,6 +525,7 @@ session_start();
                 echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default">Unpublish</button>';
               }
             ?>
+          </div>
           </div> <!-- end publish div -->
 
         </div> <!-- end col 2 div -->
