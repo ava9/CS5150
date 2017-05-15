@@ -11,7 +11,10 @@ session_start();
     require_once 'config.php';
     require_once CODE_ROOT . "/php/modules/stdHead.php";
     require_once CODE_ROOT . "/php/routing.php";
+    require_once CODE_ROOT . "/php/modules/login.php";
+    require_once CODE_ROOT . "/php/modules/navigation.php";
   ?>
+
   <title>PorchFest - <?php echo PORCHFEST_NAME ?> </title>
 </head>
 
@@ -28,21 +31,27 @@ session_start();
       die("Connection failed: " . $conn->connect_error);
     }
 
-    $alph = range('a', 'z');
+    // Check whether this porchfest was published (1 for yes, 0 for no)
+    $sql = sprintf("SELECT Published FROM porchfests WHERE PorchfestID='%s'", PORCHFEST_ID);
+    $result = $conn->query($sql);
+    
+    if (!$result) {
+      throw new Exception("Query failed", 1);
+    }
+    $scheduled = $result->fetch_assoc()['Published'];
 
+
+    // Create the side bar for letter sorting
+    $alph = range('a', 'z');
     echo '<ul id="scrollto">';
 
     foreach ($alph as $letter) {
       echo '<li><a href="#' . $letter . '">' . strtoupper($letter) . '</a></li>';
     }
-
     echo '</ul>';
-
- 
-    require_once CODE_ROOT . "/php/modules/login.php";
-    require_once CODE_ROOT . "/php/modules/navigation.php";
   ?>
-<!-- Responsive table js -->
+
+  <!-- Responsive table js -->
   <script src="<?php echo JS_RESPONSIVE_TABLES_LINK;?>"></script>
   <!-- Responsive tables CSS -->
   <link rel="stylesheet" href="<?php echo CSS_RESPONSIVE_TABLES_LINK;?>">
@@ -72,55 +81,51 @@ session_start();
     <div class="row"> <!-- begin row div -->
       <div class="tab-content"> <!-- begin tab-content div -->
 
-        <div class="tab-pane fade in active" id="name"> <!-- begin name div -->
+        <div class="tab-pane fade in active" id="name"> <!-- begin performers div -->
           <?php 
-            // Displays bands in alphabetical order
-            $sql = sprintf("SELECT bands.BandID, bands.Name, bands.Description FROM bands 
-                    INNER JOIN bandstoporchfests WHERE bands.BandID = bandstoporchfests.BandID 
-                    AND bandstoporchfests.PorchfestID = '%s'
-                    ORDER BY Name", PORCHFEST_ID);
-            $result = $conn->query($sql);
+            if ($scheduled == 1) {
+              // Displays bands in alphabetical order
+              $sql = sprintf("SELECT bands.BandID, bands.Name, bands.Description FROM bands 
+                      INNER JOIN bandstoporchfests WHERE bands.BandID = bandstoporchfests.BandID 
+                      AND bandstoporchfests.PorchfestID = '%s'
+                      ORDER BY Name", PORCHFEST_ID);
+              $result = $conn->query($sql);
 
-            $lastletter = '';
+              $lastletter = '';
 
-            if ($result->num_rows == 0) {
-              echo "Looks like no bands have signed up yet. Check back later!";
-            }
-            else {
-              while($band = $result->fetch_assoc()) {
-                if ($lastletter != substr($band['Name'], 0, 1)) {
-                  if ($lastletter != '') {
-                    echo '</div>';
-                  }
-                  echo '<div id = "' . strtolower(substr($band['Name'], 0, 1)) . '">';
-                  $lastletter = substr($band['Name'], 0, 1);
-                }
-                echo '<span class="band" data-toggle="modal" data-target="#bandModal' . $band['BandID'] . '">' . $band['Name'] . '</span>';
+              if ($result->num_rows == 0) {
+                echo "Looks like no bands have signed up yet. Check back later!";
               }
-              echo '</div>';
+              else {
+                while($band = $result->fetch_assoc()) {
+                  if ($lastletter != substr($band['Name'], 0, 1)) {
+                    if ($lastletter != '') {
+                      echo '</div>';
+                    }
+                    echo '<div id = "' . strtolower(substr($band['Name'], 0, 1)) . '">';
+                    $lastletter = substr($band['Name'], 0, 1);
+                  }
+                  echo '<span class="band" data-toggle="modal" data-target="#bandModal' . $band['BandID'] . '">' . $band['Name'] . '</span>';
+                }
+                echo '</div>';
+              }
+            } else {
+              echo '<h4> The performers have not been finalized. Check back later to see the bands! </h4>';
             }
+
           ?>
          
         </div> <!-- end name div -->
 
-        <div class="tab-pane fade in" id="date"> <!-- begin date div -->
+        <div class="tab-pane fade in" id="date"> <!-- begin schedule div -->
           <?php 
-
-            $sql = "SELECT Scheduled FROM porchfests WHERE PorchfestID=" . PORCHFEST_ID;
-            $result = $conn->query($sql);
-            
-            if (!$result) {
-              throw new Exception("Query failed", 1);
-            }
-
-            $scheduled = $result->fetch_assoc()['Scheduled'];
             if ($scheduled == 1) {
               // Query to get the band information 
               $sql = "SELECT bands.BandID, Name, bandstoporchfests.PorchfestID, bandstoporchfests.TimeslotID, StartTime, EndTime 
                       FROM bands 
                       INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
                       INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID 
-                      WHERE bandstoporchfests.PorchfestID = '" . PORCHFEST_ID . "' ORDER BY StartTime";
+                      WHERE bandstoporchfests.PorchfestID = '" . PORCHFEST_ID . "' ORDER BY StartTime ASC, Name ASC";
 
               $result = $conn->query($sql);
 
@@ -140,7 +145,7 @@ session_start();
                         <br>';
               }
             } else {
-              echo '<h4> The bands have not been scheduled yet. Check back later to see when the bands are playing! </h4>';
+              echo '<h4> The schedule has not been finalized. Check back later to see when the bands are playing! </h4>';
             }
           ?>
         </div> <!-- end date div -->
