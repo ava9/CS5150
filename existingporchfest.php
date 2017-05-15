@@ -82,6 +82,7 @@ session_start();
             $result = $mysqli->query($sql);
             $row = $result->fetch_row();
             if (empty($row)) {
+              $password = hash("sha256", ($password . SALT));
               $prep = $mysqli->prepare("INSERT INTO users (Email, Password, Name, ContactInfo) VALUES (?,?,?,?)");
               $prep->bind_param("ssss", $email, $password, $name, $mobile);
               $prep->execute();
