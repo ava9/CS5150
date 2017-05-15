@@ -7,7 +7,7 @@ define('DB_NAME', 'porchfest');
 // Your MySQL / Course Server username
 define('DB_USER', 'root');
 // ...and password
-define('DB_PASSWORD', '');
+define('DB_PASSWORD', 'matchmaker2017');
 // also salt
 define('SALT', 'PorchfestsForever');
 // define a code root for server/localhost
