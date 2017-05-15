@@ -1,4 +1,4 @@
 .DS_Store
-php/config.php
+*config.php
 *.csv
 *.kml
