@@ -103,7 +103,7 @@ session_start();
         $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
         // Insert information into porchfests table
-        $prep = $mysqli->prepare("INSERT INTO porchfests (URL, Name, Nickname, Location, Date, Description, Deadline) VALUES (?,?,?,?,?,?)");
+        $prep = $mysqli->prepare("INSERT INTO porchfests (URL, Name, Nickname, Location, Date, Description, Deadline) VALUES (?,?,?,?,?,?,?)");
         $prep->bind_param("sssssss", $porchfestURL, $porchfestName, $nickname, $location, $date, $description, $deadline);
         $prep->execute();
         if ($prep->affected_rows) {
