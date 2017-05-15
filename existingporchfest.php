@@ -25,40 +25,7 @@ session_start();
     if (isset($_POST['submitInfo'])) {
       // If the user is not logged in then new account will be created
       if (!isset($_SESSION['logged_user'])) {
-        // Server side validation to check that forms have required fields filled
-        if (empty($_POST['name'])) {
-          $nameError = 'Missing';
-        }
-        else {
-          $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
-        }
-        if (empty($_POST['email'])) {
-          $emailError = 'Missing';
-        }
-        else {
-          $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
-              if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $emailError = "Invalid email format"; 
-              }
-        }
-        if (empty($_POST['mobile'])) {
-          $mobileError = 'Missing';
-        }
-        else {
-          $mobile = filter_var($_POST['mobile'], FILTER_SANITIZE_STRING);
-        }
-        if (empty($_POST['password'])) {
-          $passwordError = 'Missing';
-        }
-        else {
-          $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
-        }
-        if (empty($_POST['confirmPassword'])) {
-          $confirmPasswordError = 'Missing';
-        }
-        else {
-          $confirmPassword = filter_var($_POST['confirmPassword'], FILTER_SANITIZE_STRING);
-        }
+        require_once CODE_ROOT . "/php/modules/accountValidation.php";
       }
       if (empty($_POST['porchfestName'])) {
         $porchfestNameError = 'Missing';
@@ -115,6 +82,7 @@ session_start();
             $result = $mysqli->query($sql);
             $row = $result->fetch_row();
             if (empty($row)) {
+              $password = hash("sha256", ($password . SALT));
               $prep = $mysqli->prepare("INSERT INTO users (Email, Password, Name, ContactInfo) VALUES (?,?,?,?)");
               $prep->bind_param("ssss", $email, $password, $name, $mobile);
               $prep->execute();
@@ -135,7 +103,7 @@ session_start();
         $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
         // Insert information into porchfests table
-        $prep = $mysqli->prepare("INSERT INTO porchfests (URL, Name, Nickname, Location, Date, Description, Deadline) VALUES (?,?,?,?,?,?)");
+        $prep = $mysqli->prepare("INSERT INTO porchfests (URL, Name, Nickname, Location, Date, Description, Deadline) VALUES (?,?,?,?,?,?,?)");
         $prep->bind_param("sssssss", $porchfestURL, $porchfestName, $nickname, $location, $date, $description, $deadline);
         $prep->execute();
         if ($prep->affected_rows) {
@@ -188,63 +156,9 @@ session_start();
 
     <!-- Form for submitting account information --> 
     <form role="form" class="form-horizontal" id="submit-info-form" method="POST" action="existingporchfest.php">
-      <?php if (!isset($_SESSION['logged_user'])) { ?>
-      <h4> Account Information </h4>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Your Name</label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input data-validation="alphanumeric" data-validation-allowing="-_ " data-validation="length" data-validation-length="min1" required type="text" class="form-control" name="name" placeholder="John Doe" /> <?php echo '<span class="error">'; echo $nameError; echo '</span>'; ?>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Your Email</label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input data-validation="email" required type="email" class="form-control" name="email" placeholder="johndoe@gmail.com" /> <?php echo '<span class="error">'; echo $emailError; echo '</span>'; ?>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label"> Mobile</label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input required data-validation="custom" data-validation-regexp="^[0-9]{3}-[0-9]{3}-[0-9]{4}$" data-validation-help="Please format the number as xxx-xxx-xxxx" required type="tel" class="form-control" name="mobile" placeholder="(123) 456-7891" /> <?php echo '<span class="error">'; echo $mobileError; echo '</span>'; ?>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Password </label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input required data-validation="length" data-validation-length="min5" required type="password" name="password" class="form-control" placeholder="Password" /> <?php echo '<span class="error">'; echo $passwordError; echo '</span>'; ?>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">
-              Confirm Password </label>
-          <div class="col-sm-10">
-              <div class="row">
-                  <div class="col-md-9">
-                      <input required data-validation="length" data-validation-length="min5" required type="password" class="form-control" placeholder="Password" /> <?php echo '<span class="error">'; echo $confirmPasswordError; echo '</span>'; ?>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <?php } ?>
+      <?php if (!isset($_SESSION['logged_user'])) {
+        require_once CODE_ROOT . "/php/modules/accountForm.php";
+      } ?>
       <br>
       <?php create_hyperlink(NEW_PORCHFEST_URL, 'Want to create a new Porchfest website?'); ?>
       <h4> Porchfest Information </h4>
