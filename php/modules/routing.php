@@ -3,7 +3,7 @@
         session_start();
     }
 
-    require_once __DIR__.'/../config.php';
+    require_once __DIR__.'/../../config.php';
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
     // Return the URI of the current page (everything past the domain) 

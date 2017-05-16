@@ -10,7 +10,8 @@
         $porchfestName = $conn->query($sql)->fetch_assoc()['Nickname'];
 
         $filename = sprintf("%s_schedule.csv", $porchfestName);
-        $csv = fopen($filename, 'w');
+        $fPath = __DIR__.'/output/csv/'.$filename;
+        $csv = fopen($fPath, 'w');
         fputcsv($csv, array('Band Name', 'Location', 'Start Time', 'End Time', 'Description', 'Members', 'URL', 'Comment'));
 
         // Get all timeslots for the requested porchfest
@@ -43,21 +44,24 @@
         header("Content-Description: File Transfer");
         header('Content-Type: application/csv');
         header("Content-Disposition: attachment; filename=$filename");
-        header('Content-Length: ' . filesize($filename));
+        header('Content-Length: ' . filesize($fPath));
         header("Cache-Control: public");
         
-        readfile($filename);
+        readfile($fPath);
     } elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['exportKML'])) {
         
+        // run the kml generation
+        require_once 'generateKML.php';
 
+        //headers for download for kml
         $filename = $_POST['PORCHFEST_NICKNAME'] .'.kml';
+        $fPath = __DIR__.'/output/kml/'.$filename;
         header("Content-Description: File Transfer");
         header('Content-Type: application/kml');
         header("Content-Disposition: attachment; filename=$filename");
-        header('Content-Length: ' . filesize($filename));
+        header('Content-Length: ' . filesize($fPath));
         header("Cache-Control: public");
-        require_once 'generateKML.php';
         
-        readfile($filename);
+        readfile($fPath);
     }
 ?>
