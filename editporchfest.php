@@ -494,7 +494,7 @@ session_start();
               } else {
             ?>
               <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='<?php echo PHP_EXPORT; ?>' target="_blank">
-                <input type = "hidden" name = "porchfestid" value = <?php echo PORCHFEST_ID; ?> />
+                <input type = "hidden" name = "PORCHFEST_ID" value = <?php echo PORCHFEST_ID; ?> />
                 <input type = "hidden" name = "PORCHFEST_NICKNAME" value = <?php echo PORCHFEST_NICKNAME; ?> />
                 <div class="form-group">
                     <div class="col-md-1">

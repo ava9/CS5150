@@ -37,7 +37,7 @@ $sql = sprintf("SELECT bands.Name, bands.Description, bandstoporchfests.Latitude
 	FROM bands INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
 	INNER JOIN porchfesttimeslots ON porchfesttimeslots.TimeslotID = bandstoporchfests.TimeslotID 
 	WHERE bandstoporchfests.porchfestID = '%d'
-	ORDER BY porchfesttimeslots.StartTime;", $_POST['porchfestid']);
+	ORDER BY porchfesttimeslots.StartTime;", $_POST['PORCHFEST_ID']);
 
 $result = $conn->query($sql);
 
