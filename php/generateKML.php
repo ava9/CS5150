@@ -8,7 +8,6 @@ shuffle($colorArray);
 
 // DB credentials and porchfest info
 require_once '../config.php';
-require_once __DIR__.'/modules/routing.php';
 
 $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
