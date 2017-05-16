@@ -14,7 +14,7 @@ session_start();
 <body>
   <div id="editalert"></div>
   <?php // Database credentials
-    require_once CODE_ROOT . "/php/routing.php";
+    require_once CODE_ROOT . "/php/modules/routing.php";
 
     // Create connection
     $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);

@@ -27,7 +27,7 @@ session_start();
 
   <body>
     <?php 
-      require_once CODE_ROOT . "/php/routing.php";
+      require_once CODE_ROOT . "/php/modules/routing.php";
       require_once CODE_ROOT . "/php/modules/login.php";
       require_once CODE_ROOT . "/php/modules/navigation.php";
 

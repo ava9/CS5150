@@ -22,7 +22,7 @@ session_start();
     <!-- navBar and login and routing -->
     <?php require_once CODE_ROOT . "/php/modules/login.php"; ?>
     <?php require_once CODE_ROOT . "/php/modules/navigation.php"; ?>
-    <?php require_once CODE_ROOT . "/php/routing.php"; ?>
+    <?php require_once CODE_ROOT . "/php/modules/routing.php"; ?>
 
     <?php
       // input a string: address (i.e. "114 Summit Ave. Ithaca, NY 14850"

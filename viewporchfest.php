@@ -10,7 +10,7 @@ session_start();
   <?php 
     require_once 'config.php';
     require_once CODE_ROOT . "/php/modules/stdHead.php";
-    require_once CODE_ROOT . "/php/routing.php";
+    require_once CODE_ROOT . "/php/modules/routing.php";
     require_once CODE_ROOT . "/php/modules/login.php";
     require_once CODE_ROOT . "/php/modules/navigation.php";
   ?>
