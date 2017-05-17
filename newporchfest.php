@@ -94,35 +94,44 @@ session_start();
     if (isset($_POST['porchfestName']) && isset($_POST['nickname']) && isset($_POST['description']) && isset($_POST['location']) && isset($_POST['date']) && isset($_POST['deadline']) && $porchfestName != '' && $nickname != '' && $description != '' && $location != '' && $date != '' && $deadline != '') {
       $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-      $prep = $mysqli->prepare("INSERT INTO porchfests (Name, Nickname, Location, Date, Description, Deadline) 
-                                VALUES (?,?,?,?,?,?)");
-      $prep->bind_param("ssssss", $porchfestName, $nickname, $location, $date, $description, $deadline);
-      $prep->execute();
-      if ($prep->affected_rows) {
-        echo "<script type='text/javascript'>alert('The porchfest, $porchfestName, has been added successfully!.');</script>";
-      } else {
-        echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
-      }
-
-      // Get newest porchfestID that was just created
-      $sql = "SELECT PorchfestID FROM porchfests ORDER BY PorchfestID DESC LIMIT 1";
+      // First, validate the inputted nickname is unique
+      $sql = "SELECT PorchfestID FROM porchfests WHERE Nickname = '$nickname'";
       $result = $mysqli->query($sql);
-      $porchfestID = $result->fetch_assoc();
+      if ($result->num_rows != 0) {
+        echo "<script type='text/javascript'>alert('Cannot create a porchfest with the same nickname!')</script>";
+      } else {
 
-      // Get newest userID that was just created
-      if (!isset($_SESSION['logged_user'])) {
-        $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
+        $prep = $mysqli->prepare("INSERT INTO porchfests (Name, Nickname, Location, Date, Description, Deadline) 
+                                  VALUES (?,?,?,?,?,?)");
+        $prep->bind_param("ssssss", $porchfestName, $nickname, $location, $date, $description, $deadline);
+        $prep->execute();
+        if ($prep->affected_rows) {
+          echo "<script type='text/javascript'>alert('The porchfest, $porchfestName, has been added successfully!.');";
+          echo "window.location='" . EDIT_PORCHFEST_URL . "/$nickname';</script>"; 
+        } else {
+          echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
+        }
+
+        // Get newest porchfestID that was just created
+        $sql = "SELECT PorchfestID FROM porchfests ORDER BY PorchfestID DESC LIMIT 1";
         $result = $mysqli->query($sql);
-        $userID = $result->fetch_assoc()['UserID'];
-      }
-      else {
-        $userID = $_SESSION['logged_user'];
-      }
+        $porchfestID = $result->fetch_assoc();
 
-      // Insert into userstoporchfests table
-      $prep = $mysqli->prepare("INSERT INTO userstoporchfests (UserID, PorchfestID) VALUES (?,?)");
-      $prep->bind_param("ss", $userID, $porchfestID['PorchfestID']);
-      $prep->execute();
+        // Get newest userID that was just created (or current user)
+        if (!isset($_SESSION['logged_user'])) {
+          $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
+          $result = $mysqli->query($sql);
+          $userID = $result->fetch_assoc()['UserID'];
+        }
+        else {
+          $userID = $_SESSION['logged_user'];
+        }
+
+        // Insert into userstoporchfests table
+        $prep = $mysqli->prepare("INSERT INTO userstoporchfests (UserID, PorchfestID) VALUES (?,?)");
+        $prep->bind_param("ss", $userID, $porchfestID['PorchfestID']);
+        $prep->execute();
+      }
     }
   } 
 ?>
@@ -146,7 +155,7 @@ session_start();
     <?php } ?>
 
     <!-- Form for submitting account information -->
-    <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action='newporchfest.php'>
+    <form role="form" class="form-horizontal" id='submit-info-form' method='POST' action="<?php echo NEW_PORCHFEST_URL; ?>">
       <?php if (!isset($_SESSION['logged_user'])) {
         require_once CODE_ROOT . "/php/modules/accountForm.php";
       } ?>
@@ -166,7 +175,7 @@ session_start();
       </div>
       <div class="form-group">
           <label for="name" class="col-sm-2 control-label">
-              Nickname <?php tooltip("This is the name that will appear in the url for attendees/musicians. For example, for the Ithaca Porchfest with nickname “ithaca”, the url will appear as porchfest.life/view/ithaca.") ?> </label>
+              Nickname <?php tooltip("This is the name that will appear in the url for attendees/musicians. For example, for the Ithaca Porchfest with nickname “ithaca”, the url will appear as porchfest.life/view/ithaca. THIS FIELD CANNOT CHANGE ONCE INPUTTED.") ?> </label>
           <div class="col-sm-10">
               <div class="row">
                   <div class="col-md-9">
