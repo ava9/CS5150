@@ -40,12 +40,13 @@ session_start();
       $porchfestID = PORCHFEST_ID;
 
       // Get scheduled field
-      $result = $conn->query("SELECT Scheduled FROM porchfests WHERE PorchfestID = '" . $porchfestID . "'");
+      $sql = sprintf("SELECT Scheduled FROM porchfests WHERE PorchfestID = '%s'", 
+                      $conn->real_escape_string(PORCHFEST_ID));
+      $result = $conn->query($sql);
       $scheduled = $result->fetch_assoc()['Scheduled'] == '1';
 
       function create_filters($pid, $conn) {
-        $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $pid . "' ORDER BY StartTime";
-
+        $sql = sprintf("SELECT * FROM porchfesttimeslots WHERE PorchfestID = '$pid' ORDER BY StartTime";
         $result = $conn->query($sql);
 
         while($timeslot = $result->fetch_assoc()) {

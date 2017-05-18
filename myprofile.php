@@ -17,7 +17,7 @@ session_start();
     // Create connection
     $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-    $sql = "SELECT * FROM users WHERE UserID = '" . $_SESSION['logged_user'] . "'";
+    $sql = sprintf("SELECT * FROM users WHERE UserID = '%s'", $conn->real_escape_string($_SESSION['logged_user']));
 
     $result = $conn->query($sql);
     $user = $result->fetch_assoc();
@@ -74,15 +74,13 @@ session_start();
     }
 
     if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['mobile']) && isset($_POST['password']) && isset($_POST['confirmPassword']) && $name != '' && $email != '' && $mobile != '' && $password != '' && $confirmPassword != '' && $currPassword != '') {
-        $sql1 = "SELECT Password FROM users WHERE UserID=" . $_SESSION['logged_user'];
+        $sql1 = sprintf("SELECT Password FROM users WHERE UserID='%s'", 
+                         $conn->real_escape_string($_SESSION['logged_user']));
         $result = $conn->query($sql1);
 
         $dbpass = $result->fetch_assoc()['Password'];
-
         $encpassword = hash("sha256", ($currPassword . SALT));
-
         $newpass = hash("sha256", ($password . SALT));
-
 
         if ($password != $confirmPassword) {
           echo '<script> $("#editalert").html(\'<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> The passwords you entered do not match! Please try again. </div>\'); </script>';
@@ -91,9 +89,17 @@ session_start();
         } elseif($dbpass != $encpassword) {
           echo '<script> $("#editalert").html(\'<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> The password you entered does not match your old password! Please try again. </div>\'); </script>';
         } else {
-          echo '<script> $("#editalert").html(\'<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your profile was updated successfully!. </div>\'); </script>';
-          $sql = "UPDATE users SET Name='" . $_POST['name'] . "', Email='" . $_POST['email'] . "', Password='" . $newpass . "', ContactInfo='" . $_POST['mobile'] . "' WHERE UserID='" . $_SESSION['logged_user'] . "'";
-          $result = $conn->query($sql);
+          $userID = $_SESSION['logged_user'];
+          $prep = $conn->prepare("UPDATE users SET Name=?, Email=?, Password=?, ContactInfo=? WHERE UserID = ?");
+          $prep->bind_param("sssss", $name, $email, $newpass, $mobile, $userID);
+          $prep->execute();
+          if ($prep->affected_rows) {
+            echo '<script> $("#editalert").html(\'<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your profile was updated successfully!. </div>\'); </script>';
+          } else {
+            echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
+          } 
+          // $sql = "UPDATE users SET Name='" . $_POST['name'] . "', Email='" . $_POST['email'] . "', Password='" . $newpass . "', ContactInfo='" . $_POST['mobile'] . "' WHERE UserID='" . $_SESSION['logged_user'] . "'";
+          // $result = $conn->query($sql);
         }
       }
   ?>

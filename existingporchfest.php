@@ -78,7 +78,7 @@ session_start();
           if ($password != $confirmPassword) {
             echo "<script type='text/javascript'>alert('Passwords do not match!');</script>";
           } else {
-            $sql = sprintf("SELECT * FROM users WHERE Email = '%s'", $email);
+            $sql = sprintf("SELECT * FROM users WHERE email = '%s'", $mysqli->real_escape_string($email));
             $result = $mysqli->query($sql);
             $row = $result->fetch_row();
             if (empty($row)) {
@@ -108,7 +108,8 @@ session_start();
         $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
         // First, validate the inputted nickname is unique
-        $sql = "SELECT PorchfestID FROM porchfests WHERE Nickname = '$nickname'";
+        $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE Nickname = '%s'",
+                        $mysqli->real_escape_string($nickname));
         $result = $mysqli->query($sql);
         if ($result->num_rows != 0) {
           echo "<script type='text/javascript'>alert('Cannot create a porchfest with the same nickname!')</script>";
