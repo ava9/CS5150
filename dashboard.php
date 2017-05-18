@@ -47,7 +47,7 @@ session_start();
 
                 // Add each porchfest where you are the organizer to the table
                 while($porchfest = $result->fetch_assoc()) { 
-                  echo '<option value="' . strtolower($porchfest['Nickname']) .'">' . ucwords($porchfest['Nickname']) . ' Porchfest' . '</option>';
+                  echo '<option value="' . strtolower($porchfest['Nickname']) .'">' . $porchfest['Name'] . '</option>';
                 }
                 echo '</select>';
               ?>
