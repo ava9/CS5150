@@ -1,7 +1,6 @@
 <?
 
 #
-# Example PHP server-side script for generating
 # responses suitable for use with jquery-tokeninput
 #
 
