@@ -146,14 +146,15 @@
 			echo 'failure';
 		}
 
-	} elseif (isset($_GET['delete']) && isset($_GET['pid'])) {
-		$porchfestid = $GET['pid'];
+	} elseif (isset($_GET['delete']) && isset($_GET['porchfestid'])) {
+		$porchfestid = $_GET['porchfestid'];
 
 		$sql = "DELETE FROM porchfests WHERE PorchfestID=" . $porchfestid;
 
-		// $result = $conn->query($sql);
+		$result = $conn->query($sql);
 
 		if ($result) {
+
 			echo "success";
 		} else {
 			echo "fail";
