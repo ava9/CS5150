@@ -14,7 +14,6 @@ session_start();
     require_once CODE_ROOT . "/php/modules/login.php";
     require_once CODE_ROOT . "/php/modules/navigation.php";
   ?>
-
   <title>PorchFest - <?php echo PORCHFEST_NAME ?> </title>
 </head>
 
