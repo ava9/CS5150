@@ -79,6 +79,11 @@ session_start();
             $prep->bind_param("ssss", $email, $password, $name, $mobile);
             $prep->execute();
             if ($prep->affected_rows) {
+              // Get newest userID that was just created, set it as logged in
+              $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
+              $result = $mysqli->query($sql);
+              $userID = $result->fetch_assoc()['UserID'];
+              $_SESSION['logged_user'] = $userID;
               echo "<script type='text/javascript'>alert('$name, you have been added successfully!.');</script>";
             } else {
               echo "<script type='text/javascript'>alert('DB failed to add you!.');</script>";
@@ -116,16 +121,8 @@ session_start();
         $sql = "SELECT PorchfestID FROM porchfests ORDER BY PorchfestID DESC LIMIT 1";
         $result = $mysqli->query($sql);
         $porchfestID = $result->fetch_assoc();
-
-        // Get newest userID that was just created (or current user)
-        if (!isset($_SESSION['logged_user'])) {
-          $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
-          $result = $mysqli->query($sql);
-          $userID = $result->fetch_assoc()['UserID'];
-        }
-        else {
-          $userID = $_SESSION['logged_user'];
-        }
+        
+        $userID = $_SESSION['logged_user'];
 
         // Insert into userstoporchfests table
         $prep = $mysqli->prepare("INSERT INTO userstoporchfests (UserID, PorchfestID) VALUES (?,?)");
