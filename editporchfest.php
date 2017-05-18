@@ -643,7 +643,6 @@ session_start();
             }  
           },
           error: function(result) {
-            console.log(error);
             $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
           }
         });
