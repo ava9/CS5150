@@ -46,7 +46,8 @@ session_start();
       $scheduled = $result->fetch_assoc()['Scheduled'] == '1';
 
       function create_filters($pid, $conn) {
-        $sql = sprintf("SELECT * FROM porchfesttimeslots WHERE PorchfestID = '$pid' ORDER BY StartTime";
+        $sql = sprintf("SELECT * FROM porchfesttimeslots WHERE PorchfestID = '%s' ORDER BY StartTime",
+                        $conn->real_escape_string($pid));
         $result = $conn->query($sql);
 
         while($timeslot = $result->fetch_assoc()) {
