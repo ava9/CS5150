@@ -27,8 +27,8 @@
 	define('EDIT_PORCHFEST_URL', $root_dir . 'edit');
 
 	// PHP files
-	define('PHP_EXPORT', $root_dir . 'php/export.php');
-	define('PHP_AJAX', $root_dir . 'php/ajax.php');
+	define('PHP_EXPORT', $root_dir . 'php/exporting/export.php');
+	define('PHP_AJAX', $root_dir . 'php/modules/ajax.php');
 	define('PHP_BAND_LISTING', $root_dir . 'band-listing.php');
 
 	// IMG/GIF files
