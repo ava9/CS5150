@@ -42,7 +42,7 @@
     <div class="col-md-8">
       <input class="btn btn-primary" name="submitInfo" value="Save Changes" type="submit">
       <span></span>
-      <input class="btn btn-default" value="Cancel" type="reset">
+      <input class="btn btn-default" value="Cancel" type="reset" onclick="window.location='<?php echo DASHBOARD_URL; ?>'">
     </div>
   </div>
 </form>

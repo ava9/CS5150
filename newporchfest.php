@@ -7,10 +7,10 @@ session_start();
 
 <!-- BEGIN head -->
 <head>
-    <?php 
-      require_once "config.php";
-      require_once CODE_ROOT . "/php/modules/stdHead.php"; ?>
-    <title>PorchFest - Create New Porchfest</title>
+  <?php 
+    require_once "config.php";
+    require_once CODE_ROOT . "/php/modules/stdHead.php"; ?>
+  <title>PorchFest - Create New Porchfest</title>
 </head>
 
 <!-- BEGIN body -->
@@ -71,7 +71,8 @@ session_start();
         if ($password != $confirmPassword) {
           echo "<script type='text/javascript'>alert('Passwords do not match!');</script>";
         } else {
-          $result = $mysqli->query("SELECT * FROM users WHERE email = '$email'");
+          $sql = sprintf("SELECT * FROM users WHERE email = '%s'", $mysqli->real_escape_string($email));
+          $result = $mysqli->query($sql);
           $row = $result->fetch_row();
           if (empty($row)) {
             $password = hash("sha256", ($password . SALT));
@@ -101,7 +102,7 @@ session_start();
 
       // First, validate the inputted nickname is unique
       $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE Nickname = '%s'",
-                      $mysqli->real_escape_string($nickname));;
+                      $mysqli->real_escape_string($nickname));
       $result = $mysqli->query($sql);
       if ($result->num_rows != 0) {
         echo "<script type='text/javascript'>alert('Cannot create a porchfest with the same nickname!')</script>";

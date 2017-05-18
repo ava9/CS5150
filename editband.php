@@ -114,7 +114,7 @@ session_start();
   $sql = sprintf("SELECT * FROM bands 
         INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID
         WHERE bandstoporchfests.PorchfestID = '%s' AND bands.BandID = '%s'", 
-        $porchfestID, $bandID);
+        $conn->real_escape_string($porchfestID), $conn->real_escape_string($bandID));
 
   $result = $conn->query($sql);
   $band = $result->fetch_assoc();

@@ -31,7 +31,8 @@ session_start();
     }
 
     // Check whether this porchfest was published (1 for yes, 0 for no)
-    $sql = sprintf("SELECT Published FROM porchfests WHERE PorchfestID='%s'", PORCHFEST_ID);
+    $sql = sprintf("SELECT Published FROM porchfests WHERE PorchfestID='%s'", 
+                    $conn->real_escape_string(PORCHFEST_ID));
     $result = $conn->query($sql);
     
     if (!$result) {
@@ -87,7 +88,7 @@ session_start();
               $sql = sprintf("SELECT bands.BandID, bands.Name, bands.Description FROM bands 
                       INNER JOIN bandstoporchfests WHERE bands.BandID = bandstoporchfests.BandID 
                       AND bandstoporchfests.PorchfestID = '%s'
-                      ORDER BY Name", PORCHFEST_ID);
+                      ORDER BY Name", $conn->real_escape_string(PORCHFEST_ID));
               $result = $conn->query($sql);
 
               $lastletter = '';
@@ -120,11 +121,13 @@ session_start();
           <?php 
             if ($scheduled == 1) {
               // Query to get the band information 
-              $sql = "SELECT bands.BandID, Name, bandstoporchfests.PorchfestID, bandstoporchfests.TimeslotID, StartTime, EndTime 
+              $sql = sprintf("SELECT bands.BandID, Name, bandstoporchfests.PorchfestID, 
+                      bandstoporchfests.TimeslotID, StartTime, EndTime 
                       FROM bands 
                       INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
                       INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID 
-                      WHERE bandstoporchfests.PorchfestID = '" . PORCHFEST_ID . "' ORDER BY StartTime ASC, Name ASC";
+                      WHERE bandstoporchfests.PorchfestID = '%s' ORDER BY StartTime ASC, Name ASC", 
+                      $conn->real_escape_string(PORCHFEST_ID));
 
               $result = $conn->query($sql);
 
@@ -155,11 +158,12 @@ session_start();
 
   <?php 
     // Query to get all band information
-    $sql = "SELECT bands.BandID, Name, Description, PorchLocation, URL, bandstoporchfests.PorchfestID, bandstoporchfests.TimeslotID, StartTime, EndTime 
+    $sql = sprintf("SELECT bands.BandID, Name, Description, PorchLocation, 
+            URL, bandstoporchfests.PorchfestID, bandstoporchfests.TimeslotID, StartTime, EndTime 
             FROM bands 
             INNER JOIN bandstoporchfests ON bands.BandID = bandstoporchfests.BandID 
             INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID 
-            WHERE bandstoporchfests.PorchfestID = '" . PORCHFEST_ID . "'";
+            WHERE bandstoporchfests.PorchfestID = '%s'", $conn->real_escape_string(PORCHFEST_ID));
 
     $result = $conn->query($sql);
 
