@@ -1,5 +1,6 @@
 <?php
 	require_once __DIR__."/../config.php";
+	require_once __DIR__."/../php/modules/sort.php";
 
     // Create connection
     $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
@@ -299,13 +300,23 @@
 		if ($bname == "") {
 			$sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID WHERE PorchfestID =" . $porchfestid . " ORDER BY bands.Name";
 
+
+
 		} else {
 			$sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID WHERE PorchfestID =" . $porchfestid . " AND bands.Name LIKE '%" . $bname . "%' ORDER BY bands.Name; ";
 		}
 
 		$result = $conn->query($sql);
 
-		while($band = $result->fetch_assoc()) {
+		$bands = array();
+        while ($band = $result->fetch_assoc()) {
+          $bands[] = $band;
+        }
+
+        usort($bands, "cmp");
+
+                                        
+        foreach($bands as $band) {
 			$conflictList = getConflicts($conflicts, $band['BandID']);
 
 			echo '<tr id="' . 'band-' . $band['BandID'] . '" class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . ' ' . ($conflictList[0] != 'No conflicts' ? 'hasconflict' : '') . '">';
@@ -385,7 +396,15 @@
 
       	$result = $conn->query($sql);
 
-	    while($band = $result->fetch_assoc()) {
+	    $bands = array();
+        while ($band = $result->fetch_assoc()) {
+          $bands[] = $band;
+        }
+
+        usort($bands, "cmp");
+
+                                        
+        foreach($bands as $band) {
 			echo '<tr class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . '">';
 			echo '<td>' . $band['Name'] . '</td>';
 			echo '<td>' . $band['Description'] . '</td>';

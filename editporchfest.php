@@ -28,8 +28,10 @@ session_start();
   <body>
     <?php 
       require_once CODE_ROOT . "/php/modules/routing.php";
+      require_once CODE_ROOT . "/php/modules/sort.php";
       require_once CODE_ROOT . "/php/modules/login.php";
       require_once CODE_ROOT . "/php/modules/navigation.php";
+
 
       // Create connection
       // add DB_USER and DB_PASSWORD later
@@ -308,11 +310,19 @@ session_start();
                       return sprintf("mailto:%s?cc=%s&subject=%s", $recipient, $cc, $subject);
                     }
 
-                    $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
+                    $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID =" . $porchfestID;
 
                     $result = $conn->query($sql);
-                    
-                    while($band = $result->fetch_assoc()) {
+
+                    $bands = array();
+                    while ($band = $result->fetch_assoc()) {
+                      $bands[] = $band;
+                    }
+
+                    usort($bands, "cmp");
+
+                                        
+                    foreach($bands as $band) {
                       $bandname = $band['Name'];
                       // Modify the band name such that it looks good in the URL.
                       // All spaces (' ') become '-' and all '-' become '--'.
@@ -420,9 +430,19 @@ session_start();
 
                   $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
 
+
+
                   $result = $conn->query($sql);
 
-                  while($band = $result->fetch_assoc()) {
+                  $bands = array();
+                    while ($band = $result->fetch_assoc()) {
+                      $bands[] = $band;
+                    }
+
+                    usort($bands, "cmp");
+
+                                        
+                  foreach($bands as $band) {
                     $conflictList = getConflicts($conflicts, $band['BandID']);
 
                     echo '<tr id="' . 'band-' . $band['BandID'] . '" class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . ' ' . ($conflictList[0] != 'No conflicts' ? 'hasconflict' : '') . '">';
@@ -534,6 +554,7 @@ session_start();
   <?php 
     $bandquery = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
     $bandresults = $conn->query($bandquery);
+
 
     while($band = $bandresults->fetch_assoc()) {
       echo '<div id="timeslotModal' . $band['BandID'] . '" class="modal fade">
