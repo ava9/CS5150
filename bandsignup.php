@@ -46,12 +46,12 @@ session_start();
       $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
       // Get the porchfestID from the url
-      $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Nickname = '%s'", PORCHFEST_NICKNAME);
-      $result = $mysqli->query($sql);
-      $porchfestID = $result->fetch_assoc()['PorchfestID'];
+      $porchfestID = PORCHFEST_ID;
 
+      // Check if current date is past the deadline
       date_default_timezone_set('America/New_York');
-      $sql = "SELECT * FROM porchfests WHERE PorchfestID='" . PORCHFEST_ID . "'";
+      $sql = sprintf("SELECT * FROM porchfests WHERE PorchfestID='%s'" 
+                      $mysqli->real_escape_string($porchfestID));
       $result = $mysqli->query($sql);
       $porchfestDate = new DateTime($result->fetch_assoc()['Deadline']);
       if ($porchfestDate->format("Y-m-d") < date("Y-m-d")) {
@@ -106,7 +106,8 @@ session_start();
               echo "<script type='text/javascript'>alert('Passwords do not match!');</script>";
             } else {
               // Check that the email is not already in the database
-              $result = $mysqli->query("SELECT * FROM users WHERE email = '$email'");
+              $sql = sprintf("SELECT * FROM users WHERE email = '%s'", $mysqli->real_escape_string($email));
+              $result = $mysqli->query($sql);
               $row = $result->fetch_row();
               // If email is unique then insert new user information into database
               if (empty($row)) {
@@ -116,6 +117,11 @@ session_start();
                 $prep->bind_param("ssss", $email, $password, $name, $mobile);
                 $prep->execute();
                 if ($prep->affected_rows) {
+                  // Get newest userID that was just created, set it as logged in
+                  $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
+                  $result = $mysqli->query($sql);
+                  $userID = $result->fetch_assoc()['UserID'];
+                  $_SESSION['logged_user'] = $userID;
                   echo "<script type='text/javascript'>alert('$name, you have been added successfully!.');</script>";
                 } else {
                   echo "<script type='text/javascript'>alert('DB failed to add you!.');</script>";
@@ -164,14 +170,8 @@ session_start();
         $prep->execute();
 
         // Insert into userstobands table
-        if (!isset($_SESSION['logged_user'])) {
-          $sql = "SELECT UserID FROM users ORDER BY UserID DESC LIMIT 1";
-          $result = $mysqli->query($sql);
-          $userID = $result->fetch_assoc()['UserID'];
-        }
-        else {
-          $userID = $_SESSION['logged_user'];
-        }
+        $userID = $_SESSION['logged_user'];
+        
         $prep = $mysqli->prepare("INSERT INTO userstobands (UserID, BandID) VALUES (?,?)");
         $prep->bind_param("ss", $userID, $bandID);
         $prep->execute();
@@ -189,7 +189,8 @@ session_start();
 
         // Popup to show if queries successfully executed
         if ($prep->affected_rows) {
-            echo "<script type='text/javascript'>alert('The band, $bandname, has been added successfully!.');</script>";
+          echo "<script type='text/javascript'>alert('The band, $bandname, has been added successfully!');";
+          echo "window.location='" . DASHBOARD_URL . "';</script>"; 
         } else {
           echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
         }

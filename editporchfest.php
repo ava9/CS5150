@@ -32,18 +32,15 @@ session_start();
       require_once CODE_ROOT . "/php/modules/login.php";
       require_once CODE_ROOT . "/php/modules/navigation.php";
 
-
       // Create connection
       // add DB_USER and DB_PASSWORD later
       $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-      // Get porchfestID from url
-      $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME);
-      $result = $conn->query($sql);
-      $porchfestID = $result->fetch_assoc()['PorchfestID'];
+      // Get porchfestID from routing
+      $porchfestID = PORCHFEST_ID;
 
+      // Get scheduled field
       $result = $conn->query("SELECT Scheduled FROM porchfests WHERE PorchfestID = '" . $porchfestID . "'");
-
       $scheduled = $result->fetch_assoc()['Scheduled'] == '1';
 
       function create_filters($pid, $conn) {
@@ -71,8 +68,8 @@ session_start();
         $bandConflicts = array();
         $bandConflicts["conflictCounter"] = 0;
 
-        $sql = "SELECT BandID, TimeslotID FROM bandstoporchfests WHERE PorchfestID=" . $porchfestID;
-
+        $sql = sprintf("SELECT BandID, TimeslotID FROM bandstoporchfests WHERE PorchfestID='%s'",
+                        $conn->real_escape_string($porchfestID));
         $result = $conn->query($sql);
 
         if (!$result) {
@@ -81,7 +78,6 @@ session_start();
 
         while ($bands = $result->fetch_assoc()) {
           $bandID = $bands['BandID'];
-
 
           // this query gets the potential conflicts two bands have.
           $sql = sprintf("SELECT BandID2 FROM bandconflicts WHERE BandID1 = '%s'
@@ -113,9 +109,9 @@ session_start();
               INNER JOIN bandstoporchfests AS C2
               on BandID2 = C2.BandID
               WHERE C1.TimeslotID = C2.TimeslotID
-              AND (BandID1 = %s
-              OR BandID2 = %s)", $bandID, $bandID);
-
+              AND (BandID1 = '%s'
+              OR BandID2 = '%s')", 
+              $conn->real_escape_string($bandID), $conn->real_escape_string($bandID));
           $result3 = $conn->query($sql);
 
           if (!$result3) {
@@ -130,8 +126,7 @@ session_start();
             array_push($current_conflicts, $id);
           }
 
-          $sql = sprintf("SELECT Name FROM bands WHERE BandID='%s'", $bandID);
-
+          $sql = sprintf("SELECT Name FROM bands WHERE BandID='%s'", $conn->real_escape_string($bandID));
           $result4 = $conn->query($sql);
 
           if (!$result4) {
@@ -146,6 +141,7 @@ session_start();
 
         return $bandConflicts;
       }
+
 
       function getBandNames($bands, $conflicts) {
         $names = array();
@@ -166,7 +162,6 @@ session_start();
           array_push($result, 'No conflicts');
           array_push($result, 'No conflicts');
         }
-
         return $result;
       } 
 
@@ -216,8 +211,8 @@ session_start();
               <div class="input-group"> <!-- begin input-group div -->   
                 <form action="editporchfest.php" method="POST" id="porchfestmanagesubmit">
                   <?php 
-                    $sql = "SELECT * FROM `porchfests` WHERE PorchfestID = '" . $porchfestID . "'";
-
+                    $sql = sprintf("SELECT * FROM `porchfests` WHERE PorchfestID = '%s'",
+                                    $conn->real_escape_string($porchfestID));
                     $result = $conn->query($sql);
 
                     $porchfest = $result->fetch_assoc();
@@ -310,17 +305,16 @@ session_start();
                       return sprintf("mailto:%s?cc=%s&subject=%s", $recipient, $cc, $subject);
                     }
 
-                    $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID =" . $porchfestID;
-
+                    $sql = sprintf("SELECT * FROM `bandstoporchfests` 
+                                    INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID 
+                                    WHERE PorchfestID = '%s'", $conn->real_escape_string($porchfestID));
                     $result = $conn->query($sql);
 
                     $bands = array();
                     while ($band = $result->fetch_assoc()) {
                       $bands[] = $band;
                     }
-
                     usort($bands, "cmp");
-
                                         
                     foreach($bands as $band) {
                       $bandname = $band['Name'];
@@ -353,7 +347,8 @@ session_start();
 
               <div id="existingslots">
                 <?php
-                  $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID = '" . $porchfestID . "' ORDER BY StartTime;";
+                  $sql = sprintf("SELECT * FROM porchfesttimeslots WHERE PorchfestID = '%s' ORDER BY StartTime",
+                                  $conn->real_escape_string($porchfestID));
 
                   $result = $conn->query($sql);
 
@@ -393,8 +388,6 @@ session_start();
           <div class="tab-pane fade" id="schedule"> <!-- begin schedule div -->
             <div id="porchfestinfo">
             <?php
-              $result = $conn->query("SELECT Scheduled FROM porchfests WHERE PorchfestID = '" . $porchfestID . "'");
-
               if (!$scheduled) {
                 $conflicts = findConflictingBands($conn, $porchfestID);
                 echo '<div id="scheduletab-button">';
@@ -427,19 +420,17 @@ session_start();
                   <th> Conflicts </th>
                 </tr>';
                   
-
-                  $sql = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
-
-
-
+                  $sql = sprintf("SELECT * FROM `bandstoporchfests` 
+                                  INNER JOIN `bands` ON bands.BandID = bandstoporchfests.BandID  
+                                  WHERE PorchfestID = '%s' ORDER BY bands.Name",
+                                  $conn->real_escape_string($porchfestID));
                   $result = $conn->query($sql);
 
                   $bands = array();
-                    while ($band = $result->fetch_assoc()) {
-                      $bands[] = $band;
-                    }
-
-                    usort($bands, "cmp");
+                  while ($band = $result->fetch_assoc()) {
+                    $bands[] = $band;
+                  }
+                  usort($bands, "cmp");
 
                                         
                   foreach($bands as $band) {
@@ -447,11 +438,18 @@ session_start();
 
                     echo '<tr id="' . 'band-' . $band['BandID'] . '" class="' . (is_null($band['TimeslotID']) ? '' : $band['TimeslotID']) . ' ' . ($conflictList[0] != 'No conflicts' ? 'hasconflict' : '') . '">';
                     echo '<td>' . $band['Name'] . '</td>';
-                    $sql2 = 'SELECT * FROM `porchfesttimeslots` INNER JOIN bandavailabletimes ON porchfesttimeslots.TimeslotID = bandavailabletimes.TimeslotID WHERE bandavailabletimes.bandID=' . $band['BandID'];
+                    $sql2 = sprintf("SELECT * FROM `porchfesttimeslots` 
+                                     INNER JOIN `bandavailabletimes` 
+                                     ON porchfesttimeslots.TimeslotID = bandavailabletimes.TimeslotID 
+                                     WHERE bandavailabletimes.bandID = '%s'", 
+                                     $conn->real_escape_string($band['BandID']));
 
                     echo '<td><select class="timesdropdown" id="times-' . $band['BandID'] . '">';
 
-                    $sql3 = "SELECT * FROM `bandstoporchfests` INNER JOIN porchfesttimeslots ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID WHERE bandstoporchfests.bandID=" . $band['BandID'];
+                    $sql3 = sprintf("SELECT * FROM `bandstoporchfests` INNER JOIN `porchfesttimeslots` 
+                                     ON bandstoporchfests.TimeslotID = porchfesttimeslots.TimeslotID 
+                                     WHERE bandstoporchfests.bandID= '%s'", 
+                                     $conn->real_escape_string($band['BandID']));
 
                     $result3 = $conn->query($sql3);
 
@@ -476,14 +474,10 @@ session_start();
                     }
                     echo '</td></select>';
 
-                    
-
                     echo '<td>';
                     echo '<p id="conflict-names-' . $band['BandID'] . '"> ' . $conflictList[0]  . ' <p>';
                     echo '<input type="hidden" id="conflicts-' . $band['BandID'] .'" value="' . $conflictList[1] . '">';
-                    echo '</td>';
-
-                    
+                    echo '</td>';                    
                   }
 
                   echo '</table> <!-- end table -->
@@ -500,9 +494,6 @@ session_start();
           <div class="tab-pane fade" id="export"> <!-- begin export div -->
             <div id="porchfestinfo">
           <?php
-              $sql = "SELECT Scheduled from porchfests WHERE PorchfestID='" . $porchfestID . "'";
-              $result = $conn->query($sql);
-              $scheduled = $result->fetch_assoc()['Scheduled'];
               if (!$scheduled) {
                 ?>
                 <div class="col-md-1">
@@ -535,14 +526,25 @@ session_start();
           <div class="tab-pane fade" id="publish"> <!-- begin publish div -->
             <div id="porchfestinfo">
             <?php
-              $sql = "SELECT Published from porchfests WHERE PorchfestID='" . $porchfestID . "'";
-              $result = $conn->query($sql);
-              $published = $result->fetch_assoc()['Published'];
-              if (!$published) {
-                echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default">Publish</button>';
-              }
-              else {
-                echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default">Unpublish</button>';
+              if (!$scheduled) {
+                ?>
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-9">
+                <p>Your Porchfest hasn't been scheduled yet! Please see the schedule tab to schedule your Porchfest. </p>
+                </div>
+            <?php
+              } else {
+                $sql = sprintf("SELECT Published from porchfests WHERE PorchfestID ='%s'",
+                                $conn->real_escape_string($porchfestID));
+                $result = $conn->query($sql);
+                $published = $result->fetch_assoc()['Published'];
+                if (!$published) {
+                  echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default">Publish</button>';
+                }
+                else {
+                  echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default">Unpublish</button>';
+                }
               }
             ?>
           </div>
@@ -552,9 +554,11 @@ session_start();
       </div> <!-- end row 1 div -->
     </div> <!-- end container div -->
   <?php 
-    $bandquery = "SELECT * FROM `bandstoporchfests` INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID  WHERE PorchfestID = '" . $porchfestID . "' ORDER BY bands.Name";
+    $bandquery = sprintf("SELECT * FROM `bandstoporchfests` 
+                          INNER JOIN bands ON bands.BandID = bandstoporchfests.BandID
+                          WHERE PorchfestID = '%s' ORDER BY bands.Name",
+                          $conn->real_escape_string($porchfestID));
     $bandresults = $conn->query($bandquery);
-
 
     while($band = $bandresults->fetch_assoc()) {
       echo '<div id="timeslotModal' . $band['BandID'] . '" class="modal fade">
@@ -565,11 +569,14 @@ session_start();
                   <h4 class="modal-title"> Available Time Slots for ' . $band['Name'] . '</h4>
                 </div>
                 <div class="modal-body">';
-                    $sql = "SELECT * FROM porchfesttimeslots WHERE PorchfestID='" . $porchfestID . "' ORDER BY StartTime";
+                    $sql = sprintf("SELECT * FROM porchfesttimeslots WHERE PorchfestID='%s' ORDER BY StartTime",
+                                    $conn->real_escape_string($porchfestID));
                     $result = $conn->query($sql);
                     while($timeslot = $result->fetch_assoc()) {
-                      $sql2 = "SELECT * FROM bandavailabletimes
-                               WHERE BandID='" . $band['BandID'] . "' AND TimeslotID = '" . $timeslot['TimeslotID'] . "'";
+                      $sql2 = sprintf("SELECT * FROM bandavailabletimes
+                                       WHERE BandID='%s' AND TimeslotID = '%s'",
+                                       $conn->real_escape_string($band['BandID']), 
+                                       $conn->real_escape_string($timeslot['TimeslotID']));
                       $result2 = $conn->query($sql2);
                       $starttime = date_format(date_create($timeslot['StartTime']), 'g:iA');
                       $endtime = date_format(date_create($timeslot['EndTime']), 'g:iA');
