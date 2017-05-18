@@ -63,10 +63,9 @@ session_start();
               </tr>
               <?php   
                   // Query to get all porchfests for the current logged in user              
-                  $sql = "SELECT * 
-                          FROM porchfests
-                          INNER JOIN userstoporchfests ON userstoporchfests.PorchfestID = porchfests.PorchfestID
-                          WHERE UserID = '" . $_SESSION['logged_user'] . "'";
+                  $sql = sprintf("SELECT * FROM porchfests
+                                  INNER JOIN userstoporchfests ON userstoporchfests.PorchfestID = porchfests.PorchfestID
+                                  WHERE UserID = '%s'", $conn->real_escape_string($_SESSION['logged_user']));
 
                   $result = $conn->query($sql);
 
@@ -111,13 +110,14 @@ session_start();
                   $sql = sprintf("SELECT * FROM porchfests
                           INNER JOIN bandstoporchfests ON bandstoporchfests.PorchfestID = porchfests.PorchfestID
                           INNER JOIN userstobands ON userstobands.BandID = bandstoporchfests.BandID
-                          WHERE UserID = '%s'", $_SESSION['logged_user']);
+                          WHERE UserID = '%s'", $conn->real_escape_string($_SESSION['logged_user']));
 
                   $result = $conn->query($sql);
 
                   // Add each porchfest where you are a performer to the table
                   while($porchfest = $result->fetch_assoc()) {
-                    $sql2 = "SELECT * FROM bands where BandID = '" . $porchfest['BandID'] . "'";
+                    $sql2 = sprintf("SELECT * FROM bands where BandID = '%s'", 
+                                     $conn->real_escape_string($porchfest['BandID']));
                     $result2 = $conn->query($sql2);
                     $bandname = $result2->fetch_assoc()['Name'];
 
