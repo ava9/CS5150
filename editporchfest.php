@@ -220,19 +220,24 @@ session_start();
                     $porchfest = $result->fetch_assoc();
 
                     echo '<p>';
+
                     echo '<label> Porchfest Name </label>';
                     echo '<input data-validation="length" data-validation-length="min4" type="text" name="porchfestname" class="form-control" value="' . $porchfest['Name'] . '" placeholder="Porchfest Name">';
                     echo '<br />';
                     echo '</p>';
 
                     echo '<p>';
-                    echo '<label> Porchfest Location </label>';
+                    echo '<label> Porchfest Location';
+                    tooltip("The city or town in which the Porchfest event will be held. When typing the location, please select from the resulting dropdown so that the corresponding pin can be placed on a Google map.");
+                    echo '</label>';
                     echo '<input id="autocomplete" onFocus="geolocate()" type="text" name="porchfestlocation" class="form-control" value="' . $porchfest['Location'] . '" placeholder="Porchfest Location">';
                     echo '<br />';
                     echo '</p>';
 
                     echo '<p>';
-                    echo '<label> Porchfest Date </label>';
+                    echo '<label> Porchfest Date';
+                    tooltip("Date when the Porchfest will be held.");
+                    echo '</label>';
                     echo '<input data-validation="date" data-validation-format="yyyy-mm-dd" type="date" name="porchfestdate" class="form-control" value="' . $porchfest['Date'] . '" placeholder="Porchfest Date">';
                     echo '<br />';
                     echo '</p>';
@@ -245,7 +250,9 @@ session_start();
 
                     $deadline = date_create($porchfest['Deadline']);
                     echo '<p>';
-                    echo '<label> Porchfest Deadline Date </label>';
+                    echo '<label> Porchfest Deadline Date';
+                    tooltip("Day by which bands must register to play at this Porchfest event. Default time for the deadline in 11:59pm on this day.");
+                    echo '</label>';
                     $day = new DateTime(date_format($deadline, 'Y-m-d')); // to drop the time
                     echo '<input data-validation="date" data-validation-format="yyyy-mm-dd" type="date" name="porchfestdeadlineday" class="form-control" value="' . $day->format('Y-m-d') . '" placeholder="Porchfest Deadline Date">';
                     echo '<br />';
