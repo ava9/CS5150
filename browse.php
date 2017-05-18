@@ -4,6 +4,8 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
+<!-- BEGIN head -->
 <head>
   <?php 
     require_once "config.php";
@@ -16,6 +18,7 @@ session_start();
   <title>PorchFest - My Account</title>
 </head>
 
+<!-- BEGIN body -->
 <body>
 <!-- navBar and login -->
 <?php require_once CODE_ROOT."/php/modules/navigation.php"; ?>

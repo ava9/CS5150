@@ -1,5 +1,5 @@
 <?php 
-# This page is for users who do not have an existing porchfest and want to create one
+# This page is an about page for our website describing how it came to be
 session_start(); 
 ?>
 <!DOCTYPE html>

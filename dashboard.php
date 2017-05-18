@@ -4,6 +4,8 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
+<!-- BEGIN head -->
 <head>
   <?php 
     require_once "config.php";
@@ -11,18 +13,15 @@ session_start();
   ?> 
   <title>PorchFest - My Profile</title>
 </head>
+
+<!-- BEGIN body -->
 <body>
   <div id="editalert"></div>
-  <?php // Database credentials
-    require_once CODE_ROOT . "/php/modules/routing.php";
-
-    // Create connection
-    $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-  ?>
-<!-- navBar and login -->
-<?php 
+<?php
+  // navBar and login and routing
   require_once CODE_ROOT . "/php/modules/login.php";
-  require_once CODE_ROOT . "/php/modules/navigation.php";?>
+  require_once CODE_ROOT . "/php/modules/navigation.php";
+  require_once CODE_ROOT . "/php/modules/routing.php"; ?>
 
 <div class="container" style="padding-top: 20px; text-align: center;">
   <h1 class="page-header">Dashboard</h1>
@@ -30,12 +29,14 @@ session_start();
       <div class="col-sm-6" style="background-color:#F2F2F2;">
         <h2>Manage Porchfests</h2>
           </br>
-            
             <form method="post" action="">
               <select name="selected_porchfest" id="selected_porchfest" onchange='if(this.value != 0) { this.form.submit(); }'>
                 <option value="0">--Manage Porchfests--</option>
               <p>
-              <?php   
+              <?php
+                // Create DB connection 
+                $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);  
+
                 // Query to get all porchfests for the current logged in user              
                 $sql = "SELECT * 
                         FROM porchfests
