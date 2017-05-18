@@ -20,18 +20,17 @@ session_start();
   require_once CODE_ROOT . "/php/modules/login.php";
   require_once CODE_ROOT . "/php/modules/navigation.php";?>
   <?php // Database credentials
-    
-
     // Create connection
     $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
     // Gets porchfestID from url
-    $sql = sprintf("SELECT PorchfestID FROM porchfests WHERE porchfests.Name = '%s'", PORCHFEST_NAME);
-    $result = $conn->query($sql);
-    $porchfestID = $result->fetch_assoc()['PorchfestID'];
+    $porchfestID = PORCHFEST_ID;
 
     // Gets bandID from url
-    $sql = sprintf("SELECT BandID FROM bands WHERE bands.Name = '%s'", $conn->real_escape_string(BAND_NAME));
+    $sql = sprintf("SELECT bands.BandID FROM bands 
+                    INNER JOIN bandstoporchfests WHERE bands.Name = '%s'
+                    AND bandstoporchfests.PorchfestID = '%s'",
+                    $conn->real_escape_string(BAND_NAME), $conn->real_escape_string($porchfestID));
     $result = $conn->query($sql);
     $bandID = $result->fetch_assoc()['BandID'];
 
