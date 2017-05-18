@@ -60,7 +60,7 @@
     <div class="col-sm-10">
         <div class="row">
             <div class="col-md-9">
-                <input data-validation="date" required type="date" name="deadline" lass="form-control" placeholder="Deadline" /> <?php echo '<span class="error">'; echo $deadlineError; echo '</span>'; ?>
+                <input data-validation="date" required type="date" name="deadline" class="form-control" placeholder="Deadline" /> <?php echo '<span class="error">'; echo $deadlineError; echo '</span>'; ?>
             </div>
         </div>
     </div>
