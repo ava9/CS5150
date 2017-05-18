@@ -201,7 +201,7 @@ session_start();
                   <li><a href="#timeslots" data-toggle="tab" onclick="enable('#timeslots');"> Manage Time Slots </a></li>
                   <li><a href="#schedule" data-toggle="tab" onclick="enable('#schedule');"> Schedule </a></li>
                   <li><a href="#export" data-toggle="tab" onclick="enable('#export');"> Export </a></li>
-                  <li><a href="#publish" data-toggle="tab" onclick="enable('#publish');"> Publish </a></li>
+                  <li><a href="#publish" data-toggle="tab" onclick="enable('#publish');"> Operations </a></li>
                   <li class="nav-divider"></li>
                 </ul>
             </nav>
@@ -535,24 +535,31 @@ session_start();
           <div class="tab-pane fade" id="publish"> <!-- begin publish div -->
             <div id="porchfestinfo">
             <?php
+              echo '<div class="col-md-12">';
+              echo '<div class="col-md-6">';
+                echo '<button type="button" id="deletebutton" name="deleteporchfestbutton" onclick="deletePorchfest();" class="btn btn-danger">Delete </button>';
+              echo '</div>';
+
               if (!$scheduled) {
-                ?>
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-9">
-                <p>Your Porchfest hasn't been scheduled yet! Please see the schedule tab to schedule your Porchfest. </p>
-                </div>
-            <?php
+                echo '
+                <div class="col-md-6">
+                  <p>Your Porchfest hasn\'t been scheduled yet! Please see the schedule tab to schedule your Porchfest. </p>
+                </div>';
               } else {
                 $sql = sprintf("SELECT Published from porchfests WHERE PorchfestID ='%s'",
                                 $conn->real_escape_string($porchfestID));
                 $result = $conn->query($sql);
                 $published = $result->fetch_assoc()['Published'];
                 if (!$published) {
-                  echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default">Publish</button>';
+                  echo '<div class="col-md-6">';
+                    echo '<p> Publishing a porchfest allows other users to see the schedule that the algorithm generated (with whatever changes you may have made manually). Additionally, it gets rid of the different color flags in the map, so you can export the KML file and display the map on your website for spectators.';
+                    echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default">Publish</button>';
+                  echo '</div>';
                 }
                 else {
-                  echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default">Unpublish</button>';
+                  echo '<div class="col-md-6">';
+                    echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default">Unpublish</button>';
+                  echo '</div>';
                 }
               }
             ?>
@@ -620,6 +627,28 @@ session_start();
       lang: 'en',
       modules : 'date'
     });
+
+    function deletePorchfest() {
+     if (confirm("Are you sure you want to delete this porchfest? You can't undo this action!") == true) {
+        $.ajax({
+          url: ajaxurl,
+          type: "GET",
+          data: {"delete": true, "porchfestid": porchfestid},
+          success: function(result) {
+            console.log(result);
+            if (result == "success") {
+              $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your porchfest was deleted. </div>');  
+            } else {
+              $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
+            }  
+          },
+          error: function(result) {
+            console.log(error);
+            $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
+          }
+        });
+     }
+    }
 
     function filterByTimeslot(obj, fid, filter) {
       // if the button is toggled, aka want to filter by this.
@@ -824,7 +853,6 @@ session_start();
 
 
     function conflictWarning() {
-      console.log('here2');
       var warningmodal = '<!-- Modal --><div class="modal fade" id="warningModal" role="dialog"><div class="modal-dialog"><!-- Modal content--><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title"> Your schedule has conflicts! </h4></div><div class="modal-body"><p> The schedule you are trying to save has some conflicts. If you want to continue, press accept. Otherwise, press cancel. Your changes will not be saved until you accept!</p></div><div class="modal-footer"><button type="button" class="btn btn-success" onclick="resolveConflict(true);" data-dismiss="modal" data-target="#warningModal">Accept</button><button type="button" class="btn btn-default" data-dismiss="modal" onclick="resolveConflict(false);" data-target="#warningModal">Cancel</button></div></div></div></div>';
       $("#editalert").html(warningmodal);
 
