@@ -50,7 +50,7 @@ session_start();
 
       // Check if current date is past the deadline
       date_default_timezone_set('America/New_York');
-      $sql = sprintf("SELECT * FROM porchfests WHERE PorchfestID='%s'" 
+      $sql = sprintf("SELECT * FROM porchfests WHERE PorchfestID='%s'", 
                       $mysqli->real_escape_string($porchfestID));
       $result = $mysqli->query($sql);
       $porchfestDate = new DateTime($result->fetch_assoc()['Deadline']);
@@ -243,7 +243,8 @@ session_start();
   });
   
   $(document).ready(function () {
-    $("#conflict-input").tokenInput("<?php echo PHP_BAND_LISTING; ?>", {
+    $("#conflict-input").tokenInput("<?php echo PHP_BAND_LISTING . "?id=" . $porchfestID; ?>", {
+        queryParam: "q",
         preventDuplicates: true, theme: "facebook"
     });
   });

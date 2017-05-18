@@ -146,7 +146,7 @@ session_start();
   var conflictlist = <?php echo json_encode($conflictsarray); ?>;
 
   $(document).ready(function () {
-    $("#conflict-input").tokenInput("<?php echo PHP_BAND_LISTING; ?>", {
+    $("#conflict-input").tokenInput("<?php echo PHP_BAND_LISTING . "?id=" . $porchfestID; ?>", {
         preventDuplicates: true, theme: "facebook", prePopulate: conflictlist
     });
   });
