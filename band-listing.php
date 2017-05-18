@@ -1,17 +1,17 @@
 <?
 
 #
-# Example PHP server-side script for generating
 # responses suitable for use with jquery-tokeninput
 #
 
 # Connect to the database
 require_once "config.php";
+require_once CODE_ROOT . "/php/modules/routing.php";
 
 $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 # Perform the query
-$query = sprintf("SELECT bands.Name, bands.BandID FROM `bandstoporchfests` INNER JOIN bands on bands.BandID = bandstoporchfests.BandID WHERE PorchfestID = 1 AND bands.Name LIKE '%%%s%%' LIMIT 5", $conn->real_escape_string($_GET["q"]));
+$query = sprintf("SELECT bands.Name, bands.BandID FROM `bandstoporchfests` INNER JOIN bands on bands.BandID = bandstoporchfests.BandID WHERE PorchfestID= '%s' AND bands.Name LIKE '%%%s%%' LIMIT 5", PORCHFEST_ID, $conn->real_escape_string($_GET["q"]));
 $arr = array();
 $result = $mysqli->query($query);
 
