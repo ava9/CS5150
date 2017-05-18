@@ -1,6 +1,6 @@
 <?php
 	require_once __DIR__."/../config.php";
-	require_once __DIR__."/../php/modules/sort.php";
+	require_once "sort.php";
 
     // Create connection
     $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
@@ -145,6 +145,20 @@
 		} else {
 			echo 'failure';
 		}
+
+	} elseif (isset($_GET['delete']) && isset($_GET['pid'])) {
+		$porchfestid = $GET['pid'];
+
+		$sql = "DELETE FROM porchfests WHERE PorchfestID=" . $porchfestid;
+
+		// $result = $conn->query($sql);
+
+		if ($result) {
+			echo "success";
+		} else {
+			echo "fail";
+		}
+
 
 	} elseif (isset($_POST['porchfestname']) && isset($_POST['porchfestlocation']) && isset($_POST['porchfestdate']) && isset($_POST['porchfestdescription']) && isset($_POST['porchfestdeadlineday']) && isset($_POST['porchfestid'])) {
 		// ** editporchfest.php: MANAGE PORCHFEST: form to manage porchfest 
