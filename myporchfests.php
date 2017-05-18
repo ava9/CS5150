@@ -87,15 +87,39 @@ session_start();
 
                     // Set the URL to link to. Should one not exist (not provided), then link to
                     // website's single porchfest view
-                    $href = '"view/' . strtolower($porchfest['Nickname']);
+                    // SPECIAL CASE: If there is a provided link by the porchfest organizer,
+                    // create the option to go to either the link or our porchfest viewer.
+                    $href = '<a href="view/' . strtolower($porchfest['Nickname']) . '">' . $porchfest['Name'] . '</a>';
                     if ($porchfest['URL'] != '') {
-                      $href = '"' . $porchfest['URL'];
+                      $href = '<a href="#" data-toggle="modal" data-target="#htmlModal' . $porchfest['Name'] . '">'
+                              . $porchfest['Name'] . '</a>';
+                      echo 
+                      '<div class="modal fade" id="htmlModal' . $porchfest['Name'] . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header"><h3>'
+                            . $porchfest['Name'] .
+                            '</h3></div>
+                            <div class="modal-body">
+                              <p>
+                                This Porchfest has its own website! You can go to it, or view the information
+                                about it on our own Porchfest view.
+                              </p>
+                              <br>
+                              <a href="' . $porchfest['URL'] . '">Go to the dedicated website</a>
+                              <br>                            
+                              <a href="view/' . $porchfest['Name'] . '">Continue to our view</a>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>';
                     }
                     // HTML code for table row
                     echo '<tr data-status = "' . $status . '">
-                          <td> 
-                            <a href=' . $href . '">' . $porchfest['Name'] . '</a>
-                          </td>
+                          <td>' . $href . '</td>
                           <td>' . $day . '</td>
                           <td>' . $porchfest['Location'] . '</td>
                           <td>' . $porchfest['Description'] . '</td>
@@ -137,18 +161,42 @@ session_start();
 
                     // Set the URL to link to. Should one not exist (not provided), then link to
                     // website's single porchfest view
-                    $href = '"view/' . strtolower($porchfest['Nickname']);
+                    // SPECIAL CASE: If there is a provided link by the porchfest organizer,
+                    // create the option to go to either the link or our porchfest viewer.
+                    $href = '<a href="view/' . strtolower($porchfest['Nickname']) . '">' . $porchfest['Name'] . '</a>';
                     if ($porchfest['URL'] != '') {
-                      $href = '"' . $porchfest['URL'];
+                      $href = '<a href="#" data-toggle="modal" data-target="#htmlModal' . $porchfest['Name'] . '">'
+                              . $porchfest['Name'] . '</a>';
+                      echo 
+                      '<div class="modal fade" id="htmlModal' . $porchfest['Name'] . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header"><h3>'
+                            . $porchfest['Name'] .
+                            '</h3></div>
+                            <div class="modal-body">
+                              <p>
+                                This Porchfest has its own website! You can go to it, or view the information
+                                about it on our own Porchfest view.
+                              </p>
+                              <br>
+                              <a href="' . $porchfest['URL'] . '">Go to the dedicated website</a>
+                              <br>                            
+                              <a href="view/' . $porchfest['Name'] . '">Continue to our view</a>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>';
                     }
 
                     // Modify the band name such that it looks good in the URL.
                     // All spaces (' ') become '-' and all '-' become '--'.
                     $urlbandname = str_replace(" ", "-", str_replace("-", "--", $bandname));
                     echo '<tr data-status = "' . $status . '">
-                          <td> 
-                            <a href=' . $href . '">' . $porchfest['Name'] . '</a>
-                          </td>
+                          <td>' . $href . '</td>
                           <td>' . $day . '</td>
                           <td>' . $porchfest['Location'] . '</td>
                           <td>' . $porchfest['Description'] . '</td>
