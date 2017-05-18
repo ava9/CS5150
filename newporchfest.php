@@ -84,7 +84,7 @@ session_start();
               $result = $mysqli->query($sql);
               $userID = $result->fetch_assoc()['UserID'];
               $_SESSION['logged_user'] = $userID;
-              echo "<script type='text/javascript'>alert('$name, you have been added successfully!.');</script>";
+              echo "<script type='text/javascript'>alert('$name, you have been added successfully!');</script>";
             } else {
               echo "<script type='text/javascript'>alert('DB failed to add you!.');</script>";
             }

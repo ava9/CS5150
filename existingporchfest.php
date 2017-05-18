@@ -118,7 +118,7 @@ session_start();
           $prep->bind_param("sssssss", $porchfestURL, $porchfestName, $nickname, $location, $date, $description, $deadline);
           $prep->execute();
           if ($prep->affected_rows) {
-            echo "<script type='text/javascript'>alert('The porchfest, $porchfestName, has been added successfully!.');";
+            echo "<script type='text/javascript'>alert('The porchfest, $porchfestName, has been added successfully!');";
             echo "window.location='" . EDIT_PORCHFEST_URL . "/$nickname';</script>"; 
           } else {
             echo "<script type='text/javascript'>alert('Something went wrong...');</script>";
