@@ -29,7 +29,3 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^edit/([^/]+)/? editporchfest.php?name=$1 [NC,L]
 
-
-#RewriteRule ^(.*)? index.php [NC,L]
-#RewriteRule !\.(js|css|html|xml|csv)$ index.php [NC,L]
-#RewriteRule ^(.*)$ index.php [NC,L]
