@@ -22,7 +22,7 @@ session_start();
       require_once CODE_ROOT . "/php/modules/navigation.php";?>
       
     <div class="row">
-      <h1 style="text-align:center;"> Welcome to our website! </h1>
+      <h1 style="text-align:center;"> Welcome to our Website! </h1>
     </div>
 
     <h4 style="text-align:center;"> We are a group of Cornell students who completed this website as our project for CS5150: Software Engineering. We worked with Robbert Van Renesse, Lesley Greene, Gretchen Hildreth, and Andy Adelewitz to design the website and its features. We built this website to support scheduling and managing instances of Porchfests across various communities. The website supports the following functionality:</h4>
