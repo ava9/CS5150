@@ -5,7 +5,8 @@
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['exportCSV'])) {
         
         require_once 'generateCSV.php';
-
+        $filename = $_POST['PORCHFEST_NICKNAME'] .'.kml';
+        $fPath = __DIR__.'/../output/csv/'.$filename;
         // Set the headers for the file download
         header("Content-Description: File Transfer");
         header('Content-Type: application/csv');
@@ -21,7 +22,7 @@
 
         //headers for download for kml
         $filename = $_POST['PORCHFEST_NICKNAME'] .'.kml';
-        $fPath = __DIR__.'/output/kml/'.$filename;
+        $fPath = __DIR__.'/../output/kml/'.$filename;
         header("Content-Description: File Transfer");
         header('Content-Type: application/kml');
         header("Content-Disposition: attachment; filename=$filename");
