@@ -1,5 +1,5 @@
 <?php
-    require_once '../config.php';
+    require_once '../../config.php';
     // create file for new porchfest csv
     $filename = $_POST['PORCHFEST_NICKNAME'] . ".csv";
     $fPath = __DIR__ . '/output/csv/' . $filename;

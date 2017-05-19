@@ -7,7 +7,7 @@ $colorArray = array("icon-1899-000000", "icon-1899-006064", "icon-1899-0097A7", 
 shuffle($colorArray);
 
 // DB credentials and porchfest info
-require_once '../config.php';
+require_once '../../config.php';
 
 $conn = $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
