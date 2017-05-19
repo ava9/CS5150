@@ -637,7 +637,8 @@ session_start();
           success: function(result) {
             console.log(result);
             if (result == "success") {
-              $("#editalert").html('<div class="alert alert-success alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Success!</strong> Your porchfest was deleted. </div>');  
+              alert("This porchfest was successfully deleted. Redirecting to dashboard...");
+              window.location = '<?php echo DASHBOARD_URL; ?>';  
             } else {
               $("#editalert").html('<div class="alert alert-danger alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> <strong>Oops!</strong> Something went wrong, your request could not be submitted. Please try again. </div>');
             }  

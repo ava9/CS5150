@@ -1,5 +1,5 @@
 <?php
-	require_once __DIR__."/../config.php";
+	require_once __DIR__."../../config.php";
 	require_once "sort.php";
 
     // Create connection
@@ -55,7 +55,7 @@
 		$isPub = $getPubResult->fetch_assoc()['Published'];
 		if (!$isPub) {
 			ob_start();
-			require_once 'scheduling/updateMap.php';
+			require_once '../scheduling/updateMap.php';
 			ob_end_clean();
 		// if published, set all flags to 0
 		} else {
@@ -73,7 +73,7 @@
 	} elseif (isset($_POST['schedule'])) {
 		// ** editporchfest.php: SCHEDULE: run scheduling algorithm
 		ob_start();
-		require_once 'scheduling/main.php';
+		require_once '../scheduling/main.php';
 		ob_end_clean();
 
 		$sql = 'SELECT scheduled FROM porchfests WHERE PorchfestID=' . $_POST['porchfestid'];
@@ -137,7 +137,7 @@
 		
 		if ($result) {
 			ob_start();
-			require_once 'scheduling/updateMap.php';
+			require_once '../scheduling/updateMap.php';
 			ob_end_clean();
 			echo 'success';
 		} elseif (!$sql) {
