@@ -55,7 +55,6 @@ input.form-control.error {
 /* Publish tab */
 
 #publishbutton {
-  position: absolute;
   z-index: 10;
 }
 
