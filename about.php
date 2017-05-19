@@ -39,7 +39,7 @@ session_start();
       </ul>
     </h4>
 
-    <p style="padding-top: 50px">-Aditi Jain, Aditya, Agashe, Candy Xiao, Carlos Mendez, Rohit Biswas, Kevin Hui, Alan Wu, Cornell '17 </p>
+    <p style="padding-top: 50px">-Aditi Jain, Aditya Agashe, Alan Wu, Candy Xiao, Carlos Mendez, Heather Cai, Kevin Hui, Rohit Biswas, Cornell '17 </p>
 
     <img src="<?php echo IMG_CORNELL; ?>" align="right" style="width:10%;height:10%;">
     
