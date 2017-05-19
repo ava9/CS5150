@@ -543,10 +543,13 @@ session_start();
               echo '</div>';
 
               if (!$scheduled) {
-                echo '
-                <div class="col-md-12">
-                  <p>Your Porchfest hasn\'t been scheduled yet! Please see the schedule tab to schedule your Porchfest. </p>
-                </div>';
+                echo '<div class="col-md-12">';
+                    echo '<h4> Publish Porchfest: </h4>';
+                    echo '<div class="col-md-12">';
+                      echo '<p> Your Porchfest hasn\'t been scheduled yet! Please see the schedule tab to schedule your Porchfest. </p>';
+                    echo '</div>';
+                echo '</div>';
+
               } else {
                 $sql = sprintf("SELECT Published from porchfests WHERE PorchfestID ='%s'",
                                 $conn->real_escape_string($porchfestID));
