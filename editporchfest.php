@@ -565,7 +565,13 @@ session_start();
                 }
                 else {
                   echo '<div class="col-md-12">';
-                    echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default">Unpublish</button>';
+                    echo '<h4> Publish Porchfest: </h4>';
+                    echo '<div class="col-md-12">';
+                      echo '<p> Publishing a porchfest allows other users to see the schedule that the algorithm generated (with whatever changes you may have made manually). Additionally, it gets rid of the different color flags in the map, so you can export the KML file and display the map on your website for spectators. </p>';
+                    echo '</div>';
+                    echo '<div class="col-md-12">';
+                      echo '<button type="button" id="publishbutton" name="publishbutton" class="btn btn-default">Unpublish</button>';
+                    echo '</div>';
                   echo '</div>';
                 }
               }
